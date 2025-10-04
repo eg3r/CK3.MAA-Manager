@@ -1,0 +1,346 @@
+######################################################
+# Men-At-Arms Manager - Custom GUI Types
+# 
+# Following CK3 mod compatibility best practices:
+# - Uses "00_" prefix to ensure load order priority
+# - Extracts custom GUI elements into reusable types
+# - Allows other mods to achieve compatibility by using our types
+# - Follows CK3 Interface wiki recommendations
+######################################################
+
+types MenAtArmsManagerTypes
+{
+	# MAA Manager button - opens the regiment management window
+	# is placed in the military window to toggle the MAA manager window
+	type men_at_arms_manager_button = button_tertiary {
+		visible = "[GetPlayer.IsValid]"
+		datacontext = "[MilitaryView]"
+        name = "maa_manager_button"
+		onclick = "[GetVariableSystem.Toggle('men_at_arms_manager_open')]"
+		enabled = "[And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments))]"
+		button_ignore = none
+		
+		size = { 36 36 }
+
+		tooltip = "[SelectLocalization(And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments)), 'MAA_MANAGER_BUTTON_TOOLTIP', 'MAA_MANAGER_BUTTON_DISABLED_TOOLTIP')]"
+		using = tooltip_sw
+		clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
+
+		icon = {
+			parentanchor = center
+			texture = "gfx/interface/icons/army_status/army_status_normal.dds"
+			size = { 28 28 }
+		}
+	}
+
+	# MAA Manager - Main Selection Item in the main grid
+	type container_maan_mainselection_item = container {
+
+		using = tooltip_es
+
+		background = {
+			texture = "[Regiment.GetMAAType.GetHorizontalImage]"
+			alpha = 0.7
+			fittype = centercrop
+			margin = { -2 -2 }
+		}
+
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+			margin = { -2 -2 }
+		}
+
+		tooltipwidget = {
+			using = regiment_container_text_tooltip
+
+			blockoverride "extra_info" {
+				divider_light = {
+					layoutpolicy_horizontal = expanding
+				}
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.GetMAAType.GetSubjectProvider( GetPlayer ).IsValid]"
+					text = "MEN_AT_ARMS_PROVIDED_BY_SUBJECT"
+					margin = { 10 0 }
+				}
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "CLICK_TO_SELECT"
+					margin = { 10 0 }
+				}
+			}
+		}
+
+		button_standard_clean = {
+			name = "maa_entry"
+			size = { 166 90 }
+			button_ignore = none
+
+			onclick = "[GetVariableSystem.Set( 'maa_manager_selected_regiment_id', Concatenate( 'RID_', Regiment.GetID ) )]"
+			onclick = "[GetScriptedGui('maa_manager_select_regiment').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+
+			vbox = {
+				expand = {}
+
+				hbox = {
+					margin = { 8 4 }
+					spacing = 2
+					layoutpolicy_horizontal = expanding
+
+					background = {
+						using = Background_Area_Dark
+					}
+
+					icon = {
+						name = "icon_maa"
+						texture = [Regiment.GetMAAType.GetIcon]
+						size = { 20 20 }
+					}
+
+					text_single = {
+						text = "[Regiment.BuildCurrentRegimentCountString|V]"
+						default_format = "#high"
+					}
+
+					expand = {}
+
+					text_single = {
+						text = "TOTAL_MAA_COST"
+						tooltip = "TOTAL_MAA_COST_TOOLTIP"
+
+						default_format = "#high"
+					}
+				}
+			}
+
+			text_label_right = {
+				visible = "[And( Not(Regiment.IsRaised), GetPlayer.IsAtWar)]"
+				text = "MAA_UNRAISED"
+				using = Font_Size_Small
+				default_format = "#X"
+				parentanchor = top|right
+				position = {-10 1}
+			}
+
+			text_label_right = {
+				visible = "[Not(And( Not(Regiment.IsRaised), GetPlayer.IsAtWar))]"
+				text = "MAA_CURRENT_SIZE"
+				using = Font_Size_Small
+				parentanchor = top|right
+				position = {-10 1}
+			}
+		}
+
+
+	}
+
+	# MAA Manager - Move Target Display (non-interactive)
+	type container_maan_move_target_item = container {
+		using = tooltip_es
+
+		background = {
+			texture = "[Regiment.GetMAAType.GetHorizontalImage]"
+			alpha = 0.7
+			fittype = centercrop
+			margin = { -2 -2 }
+		}
+
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+			margin = { -2 -2 }
+		}
+
+		tooltipwidget = {
+			using = regiment_container_text_tooltip
+
+			blockoverride "extra_info" {
+				divider_light = {
+					layoutpolicy_horizontal = expanding
+				}
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.GetMAAType.GetSubjectProvider( GetPlayer ).IsValid]"
+					text = "MEN_AT_ARMS_PROVIDED_BY_SUBJECT"
+					margin = { 10 0 }
+				}
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "MAA_MANAGER_MOVE_TILE_TOOLTIP"
+					margin = { 10 0 }
+				}
+			}
+		}
+
+		button_standard_clean = {
+			name = "maa_move_target_display"
+			size = { 166 90 }
+			button_ignore = none
+
+			vbox = {
+				expand = {}
+
+				hbox = {
+					margin = { 8 4 }
+					spacing = 2
+					layoutpolicy_horizontal = expanding
+
+					background = {
+						using = Background_Area_Dark
+					}
+
+					icon = {
+						name = "icon_maa"
+						texture = [Regiment.GetMAAType.GetIcon]
+						size = { 20 20 }
+					}
+
+					text_single = {
+						text = "[Regiment.BuildCurrentRegimentCountString|V]"
+						default_format = "#high"
+					}
+
+					expand = {}
+
+					text_single = {
+						text = "TOTAL_MAA_COST"
+						tooltip = "TOTAL_MAA_COST_TOOLTIP"
+
+						default_format = "#high"
+					}
+				}
+			}
+
+			text_label_right = {
+				visible = "[And( Not(Regiment.IsRaised), GetPlayer.IsAtWar)]"
+				text = "MAA_UNRAISED"
+				using = Font_Size_Small
+				default_format = "#X"
+				parentanchor = top|right
+				position = {-10 1}
+			}
+
+			text_label_right = {
+				visible = "[Not(And( Not(Regiment.IsRaised), GetPlayer.IsAtWar))]"
+				text = "MAA_CURRENT_SIZE"
+				using = Font_Size_Small
+				parentanchor = top|right
+				position = {-10 1}
+			}
+		}
+	}
+
+	# MAA Manager - Target Selection Item (Interactive - selects target)
+	type container_maan_target_selection_item = container {
+		using = tooltip_es
+
+		background = {
+			texture = "[Regiment.GetMAAType.GetHorizontalImage]"
+			alpha = 0.7
+			fittype = centercrop
+			margin = { -2 -2 }
+		}
+
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+			margin = { -2 -2 }
+		}
+
+		tooltipwidget = {
+			using = regiment_container_text_tooltip
+
+			blockoverride "extra_info" {
+				divider_light = {
+					layoutpolicy_horizontal = expanding
+				}
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.GetMAAType.GetSubjectProvider( GetPlayer ).IsValid]"
+					text = "MEN_AT_ARMS_PROVIDED_BY_SUBJECT"
+					margin = { 10 0 }
+				}
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					raw_text = "Click to select as target"
+					margin = { 10 0 }
+				}
+			}
+		}
+
+		button_standard_clean = {
+			name = "maa_target_selection"
+			size = { 166 90 }
+			button_ignore = none
+
+			# This calls the TARGET selection logic, not source selection
+			onclick = "[GetScriptedGui('maa_manager_select_target').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'target_regiment', Regiment.MakeScope ).End )]"
+			# Simple check: if this regiment IS the stored target regiment
+			down = "[ObjectsEqual( Regiment.Self, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Self )]"
+
+			vbox = {
+				expand = {}
+
+				hbox = {
+					margin = { 8 4 }
+					spacing = 2
+					layoutpolicy_horizontal = expanding
+
+					background = {
+						using = Background_Area_Dark
+					}
+
+					icon = {
+						name = "icon_maa"
+						texture = [Regiment.GetMAAType.GetIcon]
+						size = { 20 20 }
+					}
+
+					text_single = {
+						text = "[Regiment.BuildCurrentRegimentCountString|V]"
+						default_format = "#high"
+					}
+
+					expand = {}
+
+					text_single = {
+						text = "TOTAL_MAA_COST"
+						tooltip = "TOTAL_MAA_COST_TOOLTIP"
+
+						default_format = "#high"
+					}
+				}
+			}
+
+			text_label_right = {
+				visible = "[And( Not(Regiment.IsRaised), GetPlayer.IsAtWar)]"
+				text = "MAA_UNRAISED"
+				using = Font_Size_Small
+				default_format = "#X"
+				parentanchor = top|right
+				position = {-10 1}
+			}
+
+			text_label_right = {
+				visible = "[Not(And( Not(Regiment.IsRaised), GetPlayer.IsAtWar))]"
+				text = "MAA_CURRENT_SIZE"
+				using = Font_Size_Small
+				parentanchor = top|right
+				position = {-10 1}
+			}
+
+			# Selection indicator overlay
+			icon = {
+				parentanchor = top|right
+				position = { -5 5 }
+				visible = "[ObjectsEqual( Regiment.Self, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Self )]"
+				texture = "gfx/interface/icons/symbols/icon_check.dds"
+				size = { 30 30 }
+			}
+		}
+	}
+}

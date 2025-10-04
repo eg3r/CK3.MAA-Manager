@@ -1,0 +1,5 @@
+original_files/**
+documentation/**
+mockups/**
+.vscode/**
+agents.md

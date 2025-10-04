@@ -1,0 +1,370 @@
+﻿# Men-At-Arms Manager Scripted Triggers
+# Utilities that operate on regiment scope while consulting the cached
+# selected type stored on the owning character.
+
+maa_manager_type_matches_selection = {
+	# Ensure a selection has been cached before attempting comparisons
+	ROOT = { exists = scope:maa_manager_selected_type }
+	ROOT = { NOT = { scope:maa_manager_selected_type = flag:_maa_manager_unset } }
+
+	OR = {
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:abudrar }
+			is_maa_type = abudrar
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_archers }
+			is_maa_type = accolade_maa_archers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_cameliers }
+			is_maa_type = accolade_maa_cameliers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_crossbowers }
+			is_maa_type = accolade_maa_crossbowers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_elephantiers }
+			is_maa_type = accolade_maa_elephantiers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_horse_archers }
+			is_maa_type = accolade_maa_horse_archers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_lancers }
+			is_maa_type = accolade_maa_lancers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_outriders }
+			is_maa_type = accolade_maa_outriders
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_pikes }
+			is_maa_type = accolade_maa_pikes
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_skirmishers }
+			is_maa_type = accolade_maa_skirmishers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:accolade_maa_vanguards }
+			is_maa_type = accolade_maa_vanguards
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:akritai }
+			is_maa_type = akritai
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:archers_of_the_nile }
+			is_maa_type = archers_of_the_nile
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:armored_footmen }
+			is_maa_type = armored_footmen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:armored_horsemen }
+			is_maa_type = armored_horsemen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:asawira }
+			is_maa_type = asawira
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:ayrudzi }
+			is_maa_type = ayrudzi
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:ayyar }
+			is_maa_type = ayyar
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:ballistrai }
+			is_maa_type = ballistrai
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:bombard }
+			is_maa_type = bombard
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:bondi }
+			is_maa_type = bondi
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:bowmen }
+			is_maa_type = bowmen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:bush_hunter }
+			is_maa_type = bush_hunter
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:caballero }
+			is_maa_type = caballero
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:camel_rider }
+			is_maa_type = camel_rider
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:cataphract }
+			is_maa_type = cataphract
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:cataphract_archers }
+			is_maa_type = cataphract_archers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:chasseur }
+			is_maa_type = chasseur
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:chu_ko_nu }
+			is_maa_type = chu_ko_nu
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:conrois }
+			is_maa_type = conrois
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:crossbowmen }
+			is_maa_type = crossbowmen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:druzhina }
+			is_maa_type = druzhina
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:garudas }
+			is_maa_type = garudas
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:gendarme }
+			is_maa_type = gendarme
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:goedendag }
+			is_maa_type = goedendag
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:guanch_vaulter }
+			is_maa_type = guanch_vaulter
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:guinea_warrior }
+			is_maa_type = guinea_warrior
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:handpicked_faithful }
+			is_maa_type = handpicked_faithful
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:heavy_horse_archers }
+			is_maa_type = heavy_horse_archers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:hobelar }
+			is_maa_type = hobelar
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:horn_warrior }
+			is_maa_type = horn_warrior
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:horse_archers }
+			is_maa_type = horse_archers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:house_guard }
+			is_maa_type = house_guard
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:huscarl }
+			is_maa_type = huscarl
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:hussar }
+			is_maa_type = hussar
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:jomsviking_pirates }
+			is_maa_type = jomsviking_pirates
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:khandayat }
+			is_maa_type = khandayat
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:kheshig }
+			is_maa_type = kheshig
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:landsknecht }
+			is_maa_type = landsknecht
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:light_footmen }
+			is_maa_type = light_footmen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:light_horsemen }
+			is_maa_type = light_horsemen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:longbowmen }
+			is_maa_type = longbowmen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:maa_bandits }
+			is_maa_type = maa_bandits
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:maa_marauders }
+			is_maa_type = maa_marauders
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:maa_poachers }
+			is_maa_type = maa_poachers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:maa_thieves }
+			is_maa_type = maa_thieves
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:mangonel }
+			is_maa_type = mangonel
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:mangudai }
+			is_maa_type = mangudai
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:maturkan_warriors }
+			is_maa_type = maturkan_warriors
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:metsanvartija }
+			is_maa_type = metsanvartija
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:monaspa }
+			is_maa_type = monaspa
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:mountaineer }
+			is_maa_type = mountaineer
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:mubarizun }
+			is_maa_type = mubarizun
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:mulaththamun }
+			is_maa_type = mulaththamun
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:nomad_lancers }
+			is_maa_type = nomad_lancers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:nomadic_riders }
+			is_maa_type = nomadic_riders
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:onager }
+			is_maa_type = onager
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:paiks }
+			is_maa_type = paiks
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:palace_guards }
+			is_maa_type = palace_guards
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:picchieri }
+			is_maa_type = picchieri
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:pikemen_unit }
+			is_maa_type = pikemen_unit
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:praetorian }
+			is_maa_type = praetorian
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:sahel_horsemen }
+			is_maa_type = sahel_horsemen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:sarawit }
+			is_maa_type = sarawit
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:schiltron }
+			is_maa_type = schiltron
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:shomer }
+			is_maa_type = shomer
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:skoutatoi }
+			is_maa_type = skoutatoi
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:steppe_raiders }
+			is_maa_type = steppe_raiders
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:tarkhan }
+			is_maa_type = tarkhan
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:tawashi }
+			is_maa_type = tawashi
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:teutonic_knights }
+			is_maa_type = teutonic_knights
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:torch_bearers }
+			is_maa_type = torch_bearers
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:trebuchet }
+			is_maa_type = trebuchet
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:varangian_guards }
+			is_maa_type = varangian_guards
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:varangian_veterans }
+			is_maa_type = varangian_veterans
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:vigmen }
+			is_maa_type = vigmen
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:war_elephant }
+			is_maa_type = war_elephant
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:zbrojnosh }
+			is_maa_type = zbrojnosh
+		}
+		AND = {
+			ROOT = { scope:maa_manager_selected_type = flag:zupin_warrior }
+			is_maa_type = zupin_warrior
+		}
+	}
+}
+
+

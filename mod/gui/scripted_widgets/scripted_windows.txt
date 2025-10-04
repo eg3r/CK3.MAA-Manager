@@ -1,0 +1,3 @@
+﻿# Men-At-Arms Manager - Scripted Widget Registration
+# This file registers windows to be auto-created when the game loads
+gui/men_at_arms_manager_window.gui = men_at_arms_manager_window

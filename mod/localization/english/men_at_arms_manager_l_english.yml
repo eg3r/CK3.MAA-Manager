@@ -1,0 +1,61 @@
+﻿l_english:
+ # Window Title
+ MEN_AT_ARMS_MANAGER_WINDOW_TITLE:0 "[men_at_arms|E] Manager"
+ 
+ # Button Tooltips
+ MAA_MANAGER_BUTTON_TOOLTIP:0 "Open [men_at_arms|E] Manager"
+ MAA_MANAGER_BUTTON_DISABLED_TOOLTIP:0 "#X Cannot open [men_at_arms|E] Manager#!\n\n[SelectLocalization(GetPlayer.IsAtWar, 'MAA_MANAGER_DISABLED_AT_WAR', 'MAA_MANAGER_DISABLED_RAISED')]"
+ MAA_MANAGER_DISABLED_AT_WAR:0 "#R Cannot manage regiments during war#!\nYou must be at peace to reorganize your [men_at_arms|E]."
+ MAA_MANAGER_DISABLED_RAISED:0 "#R Cannot manage raised regiments#!\nYou must lower all [men_at_arms|E] before reorganizing them."
+ 
+ # Main Regiment Selection
+ MAA_MANAGER_SELECT_REGIMENT:0 "Select [regiment|E] to manage"
+ 
+ # Tab Navigation
+ MAA_MANAGER_TAB_TROOPS:0 "Transfer [soldiers|E]"
+ MAA_MANAGER_TAB_REGIMENTS:0 "Transfer [regiments|E]"
+ MAA_MANAGER_TAB_RETRAIN:0 "Retrain [men_at_arms|E]"
+ 
+ # Tab Instructions
+ MAA_MANAGER_TROOPS_INSTRUCTIONS:0 "#Bold Select the target [men_at_arms|E] below first#!. \nPlan [soldier|E] transfers, then confirm to execute."
+ MAA_MANAGER_REGIMENTS_INSTRUCTIONS:0 "#Bold Select the target [men_at_arms|E] below first#!.\nTransfer [regiments|E] immediately. Each click executes the transfer without confirmation."
+ MAA_MANAGER_RETRAIN_INSTRUCTIONS:0 "Change [regiment|E] types or reconfigure your [men_at_arms|E]."
+ 
+ # Troop Transfer Section
+ MAA_MANAGER_TRANSFER_TROOPS_TITLE:0 "Transfer [soldiers|E]"
+ MAA_MANAGER_AVAILABLE_TO_TRANSFER:0 "Available to Transfer:"
+ MAA_MANAGER_CURRENT_TRANSFER:0 "Current Transfer:"
+ MAA_MANAGER_AVAILABLE_TOOLTIP:0 "Available soldiers in source [regiment|E]"
+ MAA_MANAGER_CURRENT_TOOLTIP:0 "Current transfer amount / Maximum capacity in target [regiment|E]"
+ MAA_MANAGER_TRANSFER_ALL:0 "Transfer All"
+ MAA_MANAGER_DECREASE_TRANSFER_TOOLTIP:0 "Decrease transfer by [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] soldiers"
+ MAA_MANAGER_INCREASE_TRANSFER_TOOLTIP:0 "Increase transfer by [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] soldiers"
+ MAA_MANAGER_TRANSFER_ALL_TOOLTIP:0 "Transfer all available soldiers"
+ MAA_MANAGER_RESET_TOOLTIP:0 "Reset all planned transfers"
+ MAA_MANAGER_CONFIRM_TOOLTIP:0 "Confirm and execute all planned transfers"
+ 
+ # Regiment Transfer Section
+ MAA_MANAGER_TRANSFER_REGIMENTS_TITLE:0 "Transfer [regiments|E]"
+ MAA_MANAGER_SOURCE_REGIMENTS:0 "Source [regiments|E]:"
+ MAA_MANAGER_TARGET_REGIMENTS:0 "Target [regiments|E]:"
+ MAA_MANAGER_REGIMENTS_TOOLTIP:0 "Number of [regiments|E] available in source"
+ MAA_MANAGER_TARGET_REGIMENTS_TOOLTIP:0 "Number of [regiments|E] currently in target"
+ MAA_MANAGER_REGIMENTS_IMMEDIATE_NOTE:0 "#weak Transfers execute immediately#!"
+ MAA_MANAGER_TRANSFER_FROM_TARGET_TOOLTIP:0 "Transfer 1 [regiment|E] FROM target back TO source (immediate)"
+ MAA_MANAGER_TRANSFER_TO_TARGET_TOOLTIP:0 "Transfer 1 [regiment|E] FROM source TO target (immediate)"
+ MAA_MANAGER_TRANSFER_DISABLED_LAST_STACK:0 "#weak Cannot transfer last [regiment|E] directly.#!\n\nUse the #bold 'Move Last'#! button below to confirm this destructive action."
+ MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL:0 "#weak Cannot transfer - target [regiment|E] is at maximum capacity.#!\n\nThe target has reached its maximum number of [regiments|E] and cannot accept more."
+ MAA_MANAGER_MOVE_LAST_TO_TARGET:0 "#warning Move Last →#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET:0 "#warning ← Move Last#!"
+ MAA_MANAGER_MOVE_LAST_TO_TARGET_WARNING:0 "#warning ⚠ CONFIRM:#! Transfer #bold LAST#! [regiment|E] to target\n\nThis will #bold permanently remove#! the source [men_at_arms|E] and merge it into the target.\n\n#weak Click to confirm this destructive action.#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET_WARNING:0 "#warning ⚠ CONFIRM:#! Transfer #bold LAST#! [regiment|E] from target\n\nThis will #bold permanently remove#! the target [men_at_arms|E] and merge it into the source.\n\n#weak Click to confirm this destructive action.#!"
+ 
+ # Retrain Tab
+ MAA_MANAGER_RETRAIN_COMING_SOON:0 "Coming Soon"
+ MAA_MANAGER_RETRAIN_FEATURE_DESC:0 "The retrain feature will allow you to change [regiment|E] types, reconfigure [men_at_arms|E] compositions, and optimize your military setup. This feature is planned for a future update."
+ 
+ # Messages
+ MAA_MANAGER_NO_MOVE_TARGETS:0 "No available [regiments|E] to transfer to. Only [regiments|E] of the same type can transfer between each other."
+ MAA_MANAGER_MOVE_TILE_TOOLTIP:0 "Use the buttons to adjust transfers"
+
+

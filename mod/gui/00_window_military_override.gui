@@ -1,0 +1,12 @@
+######################################################
+# Men-At-Arms Manager - Early Load Military Window Override
+# 
+# This file overrides the military window to add the
+# MAA Manager button. Uses 00_ prefix for early loading.
+######################################################
+
+types MenAtArmsManagerTypes
+{
+	# Override using shared type definition
+	type vbox_your_armies = vbox_your_armies_with_maa_manager
+}
