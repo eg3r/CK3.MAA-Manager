@@ -1,0 +1,59 @@
+﻿l_polish:
+ # Window Title
+ MEN_AT_ARMS_MANAGER_WINDOW_TITLE:0 "Menedżer [men_at_arms|E]"
+ 
+ # Button Tooltips
+ MAA_MANAGER_BUTTON_TOOLTIP:0 "Otwórz menedżera [men_at_arms|E]"
+ MAA_MANAGER_BUTTON_DISABLED_TOOLTIP:0 "#X Nie można otworzyć menedżera [men_at_arms|E]#!\n\n[SelectLocalization(GetPlayer.IsAtWar, 'MAA_MANAGER_DISABLED_AT_WAR', 'MAA_MANAGER_DISABLED_RAISED')]"
+ MAA_MANAGER_DISABLED_AT_WAR:0 "#R Nie można zarządzać regimentami podczas wojny#!\nMusisz być w stanie pokoju, aby zreorganizować swoje [men_at_arms|E]."
+ MAA_MANAGER_DISABLED_RAISED:0 "#R Nie można zarządzać podniesionymi regimentami#!\nMusisz opuścić wszystkie [men_at_arms|E] przed ich reorganizacją."
+ 
+ # Main Regiment Selection
+ MAA_MANAGER_SELECT_REGIMENT:0 "Wybierz [regiment|E] do zarządzania"
+ 
+ # Tab Navigation
+ MAA_MANAGER_TAB_TROOPS:0 "Przenieś [soldiers|E]"
+ MAA_MANAGER_TAB_REGIMENTS:0 "Przenieś [regiments|E]"
+ MAA_MANAGER_TAB_RETRAIN:0 "Przeszkol [men_at_arms|E]"
+ 
+ # Tab Instructions
+ MAA_MANAGER_TROOPS_INSTRUCTIONS:0 "#Bold Najpierw wybierz docelowe [men_at_arms|E] poniżej#!. \nZaplanuj transfery [soldier|E], a następnie potwierdź, aby wykonać."
+ MAA_MANAGER_REGIMENTS_INSTRUCTIONS:0 "#Bold Najpierw wybierz docelowe [men_at_arms|E] poniżej#!.\nPrzenieś [regiments|E] natychmiast. Każde kliknięcie wykonuje transfer bez potwierdzenia."
+ MAA_MANAGER_RETRAIN_INSTRUCTIONS:0 "Zmień typy [regiment|E] lub przekonfiguruj swoje [men_at_arms|E]."
+ 
+ # Troop Transfer Section
+ MAA_MANAGER_TRANSFER_TROOPS_TITLE:0 "Przenieś [soldiers|E]"
+ MAA_MANAGER_AVAILABLE_TO_TRANSFER:0 "Dostępne do przeniesienia:"
+ MAA_MANAGER_CURRENT_TRANSFER:0 "Bieżący transfer:"
+ MAA_MANAGER_AVAILABLE_TOOLTIP:0 "Dostępni żołnierze w źródłowym [regiment|E]"
+ MAA_MANAGER_CURRENT_TOOLTIP:0 "Bieżąca ilość transferu / Maksymalna pojemność w docelowym [regiment|E]"
+ MAA_MANAGER_TRANSFER_ALL:0 "@soldier_icon! Przenieś wszystko"
+ MAA_MANAGER_DECREASE_TRANSFER_TOOLTIP:0 "Zmniejsz transfer o [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] żołnierzy"
+ MAA_MANAGER_INCREASE_TRANSFER_TOOLTIP:0 "Zwiększ transfer o [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] żołnierzy"
+ MAA_MANAGER_TRANSFER_ALL_TOOLTIP:0 "Przenieś wszystkich dostępnych żołnierzy"
+ MAA_MANAGER_RESET_TOOLTIP:0 "Zresetuj wszystkie zaplanowane transfery"
+ MAA_MANAGER_CONFIRM_TOOLTIP:0 "Potwierdź i wykonaj wszystkie zaplanowane transfery"
+ 
+ # Regiment Transfer Section
+ MAA_MANAGER_TRANSFER_REGIMENTS_TITLE:0 "Przenieś [regiments|E]"
+ MAA_MANAGER_SOURCE_REGIMENTS:0 "Źródłowe [regiments|E]:"
+ MAA_MANAGER_TARGET_REGIMENTS:0 "Docelowe [regiments|E]:"
+ MAA_MANAGER_REGIMENTS_TOOLTIP:0 "Liczba dostępnych [regiments|E] w źródle"
+ MAA_MANAGER_TARGET_REGIMENTS_TOOLTIP:0 "Liczba [regiments|E] obecnie w celu"
+ MAA_MANAGER_REGIMENTS_IMMEDIATE_NOTE:0 "#weak Transfery wykonywane są natychmiast#!"
+ MAA_MANAGER_TRANSFER_FROM_TARGET_TOOLTIP:0 "Przenieś 1 [regiment|E] Z celu z powrotem DO źródła (natychmiast)"
+ MAA_MANAGER_TRANSFER_TO_TARGET_TOOLTIP:0 "Przenieś 1 [regiment|E] ZE źródła DO celu (natychmiast)"
+ MAA_MANAGER_TRANSFER_DISABLED_LAST_STACK:0 "#weak Nie można bezpośrednio przenieść ostatniego [regiment|E].#!\n\nUżyj przycisku #bold 'Przenieś ostatni'#! poniżej, aby potwierdzić tę destrukcyjną akcję."
+ MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL:0 "#weak Nie można przenieść - docelowy [regiment|E] jest w maksymalnej pojemności.#!\n\nCel osiągnął maksymalną liczbę [regiments|E] i nie może przyjąć więcej."
+ MAA_MANAGER_MOVE_LAST_TO_TARGET:0 "#warning Przenieś ostatni →#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET:0 "#warning ← Przenieś ostatni#!"
+ MAA_MANAGER_MOVE_LAST_TO_TARGET_WARNING:0 "#warning ⚠ POTWIERDŹ:#! Przenieś #bold OSTATNI#! [regiment|E] do celu\n\nTo #bold trwale usunie#! źródłowe [men_at_arms|E] i scali je z celem.\n\n#weak Kliknij, aby potwierdzić tę destrukcyjną akcję.#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET_WARNING:0 "#warning ⚠ POTWIERDŹ:#! Przenieś #bold OSTATNI#! [regiment|E] z celu\n\nTo #bold trwale usunie#! docelowe [men_at_arms|E] i scali je ze źródłem.\n\n#weak Kliknij, aby potwierdzić tę destrukcyjną akcję.#!"
+ 
+ # Retrain Tab
+ MAA_MANAGER_RETRAIN_COMING_SOON:0 "Wkrótce"
+ MAA_MANAGER_RETRAIN_FEATURE_DESC:0 "Funkcja przeszkolenia pozwoli ci zmienić typy [regiment|E], przekonfigurować składy [men_at_arms|E] i zoptymalizować konfigurację wojskową. Ta funkcja jest planowana w przyszłej aktualizacji."
+ 
+ # Messages
+ MAA_MANAGER_NO_MOVE_TARGETS:0 "Brak dostępnych [regiments|E] do przeniesienia. Tylko [regiments|E] tego samego typu mogą się między sobą przenosić."
+ MAA_MANAGER_MOVE_TILE_TOOLTIP:0 "Użyj przycisków, aby dostosować transfery"

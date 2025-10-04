@@ -285,9 +285,7 @@ window = {
 								}
 							}
 
-							spacer = {
-								size = { 40 0 }
-							}
+							expand = {}
 
 							# Transfer Buttons - Inline with numbers
 							hbox = {
@@ -343,25 +341,13 @@ window = {
 
 								# Transfer All button
 								button_standard = {
-									#text = "MAA_MANAGER_TRANSFER_ALL"
+									text = "MAA_MANAGER_TRANSFER_ALL"
 									tooltip = "MAA_MANAGER_TRANSFER_ALL_TOOLTIP"
 									enabled = "[And(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet), GreaterThan_int32(GetPlayer.MakeScope.Var('maa_target_capacity').GetValue, '(int32)0'))]"
 									onclick = "[GetScriptedGui('maa_manager_transfer_all').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 									size = { 130 36 }
 									
 									default_format = "#high"
-
-									icon = {
-										texture = "gfx/interface/icons/army_orders/army_order_move_to_attack.dds"
-										parentanchor = left|vcenter
-										position = { 10 0 }
-										size = { 28 28 }
-									}
-									text_single = {
-										text = "MAA_MANAGER_TRANSFER_ALL"
-										parentanchor = right|vcenter
-										position = { -10 -3 }
-									}
 								}
 							}
 

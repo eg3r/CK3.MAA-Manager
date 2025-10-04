@@ -1,0 +1,59 @@
+﻿l_french:
+ # Window Title
+ MEN_AT_ARMS_MANAGER_WINDOW_TITLE:0 "Gestionnaire de [men_at_arms|E]"
+ 
+ # Button Tooltips
+ MAA_MANAGER_BUTTON_TOOLTIP:0 "Ouvrir le gestionnaire de [men_at_arms|E]"
+ MAA_MANAGER_BUTTON_DISABLED_TOOLTIP:0 "#X Impossible d'ouvrir le gestionnaire de [men_at_arms|E]#!\n\n[SelectLocalization(GetPlayer.IsAtWar, 'MAA_MANAGER_DISABLED_AT_WAR', 'MAA_MANAGER_DISABLED_RAISED')]"
+ MAA_MANAGER_DISABLED_AT_WAR:0 "#R Impossible de gérer les régiments pendant la guerre#!\nVous devez être en paix pour réorganiser vos [men_at_arms|E]."
+ MAA_MANAGER_DISABLED_RAISED:0 "#R Impossible de gérer les régiments levés#!\nVous devez abaisser tous les [men_at_arms|E] avant de les réorganiser."
+ 
+ # Main Regiment Selection
+ MAA_MANAGER_SELECT_REGIMENT:0 "Sélectionner le [regiment|E] à gérer"
+ 
+ # Tab Navigation
+ MAA_MANAGER_TAB_TROOPS:0 "Transférer les [soldiers|E]"
+ MAA_MANAGER_TAB_REGIMENTS:0 "Transférer les [regiments|E]"
+ MAA_MANAGER_TAB_RETRAIN:0 "Réentraîner les [men_at_arms|E]"
+ 
+ # Tab Instructions
+ MAA_MANAGER_TROOPS_INSTRUCTIONS:0 "#Bold Sélectionnez d'abord la cible [men_at_arms|E] ci-dessous#!. \nPlanifiez les transferts de [soldier|E], puis confirmez pour exécuter."
+ MAA_MANAGER_REGIMENTS_INSTRUCTIONS:0 "#Bold Sélectionnez d'abord la cible [men_at_arms|E] ci-dessous#!.\nTransférez les [regiments|E] immédiatement. Chaque clic exécute le transfert sans confirmation."
+ MAA_MANAGER_RETRAIN_INSTRUCTIONS:0 "Changez les types de [regiment|E] ou reconfigurez vos [men_at_arms|E]."
+ 
+ # Troop Transfer Section
+ MAA_MANAGER_TRANSFER_TROOPS_TITLE:0 "Transférer les [soldiers|E]"
+ MAA_MANAGER_AVAILABLE_TO_TRANSFER:0 "Disponible pour le transfert :"
+ MAA_MANAGER_CURRENT_TRANSFER:0 "Transfert actuel :"
+ MAA_MANAGER_AVAILABLE_TOOLTIP:0 "Soldats disponibles dans le [regiment|E] source"
+ MAA_MANAGER_CURRENT_TOOLTIP:0 "Montant du transfert actuel / Capacité maximale dans le [regiment|E] cible"
+ MAA_MANAGER_TRANSFER_ALL:0 "@soldier_icon! Tout transférer"
+ MAA_MANAGER_DECREASE_TRANSFER_TOOLTIP:0 "Diminuer le transfert de [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] soldats"
+ MAA_MANAGER_INCREASE_TRANSFER_TOOLTIP:0 "Augmenter le transfert de [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] soldats"
+ MAA_MANAGER_TRANSFER_ALL_TOOLTIP:0 "Transférer tous les soldats disponibles"
+ MAA_MANAGER_RESET_TOOLTIP:0 "Réinitialiser tous les transferts planifiés"
+ MAA_MANAGER_CONFIRM_TOOLTIP:0 "Confirmer et exécuter tous les transferts planifiés"
+ 
+ # Regiment Transfer Section
+ MAA_MANAGER_TRANSFER_REGIMENTS_TITLE:0 "Transférer les [regiments|E]"
+ MAA_MANAGER_SOURCE_REGIMENTS:0 "[regiments|E] source :"
+ MAA_MANAGER_TARGET_REGIMENTS:0 "[regiments|E] cible :"
+ MAA_MANAGER_REGIMENTS_TOOLTIP:0 "Nombre de [regiments|E] disponibles dans la source"
+ MAA_MANAGER_TARGET_REGIMENTS_TOOLTIP:0 "Nombre de [regiments|E] actuellement dans la cible"
+ MAA_MANAGER_REGIMENTS_IMMEDIATE_NOTE:0 "#weak Les transferts s'exécutent immédiatement#!"
+ MAA_MANAGER_TRANSFER_FROM_TARGET_TOOLTIP:0 "Transférer 1 [regiment|E] DE la cible vers la source (immédiat)"
+ MAA_MANAGER_TRANSFER_TO_TARGET_TOOLTIP:0 "Transférer 1 [regiment|E] DE la source vers la cible (immédiat)"
+ MAA_MANAGER_TRANSFER_DISABLED_LAST_STACK:0 "#weak Impossible de transférer directement le dernier [regiment|E].#!\n\nUtilisez le bouton #bold 'Déplacer le dernier'#! ci-dessous pour confirmer cette action destructive."
+ MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL:0 "#weak Impossible de transférer - le [regiment|E] cible est à capacité maximale.#!\n\nLa cible a atteint son nombre maximum de [regiments|E] et ne peut plus en accepter."
+ MAA_MANAGER_MOVE_LAST_TO_TARGET:0 "#warning Déplacer le dernier →#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET:0 "#warning ← Déplacer le dernier#!"
+ MAA_MANAGER_MOVE_LAST_TO_TARGET_WARNING:0 "#warning ⚠ CONFIRMER :#! Transférer le #bold DERNIER#! [regiment|E] vers la cible\n\nCela va #bold supprimer définitivement#! les [men_at_arms|E] source et les fusionner avec la cible.\n\n#weak Cliquez pour confirmer cette action destructive.#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET_WARNING:0 "#warning ⚠ CONFIRMER :#! Transférer le #bold DERNIER#! [regiment|E] depuis la cible\n\nCela va #bold supprimer définitivement#! les [men_at_arms|E] cible et les fusionner avec la source.\n\n#weak Cliquez pour confirmer cette action destructive.#!"
+ 
+ # Retrain Tab
+ MAA_MANAGER_RETRAIN_COMING_SOON:0 "Bientôt disponible"
+ MAA_MANAGER_RETRAIN_FEATURE_DESC:0 "La fonctionnalité de réentraînement vous permettra de changer les types de [regiment|E], de reconfigurer les compositions de [men_at_arms|E] et d'optimiser votre configuration militaire. Cette fonctionnalité est prévue pour une mise à jour future."
+ 
+ # Messages
+ MAA_MANAGER_NO_MOVE_TARGETS:0 "Aucun [regiments|E] disponible pour le transfert. Seuls les [regiments|E] du même type peuvent se transférer entre eux."
+ MAA_MANAGER_MOVE_TILE_TOOLTIP:0 "Utilisez les boutons pour ajuster les transferts"

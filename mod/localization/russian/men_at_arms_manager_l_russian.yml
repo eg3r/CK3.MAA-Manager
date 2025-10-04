@@ -1,0 +1,59 @@
+﻿l_russian:
+ # Window Title
+ MEN_AT_ARMS_MANAGER_WINDOW_TITLE:0 "Менеджер [men_at_arms|E]"
+ 
+ # Button Tooltips
+ MAA_MANAGER_BUTTON_TOOLTIP:0 "Открыть менеджер [men_at_arms|E]"
+ MAA_MANAGER_BUTTON_DISABLED_TOOLTIP:0 "#X Невозможно открыть менеджер [men_at_arms|E]#!\n\n[SelectLocalization(GetPlayer.IsAtWar, 'MAA_MANAGER_DISABLED_AT_WAR', 'MAA_MANAGER_DISABLED_RAISED')]"
+ MAA_MANAGER_DISABLED_AT_WAR:0 "#R Невозможно управлять полками во время войны#!\nВы должны быть в мире, чтобы реорганизовать свои [men_at_arms|E]."
+ MAA_MANAGER_DISABLED_RAISED:0 "#R Невозможно управлять поднятыми полками#!\nВы должны распустить все [men_at_arms|E] перед их реорганизацией."
+ 
+ # Main Regiment Selection
+ MAA_MANAGER_SELECT_REGIMENT:0 "Выберите [regiment|E] для управления"
+ 
+ # Tab Navigation
+ MAA_MANAGER_TAB_TROOPS:0 "Перевести [soldiers|E]"
+ MAA_MANAGER_TAB_REGIMENTS:0 "Перевести [regiments|E]"
+ MAA_MANAGER_TAB_RETRAIN:0 "Переобучить [men_at_arms|E]"
+ 
+ # Tab Instructions
+ MAA_MANAGER_TROOPS_INSTRUCTIONS:0 "#Bold Сначала выберите целевые [men_at_arms|E] ниже#!. \nСпланируйте переводы [soldier|E], затем подтвердите для выполнения."
+ MAA_MANAGER_REGIMENTS_INSTRUCTIONS:0 "#Bold Сначала выберите целевые [men_at_arms|E] ниже#!.\nПереведите [regiments|E] немедленно. Каждый клик выполняет перевод без подтверждения."
+ MAA_MANAGER_RETRAIN_INSTRUCTIONS:0 "Измените типы [regiment|E] или переконфигурируйте свои [men_at_arms|E]."
+ 
+ # Troop Transfer Section
+ MAA_MANAGER_TRANSFER_TROOPS_TITLE:0 "Перевести [soldiers|E]"
+ MAA_MANAGER_AVAILABLE_TO_TRANSFER:0 "Доступно для перевода:"
+ MAA_MANAGER_CURRENT_TRANSFER:0 "Текущий перевод:"
+ MAA_MANAGER_AVAILABLE_TOOLTIP:0 "Доступные солдаты в исходном [regiment|E]"
+ MAA_MANAGER_CURRENT_TOOLTIP:0 "Текущее количество перевода / Максимальная вместимость в целевом [regiment|E]"
+ MAA_MANAGER_TRANSFER_ALL:0 "@soldier_icon! Перевести всё"
+ MAA_MANAGER_DECREASE_TRANSFER_TOOLTIP:0 "Уменьшить перевод на [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] солдат"
+ MAA_MANAGER_INCREASE_TRANSFER_TOOLTIP:0 "Увеличить перевод на [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] солдат"
+ MAA_MANAGER_TRANSFER_ALL_TOOLTIP:0 "Перевести всех доступных солдат"
+ MAA_MANAGER_RESET_TOOLTIP:0 "Сбросить все запланированные переводы"
+ MAA_MANAGER_CONFIRM_TOOLTIP:0 "Подтвердить и выполнить все запланированные переводы"
+ 
+ # Regiment Transfer Section
+ MAA_MANAGER_TRANSFER_REGIMENTS_TITLE:0 "Перевести [regiments|E]"
+ MAA_MANAGER_SOURCE_REGIMENTS:0 "Исходные [regiments|E]:"
+ MAA_MANAGER_TARGET_REGIMENTS:0 "Целевые [regiments|E]:"
+ MAA_MANAGER_REGIMENTS_TOOLTIP:0 "Количество доступных [regiments|E] в источнике"
+ MAA_MANAGER_TARGET_REGIMENTS_TOOLTIP:0 "Количество [regiments|E] в настоящее время в цели"
+ MAA_MANAGER_REGIMENTS_IMMEDIATE_NOTE:0 "#weak Переводы выполняются немедленно#!"
+ MAA_MANAGER_TRANSFER_FROM_TARGET_TOOLTIP:0 "Перевести 1 [regiment|E] ИЗ цели обратно В источник (немедленно)"
+ MAA_MANAGER_TRANSFER_TO_TARGET_TOOLTIP:0 "Перевести 1 [regiment|E] ИЗ источника В цель (немедленно)"
+ MAA_MANAGER_TRANSFER_DISABLED_LAST_STACK:0 "#weak Невозможно напрямую перевести последний [regiment|E].#!\n\nИспользуйте кнопку #bold 'Переместить последний'#! ниже, чтобы подтвердить это разрушительное действие."
+ MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL:0 "#weak Невозможно перевести - целевой [regiment|E] заполнен до максимума.#!\n\nЦель достигла максимального количества [regiments|E] и не может принять больше."
+ MAA_MANAGER_MOVE_LAST_TO_TARGET:0 "#warning Переместить последний →#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET:0 "#warning ← Переместить последний#!"
+ MAA_MANAGER_MOVE_LAST_TO_TARGET_WARNING:0 "#warning ⚠ ПОДТВЕРДИТЬ:#! Перевести #bold ПОСЛЕДНИЙ#! [regiment|E] в цель\n\nЭто #bold навсегда удалит#! исходные [men_at_arms|E] и объединит их с целью.\n\n#weak Нажмите, чтобы подтвердить это разрушительное действие.#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET_WARNING:0 "#warning ⚠ ПОДТВЕРДИТЬ:#! Перевести #bold ПОСЛЕДНИЙ#! [regiment|E] из цели\n\nЭто #bold навсегда удалит#! целевые [men_at_arms|E] и объединит их с источником.\n\n#weak Нажмите, чтобы подтвердить это разрушительное действие.#!"
+ 
+ # Retrain Tab
+ MAA_MANAGER_RETRAIN_COMING_SOON:0 "Скоро"
+ MAA_MANAGER_RETRAIN_FEATURE_DESC:0 "Функция переобучения позволит вам изменять типы [regiment|E], переконфигурировать составы [men_at_arms|E] и оптимизировать военную конфигурацию. Эта функция запланирована на будущее обновление."
+ 
+ # Messages
+ MAA_MANAGER_NO_MOVE_TARGETS:0 "Нет доступных [regiments|E] для перевода. Только [regiments|E] одного типа могут переводиться между собой."
+ MAA_MANAGER_MOVE_TILE_TOOLTIP:0 "Используйте кнопки для настройки переводов"

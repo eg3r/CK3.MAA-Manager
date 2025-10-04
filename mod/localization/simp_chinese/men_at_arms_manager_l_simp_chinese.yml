@@ -1,0 +1,59 @@
+﻿l_simp_chinese:
+ # Window Title
+ MEN_AT_ARMS_MANAGER_WINDOW_TITLE:0 "[men_at_arms|E]管理器"
+ 
+ # Button Tooltips
+ MAA_MANAGER_BUTTON_TOOLTIP:0 "打开[men_at_arms|E]管理器"
+ MAA_MANAGER_BUTTON_DISABLED_TOOLTIP:0 "#X 无法打开[men_at_arms|E]管理器#!\n\n[SelectLocalization(GetPlayer.IsAtWar, 'MAA_MANAGER_DISABLED_AT_WAR', 'MAA_MANAGER_DISABLED_RAISED')]"
+ MAA_MANAGER_DISABLED_AT_WAR:0 "#R 战争期间无法管理军团#!\n你必须处于和平状态才能重组你的[men_at_arms|E]。"
+ MAA_MANAGER_DISABLED_RAISED:0 "#R 无法管理已征召的军团#!\n你必须解散所有[men_at_arms|E]才能重组它们。"
+ 
+ # Main Regiment Selection
+ MAA_MANAGER_SELECT_REGIMENT:0 "选择要管理的[regiment|E]"
+ 
+ # Tab Navigation
+ MAA_MANAGER_TAB_TROOPS:0 "转移[soldiers|E]"
+ MAA_MANAGER_TAB_REGIMENTS:0 "转移[regiments|E]"
+ MAA_MANAGER_TAB_RETRAIN:0 "重训[men_at_arms|E]"
+ 
+ # Tab Instructions
+ MAA_MANAGER_TROOPS_INSTRUCTIONS:0 "#Bold 首先选择下方的目标[men_at_arms|E]#!。\n规划[soldier|E]转移，然后确认执行。"
+ MAA_MANAGER_REGIMENTS_INSTRUCTIONS:0 "#Bold 首先选择下方的目标[men_at_arms|E]#!。\n立即转移[regiments|E]。每次点击会立即执行转移而无需确认。"
+ MAA_MANAGER_RETRAIN_INSTRUCTIONS:0 "更改[regiment|E]类型或重新配置你的[men_at_arms|E]。"
+ 
+ # Troop Transfer Section
+ MAA_MANAGER_TRANSFER_TROOPS_TITLE:0 "转移[soldiers|E]"
+ MAA_MANAGER_AVAILABLE_TO_TRANSFER:0 "可转移："
+ MAA_MANAGER_CURRENT_TRANSFER:0 "当前转移："
+ MAA_MANAGER_AVAILABLE_TOOLTIP:0 "源[regiment|E]中的可用士兵"
+ MAA_MANAGER_CURRENT_TOOLTIP:0 "当前转移数量 / 目标[regiment|E]的最大容量"
+ MAA_MANAGER_TRANSFER_ALL:0 "@soldier_icon! 全部转移"
+ MAA_MANAGER_DECREASE_TRANSFER_TOOLTIP:0 "减少[GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100]名士兵的转移"
+ MAA_MANAGER_INCREASE_TRANSFER_TOOLTIP:0 "增加[GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100]名士兵的转移"
+ MAA_MANAGER_TRANSFER_ALL_TOOLTIP:0 "转移所有可用士兵"
+ MAA_MANAGER_RESET_TOOLTIP:0 "重置所有计划的转移"
+ MAA_MANAGER_CONFIRM_TOOLTIP:0 "确认并执行所有计划的转移"
+ 
+ # Regiment Transfer Section
+ MAA_MANAGER_TRANSFER_REGIMENTS_TITLE:0 "转移[regiments|E]"
+ MAA_MANAGER_SOURCE_REGIMENTS:0 "源[regiments|E]："
+ MAA_MANAGER_TARGET_REGIMENTS:0 "目标[regiments|E]："
+ MAA_MANAGER_REGIMENTS_TOOLTIP:0 "源中可用的[regiments|E]数量"
+ MAA_MANAGER_TARGET_REGIMENTS_TOOLTIP:0 "目标中当前的[regiments|E]数量"
+ MAA_MANAGER_REGIMENTS_IMMEDIATE_NOTE:0 "#weak 转移立即执行#!"
+ MAA_MANAGER_TRANSFER_FROM_TARGET_TOOLTIP:0 "从目标转移1个[regiment|E]回到源（立即）"
+ MAA_MANAGER_TRANSFER_TO_TARGET_TOOLTIP:0 "从源转移1个[regiment|E]到目标（立即）"
+ MAA_MANAGER_TRANSFER_DISABLED_LAST_STACK:0 "#weak 无法直接转移最后一个[regiment|E]。#!\n\n使用下方的#bold '移动最后一个'#!按钮确认此破坏性操作。"
+ MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL:0 "#weak 无法转移 - 目标[regiment|E]已达最大容量。#!\n\n目标已达到最大[regiments|E]数量，无法接受更多。"
+ MAA_MANAGER_MOVE_LAST_TO_TARGET:0 "#warning 移动最后一个 →#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET:0 "#warning ← 移动最后一个#!"
+ MAA_MANAGER_MOVE_LAST_TO_TARGET_WARNING:0 "#warning ⚠ 确认：#! 转移#bold 最后一个#! [regiment|E]到目标\n\n这将#bold 永久移除#!源[men_at_arms|E]并将其合并到目标中。\n\n#weak 点击确认此破坏性操作。#!"
+ MAA_MANAGER_MOVE_LAST_FROM_TARGET_WARNING:0 "#warning ⚠ 确认：#! 从目标转移#bold 最后一个#! [regiment|E]\n\n这将#bold 永久移除#!目标[men_at_arms|E]并将其合并到源中。\n\n#weak 点击确认此破坏性操作。#!"
+ 
+ # Retrain Tab
+ MAA_MANAGER_RETRAIN_COMING_SOON:0 "即将推出"
+ MAA_MANAGER_RETRAIN_FEATURE_DESC:0 "重训功能将允许你更改[regiment|E]类型，重新配置[men_at_arms|E]组成，并优化你的军事设置。此功能计划在未来的更新中推出。"
+ 
+ # Messages
+ MAA_MANAGER_NO_MOVE_TARGETS:0 "没有可转移的[regiments|E]。只有相同类型的[regiments|E]可以相互转移。"
+ MAA_MANAGER_MOVE_TILE_TOOLTIP:0 "使用按钮调整转移"

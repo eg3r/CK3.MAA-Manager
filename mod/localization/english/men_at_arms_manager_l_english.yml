@@ -27,7 +27,7 @@
  MAA_MANAGER_CURRENT_TRANSFER:0 "Current Transfer:"
  MAA_MANAGER_AVAILABLE_TOOLTIP:0 "Available soldiers in source [regiment|E]"
  MAA_MANAGER_CURRENT_TOOLTIP:0 "Current transfer amount / Maximum capacity in target [regiment|E]"
- MAA_MANAGER_TRANSFER_ALL:0 "Transfer All"
+ MAA_MANAGER_TRANSFER_ALL:0 "@soldier_icon! Transfer All"
  MAA_MANAGER_DECREASE_TRANSFER_TOOLTIP:0 "Decrease transfer by [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] soldiers"
  MAA_MANAGER_INCREASE_TRANSFER_TOOLTIP:0 "Increase transfer by [GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100] soldiers"
  MAA_MANAGER_TRANSFER_ALL_TOOLTIP:0 "Transfer all available soldiers"
