@@ -1,0 +1,43 @@
+[h1]Men-At-Arms Manager[/h1]
+
+[b]Efficiently manage and reorganize your Men-At-Arms with an intuitive interface.[/b]
+
+[h2]Overview[/h2]
+The Men-At-Arms Manager adds a powerful new interface to your military screen, allowing you to redistribute soldiers and regiments between your Men-At-Arms without the tedious process of disbanding and recreating units.
+
+[h2]Key Features[/h2]
+[list]
+[*] [b]Transfer Soldiers[/b] - Move individual soldiers between regiments of the same type
+[*] [b]Transfer Regiments[/b] - Instantly move entire regiment stacks between armies
+[*] [b]Seamless Integration[/b] - Adds a single button to your existing military interface (F3)
+[*] [b]Multi-Language Support[/b] - Full localization in English, French, German, Spanish, Polish, Russian, Chinese, and Korean
+[*] [b]Upcoming-Feature[/b] - Retrain your Men-At-Arms to different unit types (coming soon)
+[/list]
+
+[h2]How It Works[/h2]
+[olist]
+[*] Open your Military screen (F3)
+[*] Click the [b]"Men-At-Arms Manager"[/b] button
+[*] Select source and target regiments
+[*] Transfer soldiers or entire regiments between them
+[*] Confirm your changes or adjust as needed
+[/olist]
+
+[h2]Requirements[/h2]
+[list]
+[*] Men-At-Arms must be lowered (not raised/deployed)
+[*] Cannot be used during wartime
+[/list]
+
+[h2]Compatibility[/h2]
+This mod only adds new features and does not modify existing game files. It should be compatible with most other mods unless they heavily modify the military interface.
+
+[h2]Planned Features[/h2]
+[list]
+[*] Retrain regiments to different unit types
+[/list]
+
+[h2]Support[/h2]
+Found a bug or have a suggestion? Please report it in the discussions section!
+
+[i]Manage your armies like a true strategist.[/i]
