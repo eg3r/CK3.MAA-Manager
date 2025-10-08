@@ -1,11 +1,18 @@
 ######################################################
 # Men-At-Arms Manager - Filtered MAA Types List
 # 
-# This file contains all 50 static MAA type button instances
-# with individual visibility filtering based on recruitment eligibility.
+# This file contains static MAA type button instances for BASE GAME types only.
+# DLC-specific MAA types are COMMENTED OUT to prevent database errors.
 # 
 # Each button uses the reusable type from 00_men_at_arms_manager_types.gui
 # and overrides the MAA key, scripted GUI check, and onclick actions.
+#
+# DLC TYPES (COMMENTED OUT):
+# - siphonarius, zhande_pidagan, ghazi (Legacy of Persia DLC)
+# - konni, mangudai_legacy (Horse Lords DLC)  
+# - accolade_maa_* types (Wards & Wardens DLC)
+#
+# To enable DLC types: Uncomment the relevant sections if you have the DLC.
 ######################################################
 
 types MAAFilteredTypesList
@@ -309,19 +316,19 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Siphonarius
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('siphonarius')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_siphonarius').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'siphonarius')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Siphonarius - COMMENTED OUT: Requires Legacy of Persia DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('siphonarius')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_siphonarius').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'siphonarius')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
 		# Sarawit
 		button_maa_type_filtered = {
@@ -379,19 +386,19 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Zhande Pidagan
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('zhande_pidagan')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_zhande_pidagan').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'zhande_pidagan')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Zhande Pidagan - COMMENTED OUT: Requires Legacy of Persia DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('zhande_pidagan')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_zhande_pidagan').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'zhande_pidagan')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
 		# Mubarizun
 		button_maa_type_filtered = {
@@ -407,19 +414,19 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Ghazi
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('ghazi')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_ghazi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'ghazi')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Ghazi - COMMENTED OUT: Requires Legacy of Persia DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('ghazi')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_ghazi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'ghazi')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
 		# Heavy Horse Archers
 		button_maa_type_filtered = {
@@ -519,19 +526,19 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Konni
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('konni')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_konni').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'konni')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Konni - COMMENTED OUT: Requires Horse Lords DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('konni')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_konni').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'konni')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
 		# Tarkhan
 		button_maa_type_filtered = {
@@ -547,172 +554,172 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Mangudai Legacy
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('mangudai_legacy')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_mangudai_legacy').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'mangudai_legacy')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Mangudai Legacy - COMMENTED OUT: Requires Horse Lords DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('mangudai_legacy')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_mangudai_legacy').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'mangudai_legacy')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Archers
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_archers')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_archers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Archers - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_archers')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_archers')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Crossbowers
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_crossbowers')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_crossbowers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_crossbowers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Crossbowers - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_crossbowers')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_crossbowers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_crossbowers')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Elephantiers
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_elephantiers')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_elephantiers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_elephantiers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Elephantiers - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_elephantiers')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_elephantiers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_elephantiers')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Cameliers
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_cameliers')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_cameliers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_cameliers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Cameliers - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_cameliers')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_cameliers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_cameliers')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Horse Archers
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_horse_archers')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_horse_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_horse_archers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Horse Archers - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_horse_archers')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_horse_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_horse_archers')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Camel Cavalry
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_camel_cavalry')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_camel_cavalry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_camel_cavalry')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Camel Cavalry - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_camel_cavalry')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_camel_cavalry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_camel_cavalry')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Heavy Cavalry
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_heavy_cavalry')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_heavy_cavalry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_heavy_cavalry')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Heavy Cavalry - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_heavy_cavalry')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_heavy_cavalry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_heavy_cavalry')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Heavy Infantry
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_heavy_infantry')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_heavy_infantry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_heavy_infantry')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Heavy Infantry - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_heavy_infantry')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_heavy_infantry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_heavy_infantry')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Light Cavalry
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_light_cavalry')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_light_cavalry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_light_cavalry')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Light Cavalry - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_light_cavalry')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_light_cavalry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_light_cavalry')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Pikemen
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_pikemen')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_pikemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_pikemen')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Pikemen - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_pikemen')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_pikemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_pikemen')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Accolade - Skirmishers
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('accolade_maa_skirmishers')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_skirmishers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_skirmishers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Accolade - Skirmishers - COMMENTED OUT: Requires Wards & Wardens DLC
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('accolade_maa_skirmishers')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_accolade_maa_skirmishers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_skirmishers')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 	}
 }

@@ -10,190 +10,190 @@
 # BASE TYPES
 maa_manager_can_show_light_footmen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_light_footmen = yes }
+	is_shown = { maa_manager_can_recruit_light_footmen = yes }
 }
 
 maa_manager_can_show_bowmen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_bowmen = yes }
+	is_shown = { maa_manager_can_recruit_bowmen = yes }
 }
 
 maa_manager_can_show_light_horsemen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_light_horsemen = yes }
+	is_shown = { maa_manager_can_recruit_light_horsemen = yes }
 }
 
 maa_manager_can_show_pikemen_unit = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_pikemen_unit = yes }
+	is_shown = { maa_manager_can_recruit_pikemen_unit = yes }
 }
 
 maa_manager_can_show_armored_footmen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_armored_footmen = yes }
+	is_shown = { maa_manager_can_recruit_armored_footmen = yes }
 }
 
 maa_manager_can_show_armored_horsemen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_armored_horsemen = yes }
+	is_shown = { maa_manager_can_recruit_armored_horsemen = yes }
 }
 
 maa_manager_can_show_crossbowmen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_crossbowmen = yes }
+	is_shown = { maa_manager_can_recruit_crossbowmen = yes }
 }
 
 maa_manager_can_show_onager = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_onager = yes }
+	is_shown = { maa_manager_can_recruit_onager = yes }
 }
 
 maa_manager_can_show_mangonel = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_mangonel = yes }
+	is_shown = { maa_manager_can_recruit_mangonel = yes }
 }
 
 maa_manager_can_show_trebuchet = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_trebuchet = yes }
+	is_shown = { maa_manager_can_recruit_trebuchet = yes }
 }
 
 maa_manager_can_show_bombard = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_bombard = yes }
+	is_shown = { maa_manager_can_recruit_bombard = yes }
 }
 
 # NOMADIC TYPES
 maa_manager_can_show_nomadic_riders = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_nomadic_riders = yes }
+	is_shown = { maa_manager_can_recruit_nomadic_riders = yes }
 }
 
 maa_manager_can_show_horse_archers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_horse_archers = yes }
+	is_shown = { maa_manager_can_recruit_horse_archers = yes }
 }
 
 maa_manager_can_show_kheshig = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_kheshig = yes }
+	is_shown = { maa_manager_can_recruit_kheshig = yes }
 }
 
 maa_manager_can_show_steppe_raiders = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_steppe_raiders = yes }
+	is_shown = { maa_manager_can_recruit_steppe_raiders = yes }
 }
 
 maa_manager_can_show_heavy_horse_archers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_heavy_horse_archers = yes }
+	is_shown = { maa_manager_can_recruit_heavy_horse_archers = yes }
 }
 
 maa_manager_can_show_nomad_lancers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_nomad_lancers = yes }
+	is_shown = { maa_manager_can_recruit_nomad_lancers = yes }
 }
 
 maa_manager_can_show_mangudai = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_mangudai = yes }
+	is_shown = { maa_manager_can_recruit_mangudai = yes }
 }
 
 maa_manager_can_show_cataphract_archers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_cataphract_archers = yes }
+	is_shown = { maa_manager_can_recruit_cataphract_archers = yes }
 }
 
 maa_manager_can_show_maturkan_warriors = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_maturkan_warriors = yes }
+	is_shown = { maa_manager_can_recruit_maturkan_warriors = yes }
 }
 
 # CULTURAL TYPES
 maa_manager_can_show_huscarl = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_huscarl = yes }
+	is_shown = { maa_manager_can_recruit_huscarl = yes }
 }
 
 maa_manager_can_show_longbowmen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_longbowmen = yes }
+	is_shown = { maa_manager_can_recruit_longbowmen = yes }
 }
 
 maa_manager_can_show_cataphract = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_cataphract = yes }
+	is_shown = { maa_manager_can_recruit_cataphract = yes }
 }
 
 maa_manager_can_show_monaspa = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_monaspa = yes }
+	is_shown = { maa_manager_can_recruit_monaspa = yes }
 }
 
 maa_manager_can_show_metsanvartija = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_metsanvartija = yes }
+	is_shown = { maa_manager_can_recruit_metsanvartija = yes }
 }
 
 maa_manager_can_show_gendarme = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_gendarme = yes }
+	is_shown = { maa_manager_can_recruit_gendarme = yes }
 }
 
 maa_manager_can_show_hobelar = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_hobelar = yes }
+	is_shown = { maa_manager_can_recruit_hobelar = yes }
 }
 
 maa_manager_can_show_ghazi = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_ghazi = yes }
+	is_shown = { maa_manager_can_recruit_ghazi = yes }
 }
 
 maa_manager_can_show_ayyar = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_ayyar = yes }
+	is_shown = { maa_manager_can_recruit_ayyar = yes }
 }
 
 maa_manager_can_show_druzhina = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_druzhina = yes }
+	is_shown = { maa_manager_can_recruit_druzhina = yes }
 }
 
 maa_manager_can_show_mubarizun = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_mubarizun = yes }
+	is_shown = { maa_manager_can_recruit_mubarizun = yes }
 }
 
 maa_manager_can_show_sarawit = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_sarawit = yes }
+	is_shown = { maa_manager_can_recruit_sarawit = yes }
 }
 
 maa_manager_can_show_zhande_pidagan = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_zhande_pidagan = yes }
+	is_shown = { maa_manager_can_recruit_zhande_pidagan = yes }
 }
 
 maa_manager_can_show_konni = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_konni = yes }
+	is_shown = { maa_manager_can_recruit_konni = yes }
 }
 
 maa_manager_can_show_siphonarius = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_siphonarius = yes }
+	is_shown = { maa_manager_can_recruit_siphonarius = yes }
 }
 
 # REGIONAL TYPES
 maa_manager_can_show_war_elephant = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_war_elephant = yes }
+	is_shown = { maa_manager_can_recruit_war_elephant = yes }
 }
 
 maa_manager_can_show_camel_rider = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_camel_rider = yes }
+	is_shown = { maa_manager_can_recruit_camel_rider = yes }
 }
 
 ######################################################
@@ -202,12 +202,12 @@ maa_manager_can_show_camel_rider = {
 
 maa_manager_can_show_tarkhan = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_tarkhan = yes }
+	is_shown = { maa_manager_can_recruit_tarkhan = yes }
 }
 
 maa_manager_can_show_mangudai_legacy = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_mangudai_legacy = yes }
+	is_shown = { maa_manager_can_recruit_mangudai_legacy = yes }
 }
 
 ######################################################
@@ -216,57 +216,57 @@ maa_manager_can_show_mangudai_legacy = {
 
 maa_manager_can_show_accolade_maa_archers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_archers = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_archers = yes }
 }
 
 maa_manager_can_show_accolade_maa_crossbowers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_crossbowers = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_crossbowers = yes }
 }
 
 maa_manager_can_show_accolade_maa_elephantiers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_elephantiers = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_elephantiers = yes }
 }
 
 maa_manager_can_show_accolade_maa_cameliers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_cameliers = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_cameliers = yes }
 }
 
 maa_manager_can_show_accolade_maa_horse_archers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_horse_archers = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_horse_archers = yes }
 }
 
 maa_manager_can_show_accolade_maa_camel_cavalry = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_camel_cavalry = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_camel_cavalry = yes }
 }
 
 maa_manager_can_show_accolade_maa_heavy_cavalry = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_heavy_cavalry = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_heavy_cavalry = yes }
 }
 
 maa_manager_can_show_accolade_maa_heavy_infantry = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_heavy_infantry = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_heavy_infantry = yes }
 }
 
 maa_manager_can_show_accolade_maa_light_cavalry = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_light_cavalry = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_light_cavalry = yes }
 }
 
 maa_manager_can_show_accolade_maa_pikemen = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_pikemen = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_pikemen = yes }
 }
 
 maa_manager_can_show_accolade_maa_skirmishers = {
 	scope = character
-	is_valid = { maa_manager_can_recruit_accolade_maa_skirmishers = yes }
+	is_shown = { maa_manager_can_recruit_accolade_maa_skirmishers = yes }
 }
 
 ######################################################
@@ -276,5 +276,5 @@ maa_manager_can_show_accolade_maa_skirmishers = {
 # Default for unknown/modded types - show them
 maa_manager_can_show_unknown = {
 	scope = character
-	is_valid = { always = yes }
+	is_shown = { always = yes }
 }

@@ -1,12 +1,20 @@
 ﻿######################################################
 # Men-At-Arms Manager - MAA Type Recruitment Triggers
 #
-# These triggers replicate the can_recruit conditions from
+# These triggers replicate can_recruit conditions from
 # original MAA type definitions to enable filtering in GUI
 #
 # Pattern: maa_manager_can_recruit_<typename>
 # Scope: Character (player)
 # Returns: Boolean (yes/no)
+#
+# CULTURAL FILTERING:
+# - Types WITH unlock_maa_X parameters: Use valid_for_maa_trigger
+# - Types WITHOUT parameters: always = yes (no cultural restriction in base game)
+# - Innovation-based types: Checked separately (war_elephant, etc.)
+#
+# NOTE: Base game UI uses MenAtArmsTypeView.GetMenAtArmsTypes which
+# automatically filters, but we use GetAllMenAtArmsTypes for flexibility
 ######################################################
 
 ######################################################
@@ -200,8 +208,9 @@ maa_manager_can_recruit_hobelar = {
 }
 
 maa_manager_can_recruit_ghazi = {
-	# Ghazi has no can_recruit block in base game - available to all
-	always = yes
+	# DLC MAA type - not in base game
+	# Commented out in GUI to prevent database errors
+	always = no
 }
 
 maa_manager_can_recruit_ayyar = {
@@ -222,18 +231,21 @@ maa_manager_can_recruit_sarawit = {
 }
 
 maa_manager_can_recruit_zhande_pidagan = {
-	# Zhande Pidagan has no can_recruit block in base game - available to all
-	always = yes
+	# DLC MAA type - not in base game
+	# Commented out in GUI to prevent database errors
+	always = no
 }
 
 maa_manager_can_recruit_konni = {
-	# Konni (Hussar) has no can_recruit block in base game - available to all
-	always = yes
+	# DLC MAA type - not in base game
+	# Commented out in GUI to prevent database errors
+	always = no
 }
 
 maa_manager_can_recruit_siphonarius = {
-	# Siphonarius has no can_recruit block in base game - available to all
-	always = yes
+	# DLC MAA type - not in base game
+	# Commented out in GUI to prevent database errors
+	always = no
 }
 
 maa_manager_can_recruit_mangudai_legacy = {
@@ -241,6 +253,7 @@ maa_manager_can_recruit_mangudai_legacy = {
 }
 
 maa_manager_can_recruit_war_elephant = {
+	# Innovation-based: Requires elephantry innovation OR domicile parameter
 	OR = {
 		AND = {
 			culture ?= { has_innovation = innovation_elephantry }
@@ -250,9 +263,19 @@ maa_manager_can_recruit_war_elephant = {
 	}
 }
 
+######################################################
+# REGIONAL/UNRESTRICTED TYPES
+# These have no cultural parameters in base game
+# Available to all non-nomadic governments
+######################################################
+
 # Regional/No specific requirement types (always available if not nomadic)
 maa_manager_can_recruit_camel_rider = {
-	always = yes
+	# Camel Rider has no specific cultural requirement in base game
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
 }
 
 maa_manager_can_recruit_tarkhan = {
@@ -265,6 +288,17 @@ maa_manager_can_recruit_tarkhan = {
 
 # DLC/Additional cultural types - add as needed
 # Pattern: Check for cultural parameter using valid_for_maa_trigger
+
+######################################################
+# INNOVATION-BASED TYPES (TODO: Future enhancement)
+######################################################
+# Some MAA types require specific innovations:
+# - war_elephant: innovation_elephantry (IMPLEMENTED ABOVE)
+# - More innovation types may be added in future DLCs
+#
+# Pattern for innovation checking:
+#   culture ?= { has_innovation = innovation_<name> }
+######################################################
 
 ######################################################
 # SPECIAL CASES
