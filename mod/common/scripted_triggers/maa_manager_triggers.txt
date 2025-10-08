@@ -269,10 +269,6 @@ maa_manager_type_matches_selection = {
 			is_maa_type = nomad_lancers
 		}
 		AND = {
-			ROOT = { scope:maa_manager_selected_type = flag:nomadic_riders }
-			is_maa_type = nomadic_riders
-		}
-		AND = {
 			ROOT = { scope:maa_manager_selected_type = flag:onager }
 			is_maa_type = onager
 		}

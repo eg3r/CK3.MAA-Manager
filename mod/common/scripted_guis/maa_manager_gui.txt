@@ -1069,7 +1069,6 @@ maa_manager_build_recruitable_types = {
 		if = { limit = { maa_manager_can_recruit_bombard = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:bombard } }
 		
 		# Nomadic types
-		if = { limit = { maa_manager_can_recruit_nomadic_riders = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:nomadic_riders } }
 		if = { limit = { maa_manager_can_recruit_horse_archers = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:horse_archers } }
 		if = { limit = { maa_manager_can_recruit_kheshig = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:kheshig } }
 		if = { limit = { maa_manager_can_recruit_steppe_raiders = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:steppe_raiders } }

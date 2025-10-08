@@ -143,16 +143,11 @@ maa_manager_can_recruit_bombard = {
 }
 
 ######################################################
-# NOMADIC TYPES (from 00_maa_types.txt)
+# NOMADIC TYPES (from 09_mpo_maa_types.txt)
 # Condition: IS nomadic/herder government
+# NOTE: nomadic_riders is NOT included - it's like Horde (basic troops),
+#       created from Herd conversion, not recruitable MAA
 ######################################################
-
-maa_manager_can_recruit_nomadic_riders = {
-	OR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
-}
 
 maa_manager_can_recruit_horse_archers = {
 	OR = {
@@ -236,6 +231,219 @@ maa_manager_can_recruit_metsanvartija = {
 	valid_for_maa_trigger = { PARAMETER = unlock_maa_metsanvartija }
 }
 
+maa_manager_can_recruit_landsknecht = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_landsknecht }
+}
+
+maa_manager_can_recruit_goedendag = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_goedendag }
+}
+
+maa_manager_can_recruit_chasseur = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_chasseur }
+}
+
+maa_manager_can_recruit_picchieri = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_picchieri }
+}
+
+maa_manager_can_recruit_praetorian = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_praetorian }
+}
+
+maa_manager_can_recruit_caballero = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_caballero }
+}
+
+maa_manager_can_recruit_schiltron = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_schiltron }
+}
+
+maa_manager_can_recruit_mulaththamun = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mulaththamun }
+}
+
+maa_manager_can_recruit_archers_of_the_nile = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_archers_of_the_nile }
+}
+
+maa_manager_can_recruit_paiks = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_paiks }
+}
+
+maa_manager_can_recruit_hussar = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_hussar }
+}
+
+maa_manager_can_recruit_horn_warrior = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_horn_warrior }
+}
+
+maa_manager_can_recruit_bush_hunter = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_bush_hunter }
+}
+
+maa_manager_can_recruit_shomer = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_shomer }
+}
+
+maa_manager_can_recruit_garudas = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_garudas }
+}
+
+maa_manager_can_recruit_khandayat = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_khandayat }
+}
+
+maa_manager_can_recruit_mountaineer = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mountaineer }
+}
+
+maa_manager_can_recruit_sahel_horsemen = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_sahel_horsemen }
+}
+
+maa_manager_can_recruit_guinea_warrior = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_guinea_warrior }
+}
+
+maa_manager_can_recruit_abudrar = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_abudrar }
+}
+
+maa_manager_can_recruit_zbrojnosh = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_zbrojnosh }
+}
+
+maa_manager_can_recruit_palace_guards = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_palace_guards }
+}
+
+maa_manager_can_recruit_chu_ko_nu = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_chu_ko_nu }
+}
+
+maa_manager_can_recruit_guanch_vaulter = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_guanch_vaulter }
+}
+
+maa_manager_can_recruit_vigmen = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_vigmen }
+}
+
+maa_manager_can_recruit_bondi = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_bondi }
+}
+
+maa_manager_can_recruit_varangian_veterans = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_varangian_veterans }
+}
+
+maa_manager_can_recruit_jomsviking_pirates = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_jomsviking_pirates }
+}
+
+maa_manager_can_recruit_torch_bearers = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_torch_bearers }
+}
+
+maa_manager_can_recruit_zupin_warrior = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_zupin_warrior }
+}
+
+maa_manager_can_recruit_tawashi = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_tawashi }
+}
+
+######################################################
+# DYNASTY LEGACY TYPES
+######################################################
+
+maa_manager_can_recruit_house_guard = {
+	# House Guard - requires dynasty legacy
+	has_dynasty = yes
+	dynasty = {
+		has_dynasty_perk = fp2_coterie_legacy_1
+	}
+}
+
+maa_manager_can_recruit_asawira = {
+	# Asawira - requires Iranian dynasty legacy (Khvarenah 4)
+	has_dynasty = yes
+	dynasty = {
+		has_dynasty_perk = fp3_saoshyant_legacy_4
+	}
+}
+
+######################################################
+# BYZANTINE/EP3 TYPES
+######################################################
+
+maa_manager_can_recruit_ayrudzi = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_ayrudzi }
+}
+
+maa_manager_can_recruit_conrois = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_conrois }
+}
+
+maa_manager_can_recruit_akritai = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_akritai }
+}
+
+maa_manager_can_recruit_ballistrai = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_ballistrai }
+}
+
+maa_manager_can_recruit_skoutatoi = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_skoutatoi }
+}
+
+maa_manager_can_recruit_varangian_guards = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_varangian_guards }
+}
+
+######################################################
+# OUTCAST/ADVENTURER TYPES
+######################################################
+
+maa_manager_can_recruit_handpicked_faithful = {
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_handpicked_faithful }
+}
+
+maa_manager_can_recruit_maa_bandits = {
+	# Adventurer-only MAA, obtained via decisions
+	# Not manually recruitable from the MAA interface
+	always = no
+}
+
+maa_manager_can_recruit_maa_poachers = {
+	# Adventurer-only MAA, obtained via decisions
+	# Not manually recruitable from the MAA interface
+	always = no
+}
+
+maa_manager_can_recruit_maa_marauders = {
+	# Adventurer-only MAA, obtained via decisions
+	# Not manually recruitable from the MAA interface
+	always = no
+}
+
+maa_manager_can_recruit_maa_thieves = {
+	# Adventurer-only MAA, obtained via decisions
+	# Not manually recruitable from the MAA interface
+	always = no
+}
+
+######################################################
+# HOLY ORDER TYPES
+######################################################
+
+maa_manager_can_recruit_teutonic_knights = {
+	# Holy order MAA - can't be manually recruited by players
+	always = no
+}
+
 ######################################################
 # UNVERIFIED CULTURAL TYPES - DISABLED PENDING RESEARCH
 # These types need proper cultural parameter research
@@ -253,11 +461,6 @@ maa_manager_can_recruit_hobelar = {
 	always = no
 }
 
-maa_manager_can_recruit_ghazi = {
-	# DLC MAA type - not in base game
-	# Commented out in GUI to prevent database errors
-	always = no
-}
 
 maa_manager_can_recruit_ayyar = {
 	valid_for_maa_trigger = { PARAMETER = unlock_maa_ayyar }
@@ -277,27 +480,6 @@ maa_manager_can_recruit_sarawit = {
 	always = no
 }
 
-maa_manager_can_recruit_zhande_pidagan = {
-	# DLC MAA type - not in base game
-	# Commented out in GUI to prevent database errors
-	always = no
-}
-
-maa_manager_can_recruit_konni = {
-	# DLC MAA type - not in base game
-	# Commented out in GUI to prevent database errors
-	always = no
-}
-
-maa_manager_can_recruit_siphonarius = {
-	# DLC MAA type - not in base game
-	# Commented out in GUI to prevent database errors
-	always = no
-}
-
-maa_manager_can_recruit_mangudai_legacy = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_mangudai }
-}
 
 maa_manager_can_recruit_war_elephant = {
 	# Innovation-based: Requires elephantry innovation OR domicile parameter
@@ -347,9 +529,29 @@ maa_manager_can_recruit_tarkhan = {
 # SPECIAL CASES
 ######################################################
 
-# Accolade MAA types - require specific accolade type
+# Accolade MAA types - require specific accolade rank 3+
 # These can't be manually recruited, only granted via accolades
 maa_manager_can_recruit_accolade_maa_archers = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_skirmishers = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_pikes = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_outriders = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_vanguards = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_lancers = {
 	always = no
 }
 
@@ -357,39 +559,15 @@ maa_manager_can_recruit_accolade_maa_crossbowers = {
 	always = no
 }
 
-maa_manager_can_recruit_accolade_maa_elephantiers = {
-	always = no
-}
-
 maa_manager_can_recruit_accolade_maa_cameliers = {
 	always = no
 }
 
+maa_manager_can_recruit_accolade_maa_elephantiers = {
+	always = no
+}
+
 maa_manager_can_recruit_accolade_maa_horse_archers = {
-	always = no
-}
-
-maa_manager_can_recruit_accolade_maa_camel_cavalry = {
-	always = no
-}
-
-maa_manager_can_recruit_accolade_maa_heavy_cavalry = {
-	always = no
-}
-
-maa_manager_can_recruit_accolade_maa_heavy_infantry = {
-	always = no
-}
-
-maa_manager_can_recruit_accolade_maa_light_cavalry = {
-	always = no
-}
-
-maa_manager_can_recruit_accolade_maa_pikemen = {
-	always = no
-}
-
-maa_manager_can_recruit_accolade_maa_skirmishers = {
 	always = no
 }
 

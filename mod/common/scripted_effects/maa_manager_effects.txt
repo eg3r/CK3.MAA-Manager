@@ -72,7 +72,6 @@
 	if = { limit = { is_maa_type = mubarizun } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:mubarizun } } }
 	if = { limit = { is_maa_type = mulaththamun } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:mulaththamun } } }
 	if = { limit = { is_maa_type = nomad_lancers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:nomad_lancers } } }
-	if = { limit = { is_maa_type = nomadic_riders } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:nomadic_riders } } }
 	if = { limit = { is_maa_type = onager } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:onager } } }
 	if = { limit = { is_maa_type = paiks } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:paiks } } }
 	if = { limit = { is_maa_type = palace_guards } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:palace_guards } } }

@@ -64,10 +64,6 @@ maa_manager_can_show_bombard = {
 }
 
 # NOMADIC TYPES
-maa_manager_can_show_nomadic_riders = {
-	scope = character
-	is_shown = { maa_manager_can_recruit_nomadic_riders = yes }
-}
 
 maa_manager_can_show_horse_archers = {
 	scope = character
@@ -145,10 +141,6 @@ maa_manager_can_show_hobelar = {
 	is_shown = { maa_manager_can_recruit_hobelar = yes }
 }
 
-maa_manager_can_show_ghazi = {
-	scope = character
-	is_shown = { maa_manager_can_recruit_ghazi = yes }
-}
 
 maa_manager_can_show_ayyar = {
 	scope = character
@@ -170,20 +162,6 @@ maa_manager_can_show_sarawit = {
 	is_shown = { maa_manager_can_recruit_sarawit = yes }
 }
 
-maa_manager_can_show_zhande_pidagan = {
-	scope = character
-	is_shown = { maa_manager_can_recruit_zhande_pidagan = yes }
-}
-
-maa_manager_can_show_konni = {
-	scope = character
-	is_shown = { maa_manager_can_recruit_konni = yes }
-}
-
-maa_manager_can_show_siphonarius = {
-	scope = character
-	is_shown = { maa_manager_can_recruit_siphonarius = yes }
-}
 
 # REGIONAL TYPES
 maa_manager_can_show_war_elephant = {
@@ -205,68 +183,312 @@ maa_manager_can_show_tarkhan = {
 	is_shown = { maa_manager_can_recruit_tarkhan = yes }
 }
 
-maa_manager_can_show_mangudai_legacy = {
+######################################################
+# Accolade DLC MAA Types (Retinue) - Correct Order
+######################################################
+# Order: archers, skirmishers, pikes, outriders, vanguards, lancers, crossbowers, cameliers, elephantiers, horse_archers
+
+maa_manager_can_show_archers = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_mangudai_legacy = yes }
+	is_shown = { maa_manager_can_recruit_archers = yes }
+}
+
+maa_manager_can_show_skirmishers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_skirmishers = yes }
+}
+
+maa_manager_can_show_pikes = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_pikes = yes }
+}
+
+maa_manager_can_show_outriders = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_outriders = yes }
+}
+
+maa_manager_can_show_vanguards = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_vanguards = yes }
+}
+
+maa_manager_can_show_lancers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_lancers = yes }
+}
+
+maa_manager_can_show_crossbowers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_crossbowers = yes }
+}
+
+maa_manager_can_show_cameliers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_cameliers = yes }
+}
+
+maa_manager_can_show_elephantiers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_elephantiers = yes }
+}
+
+maa_manager_can_show_horse_archers_retinue = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_horse_archers_retinue = yes }
 }
 
 ######################################################
-# Accolade DLC MAA Types
+# Additional Cultural/Traditional MAA Types
 ######################################################
 
-maa_manager_can_show_accolade_maa_archers = {
+maa_manager_can_show_landsknecht = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_archers = yes }
+	is_shown = { maa_manager_can_recruit_landsknecht = yes }
 }
 
-maa_manager_can_show_accolade_maa_crossbowers = {
+maa_manager_can_show_goedendag = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_crossbowers = yes }
+	is_shown = { maa_manager_can_recruit_goedendag = yes }
 }
 
-maa_manager_can_show_accolade_maa_elephantiers = {
+maa_manager_can_show_chasseur = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_elephantiers = yes }
+	is_shown = { maa_manager_can_recruit_chasseur = yes }
 }
 
-maa_manager_can_show_accolade_maa_cameliers = {
+maa_manager_can_show_picchieri = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_cameliers = yes }
+	is_shown = { maa_manager_can_recruit_picchieri = yes }
 }
 
-maa_manager_can_show_accolade_maa_horse_archers = {
+maa_manager_can_show_praetorian = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_horse_archers = yes }
+	is_shown = { maa_manager_can_recruit_praetorian = yes }
 }
 
-maa_manager_can_show_accolade_maa_camel_cavalry = {
+maa_manager_can_show_caballero = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_camel_cavalry = yes }
+	is_shown = { maa_manager_can_recruit_caballero = yes }
 }
 
-maa_manager_can_show_accolade_maa_heavy_cavalry = {
+maa_manager_can_show_schiltron = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_heavy_cavalry = yes }
+	is_shown = { maa_manager_can_recruit_schiltron = yes }
 }
 
-maa_manager_can_show_accolade_maa_heavy_infantry = {
+maa_manager_can_show_mulaththamun = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_heavy_infantry = yes }
+	is_shown = { maa_manager_can_recruit_mulaththamun = yes }
 }
 
-maa_manager_can_show_accolade_maa_light_cavalry = {
+maa_manager_can_show_archers_of_the_nile = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_light_cavalry = yes }
+	is_shown = { maa_manager_can_recruit_archers_of_the_nile = yes }
 }
 
-maa_manager_can_show_accolade_maa_pikemen = {
+maa_manager_can_show_paiks = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_pikemen = yes }
+	is_shown = { maa_manager_can_recruit_paiks = yes }
 }
 
-maa_manager_can_show_accolade_maa_skirmishers = {
+maa_manager_can_show_hussar = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_accolade_maa_skirmishers = yes }
+	is_shown = { maa_manager_can_recruit_hussar = yes }
+}
+
+maa_manager_can_show_horn_warrior = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_horn_warrior = yes }
+}
+
+maa_manager_can_show_bush_hunter = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_bush_hunter = yes }
+}
+
+maa_manager_can_show_shomer = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_shomer = yes }
+}
+
+maa_manager_can_show_garudas = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_garudas = yes }
+}
+
+maa_manager_can_show_khandayat = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_khandayat = yes }
+}
+
+maa_manager_can_show_mountaineer = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_mountaineer = yes }
+}
+
+maa_manager_can_show_sahel_horsemen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_sahel_horsemen = yes }
+}
+
+maa_manager_can_show_guinea_warrior = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_guinea_warrior = yes }
+}
+
+maa_manager_can_show_abudrar = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_abudrar = yes }
+}
+
+maa_manager_can_show_zbrojnosh = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_zbrojnosh = yes }
+}
+
+maa_manager_can_show_palace_guards = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_palace_guards = yes }
+}
+
+maa_manager_can_show_chu_ko_nu = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_chu_ko_nu = yes }
+}
+
+maa_manager_can_show_guanch_vaulter = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_guanch_vaulter = yes }
+}
+
+maa_manager_can_show_vigmen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_vigmen = yes }
+}
+
+######################################################
+# Northern Lords (FP1) MAA Types
+######################################################
+
+maa_manager_can_show_bondi = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_bondi = yes }
+}
+
+maa_manager_can_show_varangian_veterans = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_varangian_veterans = yes }
+}
+
+maa_manager_can_show_jomsviking_pirates = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_jomsviking_pirates = yes }
+}
+
+maa_manager_can_show_torch_bearers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_torch_bearers = yes }
+}
+
+######################################################
+# Persia (FP3) MAA Types
+######################################################
+
+maa_manager_can_show_zupin_warrior = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_zupin_warrior = yes }
+}
+
+maa_manager_can_show_tawashi = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_tawashi = yes }
+}
+
+######################################################
+# Dynasty Legacy MAA Types
+######################################################
+
+maa_manager_can_show_house_guard = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_house_guard = yes }
+}
+
+maa_manager_can_show_asawira = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_asawira = yes }
+}
+
+######################################################
+# Byzantine (EP3) MAA Types
+######################################################
+
+maa_manager_can_show_ayrudzi = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_ayrudzi = yes }
+}
+
+maa_manager_can_show_conrois = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_conrois = yes }
+}
+
+maa_manager_can_show_akritai = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_akritai = yes }
+}
+
+maa_manager_can_show_ballistrai = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_ballistrai = yes }
+}
+
+maa_manager_can_show_skoutatoi = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_skoutatoi = yes }
+}
+
+maa_manager_can_show_varangian_guards = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_varangian_guards = yes }
+}
+
+######################################################
+# Outcast/Adventurer MAA Types (Non-Recruitable)
+######################################################
+
+maa_manager_can_show_handpicked_faithful = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_handpicked_faithful = yes }
+}
+
+maa_manager_can_show_maa_bandits = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_maa_bandits = yes }
+}
+
+maa_manager_can_show_maa_poachers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_maa_poachers = yes }
+}
+
+maa_manager_can_show_maa_marauders = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_maa_marauders = yes }
+}
+
+maa_manager_can_show_maa_thieves = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_maa_thieves = yes }
+}
+
+######################################################
+# Holy Order MAA Types (Non-Recruitable)
+######################################################
+
+maa_manager_can_show_teutonic_knights = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_teutonic_knights = yes }
 }
 
 ######################################################

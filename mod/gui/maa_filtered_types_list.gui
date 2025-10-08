@@ -4,28 +4,13 @@
 # This file contains static MAA type button instances for BASE GAME types only.
 # DLC-specific MAA types are COMMENTED OUT to prevent database errors.
 # 
-# Each button uses the reusable type from 00_men_at_arms_manager		# }
-
-		# Sarawit - COMMENTED OUT: Pending cultural requirement research
-		# button_maa_type_filtered = {
-		# 	blockoverride "maa_key" {
-		# 		datacontext = "[GetMenAtArmsType('sarawit')]"
-		# 	}
-		# 	blockoverride "scripted_gui_key" {
-		# 		visible = "[GetScriptedGui('maa_manager_can_show_sarawit').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# 	blockoverride "onclick_actions" {
-		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'sarawit')]"
-		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# }
-
-		# Monaspa overrides the MAA key, scripted GUI check, and onclick actions.
+# Each button uses the reusable type from 00_men_at_arms_manager_types.gui
 #
-# DLC TYPES (COMMENTED OUT):
-# - siphonarius, zhande_pidagan, ghazi (Legacy of Persia DLC)
-# - konni, mangudai_legacy (Horse Lords DLC)  
-# - accolade_maa_* types (Wards & Wardens DLC)
+# REMOVED NON-EXISTENT TYPES:
+# - siphonarius, zhande_pidagan, ghazi, konni, mangudai_legacy (DO NOT EXIST IN GAME)
+#
+# RETINUE TYPES (Accolade rank 3+):
+# - accolade_maa_* types (Wards & Wardens DLC) - NOT manually recruitable
 #
 # To enable DLC types: Uncomment the relevant sections if you have the DLC.
 ######################################################
@@ -331,19 +316,7 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Siphonarius - COMMENTED OUT: Requires Legacy of Persia DLC
-		# button_maa_type_filtered = {
-		# 	blockoverride "maa_key" {
-		# 		datacontext = "[GetMenAtArmsType('siphonarius')]"
-		# 	}
-		# 	blockoverride "scripted_gui_key" {
-		# 		visible = "[GetScriptedGui('maa_manager_can_show_siphonarius').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# 	blockoverride "onclick_actions" {
-		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'siphonarius')]"
-		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# }
+		# REMOVED: siphonarius - Does not exist in base game or any DLC
 
 		# Sarawit
 		button_maa_type_filtered = {
@@ -401,19 +374,7 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Zhande Pidagan - COMMENTED OUT: Requires Legacy of Persia DLC
-		# button_maa_type_filtered = {
-		# 	blockoverride "maa_key" {
-		# 		datacontext = "[GetMenAtArmsType('zhande_pidagan')]"
-		# 	}
-		# 	blockoverride "scripted_gui_key" {
-		# 		visible = "[GetScriptedGui('maa_manager_can_show_zhande_pidagan').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# 	blockoverride "onclick_actions" {
-		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'zhande_pidagan')]"
-		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# }
+		# REMOVED: zhande_pidagan - Does not exist in base game or any DLC
 
 		# Mubarizun
 		button_maa_type_filtered = {
@@ -429,19 +390,7 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Ghazi - COMMENTED OUT: Requires Legacy of Persia DLC
-		# button_maa_type_filtered = {
-		# 	blockoverride "maa_key" {
-		# 		datacontext = "[GetMenAtArmsType('ghazi')]"
-		# 	}
-		# 	blockoverride "scripted_gui_key" {
-		# 		visible = "[GetScriptedGui('maa_manager_can_show_ghazi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# 	blockoverride "onclick_actions" {
-		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'ghazi')]"
-		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# }
+		# REMOVED: ghazi - Does not exist in base game or any DLC
 
 		# Heavy Horse Archers
 		button_maa_type_filtered = {
@@ -527,33 +476,11 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Nomadic Riders
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('nomadic_riders')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_nomadic_riders').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'nomadic_riders')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Nomadic Riders - REMOVED: Not recruitable MAA, it's basic troops (like Horde)
+		# Created from Herd conversion, not manually recruited
+		# Base game has: can_recruit = { always = no }
 
-		# Konni - COMMENTED OUT: Requires Horse Lords DLC
-		# button_maa_type_filtered = {
-		# 	blockoverride "maa_key" {
-		# 		datacontext = "[GetMenAtArmsType('konni')]"
-		# 	}
-		# 	blockoverride "scripted_gui_key" {
-		# 		visible = "[GetScriptedGui('maa_manager_can_show_konni').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# 	blockoverride "onclick_actions" {
-		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'konni')]"
-		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# }
+		# REMOVED: konni - Does not exist in base game or any DLC
 
 		# Tarkhan
 		button_maa_type_filtered = {
@@ -569,21 +496,9 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Mangudai Legacy - COMMENTED OUT: Requires Horse Lords DLC
-		# button_maa_type_filtered = {
-		# 	blockoverride "maa_key" {
-		# 		datacontext = "[GetMenAtArmsType('mangudai_legacy')]"
-		# 	}
-		# 	blockoverride "scripted_gui_key" {
-		# 		visible = "[GetScriptedGui('maa_manager_can_show_mangudai_legacy').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# 	blockoverride "onclick_actions" {
-		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'mangudai_legacy')]"
-		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# }
+		# REMOVED: mangudai_legacy - Does not exist (mangudai exists, but not "legacy" variant)
 
-		# Accolade - Archers - COMMENTED OUT: Requires Wards & Wardens DLC
+		# Accolade - Archers - COMMENTED OUT: Retinue type, not manually recruitable
 		# button_maa_type_filtered = {
 		# 	blockoverride "maa_key" {
 		# 		datacontext = "[GetMenAtArmsType('accolade_maa_archers')]"
@@ -736,5 +651,664 @@ types MAAFilteredTypesList
 		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 		# 	}
 		# }
+
+		######################################################
+		# ADDITIONAL CULTURAL/TRADITIONAL MAA TYPES
+		######################################################
+
+		# Landsknecht
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('landsknecht')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_landsknecht').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'landsknecht')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Goedendag
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('goedendag')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_goedendag').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'goedendag')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Chasseur
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('chasseur')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_chasseur').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'chasseur')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Picchieri
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('picchieri')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_picchieri').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'picchieri')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Praetorian
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('praetorian')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_praetorian').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'praetorian')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Caballero
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('caballero')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_caballero').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'caballero')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Schiltron
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('schiltron')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_schiltron').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'schiltron')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Mulaththamun
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('mulaththamun')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_mulaththamun').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'mulaththamun')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Archers of the Nile
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('archers_of_the_nile')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_archers_of_the_nile').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'archers_of_the_nile')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Paiks
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('paiks')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_paiks').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'paiks')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Hussar
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('hussar')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_hussar').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'hussar')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Horn Warrior
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('horn_warrior')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_horn_warrior').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'horn_warrior')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Bush Hunter
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('bush_hunter')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_bush_hunter').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'bush_hunter')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Shomer
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('shomer')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_shomer').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'shomer')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Garudas
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('garudas')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_garudas').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'garudas')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Khandayat
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('khandayat')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_khandayat').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'khandayat')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Mountaineer
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('mountaineer')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_mountaineer').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'mountaineer')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Sahel Horsemen
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('sahel_horsemen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_sahel_horsemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'sahel_horsemen')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Guinea Warrior
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('guinea_warrior')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_guinea_warrior').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'guinea_warrior')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Abudrar
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('abudrar')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_abudrar').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'abudrar')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Zbrojnosh
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('zbrojnosh')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_zbrojnosh').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'zbrojnosh')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Palace Guards
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('palace_guards')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_palace_guards').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'palace_guards')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Chu Ko Nu
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('chu_ko_nu')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_chu_ko_nu').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'chu_ko_nu')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Guanch Vaulter
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('guanch_vaulter')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_guanch_vaulter').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'guanch_vaulter')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# NORTHERN LORDS (FP1) MAA TYPES
+		######################################################
+
+		# Vigmen
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('vigmen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_vigmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'vigmen')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Bondi
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('bondi')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_bondi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'bondi')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Varangian Veterans
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('varangian_veterans')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_varangian_veterans').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'varangian_veterans')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Jomsviking Pirates
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('jomsviking_pirates')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_jomsviking_pirates').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'jomsviking_pirates')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# PERSIA (FP3) MAA TYPES
+		######################################################
+
+		# Torch Bearers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('torch_bearers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_torch_bearers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'torch_bearers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Zupin Warrior
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('zupin_warrior')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_zupin_warrior').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'zupin_warrior')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Tawashi
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('tawashi')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_tawashi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'tawashi')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# DYNASTY LEGACY MAA TYPES
+		######################################################
+
+		# House Guard
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('house_guard')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_house_guard').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'house_guard')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Asawira
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('asawira')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_asawira').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'asawira')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# BYZANTINE/LEGACY OF ROME (EP3) MAA TYPES
+		######################################################
+
+		# Ayrudzi
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('ayrudzi')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_ayrudzi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'ayrudzi')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Conrois
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('conrois')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_conrois').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'conrois')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Akritai
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('akritai')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_akritai').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'akritai')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Ballistrai
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('ballistrai')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_ballistrai').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'ballistrai')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Skoutatoi
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('skoutatoi')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_skoutatoi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'skoutatoi')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Varangian Guards
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('varangian_guards')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_varangian_guards').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'varangian_guards')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Handpicked Faithful
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('handpicked_faithful')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_handpicked_faithful').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'handpicked_faithful')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# OUTCAST/ADVENTURER MAA TYPES - Not manually recruitable
+		######################################################
+
+		# Bandits
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('maa_bandits')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_maa_bandits').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'maa_bandits')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Poachers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('maa_poachers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_maa_poachers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'maa_poachers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Marauders
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('maa_marauders')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_maa_marauders').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'maa_marauders')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Thieves
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('maa_thieves')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_maa_thieves').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'maa_thieves')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# HOLY ORDER MAA TYPES - Not player-recruitable
+		######################################################
+
+		# Teutonic Knights
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('teutonic_knights')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_teutonic_knights').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'teutonic_knights')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
 	}
 }
+
