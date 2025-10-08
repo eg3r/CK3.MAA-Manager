@@ -46,16 +46,14 @@ maa_manager_can_recruit_armored_footmen = {
 		}
 		always = no
 	}
-	
 	# Innovation requirement
 	culture = {
 		has_innovation = innovation_quilted_armor
 	}
-	
 	# Cultural parameter check - some cultures ban heavy MAA
 	NOT = {
-		culture = { 
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban 
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
 		}
 	}
 }
@@ -71,7 +69,6 @@ maa_manager_can_recruit_armored_horsemen = {
 		}
 		always = no
 	}
-	
 	# Innovation requirement
 	culture = {
 		has_innovation = innovation_arched_saddle
@@ -89,7 +86,6 @@ maa_manager_can_recruit_crossbowmen = {
 		}
 		always = no
 	}
-	
 	# Innovation requirement
 	culture = {
 		has_innovation = innovation_advanced_bowmaking
@@ -97,44 +93,112 @@ maa_manager_can_recruit_crossbowmen = {
 }
 
 maa_manager_can_recruit_onager = {
-	always = no
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - Tribal Era siege weapon
+	culture = {
+		has_innovation = innovation_catapult
+	}
 }
 
 maa_manager_can_recruit_mangonel = {
-	always = no
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - Early Medieval siege weapon
+	culture = {
+		has_innovation = innovation_mangonel
+	}
 }
 
 maa_manager_can_recruit_trebuchet = {
-	always = no
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - High Medieval siege weapon
+	culture = {
+		has_innovation = innovation_trebuchet
+	}
 }
 
 maa_manager_can_recruit_bombard = {
-	always = no
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - Late Medieval siege weapon
+	culture = {
+		has_innovation = innovation_bombard
+	}
 }
 
 maa_manager_can_recruit_house_guard = {
 	# Must have a dynasty
 	exists = dynasty
-	
 	# Dynasty must have warfare legacy perk 5
 	dynasty = {
 		has_dynasty_perk = warfare_legacy_5
 	}
-	
 	# Cultural parameter check - some cultures ban heavy MAA
 	NOT = {
-		culture = { 
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban 
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
 		}
 	}
 }
 
 maa_manager_can_recruit_camel_rider = {
-	always = no
+	# Regional innovation requirement
+	# Direct culture access - we're in character scope from scripted GUI
+	culture = {
+		has_innovation = innovation_war_camels
+	}
 }
 
 maa_manager_can_recruit_war_elephant = {
-	always = no
+	# Must have innovation OR special adventurer parameter
+	OR = {
+		AND = {
+			# Regular recruitment path
+			culture = { 
+				has_innovation = innovation_elephantry 
+			}
+			# Exclude landless adventurers (unless they have special parameter)
+			NOT = { is_landless_adventurer = yes }
+		}
+		# Adventurer special parameter path, can have no domicile?
+		domicile ?= { 
+			has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere 
+		}
+	}
 }
 
 maa_manager_can_recruit_huscarl = {

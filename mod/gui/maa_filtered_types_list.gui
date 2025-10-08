@@ -190,19 +190,19 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Camel Rider - COMMENTED OUT: Pending cultural/regional requirement research
-		# button_maa_type_filtered = {
-		# 	blockoverride "maa_key" {
-		# 		datacontext = "[GetMenAtArmsType('camel_rider')]"
-		# 	}
-		# 	blockoverride "scripted_gui_key" {
-		# 		visible = "[GetScriptedGui('maa_manager_can_show_camel_rider').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# 	blockoverride "onclick_actions" {
-		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'camel_rider')]"
-		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-		# 	}
-		# }
+		# Camel Rider
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('camel_rider')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_camel_rider').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'camel_rider')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
 
 		# War Elephant
 		button_maa_type_filtered = {
