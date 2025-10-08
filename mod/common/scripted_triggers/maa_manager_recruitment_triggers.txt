@@ -9,21 +9,12 @@
 # Returns: Boolean (yes/no)
 ######################################################
 
-# Helper trigger - replicates game's valid_for_maa_trigger
-maa_manager_valid_for_cultural_maa = {
-	OR = {
-		AND = {
-			is_landless_adventurer = yes
-			has_perk = planned_cultivation_perk
-			location.county.culture ?= { has_cultural_parameter = $PARAMETER$ }
-		}
-		culture = { has_cultural_parameter = $PARAMETER$ }
-	}
-}
-
 ######################################################
 # BASE TYPES (from 00_maa_types.txt)
 # Condition: NOT nomadic/herder government
+#
+# Note: Cultural MAA types use the base game's valid_for_maa_trigger
+# which is already defined in 00_military_triggers.txt
 ######################################################
 
 maa_manager_can_recruit_light_footmen = {
@@ -178,68 +169,75 @@ maa_manager_can_recruit_maturkan_warriors = {
 ######################################################
 
 maa_manager_can_recruit_huscarl = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_huscarls }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_huscarls }
 	NOT = { culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban } }
 }
 
 maa_manager_can_recruit_longbowmen = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_longbowmen }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_longbowmen }
 }
 
 maa_manager_can_recruit_cataphract = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_cataphract }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_cataphract }
 }
 
 maa_manager_can_recruit_monaspa = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_monaspa }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_monaspa }
 }
 
 maa_manager_can_recruit_metsanvartija = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_metsanvartija }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_metsanvartija }
 }
 
 maa_manager_can_recruit_gendarme = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_gendarme }
+	# Gendarme has no can_recruit block in base game - available to all
+	always = yes
 }
 
 maa_manager_can_recruit_hobelar = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_hobelar }
+	# Hobelar has no can_recruit block in base game - available to all
+	always = yes
 }
 
 maa_manager_can_recruit_ghazi = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_ghazi }
+	# Ghazi has no can_recruit block in base game - available to all
+	always = yes
 }
 
 maa_manager_can_recruit_ayyar = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_ayyar }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_ayyar }
 }
 
 maa_manager_can_recruit_druzhina = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_druzhina }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_druzhina }
 }
 
 maa_manager_can_recruit_mubarizun = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_mubarizun }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mubarizun }
 }
 
 maa_manager_can_recruit_sarawit = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_sarawit }
+	# Sarawit has no can_recruit block in base game - available to all
+	always = yes
 }
 
 maa_manager_can_recruit_zhande_pidagan = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_zhande_pidagan }
+	# Zhande Pidagan has no can_recruit block in base game - available to all
+	always = yes
 }
 
 maa_manager_can_recruit_konni = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_konni }
+	# Konni (Hussar) has no can_recruit block in base game - available to all
+	always = yes
 }
 
 maa_manager_can_recruit_siphonarius = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_siphonarius }
+	# Siphonarius has no can_recruit block in base game - available to all
+	always = yes
 }
 
 maa_manager_can_recruit_mangudai_legacy = {
-	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_mangudai }
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mangudai }
 }
 
 maa_manager_can_recruit_war_elephant = {
@@ -257,8 +255,16 @@ maa_manager_can_recruit_camel_rider = {
 	always = yes
 }
 
+maa_manager_can_recruit_tarkhan = {
+	# Tarkhan - nomadic heavy cavalry
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
 # DLC/Additional cultural types - add as needed
-# Pattern: Check for cultural parameter using maa_manager_valid_for_cultural_maa
+# Pattern: Check for cultural parameter using valid_for_maa_trigger
 
 ######################################################
 # SPECIAL CASES

@@ -196,6 +196,83 @@ maa_manager_can_show_camel_rider = {
 	is_valid = { maa_manager_can_recruit_camel_rider = yes }
 }
 
+######################################################
+# Recently Added MAA Types
+######################################################
+
+maa_manager_can_show_tarkhan = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_tarkhan = yes }
+}
+
+maa_manager_can_show_mangudai_legacy = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_mangudai_legacy = yes }
+}
+
+######################################################
+# Accolade DLC MAA Types
+######################################################
+
+maa_manager_can_show_accolade_maa_archers = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_archers = yes }
+}
+
+maa_manager_can_show_accolade_maa_crossbowers = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_crossbowers = yes }
+}
+
+maa_manager_can_show_accolade_maa_elephantiers = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_elephantiers = yes }
+}
+
+maa_manager_can_show_accolade_maa_cameliers = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_cameliers = yes }
+}
+
+maa_manager_can_show_accolade_maa_horse_archers = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_horse_archers = yes }
+}
+
+maa_manager_can_show_accolade_maa_camel_cavalry = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_camel_cavalry = yes }
+}
+
+maa_manager_can_show_accolade_maa_heavy_cavalry = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_heavy_cavalry = yes }
+}
+
+maa_manager_can_show_accolade_maa_heavy_infantry = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_heavy_infantry = yes }
+}
+
+maa_manager_can_show_accolade_maa_light_cavalry = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_light_cavalry = yes }
+}
+
+maa_manager_can_show_accolade_maa_pikemen = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_pikemen = yes }
+}
+
+maa_manager_can_show_accolade_maa_skirmishers = {
+	scope = character
+	is_valid = { maa_manager_can_recruit_accolade_maa_skirmishers = yes }
+}
+
+######################################################
+# Fallback for Unknown/Modded Types
+######################################################
+
 # Default for unknown/modded types - show them
 maa_manager_can_show_unknown = {
 	scope = character

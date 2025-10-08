@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Main Window (Global Variable Version)
 ######################################################
 
@@ -746,67 +746,17 @@ window = {
 							scrollbarpolicy_horizontal = always_off
 
 							blockoverride "scrollbox_content" {
-								vbox = {
-									name = "maa_types_list"
-									datamodel = "[GetAllMenAtArmsTypes]"
-									layoutpolicy_horizontal = expanding
-									spacing = 3
-									margin = { 5 5 }
-
-									item = {
-										button_standard = {
-											name = "maa_type_button"
-											datacontext = "[MenAtArmsType]"
-											layoutpolicy_horizontal = expanding
-											size = { 0 45 }
-											
-											# Highlight if selected
-											down = "[VariableSystem.HasValue('maa_manager_retrain_target_type', MenAtArmsType.GetNameNoTooltip)]"
-											
-											onclick = "[VariableSystem.Set('maa_manager_retrain_target_type', MenAtArmsType.GetNameNoTooltip)]"
-
-											hbox = {
-												margin = { 8 0 }
-												spacing = 10
-
-												# MAA Icon
-												highlight_icon = {
-													name = "maa_type_icon"
-													size = { 38 38 }
-													texture = "[MenAtArmsType.GetIcon]"
-												}
-
-												# MAA Name
-												text_single = {
-													name = "maa_type_name"
-													layoutpolicy_horizontal = expanding
-													text = "[MenAtArmsType.GetName]"
-													default_format = "#high"
-													align = nobaseline
-												}
-
-												# Creation Cost
-												text_single = {
-													name = "maa_type_cost"
-													text = "[MenAtArmsType.GetCostString(GetPlayer)]"
-													default_format = "#high"
-													align = nobaseline
-													margin_right = 5
-												}
-											}
-										}
-									}
-								}
+								# Static list with individual visibility filtering for each MAA type
+								# Uses type defined in maa_filtered_types_list.gui
+								vbox_maa_filtered_list = {}
 							}
 						}
 					}
-
 					######################################################
 					# RIGHT PANEL: Conversion Details & Confirmation
 					######################################################
 					vbox = {
 						name = "retrain_details_panel"
-						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
 						spacing = 10
 

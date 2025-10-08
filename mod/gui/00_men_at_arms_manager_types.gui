@@ -343,4 +343,54 @@ types MenAtArmsManagerTypes
 			}
 		}
 	}
+
+	######################################################
+	# Filtered MAA Type Button
+	# 
+	# Reusable type for static MAA type list with visibility filtering
+	# Each instance must override:
+	#   - "maa_key" block with the MAA type script key
+	#   - "scripted_gui_key" block with the corresponding scripted GUI check
+	######################################################
+	type button_maa_type_filtered = button_standard_list {
+		size = { 400 40 }
+		
+		# Default values - MUST be overridden using blockoverride
+		block "maa_key" {
+			datacontext = "[GetMenAtArmsType('light_footmen')]"
+		}
+		
+		block "scripted_gui_key" {
+			visible = "[GetScriptedGui('maa_manager_can_show_light_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		}
+		
+		# Override onclick actions in each button instance with literal MAA key string
+		block "onclick_actions" {
+			# This block MUST be overridden in each button instance
+			# Example:
+			# onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'huscarl')]"
+			# onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		}
+		
+		# Common layout and appearance
+		hbox = {
+			margin = { 10 0 }
+			spacing = 10
+			
+			icon = {
+				size = { 30 30 }
+				texture = "[MenAtArmsType.GetIcon]"
+			}
+			
+			text_single = {
+				text = "[MenAtArmsType.GetNameNoTooltip]"
+				default_format = "#clickable"
+			}
+			
+			expand = {}
+		}
+		
+		# Common tooltip
+		tooltip = "[MenAtArmsType.GetNameNoTooltip]"
+	}
 }
