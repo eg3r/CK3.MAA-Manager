@@ -8,22 +8,30 @@
 # Scope: Character (player)
 # Returns: Boolean (yes/no)
 #
-# CULTURAL FILTERING:
-# - Types WITH unlock_maa_X parameters: Use valid_for_maa_trigger
-# - Types WITHOUT parameters: always = yes (no cultural restriction in base game)
-# - Innovation-based types: Checked separately (war_elephant, etc.)
+# MAA CATEGORIES:
+# 1. REGULAR (Sedentary governments) - Light infantry, cavalry, archers, siege
+# 2. NOMADIC (Nomadic/Herder governments) - Steppe raiders, lancers, etc.
+# 3. TRADITIONAL (Culture traditions) - Huscarls, Druzhina, etc.
+# 4. REGIONAL (Regional innovations) - Caballeros, War Elephants, etc.
 #
-# NOTE: Base game UI uses MenAtArmsTypeView.GetMenAtArmsTypes which
-# automatically filters, but we use GetAllMenAtArmsTypes for flexibility
+# REGULAR MAA CATEGORY:
+# All "Regular" MAA share one implicit requirement:
+#   NOR { government_is_nomadic, government_is_herder }
+# This is the defining characteristic of the category.
+# Individual types may have ADDITIONAL requirements (innovations).
+#
+# SOURCE: https://ck3.paradoxwikis.com/Army
+# "Regular Men-at-Arms are available to all cultures as long as
+#  the other requirements are met."
 ######################################################
 
 ######################################################
-# BASE TYPES (from 00_maa_types.txt)
-# Condition: NOT nomadic/herder government
-#
-# Note: Cultural MAA types use the base game's valid_for_maa_trigger
-# which is already defined in 00_military_triggers.txt
+# REGULAR MEN-AT-ARMS (from 00_maa_types.txt)
+# Category requirement: Sedentary government (not nomadic/herder)
 ######################################################
+
+# NO ADDITIONAL REQUIREMENTS - The 4 fundamental MAA types
+# These only need sedentary government (the category requirement)
 
 maa_manager_can_recruit_light_footmen = {
 	NOR = {
@@ -53,7 +61,16 @@ maa_manager_can_recruit_pikemen_unit = {
 	}
 }
 
+# INNOVATION REQUIREMENT - Armored units (Tribal Era+)
+# Category requirement (sedentary gov) + Innovation unlock
+
 maa_manager_can_recruit_armored_footmen = {
+	culture = {
+		has_innovation = innovation_quilted_armor
+	}
+	NOT = {
+		culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban }
+	}
 	NOR = {
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
@@ -61,20 +78,34 @@ maa_manager_can_recruit_armored_footmen = {
 }
 
 maa_manager_can_recruit_armored_horsemen = {
+	culture = {
+		has_innovation = innovation_arched_saddle
+	}
 	NOR = {
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
 	}
 }
+
+# INNOVATION REQUIREMENT - Advanced ranged (High Medieval Era+)
 
 maa_manager_can_recruit_crossbowmen = {
+	culture = {
+		has_innovation = innovation_advanced_bowmaking
+	}
 	NOR = {
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
 	}
 }
 
+# INNOVATION REQUIREMENT - Siege weapons (various eras)
+# Category requirement (sedentary gov) + Siege innovation unlock
+
 maa_manager_can_recruit_onager = {
+	culture = {
+		has_innovation = innovation_catapult
+	}
 	NOR = {
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
@@ -82,6 +113,9 @@ maa_manager_can_recruit_onager = {
 }
 
 maa_manager_can_recruit_mangonel = {
+	culture = {
+		has_innovation = innovation_mangonel
+	}
 	NOR = {
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
@@ -89,6 +123,9 @@ maa_manager_can_recruit_mangonel = {
 }
 
 maa_manager_can_recruit_trebuchet = {
+	culture = {
+		has_innovation = innovation_trebuchet
+	}
 	NOR = {
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
@@ -96,11 +133,13 @@ maa_manager_can_recruit_trebuchet = {
 }
 
 maa_manager_can_recruit_bombard = {
+	culture = {
+		has_innovation = innovation_bombard
+	}
 	NOR = {
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
 	}
-	culture = { has_innovation = innovation_bombard }
 }
 
 ######################################################
@@ -197,14 +236,21 @@ maa_manager_can_recruit_metsanvartija = {
 	valid_for_maa_trigger = { PARAMETER = unlock_maa_metsanvartija }
 }
 
+######################################################
+# UNVERIFIED CULTURAL TYPES - DISABLED PENDING RESEARCH
+# These types need proper cultural parameter research
+######################################################
+
 maa_manager_can_recruit_gendarme = {
-	# Gendarme has no can_recruit block in base game - available to all
-	always = yes
+	# TODO: Research proper cultural requirements
+	# Temporarily disabled until verified
+	always = no
 }
 
 maa_manager_can_recruit_hobelar = {
-	# Hobelar has no can_recruit block in base game - available to all
-	always = yes
+	# TODO: Research proper cultural requirements  
+	# Temporarily disabled until verified
+	always = no
 }
 
 maa_manager_can_recruit_ghazi = {
@@ -226,8 +272,9 @@ maa_manager_can_recruit_mubarizun = {
 }
 
 maa_manager_can_recruit_sarawit = {
-	# Sarawit has no can_recruit block in base game - available to all
-	always = yes
+	# TODO: Research proper cultural requirements
+	# Temporarily disabled until verified
+	always = no
 }
 
 maa_manager_can_recruit_zhande_pidagan = {
@@ -264,18 +311,14 @@ maa_manager_can_recruit_war_elephant = {
 }
 
 ######################################################
-# REGIONAL/UNRESTRICTED TYPES
-# These have no cultural parameters in base game
-# Available to all non-nomadic governments
+# REGIONAL/UNRESTRICTED TYPES - DISABLED PENDING RESEARCH
+# Need to verify actual cultural/regional requirements
 ######################################################
 
-# Regional/No specific requirement types (always available if not nomadic)
 maa_manager_can_recruit_camel_rider = {
-	# Camel Rider has no specific cultural requirement in base game
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	# TODO: Research proper requirements (regional? cultural? innovation?)
+	# Temporarily disabled until verified
+	always = no
 }
 
 maa_manager_can_recruit_tarkhan = {

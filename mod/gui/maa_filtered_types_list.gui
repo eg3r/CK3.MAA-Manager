@@ -4,8 +4,23 @@
 # This file contains static MAA type button instances for BASE GAME types only.
 # DLC-specific MAA types are COMMENTED OUT to prevent database errors.
 # 
-# Each button uses the reusable type from 00_men_at_arms_manager_types.gui
-# and overrides the MAA key, scripted GUI check, and onclick actions.
+# Each button uses the reusable type from 00_men_at_arms_manager		# }
+
+		# Sarawit - COMMENTED OUT: Pending cultural requirement research
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('sarawit')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_sarawit').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'sarawit')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
+
+		# Monaspa overrides the MAA key, scripted GUI check, and onclick actions.
 #
 # DLC TYPES (COMMENTED OUT):
 # - siphonarius, zhande_pidagan, ghazi (Legacy of Persia DLC)
@@ -190,19 +205,19 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Camel Rider
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('camel_rider')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_camel_rider').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'camel_rider')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Camel Rider - COMMENTED OUT: Pending cultural/regional requirement research
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('camel_rider')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_camel_rider').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'camel_rider')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
 		# War Elephant
 		button_maa_type_filtered = {
@@ -246,33 +261,33 @@ types MAAFilteredTypesList
 			}
 		}
 
-		# Gendarme
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('gendarme')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_gendarme').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'gendarme')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Gendarme - COMMENTED OUT: Pending cultural requirement research
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('gendarme')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_gendarme').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'gendarme')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
-		# Hobelar
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('hobelar')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_hobelar').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'hobelar')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
+		# Hobelar - COMMENTED OUT: Pending cultural requirement research
+		# button_maa_type_filtered = {
+		# 	blockoverride "maa_key" {
+		# 		datacontext = "[GetMenAtArmsType('hobelar')]"
+		# 	}
+		# 	blockoverride "scripted_gui_key" {
+		# 		visible = "[GetScriptedGui('maa_manager_can_show_hobelar').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# 	blockoverride "onclick_actions" {
+		# 		onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'hobelar')]"
+		# 		onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		# 	}
+		# }
 
 		# Druzhina
 		button_maa_type_filtered = {
