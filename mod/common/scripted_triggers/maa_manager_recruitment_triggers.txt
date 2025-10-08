@@ -1,0 +1,325 @@
+﻿######################################################
+# Men-At-Arms Manager - MAA Type Recruitment Triggers
+#
+# These triggers replicate the can_recruit conditions from
+# original MAA type definitions to enable filtering in GUI
+#
+# Pattern: maa_manager_can_recruit_<typename>
+# Scope: Character (player)
+# Returns: Boolean (yes/no)
+######################################################
+
+# Helper trigger - replicates game's valid_for_maa_trigger
+maa_manager_valid_for_cultural_maa = {
+	OR = {
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.county.culture ?= { has_cultural_parameter = $PARAMETER$ }
+		}
+		culture = { has_cultural_parameter = $PARAMETER$ }
+	}
+}
+
+######################################################
+# BASE TYPES (from 00_maa_types.txt)
+# Condition: NOT nomadic/herder government
+######################################################
+
+maa_manager_can_recruit_light_footmen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_bowmen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_light_horsemen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_pikemen_unit = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_armored_footmen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_armored_horsemen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_crossbowmen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_onager = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_mangonel = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_trebuchet = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_bombard = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+	culture = { has_innovation = innovation_bombard }
+}
+
+######################################################
+# NOMADIC TYPES (from 00_maa_types.txt)
+# Condition: IS nomadic/herder government
+######################################################
+
+maa_manager_can_recruit_nomadic_riders = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_horse_archers = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_kheshig = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_steppe_raiders = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_heavy_horse_archers = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_nomad_lancers = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_mangudai = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_cataphract_archers = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_maturkan_warriors = {
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+######################################################
+# CULTURAL TYPES (from 00_cultural_maa_types.txt)
+# Condition: Culture has specific cultural parameter
+######################################################
+
+maa_manager_can_recruit_huscarl = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_huscarls }
+	NOT = { culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban } }
+}
+
+maa_manager_can_recruit_longbowmen = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_longbowmen }
+}
+
+maa_manager_can_recruit_cataphract = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_cataphract }
+}
+
+maa_manager_can_recruit_monaspa = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_monaspa }
+}
+
+maa_manager_can_recruit_metsanvartija = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_metsanvartija }
+}
+
+maa_manager_can_recruit_gendarme = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_gendarme }
+}
+
+maa_manager_can_recruit_hobelar = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_hobelar }
+}
+
+maa_manager_can_recruit_ghazi = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_ghazi }
+}
+
+maa_manager_can_recruit_ayyar = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_ayyar }
+}
+
+maa_manager_can_recruit_druzhina = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_druzhina }
+}
+
+maa_manager_can_recruit_mubarizun = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_mubarizun }
+}
+
+maa_manager_can_recruit_sarawit = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_sarawit }
+}
+
+maa_manager_can_recruit_zhande_pidagan = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_zhande_pidagan }
+}
+
+maa_manager_can_recruit_konni = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_konni }
+}
+
+maa_manager_can_recruit_siphonarius = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_siphonarius }
+}
+
+maa_manager_can_recruit_mangudai_legacy = {
+	maa_manager_valid_for_cultural_maa = { PARAMETER = unlock_maa_mangudai }
+}
+
+maa_manager_can_recruit_war_elephant = {
+	OR = {
+		AND = {
+			culture ?= { has_innovation = innovation_elephantry }
+			NOT = { is_landless_adventurer = yes }
+		}
+		domicile ?= { has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere }
+	}
+}
+
+# Regional/No specific requirement types (always available if not nomadic)
+maa_manager_can_recruit_camel_rider = {
+	always = yes
+}
+
+# DLC/Additional cultural types - add as needed
+# Pattern: Check for cultural parameter using maa_manager_valid_for_cultural_maa
+
+######################################################
+# SPECIAL CASES
+######################################################
+
+# Accolade MAA types - require specific accolade type
+# These can't be manually recruited, only granted via accolades
+maa_manager_can_recruit_accolade_maa_archers = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_crossbowers = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_elephantiers = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_cameliers = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_horse_archers = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_camel_cavalry = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_heavy_cavalry = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_heavy_infantry = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_light_cavalry = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_pikemen = {
+	always = no
+}
+
+maa_manager_can_recruit_accolade_maa_skirmishers = {
+	always = no
+}
+
+# Holy Order MAA - can't be manually recruited
+maa_manager_can_recruit_holy_order_type = {
+	always = no
+}
+
+######################################################
+# DEFAULT FALLBACK
+# For any MAA types not explicitly listed above
+######################################################
+
+maa_manager_can_recruit_unknown = {
+	always = yes  # Show unknown types to avoid hiding modded content
+}

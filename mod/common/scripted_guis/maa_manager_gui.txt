@@ -1039,3 +1039,52 @@ maa_manager_transfer_regiment_from_target_effect = {
 		}
 	}
 }
+
+######################################################
+# Build Recruitable MAA Types List
+######################################################
+maa_manager_build_recruitable_types = {
+	scope = character
+	effect = {
+		debug_log = "MAA Manager: Building recruitable MAA types list..."
+		
+		# Clear previous list
+		if = {
+			limit = { has_variable_list = maa_recruitable_types }
+			clear_variable_list = maa_recruitable_types
+		}
+		
+		# Add each MAA type that passes recruitment checks
+		# Base types
+		if = { limit = { maa_manager_can_recruit_light_footmen = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:light_footmen } }
+		if = { limit = { maa_manager_can_recruit_bowmen = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:bowmen } }
+		if = { limit = { maa_manager_can_recruit_light_horsemen = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:light_horsemen } }
+		if = { limit = { maa_manager_can_recruit_pikemen_unit = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:pikemen_unit } }
+		if = { limit = { maa_manager_can_recruit_armored_footmen = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:armored_footmen } }
+		if = { limit = { maa_manager_can_recruit_armored_horsemen = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:armored_horsemen } }
+		if = { limit = { maa_manager_can_recruit_crossbowmen = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:crossbowmen } }
+		if = { limit = { maa_manager_can_recruit_onager = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:onager } }
+		if = { limit = { maa_manager_can_recruit_mangonel = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:mangonel } }
+		if = { limit = { maa_manager_can_recruit_trebuchet = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:trebuchet } }
+		if = { limit = { maa_manager_can_recruit_bombard = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:bombard } }
+		
+		# Nomadic types
+		if = { limit = { maa_manager_can_recruit_nomadic_riders = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:nomadic_riders } }
+		if = { limit = { maa_manager_can_recruit_horse_archers = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:horse_archers } }
+		if = { limit = { maa_manager_can_recruit_kheshig = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:kheshig } }
+		if = { limit = { maa_manager_can_recruit_steppe_raiders = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:steppe_raiders } }
+		if = { limit = { maa_manager_can_recruit_heavy_horse_archers = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:heavy_horse_archers } }
+		if = { limit = { maa_manager_can_recruit_nomad_lancers = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:nomad_lancers } }
+		if = { limit = { maa_manager_can_recruit_mangudai = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:mangudai } }
+		
+		# Cultural types - add more as needed
+		if = { limit = { maa_manager_can_recruit_tarkhan = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:tarkhan } }
+		if = { limit = { maa_manager_can_recruit_cataphract = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:cataphract } }
+		if = { limit = { maa_manager_can_recruit_huscarl = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:huscarl } }
+		if = { limit = { maa_manager_can_recruit_gendarme = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:gendarme } }
+		if = { limit = { maa_manager_can_recruit_war_elephant = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:war_elephant } }
+		if = { limit = { maa_manager_can_recruit_camel_rider = yes } add_to_variable_list = { name = maa_recruitable_types target = flag:camel_rider } }
+		
+		debug_log = "MAA Manager: Recruitable types list built"
+	}
+}
