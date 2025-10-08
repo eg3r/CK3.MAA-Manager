@@ -757,6 +757,7 @@ window = {
 					######################################################
 					vbox = {
 						name = "retrain_details_panel"
+						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
 						spacing = 10
 

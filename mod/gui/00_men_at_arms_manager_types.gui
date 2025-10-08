@@ -353,7 +353,9 @@ types MenAtArmsManagerTypes
 	#   - "scripted_gui_key" block with the corresponding scripted GUI check
 	######################################################
 	type button_maa_type_filtered = button_standard_list {
-		size = { 400 40 }
+		layoutpolicy_horizontal = expanding
+		minimumsize = { 0 35 }
+		maximumsize = { -1 35 }
 		
 		# Default values - MUST be overridden using blockoverride
 		block "maa_key" {
