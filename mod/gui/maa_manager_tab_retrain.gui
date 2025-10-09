@@ -104,6 +104,7 @@ types MAAManager_Tab_Retrain
 					blockoverride "scrollbox_content" {
 						vbox = {
 							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
 							spacing = 8
 							margin = { 10 5 }
 
@@ -111,8 +112,10 @@ types MAAManager_Tab_Retrain
 							vbox = {
 								visible = "[Not(VariableSystem.Exists('maa_manager_retrain_target_type'))]"
 								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
 								spacing = 8
-								margin_top = 30
+
+								expand = {}
 
 								hbox = {
 									layoutpolicy_horizontal = expanding
@@ -131,7 +134,8 @@ types MAAManager_Tab_Retrain
 								text_multi = {
 									text = "MAA_MANAGER_RETRAIN_NO_SELECTION"
 									layoutpolicy_horizontal = expanding
-									max_width = 350
+									autoresize = yes
+									max_width = 280
 									default_format = "#weak"
 									align = center
 									using = Font_Size_Small
@@ -228,31 +232,33 @@ types MAAManager_Tab_Retrain
 										margin = { 8 5 }
 										margin_bottom = 8
 
-									text_single = {
-										text = "MAA_MANAGER_RETRAIN_TARGET_TYPE"
-										default_format = "#weak"
-										using = Font_Size_Small
-										minimumsize = { 80 0 }
-									}
-
-									icon = {
-										datacontext = "[GetPlayer]"
-										datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
-										size = { 35 35 }
-										texture = "[MenAtArmsType.GetIcon]"
-									}
-
-									vbox = {
-										spacing = 0
-										layoutpolicy_horizontal = expanding
-
 										text_single = {
+											text = "MAA_MANAGER_RETRAIN_TARGET_TYPE"
+											default_format = "#weak"
+											using = Font_Size_Small
+											minimumsize = { 80 0 }
+										}
+
+										icon = {
 											datacontext = "[GetPlayer]"
 											datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
-											text = "[MenAtArmsType.GetNameNoTooltip]"
-											default_format = "#P"
-											using = Font_Size_Small
-										}										text_single = {
+											size = { 35 35 }
+											texture = "[MenAtArmsType.GetIcon]"
+											tooltip = "[MenAtArmsType.GetTooltip]"
+											using = tooltip_se
+										}
+
+										vbox = {
+											spacing = 0
+											layoutpolicy_horizontal = expanding
+
+											text_single = {
+												datacontext = "[GetPlayer]"
+												datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
+												text = "[MenAtArmsType.GetName]"
+												default_format = "#P"
+												using = Font_Size_Small
+											}										text_single = {
 											text = "MAA_MANAGER_RETRAIN_NEW_TYPE"
 											default_format = "#weak"
 											using = Font_Size_Small
