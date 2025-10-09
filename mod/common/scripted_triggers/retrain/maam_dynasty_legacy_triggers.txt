@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - Dynasty Legacy MAA Recruitment Triggers
 #
 # Contains 2 dynasty legacy MAA types

@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - Cultural/Traditional MAA Recruitment Triggers
 #
 # Contains 36 cultural/traditional MAA types (01_cultural_maa_types.txt)

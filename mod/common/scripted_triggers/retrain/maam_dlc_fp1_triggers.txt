@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - DLC FP1 (Northern Lords) MAA Recruitment Triggers
 #
 # Contains 4 Northern Lords DLC MAA types (00_fp1_maa_types.txt)

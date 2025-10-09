@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - Base Game Regular MAA Recruitment Triggers
 #
 # Contains 12 base game MAA types (00_maa_types.txt)

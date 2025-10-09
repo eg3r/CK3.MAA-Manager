@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Nomadic (MPO) MAA Availability
 #
 # Scripted GUIs for Nomadic DLC MAA types

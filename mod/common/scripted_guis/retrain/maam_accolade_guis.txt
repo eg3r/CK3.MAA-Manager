@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Accolade MAA Availability
 #
 # Scripted GUIs for accolade retinue MAA types

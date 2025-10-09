@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Base Regional MAA Availability
 #
 # Scripted GUIs for regional MAA types

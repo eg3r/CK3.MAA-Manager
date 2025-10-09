@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Cultural/Traditional MAA Availability
 #
 # Scripted GUIs for cultural and traditional MAA types

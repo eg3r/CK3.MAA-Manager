@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Northern Lords (FP1) MAA Availability
 #
 # Scripted GUIs for Northern Lords DLC MAA types

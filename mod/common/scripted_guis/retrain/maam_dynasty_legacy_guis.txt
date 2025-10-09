@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Dynasty Legacy MAA Availability
 #
 # Scripted GUIs for dynasty legacy unlocked MAA types

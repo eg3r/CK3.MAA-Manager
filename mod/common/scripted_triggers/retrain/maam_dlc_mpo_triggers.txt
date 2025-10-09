@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - DLC MPO (Roads to Power) Nomadic MAA Recruitment Triggers
 #
 # Contains 8 Nomadic DLC MAA types (09_mpo_maa_types.txt)

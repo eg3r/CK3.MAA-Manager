@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - DLC EP3 (Legacy of Rome/Byzantine) MAA Recruitment Triggers
 #
 # Contains 11 Byzantine DLC MAA types (07_ep3_maa_types.txt)

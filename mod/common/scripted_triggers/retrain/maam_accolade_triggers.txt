@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - Accolade MAA Recruitment Triggers
 #
 # Contains 10 accolade MAA types (00_accolade_maa_types.txt)

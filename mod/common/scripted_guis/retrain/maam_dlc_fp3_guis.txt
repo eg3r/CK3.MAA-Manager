@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Persia (FP3) MAA Availability
 #
 # Scripted GUIs for Persia DLC MAA types

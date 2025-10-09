@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Base Regular MAA Availability
 #
 # Scripted GUIs for base game regular MAA types

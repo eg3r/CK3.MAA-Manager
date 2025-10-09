@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - DLC FP3 (Fate of Persia) MAA Recruitment Triggers
 #
 # Contains 3 Persia DLC MAA types (00_fp3_maa_types.txt)

@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - Base Game Regional MAA Recruitment Triggers
 #
 # Contains 2 regional MAA types (00_regional_maa_types.txt)
