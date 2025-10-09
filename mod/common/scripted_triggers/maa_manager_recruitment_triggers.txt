@@ -483,15 +483,22 @@ maa_manager_can_recruit_vigmen = {
 }
 
 maa_manager_can_recruit_bondi = {
-	always = no
+	culture = {
+		has_cultural_parameter = unlock_maa_bondi
+	}
 }
 
 maa_manager_can_recruit_varangian_veterans = {
-	always = no
+	culture = {
+		has_cultural_parameter = unlock_maa_varangian_veterans
+		NOT = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 maa_manager_can_recruit_jomsviking_pirates = {
-	always = no
+	always = no	# Not manually recruitable in base game
 }
 
 maa_manager_can_recruit_archers = {
