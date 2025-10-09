@@ -41,10 +41,47 @@ types MAAManager_Tab_Troops
 				blockoverride "scrollbox_content" {
 					vbox = {
 						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
 						spacing = 10
 						margin = { 0 5 }
 
+						# Empty state - shown when no targets
+						vbox = {
+							visible = "[Not(GetGlobalVariable('maa_manager_move_has_targets').IsSet)]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 8
+
+							expand = {}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								
+								expand = {}
+								
+								icon = {
+									size = { 60 60 }
+									texture = "gfx/interface/icons/symbols/icon_cross.dds"
+									alpha = 0.5
+								}
+								
+								expand = {}
+							}
+
+							text_multi = {
+								text = "MAA_MANAGER_NO_MOVE_TARGETS"
+								layoutpolicy_horizontal = expanding
+								max_width = 350
+								default_format = "#weak"
+								align = center
+							}
+
+							expand = {}
+						}
+
+						# Target list - shown when targets exist
 						fixedgridbox = {
+							visible = "[GetGlobalVariable('maa_manager_move_has_targets').IsSet]"
 							datamodel = "[GetPlayer.MakeScope.GetList('maa_move_target_list')]"
 							layoutpolicy_horizontal = expanding
 							flipdirection = yes
@@ -57,39 +94,6 @@ types MAAManager_Tab_Troops
 									datacontext = "[Scope.Regiment]"
 								}
 							}
-						}
-
-						expand = {}
-					}
-				}
-
-				blockoverride "scrollbox_empty" {
-					vbox = {
-						visible = "[Not(GetGlobalVariable('maa_manager_move_has_targets').IsSet)]"
-						layoutpolicy_horizontal = expanding
-						spacing = 8
-						margin_top = 30
-
-						hbox = {
-							layoutpolicy_horizontal = expanding
-							
-							expand = {}
-							
-							icon = {
-								size = { 60 60 }
-								texture = "gfx/interface/icons/symbols/icon_cross.dds"
-								alpha = 0.5
-							}
-							
-							expand = {}
-						}
-
-						text_multi = {
-							text = "MAA_MANAGER_NO_MOVE_TARGETS"
-							layoutpolicy_horizontal = expanding
-							max_width = 350
-							default_format = "#weak"
-							align = center
 						}
 
 						expand = {}
