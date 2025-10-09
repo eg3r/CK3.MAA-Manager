@@ -36,8 +36,7 @@ types MAAManager_Retrain_EP3
 				visible = "[GetScriptedGui('maa_manager_can_show_ayrudzi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'ayrudzi')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'ayrudzi')]"
 			}
 		}
 
@@ -50,8 +49,7 @@ types MAAManager_Retrain_EP3
 				visible = "[GetScriptedGui('maa_manager_can_show_conrois').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'conrois')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'conrois')]"
 			}
 		}
 
@@ -64,8 +62,7 @@ types MAAManager_Retrain_EP3
 				visible = "[GetScriptedGui('maa_manager_can_show_akritai').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'akritai')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'akritai')]"
 			}
 		}
 
@@ -78,8 +75,7 @@ types MAAManager_Retrain_EP3
 				visible = "[GetScriptedGui('maa_manager_can_show_ballistrai').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'ballistrai')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'ballistrai')]"
 			}
 		}
 
@@ -92,8 +88,7 @@ types MAAManager_Retrain_EP3
 				visible = "[GetScriptedGui('maa_manager_can_show_skoutatoi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'skoutatoi')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'skoutatoi')]"
 			}
 		}
 
@@ -106,8 +101,7 @@ types MAAManager_Retrain_EP3
 				visible = "[GetScriptedGui('maa_manager_can_show_varangian_guards').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'varangian_guards')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'varangian_guards')]"
 			}
 		}
 
@@ -120,8 +114,7 @@ types MAAManager_Retrain_EP3
 				visible = "[GetScriptedGui('maa_manager_can_show_handpicked_faithful').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'handpicked_faithful')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'handpicked_faithful')]"
 			}
 		}
 	}

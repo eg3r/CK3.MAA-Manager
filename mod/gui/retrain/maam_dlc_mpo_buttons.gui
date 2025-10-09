@@ -34,8 +34,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_mangudai').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'mangudai')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'mangudai')]"
 			}
 		}
 
@@ -48,8 +47,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_nomad_lancers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'nomad_lancers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'nomad_lancers')]"
 			}
 		}
 
@@ -62,8 +60,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_kheshig').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'kheshig')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'kheshig')]"
 			}
 		}
 
@@ -76,8 +73,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_steppe_raiders').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'steppe_raiders')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'steppe_raiders')]"
 			}
 		}
 
@@ -90,8 +86,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_torch_bearers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'torch_bearers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'torch_bearers')]"
 			}
 		}
 
@@ -104,8 +99,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_heavy_horse_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'heavy_horse_archers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'heavy_horse_archers')]"
 			}
 		}
 
@@ -118,8 +112,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_cataphract_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'cataphract_archers')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'cataphract_archers')]"
 			}
 		}
 
@@ -132,8 +125,7 @@ types MAAManager_Retrain_MPO
 				visible = "[GetScriptedGui('maa_manager_can_show_maturkan_warriors').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'maturkan_warriors')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'maturkan_warriors')]"
 			}
 		}
 	}
