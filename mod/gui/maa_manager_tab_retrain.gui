@@ -77,18 +77,19 @@ types MAAManager_Tab_Retrain
 				name = "retrain_details_panel"
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
-				spacing = 10
+				spacing = 5
 
 				background = {
 					using = Background_Area
-					margin = { 5 5 }
+					margin = { 3 3 }
 				}
 
 				# Title
 				text_label_center = {
 					text = "MAA_MANAGER_RETRAIN_CONVERSION_DETAILS"
 					default_format = "#high"
-					margin = { 5 10 }
+					margin = { 5 5 }
+					using = Font_Size_Medium
 				}
 
 				divider_light = {
@@ -103,15 +104,15 @@ types MAAManager_Tab_Retrain
 					blockoverride "scrollbox_content" {
 						vbox = {
 							layoutpolicy_horizontal = expanding
-							spacing = 15
-							margin = { 15 10 }
+							spacing = 8
+							margin = { 10 5 }
 
 							# Selection Status
 							vbox = {
 								visible = "[Not(VariableSystem.Exists('maa_manager_retrain_target_type'))]"
 								layoutpolicy_horizontal = expanding
-								spacing = 10
-								margin_top = 50
+								spacing = 8
+								margin_top = 30
 
 								hbox = {
 									layoutpolicy_horizontal = expanding
@@ -119,7 +120,7 @@ types MAAManager_Tab_Retrain
 									expand = {}
 									
 									icon = {
-										size = { 80 80 }
+										size = { 60 60 }
 										texture = "gfx/interface/icons/symbols/icon_cross.dds"
 										alpha = 0.5
 									}
@@ -130,9 +131,10 @@ types MAAManager_Tab_Retrain
 								text_multi = {
 									text = "MAA_MANAGER_RETRAIN_NO_SELECTION"
 									layoutpolicy_horizontal = expanding
-									max_width = 400
+									max_width = 350
 									default_format = "#weak"
 									align = center
+									using = Font_Size_Small
 								}
 
 								expand = {}
@@ -142,49 +144,49 @@ types MAAManager_Tab_Retrain
 							vbox = {
 								visible = "[VariableSystem.Exists('maa_manager_retrain_target_type')]"
 								layoutpolicy_horizontal = expanding
-								spacing = 15
+								spacing = 8
 
-								# Source Regiment Info
+								# Source & Target Combined Section
 								vbox = {
 									visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet]"
 									layoutpolicy_horizontal = expanding
-									spacing = 8
+									spacing = 5
 
 									background = {
 										using = Background_Area_Dark
 										alpha = 0.5
-										margin = { 5 5 }
+										margin = { 3 3 }
 									}
 
-									text_label_center = {
-										text = "MAA_MANAGER_RETRAIN_CURRENT_TYPE"
-										default_format = "#weak"
-										using = Font_Size_Small
-										margin_top = 10
-									}
-
+									# Current Type
 									hbox = {
 										layoutpolicy_horizontal = expanding
-										spacing = 10
-										margin = { 10 5 }
+										spacing = 8
+										margin = { 8 5 }
+										margin_top = 8
 
-										expand = {}
+										text_single = {
+											text = "MAA_MANAGER_RETRAIN_CURRENT_TYPE"
+											default_format = "#weak"
+											using = Font_Size_Small
+											minimumsize = { 80 0 }
+										}
 
-										# Current MAA Icon & Name
 										highlight_icon = {
 											datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
-											size = { 50 50 }
+											size = { 35 35 }
 											texture = "[Regiment.GetMAAType.GetIcon]"
 										}
 
 										vbox = {
-											spacing = 2
+											spacing = 0
+											layoutpolicy_horizontal = expanding
 
 											text_single = {
 												datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
 												text = "[Regiment.GetMenAtArmsTypeNameNoTooltip]"
 												default_format = "#high"
-												using = Font_Size_Medium
+												using = Font_Size_Small
 											}
 
 											text_single = {
@@ -200,47 +202,64 @@ types MAAManager_Tab_Retrain
 
 									divider_light = {
 										layoutpolicy_horizontal = expanding
+										margin = { 5 0 }
 									}
 
-									text_label_center = {
+									# Arrow indicator
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										margin = { 0 2 }
+										
+										expand = {}
+										
+										icon = {
+											size = { 20 20 }
+											texture = "gfx/interface/icons/symbols/icon_arrow_down.dds"
+											alpha = 0.7
+										}
+										
+										expand = {}
+									}
+
+									# Target Type
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 8
+										margin = { 8 5 }
+										margin_bottom = 8
+
+									text_single = {
 										text = "MAA_MANAGER_RETRAIN_TARGET_TYPE"
 										default_format = "#weak"
 										using = Font_Size_Small
+										minimumsize = { 80 0 }
 									}
 
-									hbox = {
+									icon = {
+										datacontext = "[GetPlayer]"
+										datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
+										size = { 35 35 }
+										texture = "[MenAtArmsType.GetIcon]"
+									}
+
+									vbox = {
+										spacing = 0
 										layoutpolicy_horizontal = expanding
-										spacing = 10
-										margin = { 10 5 }
-										margin_bottom = 10
 
-										expand = {}
-
-										# Target MAA Icon (we'll need to find it from the name)
-										icon = {
-											size = { 50 50 }
-											# This will need scripted GUI support to get the icon
-											texture = "gfx/interface/icons/regimenttypes/heavy_infantry.dds"
-											# TODO: Get actual icon from selected type
+										text_single = {
+											datacontext = "[GetPlayer]"
+											datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
+											text = "[MenAtArmsType.GetNameNoTooltip]"
+											default_format = "#P"
+											using = Font_Size_Small
+										}										text_single = {
+											text = "MAA_MANAGER_RETRAIN_NEW_TYPE"
+											default_format = "#weak"
+											using = Font_Size_Small
 										}
+									}
 
-										vbox = {
-											spacing = 2
-
-											text_single = {
-												raw_text = "[VariableSystem.Get('maa_manager_retrain_target_type')]"
-												default_format = "#P"
-												using = Font_Size_Medium
-											}
-
-											text_single = {
-												text = "MAA_MANAGER_RETRAIN_NEW_TYPE"
-												default_format = "#weak"
-												using = Font_Size_Small
-											}
-										}
-
-										expand = {}
+									expand = {}
 									}
 								}
 
@@ -248,36 +267,35 @@ types MAAManager_Tab_Retrain
 								vbox = {
 									visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet]"
 									layoutpolicy_horizontal = expanding
-									spacing = 8
-									margin = { 10 10 }
+									spacing = 5
+									margin = { 5 5 }
 
 									background = {
 										using = Background_Area_Dark
 										alpha = 0.3
-										margin = { 5 5 }
+										margin = { 3 3 }
 									}
 
 									text_label_center = {
 										text = "MAA_MANAGER_RETRAIN_COST_BREAKDOWN"
 										default_format = "#high"
 										using = Font_Size_Small
-										margin_top = 10
+										margin_top = 5
 									}
 
 									divider_light = {
 										layoutpolicy_horizontal = expanding
+										margin = { 5 0 }
 									}
 
-									# This section will need scripted GUI support
-									# to calculate the actual cost difference
-									
 									text_multi = {
 										text = "MAA_MANAGER_RETRAIN_COST_PLACEHOLDER"
 										layoutpolicy_horizontal = expanding
-										max_width = 450
+										max_width = 400
 										default_format = "#weak"
 										align = center
-										margin = { 10 10 }
+										margin = { 8 5 }
+										using = Font_Size_Small
 									}
 								}
 
@@ -287,33 +305,29 @@ types MAAManager_Tab_Retrain
 								vbox = {
 									visible = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, VariableSystem.Exists('maa_manager_retrain_target_type'))]"
 									layoutpolicy_horizontal = expanding
-									spacing = 10
-									margin_bottom = 15
+									spacing = 3
+									margin_bottom = 8
+									margin = { 10 0 }
 
-									hbox = {
-										layoutpolicy_horizontal = expanding
+									button_primary = {
+										name = "confirm_retrain"
+										size = { 250 38 }
+										parentanchor = hcenter
 										
-										expand = {}
+										text = "MAA_MANAGER_RETRAIN_CONFIRM"
 										
-										button_primary = {
-											name = "confirm_retrain"
-											size = { 300 45 }
-											
-											text = "MAA_MANAGER_RETRAIN_CONFIRM"
-											
-											# TODO: Add scripted GUI effect for retraining
-											# onclick = "[GetScriptedGui('maa_manager_retrain_execute').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-											
-											enabled = no  # Disabled until backend is implemented
-											
-											tooltip = "MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP"
-										}
+										# TODO: Add scripted GUI effect for retraining
+										# onclick = "[GetScriptedGui('maa_manager_retrain_execute').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 										
-										expand = {}
+										enabled = no  # Disabled until backend is implemented
+										
+										tooltip = "MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP"
 									}
 
+									# Warning text with proper container
 									hbox = {
 										layoutpolicy_horizontal = expanding
+										margin = { 0 3 }
 										
 										expand = {}
 										
@@ -321,6 +335,8 @@ types MAAManager_Tab_Retrain
 											text = "MAA_MANAGER_RETRAIN_WARNING"
 											default_format = "#X"
 											using = Font_Size_Small
+											max_width = 280
+											align = center
 										}
 										
 										expand = {}
