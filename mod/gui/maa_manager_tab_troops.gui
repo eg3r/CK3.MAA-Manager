@@ -64,8 +64,36 @@ types MAAManager_Tab_Troops
 				}
 
 				blockoverride "scrollbox_empty" {
-					text = "MAA_MANAGER_NO_MOVE_TARGETS"
-					visible = "[Not(GetGlobalVariable('maa_manager_move_has_targets').IsSet)]"
+					vbox = {
+						visible = "[Not(GetGlobalVariable('maa_manager_move_has_targets').IsSet)]"
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						margin_top = 30
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							
+							expand = {}
+							
+							icon = {
+								size = { 60 60 }
+								texture = "gfx/interface/icons/symbols/icon_cross.dds"
+								alpha = 0.5
+							}
+							
+							expand = {}
+						}
+
+						text_multi = {
+							text = "MAA_MANAGER_NO_MOVE_TARGETS"
+							layoutpolicy_horizontal = expanding
+							max_width = 350
+							default_format = "#weak"
+							align = center
+						}
+
+						expand = {}
+					}
 				}
 			}
 		}
