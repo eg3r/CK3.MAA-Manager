@@ -92,64 +92,70 @@ window = {
 			######################################################
 			# main regiment selection
 			######################################################
-			hbox = {
+			scrollbox = {
+				name = "main_selection_scrollbox"
 				layoutpolicy_horizontal = expanding
+				minimumsize = { -1 220 }
+				scrollbarpolicy_horizontal = always_off
 
-				name = "main_selection_tiles"
-				spacing = 0
+				blockoverride "scrollbox_content" {
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						
+						parentanchor = top|left
 
-				fixedgridbox = {
-					datamodel = "[GetPlayer.MakeScope.GetList('maa_regiment_list')]"
-					layoutpolicy_horizontal = expanding
-					flipdirection = yes
-					datamodel_wrap = 4
-					addcolumn = 169
-					addrow = 93
+						name = "main_selection_tiles"
+						spacing = 0
+						margin = { 0 0 }
 
-					item = {
-						container_maan_mainselection_item = {
-							datacontext = "[Scope.Regiment]"
+						fixedgridbox = {
+							datamodel = "[GetPlayer.MakeScope.GetList('maa_regiment_list')]"
+							layoutpolicy_horizontal = expanding
+							flipdirection = yes
+							datamodel_wrap = 4
+							addcolumn = 169
+							addrow = 93
+
+							item = {
+								container_maan_mainselection_item = {
+									datacontext = "[Scope.Regiment]"
+								}
+							}
 						}
 					}
 				}
+			}
 
-				spacer = {
+			######################################################
+			# TAB NAVIGATION
+			######################################################
+			hbox = {
+				name = "tab_buttons"
+				layoutpolicy_horizontal = expanding
+				margin = { 20 10 }
+				spacing = 5
+
+				button_tab = {
 					layoutpolicy_horizontal = expanding
+					text = "MAA_MANAGER_TAB_TROOPS"
+					onclick = "[VariableSystem.Set('maa_manager_tab', 'troops')]"
+					down = "[VariableSystem.HasValue('maa_manager_tab', 'troops')]"
+				}
+
+				button_tab = {
+					layoutpolicy_horizontal = expanding
+					text = "MAA_MANAGER_TAB_REGIMENTS"
+					onclick = "[VariableSystem.Set('maa_manager_tab', 'regiments')]"
+					down = "[VariableSystem.HasValue('maa_manager_tab', 'regiments')]"
+				}
+
+				button_tab = {
+					layoutpolicy_horizontal = expanding
+					text = "MAA_MANAGER_TAB_RETRAIN"
+					onclick = "[VariableSystem.Set('maa_manager_tab', 'retrain')]"
+					down = "[VariableSystem.HasValue('maa_manager_tab', 'retrain')]"
 				}
 			}
-
-
-
-		######################################################
-		# TAB NAVIGATION
-		######################################################
-		hbox = {
-			name = "tab_buttons"
-			layoutpolicy_horizontal = expanding
-			margin = { 20 10 }
-			spacing = 5
-
-			button_tab = {
-				layoutpolicy_horizontal = expanding
-				text = "MAA_MANAGER_TAB_TROOPS"
-				onclick = "[VariableSystem.Set('maa_manager_tab', 'troops')]"
-				down = "[VariableSystem.HasValue('maa_manager_tab', 'troops')]"
-			}
-
-			button_tab = {
-				layoutpolicy_horizontal = expanding
-				text = "MAA_MANAGER_TAB_REGIMENTS"
-				onclick = "[VariableSystem.Set('maa_manager_tab', 'regiments')]"
-				down = "[VariableSystem.HasValue('maa_manager_tab', 'regiments')]"
-			}
-
-			button_tab = {
-				layoutpolicy_horizontal = expanding
-				text = "MAA_MANAGER_TAB_RETRAIN"
-				onclick = "[VariableSystem.Set('maa_manager_tab', 'retrain')]"
-				down = "[VariableSystem.HasValue('maa_manager_tab', 'retrain')]"
-			}
-		}
 
 			######################################################
 			# TAB 1: TROOP MOVEMENT
