@@ -1,0 +1,60 @@
+######################################################
+# MAA Manager - DLC FP3 (Fate of Persia) MAA Recruitment Triggers
+#
+# Contains 3 Persia DLC MAA types (00_fp3_maa_types.txt)
+# Cultural tradition-gated types available to Persian/Caucasian/Mamluk cultures
+#
+# Types: tarkhan, zupin_warrior, tawashi
+# Note: asawira is in dynasty_legacy_triggers.txt (dynasty perk unlock)
+######################################################
+
+maa_manager_can_recruit_tarkhan = {
+	# Requires Persian cultural tradition: unlock_maa_tarkhan
+	# Note: Landless adventurers with planned_cultivation_perk also handled
+	OR = {
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.culture ?= {
+				has_cultural_parameter = unlock_maa_tarkhan
+			}
+		}
+		culture = {
+			has_cultural_parameter = unlock_maa_tarkhan
+		}
+	}
+}
+
+maa_manager_can_recruit_zupin_warrior = {
+	# Requires Caucasian cultural tradition: unlock_maa_zupin_warrior
+	# Note: Landless adventurers with planned_cultivation_perk also handled
+	OR = {
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.culture ?= {
+				has_cultural_parameter = unlock_maa_zupin_warrior
+			}
+		}
+		culture = {
+			has_cultural_parameter = unlock_maa_zupin_warrior
+		}
+	}
+}
+
+maa_manager_can_recruit_tawashi = {
+	# Requires Mamluk cultural tradition: unlock_maa_tawashi
+	# Note: Landless adventurers with planned_cultivation_perk also handled
+	OR = {
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.culture ?= {
+				has_cultural_parameter = unlock_maa_tawashi
+			}
+		}
+		culture = {
+			has_cultural_parameter = unlock_maa_tawashi
+		}
+	}
+}

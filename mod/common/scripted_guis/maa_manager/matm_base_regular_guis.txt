@@ -1,0 +1,62 @@
+######################################################
+# Men-At-Arms Manager - Base Regular MAA Availability
+#
+# Scripted GUIs for base game regular MAA types
+# Types: 11 base types (light_footmen through bombard, excluding house_guard)
+# Scope: Character (player)
+######################################################
+
+maa_manager_can_show_light_footmen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_light_footmen = yes }
+}
+
+maa_manager_can_show_bowmen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_bowmen = yes }
+}
+
+maa_manager_can_show_light_horsemen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_light_horsemen = yes }
+}
+
+maa_manager_can_show_pikemen_unit = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_pikemen_unit = yes }
+}
+
+maa_manager_can_show_armored_footmen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_armored_footmen = yes }
+}
+
+maa_manager_can_show_armored_horsemen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_armored_horsemen = yes }
+}
+
+maa_manager_can_show_crossbowmen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_crossbowmen = yes }
+}
+
+maa_manager_can_show_onager = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_onager = yes }
+}
+
+maa_manager_can_show_mangonel = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_mangonel = yes }
+}
+
+maa_manager_can_show_trebuchet = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_trebuchet = yes }
+}
+
+maa_manager_can_show_bombard = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_bombard = yes }
+}

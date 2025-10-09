@@ -1,0 +1,284 @@
+######################################################
+# MAA Manager - Cultural/Traditional MAA Recruitment Triggers
+#
+# Contains 36 cultural/traditional MAA types (01_cultural_maa_types.txt)
+# Tradition and innovation-gated types available to specific cultures
+#
+# Types: huscarl, landsknecht, longbowmen, goedendag, gendarme, chasseur,
+#        picchieri, praetorian, caballero, monaspa, cataphract, hobelar,
+#        schiltron, metsanvartija, horse_archers, ayyar, mubarizun, mulaththamun,
+#        archers_of_the_nile, paiks, druzhina, hussar, horn_warrior, bush_hunter,
+#        shomer, garudas, khandayat, mountaineer, sahel_horsemen, guinea_warrior,
+#        sarawit, abudrar, zbrojnosh, palace_guards, chu_ko_nu, guanch_vaulter
+######################################################
+
+maa_manager_can_recruit_huscarl = {
+	culture = {
+		has_cultural_parameter = unlock_maa_huscarls
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_landsknecht = {
+	culture = {
+		has_innovation = innovation_zweihanders
+	}
+}
+
+maa_manager_can_recruit_longbowmen = {
+	culture = {
+		has_cultural_parameter = unlock_maa_longbowmen
+	}
+}
+
+maa_manager_can_recruit_goedendag = {
+	culture = {
+		has_innovation = innovation_adaptive_militia
+	}
+}
+
+maa_manager_can_recruit_gendarme = {
+	culture = {
+		has_innovation = innovation_valets
+	}
+}
+
+maa_manager_can_recruit_chasseur = {
+	culture = {
+		has_innovation = innovation_desert_tactics
+	}
+}
+
+maa_manager_can_recruit_picchieri = {
+	culture = {
+		has_innovation = innovation_pike_columns
+	}
+}
+
+maa_manager_can_recruit_praetorian = {
+	culture = {
+		has_innovation = innovation_legionnaires
+	}
+}
+
+maa_manager_can_recruit_caballero = {
+	culture = {
+		has_innovation = innovation_caballeros
+	}
+}
+
+maa_manager_can_recruit_monaspa = {
+	culture = {
+		has_cultural_parameter = unlock_maa_monaspa
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_cataphract = {
+	culture = {
+		has_cultural_parameter = unlock_maa_cataphract
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_hobelar = {
+	culture = {
+		has_innovation = innovation_hobbies
+	}
+}
+
+maa_manager_can_recruit_schiltron = {
+	culture = {
+		has_innovation = innovation_rectilinear_schiltron
+	}
+}
+
+maa_manager_can_recruit_metsanvartija = {
+	culture = {
+		has_cultural_parameter = unlock_maa_metsanvartija
+	}
+}
+
+maa_manager_can_recruit_horse_archers = {
+	culture = {
+		has_cultural_parameter = unlock_maa_horse_archers
+	}
+}
+
+maa_manager_can_recruit_ayyar = {
+	culture = {
+		has_cultural_parameter = unlock_maa_ayyar
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_mubarizun = {
+	culture = {
+		has_cultural_parameter = unlock_maa_mubarizun
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_mulaththamun = {
+	culture = {
+		has_cultural_parameter = unlock_maa_mulaththamun
+	}
+}
+
+maa_manager_can_recruit_archers_of_the_nile = {
+	culture = {
+		has_cultural_parameter = unlock_maa_archers_of_the_nile
+	}
+}
+
+maa_manager_can_recruit_paiks = {
+	culture = {
+		has_innovation = innovation_bamboo_bows
+	}
+}
+
+maa_manager_can_recruit_druzhina = {
+	culture = {
+		has_cultural_parameter = unlock_maa_druzhina
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_hussar = {
+	culture = {
+		has_cultural_parameter = unlock_maa_hussar
+	}
+}
+
+maa_manager_can_recruit_horn_warrior = {
+	culture = {
+		has_cultural_parameter = unlock_maa_horn_warrior
+	}
+}
+
+maa_manager_can_recruit_bush_hunter = {
+	culture = {
+		has_cultural_parameter = unlock_maa_bush_hunter
+	}
+}
+
+maa_manager_can_recruit_shomer = {
+	culture = {
+		has_cultural_parameter = unlock_maa_shomer
+	}
+}
+
+maa_manager_can_recruit_garudas = {
+	culture = {
+		has_cultural_parameter = unlock_maa_garudas
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_khandayat = {
+	culture = {
+		has_cultural_parameter = unlock_maa_khandayat
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_mountaineer = {
+	culture = {
+		has_cultural_parameter = unlock_maa_mountaineer
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_sahel_horsemen = {
+	culture = {
+		has_innovation = innovation_sahel_horsemen
+	}
+}
+
+maa_manager_can_recruit_guinea_warrior = {
+	culture = {
+		has_cultural_parameter = unlock_maa_guinea_warrior
+	}
+}
+
+maa_manager_can_recruit_sarawit = {
+	culture = {
+		has_innovation = innovation_sarawit
+	}
+}
+
+maa_manager_can_recruit_abudrar = {
+	culture = {
+		has_cultural_parameter = unlock_maa_abudrar
+	}
+}
+
+maa_manager_can_recruit_zbrojnosh = {
+	culture = {
+		has_cultural_parameter = unlock_maa_zbrojnosh
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_palace_guards = {
+	culture = {
+		has_cultural_parameter = unlock_maa_palace_guards
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_chu_ko_nu = {
+	culture = {
+		has_innovation = innovation_repeating_crossbow
+	}
+}
+
+maa_manager_can_recruit_guanch_vaulter = {
+	culture = {
+		has_innovation = innovation_pole_vault
+	}
+}

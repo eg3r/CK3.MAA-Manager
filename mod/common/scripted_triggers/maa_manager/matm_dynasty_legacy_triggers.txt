@@ -1,0 +1,30 @@
+######################################################
+# MAA Manager - Dynasty Legacy MAA Recruitment Triggers
+#
+# Contains 2 dynasty legacy MAA types
+# Unlocked through specific dynasty legacies (not DLC-gated)
+#
+# Types: house_guard, asawira
+######################################################
+
+maa_manager_can_recruit_house_guard = {
+	# Must have a dynasty
+	exists = dynasty
+	# Dynasty must have warfare legacy perk 5
+	dynasty = {
+		has_dynasty_perk = warfare_legacy_5
+	}
+	# Cultural parameter check - some cultures ban heavy MAA
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_asawira = {
+	# Requires dynasty with fp3_khvarenah_legacy_4 perk
+	dynasty ?= {
+		has_dynasty_perk = fp3_khvarenah_legacy_4
+	}
+}

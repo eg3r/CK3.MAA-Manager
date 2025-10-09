@@ -1,0 +1,71 @@
+######################################################
+# MAA Manager - DLC MPO (Roads to Power) Nomadic MAA Recruitment Triggers
+#
+# Contains 8 Nomadic DLC MAA types (09_mpo_maa_types.txt)
+# Nomadic government and cultural tradition-gated types
+#
+# Types: torch_bearers, kheshig, steppe_raiders, heavy_horse_archers,
+#        nomad_lancers, mangudai, cataphract_archers, maturkan_warriors
+######################################################
+
+maa_manager_can_recruit_torch_bearers = {
+	# Siege weapon for nomadic government
+	government_has_flag = government_is_nomadic
+}
+
+maa_manager_can_recruit_kheshig = {
+	# Requires dynasty with mpo_nomad_legacy_3 perk (max 1 regiment)
+	dynasty ?= {
+		has_dynasty_perk = mpo_nomad_legacy_3
+	}
+}
+
+maa_manager_can_recruit_steppe_raiders = {
+	# Basic nomadic MAA - requires nomadic government
+	# From game file: mpo_can_recruit_nomad_maa_trigger
+	government_has_flag = government_is_nomadic
+}
+
+maa_manager_can_recruit_heavy_horse_archers = {
+	# Requires nomadic government + domicile unlock
+	# From game file: mpo_can_recruit_nomad_maa_trigger + domicile check
+	government_has_flag = government_is_nomadic
+	exists = domicile
+	domicile = {
+		has_domicile_parameter = unlock_maa_heavy_horse_archers
+	}
+}
+
+maa_manager_can_recruit_nomad_lancers = {
+	# Requires nomadic government + heavy cavalry unlock (realm law)
+	# From game file: mpo_can_recruit_nomad_heavy_cavalry_maa_trigger
+	government_has_flag = government_is_nomadic
+	has_realm_law_flag = unlock_maa_nomad_lancers
+}
+
+maa_manager_can_recruit_mangudai = {
+	# Requires Mongolic cultural tradition: unlock_maa_mangudai
+	culture = {
+		has_cultural_parameter = unlock_maa_mangudai
+	}
+}
+
+maa_manager_can_recruit_cataphract_archers = {
+	# Requires cultural tradition + either non-nomadic OR has dominance
+	culture = {
+		has_cultural_parameter = unlock_maa_cataphract_archers
+	}
+	OR = {
+		NOT = {
+			government_has_flag = government_is_nomadic
+		}
+		has_realm_law_flag = unlock_maa_nomad_lancers
+	}
+}
+
+maa_manager_can_recruit_maturkan_warriors = {
+	# Requires Caucasian cultural tradition: unlock_maa_maturkan_warriors
+	culture = {
+		has_cultural_parameter = unlock_maa_maturkan_warriors
+	}
+}

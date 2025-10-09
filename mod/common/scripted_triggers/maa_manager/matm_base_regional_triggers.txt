@@ -1,0 +1,36 @@
+######################################################
+# MAA Manager - Base Game Regional MAA Recruitment Triggers
+#
+# Contains 2 regional MAA types (00_regional_maa_types.txt)
+# Innovation-gated types available in specific regions
+#
+# Types: camel_rider, war_elephant
+######################################################
+
+maa_manager_can_recruit_camel_rider = {
+	# Regional innovation requirement
+	# Direct culture access - we're in character scope from scripted GUI
+	culture = {
+		has_innovation = innovation_war_camels
+	}
+}
+
+maa_manager_can_recruit_war_elephant = {
+	# Must have innovation OR special adventurer parameter
+	OR = {
+		AND = {
+			# Regular recruitment path
+			culture = {
+				has_innovation = innovation_elephantry
+			}
+			# Exclude landless adventurers (unless they have special parameter)
+			NOT = {
+				is_landless_adventurer = yes
+			}
+		}
+		# Adventurer special parameter path, can have no domicile?
+		domicile ?= {
+			has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere
+		}
+	}
+}
