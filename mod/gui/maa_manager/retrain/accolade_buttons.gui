@@ -1,0 +1,167 @@
+######################################################
+# MAA Manager - Retrain Tab - Accolade MAA Buttons
+#
+# Contains the 10 accolade-based MAA types that require:
+# - A rank 3+ accolade with matching primary attribute
+# - Only 1 active regiment of that type allowed at a time
+#
+# MAA Types (10):
+# - accolade_maa_archers, accolade_maa_skirmishers
+# - accolade_maa_pikes, accolade_maa_outriders
+# - accolade_maa_vanguards, accolade_maa_lancers
+# - accolade_maa_crossbowers, accolade_maa_cameliers
+# - accolade_maa_elephantiers, accolade_maa_horse_archers
+######################################################
+
+types MAAManager_Retrain_Accolade
+{
+	type vbox_retrain_accolade_buttons = vbox {
+		name = "retrain_accolade_buttons"
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+
+		######################################################
+		# ACCOLADE MAA (10 types) - Require rank 3+ accolade
+		######################################################
+
+		# Accolade Archers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_archers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_archers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Skirmishers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_skirmishers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_skirmishers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_skirmishers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Pikes
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_pikes')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_pikes').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_pikes')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Outriders
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_outriders')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_outriders').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_outriders')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Vanguards
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_vanguards')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_vanguards').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_vanguards')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Lancers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_lancers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_lancers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_lancers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Crossbowers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_crossbowers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_crossbowers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_crossbowers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Cameliers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_cameliers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_cameliers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_cameliers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Elephantiers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_elephantiers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_elephantiers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_elephantiers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Accolade Horse Archers
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_horse_archers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_horse_archers_retinue').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'accolade_maa_horse_archers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+	}
+}

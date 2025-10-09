@@ -55,10 +55,12 @@ types MAAFilteredTypesList
 		vbox_retrain_dynasty_legacy_buttons = {}  # 2 dynasty legacy types
 
 		######################################################
-		# ACCOLADE/RETINUE MAA TYPES - Commented out (not manually recruitable)
-		# These are unlocked via Wards & Wardens DLC accolade ranks
-		# accolade_maa_* types (10 types) - NOT included in retrain list
+		# ACCOLADE MAA TYPES (10 types) - Wards & Wardens DLC
+		# Defined in: maa_manager/retrain/accolade_buttons.gui
+		# Requires: Rank 3+ accolade with matching attribute
+		# Limit: Only 1 active regiment per type allowed
 		######################################################
+		vbox_retrain_accolade_buttons = {}  # 10 accolade-based MAA types
 
 		######################################################
 		# OUTCAST/ADVENTURER MAA TYPES - Not manually recruitable

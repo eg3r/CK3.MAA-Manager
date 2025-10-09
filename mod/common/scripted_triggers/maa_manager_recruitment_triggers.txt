@@ -501,44 +501,172 @@ maa_manager_can_recruit_jomsviking_pirates = {
 	always = no	# Not manually recruitable in base game
 }
 
+# Accolade MAA Types - Require rank 3+ accolade with matching attribute + only 1 active regiment allowed
 maa_manager_can_recruit_archers = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_archers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:archer_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_skirmishers = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_skirmishers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:skirmisher_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_pikes = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_pikes
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:pike_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_outriders = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_outriders
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:outrider_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_vanguards = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_vanguards
+		}
+	}
+	# Check if has required accolade and not banned by culture
+	any_active_accolade = {
+		limit = {
+			primary_type = {
+				this = accolade_type:vanguard_attribute
+			}
+			accolade_rank >= 3
+		}
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 maa_manager_can_recruit_lancers = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_lancers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:lancer_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_crossbowers = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_crossbowers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:crossbowmen_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_cameliers = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_cameliers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:camelry_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_elephantiers = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_elephantiers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:elephantry_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_horse_archers_retinue = {
-	always = no
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_horse_archers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:horse_archer_attribute
+		}
+		accolade_rank >= 3
+	}
 }
 
 maa_manager_can_recruit_asawira = {
