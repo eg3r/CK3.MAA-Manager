@@ -24,7 +24,8 @@ types MAAFilteredTypesList
 	type vbox_maa_filtered_list = vbox {
 		name = "maa_filtered_types_list"
 		layoutpolicy_horizontal = expanding
-		spacing = 2
+		spacing = 0
+		margin = { 0 0 }
 
 		######################################################
 		# BASE GAME MAA TYPES (14 types)

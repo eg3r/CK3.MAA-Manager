@@ -17,6 +17,7 @@ types MAAManager_Retrain_BaseRegular
 		name = "retrain_regular_buttons"
 		layoutpolicy_horizontal = expanding
 		spacing = 2
+		margin = { 0 0 }
 
 		######################################################
 		# BASIC MAA (4 types) - Always available

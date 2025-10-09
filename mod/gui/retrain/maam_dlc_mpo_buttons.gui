@@ -23,6 +23,7 @@ types MAAManager_Retrain_MPO
 		name = "retrain_mpo_buttons"
 		layoutpolicy_horizontal = expanding
 		spacing = 2
+		margin = { 0 0 }
 
 		# Mangudai
 		button_maa_type_filtered = {

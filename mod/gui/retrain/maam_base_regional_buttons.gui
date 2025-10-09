@@ -15,6 +15,7 @@ types MAAManager_Retrain_Regional
 		name = "retrain_regional_buttons"
 		layoutpolicy_horizontal = expanding
 		spacing = 2
+		margin = { 0 0 }
 
 		######################################################
 		# REGIONAL MAA (2 types)

@@ -25,6 +25,7 @@ types MAAManager_Retrain_EP3
 		name = "retrain_ep3_buttons"
 		layoutpolicy_horizontal = expanding
 		spacing = 2
+		margin = { 0 0 }
 
 		# Ayrudzi (Armenian Light Cavalry)
 		button_maa_type_filtered = {
