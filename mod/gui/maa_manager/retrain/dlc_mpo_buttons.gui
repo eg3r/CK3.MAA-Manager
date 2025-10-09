@@ -11,7 +11,6 @@
 # - nomad_lancers: Fast mounted lancers
 # - kheshig: Elite bodyguard cavalry
 # - steppe_raiders: Raiding-focused light cavalry
-# - tarkhan: Noble heavy cavalry
 ######################################################
 
 types MAAManager_Retrain_MPO
@@ -73,20 +72,6 @@ types MAAManager_Retrain_MPO
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'steppe_raiders')]"
-				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-		}
-
-		# Tarkhan
-		button_maa_type_filtered = {
-			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('tarkhan')]"
-			}
-			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_tarkhan').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-			}
-			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'tarkhan')]"
 				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 		}

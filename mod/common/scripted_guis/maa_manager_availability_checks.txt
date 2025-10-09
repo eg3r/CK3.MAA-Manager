@@ -392,20 +392,6 @@ maa_manager_can_show_torch_bearers = {
 }
 
 ######################################################
-# Persia (FP3) MAA Types
-######################################################
-
-maa_manager_can_show_zupin_warrior = {
-	scope = character
-	is_shown = { maa_manager_can_recruit_zupin_warrior = yes }
-}
-
-maa_manager_can_show_tawashi = {
-	scope = character
-	is_shown = { maa_manager_can_recruit_tawashi = yes }
-}
-
-######################################################
 # Dynasty Legacy MAA Types
 ######################################################
 
@@ -489,6 +475,30 @@ maa_manager_can_show_maa_thieves = {
 maa_manager_can_show_teutonic_knights = {
 	scope = character
 	is_shown = { maa_manager_can_recruit_teutonic_knights = yes }
+}
+
+######################################################
+# Persia DLC (FP3) MAA Types
+######################################################
+
+maa_manager_can_show_asawira = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_asawira = yes }
+}
+
+maa_manager_can_show_tarkhan = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_tarkhan = yes }
+}
+
+maa_manager_can_show_zupin_warrior = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_zupin_warrior = yes }
+}
+
+maa_manager_can_show_tawashi = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_tawashi = yes }
 }
 
 ######################################################

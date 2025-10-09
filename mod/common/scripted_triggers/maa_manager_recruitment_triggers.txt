@@ -669,22 +669,6 @@ maa_manager_can_recruit_horse_archers_retinue = {
 	}
 }
 
-maa_manager_can_recruit_asawira = {
-	always = no
-}
-
-maa_manager_can_recruit_tarkhan = {
-	always = no
-}
-
-maa_manager_can_recruit_zupin_warrior = {
-	always = no
-}
-
-maa_manager_can_recruit_tawashi = {
-	always = no
-}
-
 maa_manager_can_recruit_teutonic_knights = {
 	always = no
 }
@@ -749,6 +733,70 @@ maa_manager_can_recruit_heavy_horse_archers = {
 	always = no
 }
 
+######################################################
+# PERSIA DLC (FP3) MAA TYPES
+######################################################
+maa_manager_can_recruit_asawira = {
+	# Requires dynasty with fp3_khvarenah_legacy_4 perk
+	dynasty ?= {
+		has_dynasty_perk = fp3_khvarenah_legacy_4
+	}
+}
+
+maa_manager_can_recruit_tarkhan = {
+	# Requires Persian cultural tradition: unlock_maa_tarkhan
+	# Note: Landless adventurers with planned_cultivation_perk also handled
+	OR = {
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.culture ?= {
+				has_cultural_parameter = unlock_maa_tarkhan
+			}
+		}
+		culture = {
+			has_cultural_parameter = unlock_maa_tarkhan
+		}
+	}
+}
+
+maa_manager_can_recruit_zupin_warrior = {
+	# Requires Caucasian cultural tradition: unlock_maa_zupin_warrior
+	# Note: Landless adventurers with planned_cultivation_perk also handled
+	OR = {
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.culture ?= {
+				has_cultural_parameter = unlock_maa_zupin_warrior
+			}
+		}
+		culture = {
+			has_cultural_parameter = unlock_maa_zupin_warrior
+		}
+	}
+}
+
+maa_manager_can_recruit_tawashi = {
+	# Requires Mamluk cultural tradition: unlock_maa_tawashi
+	# Note: Landless adventurers with planned_cultivation_perk also handled
+	OR = {
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.culture ?= {
+				has_cultural_parameter = unlock_maa_tawashi
+			}
+		}
+		culture = {
+			has_cultural_parameter = unlock_maa_tawashi
+		}
+	}
+}
+
+######################################################
+# NOMADIC (MPO) MAA TYPES
+######################################################
 maa_manager_can_recruit_nomad_lancers = {
 	always = no
 }
@@ -757,6 +805,9 @@ maa_manager_can_recruit_mangudai = {
 	always = no
 }
 
+######################################################
+# BYZANTINE (EP3) MAA TYPES
+######################################################
 maa_manager_can_recruit_cataphract_archers = {
 	always = no
 }
