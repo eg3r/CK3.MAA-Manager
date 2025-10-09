@@ -112,8 +112,20 @@ maa_manager_can_recruit_metsanvartija = {
 }
 
 maa_manager_can_recruit_horse_archers = {
-	culture = {
-		has_cultural_parameter = unlock_maa_horse_archers
+	# Horse archers can be recruited through multiple paths
+	OR = {
+		# Landless adventurer with planned cultivation perk in archer cavalry culture
+		AND = {
+			is_landless_adventurer = yes
+			has_perk = planned_cultivation_perk
+			location.county.culture ?= { culture_has_archer_cavalry_maa = yes }
+		}
+		# Cultural parameter unlock
+		culture = {
+			has_cultural_parameter = unlock_maa_horse_archers
+		}
+		# OR nomadic recruitment path
+		mpo_can_recruit_nomad_maa_trigger = yes
 	}
 }
 

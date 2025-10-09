@@ -21,26 +21,27 @@ maa_manager_can_recruit_kheshig = {
 }
 
 maa_manager_can_recruit_steppe_raiders = {
-	# Basic nomadic MAA - requires nomadic government
-	# From game file: mpo_can_recruit_nomad_maa_trigger
-	government_has_flag = government_is_nomadic
+	# Use game's native trigger directly
+	mpo_can_recruit_nomad_maa_trigger = yes
 }
 
 maa_manager_can_recruit_heavy_horse_archers = {
-	# Requires nomadic government + domicile unlock
-	# From game file: mpo_can_recruit_nomad_maa_trigger + domicile check
-	government_has_flag = government_is_nomadic
-	exists = domicile
-	domicile = {
-		has_domicile_parameter = unlock_maa_heavy_horse_archers
+	# Use game's native trigger plus domicile check
+	mpo_can_recruit_nomad_maa_trigger = yes
+	trigger_if = {
+		limit = {
+			government_has_flag = government_is_nomadic
+			exists = domicile
+		}
+		domicile = {
+			has_domicile_parameter = unlock_maa_heavy_horse_archers
+		}
 	}
 }
 
 maa_manager_can_recruit_nomad_lancers = {
-	# Requires nomadic government + heavy cavalry unlock (realm law)
-	# From game file: mpo_can_recruit_nomad_heavy_cavalry_maa_trigger
-	government_has_flag = government_is_nomadic
-	has_realm_law_flag = unlock_maa_nomad_lancers
+	# Use game's native trigger directly
+	mpo_can_recruit_nomad_heavy_cavalry_maa_trigger = yes
 }
 
 maa_manager_can_recruit_mangudai = {
