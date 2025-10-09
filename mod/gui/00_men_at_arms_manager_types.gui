@@ -79,6 +79,8 @@ types MenAtArmsManagerTypes
 			button_ignore = none
 
 			onclick = "[GetVariableSystem.Set( 'maa_manager_selected_regiment_id', Concatenate( 'RID_', Regiment.GetID ) )]"
+			onclick = "[GetVariableSystem.Set( 'maa_manager_selected_regiment_type_name', Regiment.GetMAAType.GetNameNoTooltip )]"
+			onclick = "[GetVariableSystem.Clear( 'maa_manager_retrain_target_type' )]"
 			onclick = "[GetScriptedGui('maa_manager_select_regiment').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
 
 			vbox = {

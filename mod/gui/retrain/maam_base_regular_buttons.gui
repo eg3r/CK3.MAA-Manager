@@ -29,7 +29,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('light_footmen')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_light_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_light_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'light_footmen')]"
@@ -42,7 +42,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('bowmen')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_bowmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_bowmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'bowmen')]"
@@ -55,7 +55,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('light_horsemen')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_light_horsemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_light_horsemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'light_horsemen')]"
@@ -68,7 +68,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('pikemen_unit')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_pikemen_unit').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_pikemen_unit').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'pikemen_unit')]"
@@ -85,7 +85,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('armored_footmen')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_armored_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_armored_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'armored_footmen')]"
@@ -98,7 +98,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('armored_horsemen')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_armored_horsemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_armored_horsemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'armored_horsemen')]"
@@ -111,7 +111,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('crossbowmen')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_crossbowmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_crossbowmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'crossbowmen')]"
@@ -128,7 +128,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('onager')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_onager').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_onager').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'onager')]"
@@ -141,7 +141,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('mangonel')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_mangonel').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_mangonel').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'mangonel')]"
@@ -154,7 +154,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('trebuchet')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_trebuchet').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_trebuchet').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'trebuchet')]"
@@ -167,7 +167,7 @@ types MAAManager_Retrain_BaseRegular
 				datacontext = "[GetMenAtArmsType('bombard')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_bombard').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_bombard').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'bombard')]"

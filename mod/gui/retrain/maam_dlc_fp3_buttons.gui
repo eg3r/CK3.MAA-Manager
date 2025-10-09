@@ -23,7 +23,7 @@ types MAAManager_Retrain_FP3
 				datacontext = "[GetMenAtArmsType('tarkhan')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_tarkhan').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_tarkhan').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'tarkhan')]"
@@ -36,7 +36,7 @@ types MAAManager_Retrain_FP3
 				datacontext = "[GetMenAtArmsType('zupin_warrior')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_zupin_warrior').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_zupin_warrior').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'zupin_warrior')]"
@@ -49,7 +49,7 @@ types MAAManager_Retrain_FP3
 				datacontext = "[GetMenAtArmsType('tawashi')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_tawashi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_tawashi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'tawashi')]"

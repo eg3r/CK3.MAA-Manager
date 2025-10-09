@@ -27,7 +27,7 @@ types MAAManager_Retrain_FP1
 				datacontext = "[GetMenAtArmsType('vigmen')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_vigmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_vigmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'vigmen')]"
@@ -40,7 +40,7 @@ types MAAManager_Retrain_FP1
 				datacontext = "[GetMenAtArmsType('bondi')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_bondi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_bondi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'bondi')]"
@@ -53,7 +53,7 @@ types MAAManager_Retrain_FP1
 				datacontext = "[GetMenAtArmsType('varangian_veterans')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_varangian_veterans').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_varangian_veterans').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'varangian_veterans')]"
@@ -66,7 +66,7 @@ types MAAManager_Retrain_FP1
 				datacontext = "[GetMenAtArmsType('jomsviking_pirates')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_jomsviking_pirates').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_jomsviking_pirates').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'jomsviking_pirates')]"

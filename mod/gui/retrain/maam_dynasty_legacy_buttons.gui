@@ -25,7 +25,7 @@ types MAAManager_Retrain_DynastyLegacy
 				datacontext = "[GetMenAtArmsType('house_guard')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_house_guard').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_house_guard').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'house_guard')]"
@@ -38,7 +38,7 @@ types MAAManager_Retrain_DynastyLegacy
 				datacontext = "[GetMenAtArmsType('asawira')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_asawira').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_asawira').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'asawira')]"

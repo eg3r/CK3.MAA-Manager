@@ -31,7 +31,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_archers')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_archers')]"
@@ -44,7 +44,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_skirmishers')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_skirmishers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_skirmishers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_skirmishers')]"
@@ -57,7 +57,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_pikes')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_pikes').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_pikes').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_pikes')]"
@@ -70,7 +70,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_outriders')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_outriders').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_outriders').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_outriders')]"
@@ -83,7 +83,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_vanguards')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_vanguards').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_vanguards').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_vanguards')]"
@@ -96,7 +96,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_lancers')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_lancers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_lancers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_lancers')]"
@@ -109,7 +109,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_crossbowers')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_crossbowers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_crossbowers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_crossbowers')]"
@@ -122,7 +122,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_cameliers')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_cameliers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_cameliers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_cameliers')]"
@@ -135,7 +135,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_elephantiers')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_elephantiers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_elephantiers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_elephantiers')]"
@@ -148,7 +148,7 @@ types MAAManager_Retrain_Accolade
 				datacontext = "[GetMenAtArmsType('accolade_maa_horse_archers')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[GetScriptedGui('maa_manager_can_show_horse_archers_retinue').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_horse_archers_retinue').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_horse_archers')]"
