@@ -669,38 +669,69 @@ maa_manager_can_recruit_horse_archers_retinue = {
 	}
 }
 
-maa_manager_can_recruit_teutonic_knights = {
-	always = no
-}
+######################################################
+# BYZANTINE/LEGACY OF ROME (EP3) MAA TYPES
+######################################################
 
 maa_manager_can_recruit_ayrudzi = {
-	always = no
+	# Requires Armenian cultural tradition: unlock_maa_ayrudzi
+	culture = {
+		has_cultural_parameter = unlock_maa_ayrudzi
+	}
 }
 
 maa_manager_can_recruit_conrois = {
-	always = no
+	# Requires French/Norman cultural tradition: unlock_maa_conrois
+	culture = {
+		has_cultural_parameter = unlock_maa_conrois
+	}
 }
 
 maa_manager_can_recruit_akritai = {
-	always = no
+	# Requires Byzantine cultural tradition: unlock_maa_akritai
+	culture = {
+		has_cultural_parameter = unlock_maa_akritai
+	}
 }
 
 maa_manager_can_recruit_ballistrai = {
-	always = no
+	# Requires Byzantine cultural tradition: unlock_maa_ballistrai
+	culture = {
+		has_cultural_parameter = unlock_maa_ballistrai
+	}
 }
 
 maa_manager_can_recruit_skoutatoi = {
-	always = no
+	# Requires Byzantine cultural tradition: unlock_maa_skoutatoi
+	culture = {
+		has_cultural_parameter = unlock_maa_skoutatoi
+	}
 }
 
 maa_manager_can_recruit_varangian_guards = {
-	always = no
+	# Requires founded Varangian Guard (Byzantine special)
+	# Note: This is a title-specific check, may not work in retrain context
+	# TODO: Investigate proper scope for title check
+	exists = primary_title
+	primary_title = {
+		has_variable = founded_varangian_guard
+	}
 }
 
 maa_manager_can_recruit_handpicked_faithful = {
-	always = no
+	# Requires landless adventurer domicile with specific parameter
+	# Note: This check requires domicile system (Landless Adventurers DLC)
+	exists = domicile
+	domicile = {
+		has_domicile_parameter = camp_unlocks_handpicked_faithful_maa_type
+	}
 }
 
+######################################################
+# BLOCKED EP3 MAA TYPES (Not Recruitable)
+######################################################
+
+# Outcast/Adventurer MAA - NOT player-recruitable
 maa_manager_can_recruit_maa_bandits = {
 	always = no
 }
@@ -717,20 +748,40 @@ maa_manager_can_recruit_maa_thieves = {
 	always = no
 }
 
-maa_manager_can_recruit_torch_bearers = {
+maa_manager_can_recruit_teutonic_knights = {
 	always = no
+}
+
+######################################################
+# NOMADIC (MPO) MAA TYPES
+######################################################
+
+maa_manager_can_recruit_torch_bearers = {
+	# Siege weapon for nomadic government
+	government_has_flag = government_is_nomadic
 }
 
 maa_manager_can_recruit_kheshig = {
-	always = no
+	# Requires dynasty with mpo_nomad_legacy_3 perk (max 1 regiment)
+	dynasty ?= {
+		has_dynasty_perk = mpo_nomad_legacy_3
+	}
 }
 
 maa_manager_can_recruit_steppe_raiders = {
-	always = no
+	# Basic nomadic MAA - requires nomadic government
+	# From game file: mpo_can_recruit_nomad_maa_trigger
+	government_has_flag = government_is_nomadic
 }
 
 maa_manager_can_recruit_heavy_horse_archers = {
-	always = no
+	# Requires nomadic government + domicile unlock
+	# From game file: mpo_can_recruit_nomad_maa_trigger + domicile check
+	government_has_flag = government_is_nomadic
+	exists = domicile
+	domicile = {
+		has_domicile_parameter = unlock_maa_heavy_horse_archers
+	}
 }
 
 ######################################################
@@ -794,24 +845,36 @@ maa_manager_can_recruit_tawashi = {
 	}
 }
 
-######################################################
-# NOMADIC (MPO) MAA TYPES
-######################################################
 maa_manager_can_recruit_nomad_lancers = {
-	always = no
+	# Requires nomadic government + heavy cavalry unlock (realm law)
+	# From game file: mpo_can_recruit_nomad_heavy_cavalry_maa_trigger
+	government_has_flag = government_is_nomadic
+	has_realm_law_flag = unlock_maa_nomad_lancers
 }
 
 maa_manager_can_recruit_mangudai = {
-	always = no
+	# Requires Mongolic cultural tradition: unlock_maa_mangudai
+	culture = {
+		has_cultural_parameter = unlock_maa_mangudai
+	}
 }
 
-######################################################
-# BYZANTINE (EP3) MAA TYPES
-######################################################
 maa_manager_can_recruit_cataphract_archers = {
-	always = no
+	# Requires cultural tradition + either non-nomadic OR has dominance
+	culture = {
+		has_cultural_parameter = unlock_maa_cataphract_archers
+	}
+	OR = {
+		NOT = {
+			government_has_flag = government_is_nomadic
+		}
+		has_realm_law_flag = unlock_maa_nomad_lancers
+	}
 }
 
 maa_manager_can_recruit_maturkan_warriors = {
-	always = no
+	# Requires Caucasian cultural tradition: unlock_maa_maturkan_warriors
+	culture = {
+		has_cultural_parameter = unlock_maa_maturkan_warriors
+	}
 }

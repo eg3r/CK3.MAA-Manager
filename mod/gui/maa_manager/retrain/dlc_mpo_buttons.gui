@@ -1,16 +1,20 @@
 ######################################################
-# MAA Manager - Retrain Tab - DLC MPO (More Patria & Oceania) Nomadic MAA Buttons
+# MAA Manager - Retrain Tab - DLC MPO (Roads to Power) Nomadic MAA Buttons
 #
-# Contains 5 nomadic MAA types from the MPO DLC
-# All require nomadic government and specific innovations
+# Contains 8 nomadic MAA types from the MPO DLC
+# All require nomadic government and/or specific traditions
 #
-# Status: ✅ COMPLETE - All 5 types ready for in-game testing
+# Status: ✅ COMPLETE - All 8 types ready for in-game testing
 #
 # Types:
-# - mangudai: Heavy cavalry with powerful horse archer bonuses
-# - nomad_lancers: Fast mounted lancers
-# - kheshig: Elite bodyguard cavalry
-# - steppe_raiders: Raiding-focused light cavalry
+# - torch_bearers: Nomadic siege weapon
+# - kheshig: Elite dynasty legacy bodyguard (max 1 regiment)
+# - steppe_raiders: Basic nomadic light cavalry
+# - heavy_horse_archers: Heavy archer cavalry with domicile unlock
+# - nomad_lancers: Heavy cavalry with realm law unlock
+# - mangudai: Mongolic tradition archer cavalry
+# - cataphract_archers: Steppe tradition heavy cavalry
+# - maturkan_warriors: Caucasian tradition archers
 ######################################################
 
 types MAAManager_Retrain_MPO
@@ -72,6 +76,62 @@ types MAAManager_Retrain_MPO
 			}
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'steppe_raiders')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Torch Bearers (Nomadic Siege Weapon)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('torch_bearers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_torch_bearers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'torch_bearers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Heavy Horse Archers (Nomadic + Domicile)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('heavy_horse_archers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_heavy_horse_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'heavy_horse_archers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Cataphract Archers (Steppe Tradition)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('cataphract_archers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_cataphract_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'cataphract_archers')]"
+				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Maturkan Warriors (Caucasian Tradition)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('maturkan_warriors')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[GetScriptedGui('maa_manager_can_show_maturkan_warriors').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'maturkan_warriors')]"
 				onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 		}
