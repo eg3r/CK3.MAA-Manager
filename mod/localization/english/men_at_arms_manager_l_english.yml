@@ -61,9 +61,10 @@
  MAA_MANAGER_RETRAIN_NEW_TYPE:0 "New type"
  MAA_MANAGER_RETRAIN_STACKS:0 "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount|0] [regiments|E]"
  MAA_MANAGER_RETRAIN_COST_BREAKDOWN:0 "Conversion Cost"
- MAA_MANAGER_RETRAIN_COST_PLACEHOLDER:0 "Cost calculation will be displayed here once backend scripting is implemented.\n\n#italic Formula: (Target Type Cost - Current Type Cost) × Number of Stacks#!"
+ MAA_MANAGER_RETRAIN_COST_PLACEHOLDER:0 "Cost calculation will be displayed here once backend scripting is implemented.\n\nFormula: (Target Type Cost - Current Type Cost) × Number of Stacks"
  MAA_MANAGER_RETRAIN_CONFIRM:0 "Retrain [men_at_arms|E]"
- MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP:0 "Convert this [regiment|E] to the selected type.\n\n#X Backend implementation required#!"
+ MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP:0 "Convert this [regiment|E] to the selected type.\n\nThis will destroy the current [regiment|E] and create a new one of the target type with the same number of stacks."
+ MAA_MANAGER_RETRAIN_SUCCESS:0 "[regiment|E] has been successfully retrained!"
  MAA_MANAGER_RETRAIN_WARNING:0 "⚠ This will permanently change the [regiment|E] type"
  MAA_MANAGER_RETRAIN_TYPE_UNAVAILABLE_TOOLTIP:0 "This [men_at_arms|E] type is #X not available#! to you.\n\n#italic Requirements not met:#! You need the appropriate [culture|E], [government|E] type, or [innovations|E] to recruit this unit type.\n\nCheck the unit's details for specific requirements."
  

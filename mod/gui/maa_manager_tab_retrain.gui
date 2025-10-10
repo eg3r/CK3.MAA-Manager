@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # Men-At-Arms Manager - Retrain Tab Component
 #
 # Contains the MAA type conversion interface for retraining regiments
@@ -294,14 +294,30 @@ types MAAManager_Tab_Retrain
 										margin = { 5 0 }
 									}
 
-									text_multi = {
-										text = "MAA_MANAGER_RETRAIN_COST_PLACEHOLDER"
+									# Cost Display
+									vbox = {
+										datacontext = "[GetPlayer]"
+										datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
 										layoutpolicy_horizontal = expanding
-										max_width = 400
-										default_format = "#weak"
-										align = center
+										spacing = 5
 										margin = { 8 5 }
-										using = Font_Size_Small
+
+										text_single = {
+											text = "[MenAtArmsType.GetCreationCostString(GetPlayer)]"
+											default_format = "#high"
+											align = center
+											layoutpolicy_horizontal = expanding
+											using = Font_Size_Small
+										}
+
+										text_single = {
+											datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+											raw_text = "Per stack × [Regiment.GetMAAChunkCount] stacks"
+											default_format = "#weak"
+											align = center
+											layoutpolicy_horizontal = expanding
+											using = Font_Size_Small
+										}
 									}
 								}
 
@@ -322,10 +338,9 @@ types MAAManager_Tab_Retrain
 										
 										text = "MAA_MANAGER_RETRAIN_CONFIRM"
 										
-										# TODO: Add scripted GUI effect for retraining
-										# onclick = "[GetScriptedGui('maa_manager_retrain_execute').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+										onclick = "[GetScriptedGui('maa_manager_execute_retrain').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 										
-										enabled = no  # Disabled until backend is implemented
+										enabled = yes
 										
 										tooltip = "MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP"
 									}
