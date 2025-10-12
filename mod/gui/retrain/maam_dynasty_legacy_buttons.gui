@@ -1,0 +1,50 @@
+﻿######################################################
+# MAA Manager - Retrain Tab - Dynasty Legacy MAA Buttons
+#
+# Contains 2 dynasty legacy MAA types
+# Unlocked through specific dynasty legacies (not DLC-gated)
+#
+# Status: ✅ COMPLETE - All 2 types ready for in-game testing
+#
+# Types:
+# - house_guard: Unlocked via Glory dynasty legacy
+# - asawira: Unlocked via specific Persian dynasty legacy
+######################################################
+
+types MAAManager_Retrain_DynastyLegacy
+{
+	type vbox_retrain_dynasty_legacy_buttons = vbox {
+		name = "retrain_dynasty_legacy_buttons"
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+		margin = { 0 0 }
+
+		# House Guard
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('house_guard')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_house_guard').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'house_guard')]"
+				onclick = "[GetScriptedGui('maam_set_target_house_guard').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Asawira
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('asawira')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_asawira').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'asawira')]"
+				onclick = "[GetScriptedGui('maam_set_target_asawira').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+	}
+}

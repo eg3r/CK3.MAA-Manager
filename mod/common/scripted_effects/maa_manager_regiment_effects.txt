@@ -1,0 +1,1349 @@
+﻿######################################################
+# MAA Manager - Regiment Tab Helper Effects
+######################################################
+######################################################
+# Store Selected Regiment Type
+# Scope: Regiment (the selected regiment)
+# Sets a scope value on ROOT character identifying the selected regiment's type
+# Also stores the recruitment cost for accurate retrain cost calculations
+# Used for finding other regiments of the same type to move troops to
+######################################################
+maa_manager_store_selected_type = {
+	ROOT = {
+		save_scope_value_as = {
+			name = maa_manager_selected_type
+			value = flag:_maa_manager_unset
+		}
+		# Default cost fallback
+		set_variable = {
+			name = maa_manager_source_cost
+			value = 150
+		}
+	}
+	# Base Regular MAA (11 types)
+	if = {
+		limit = {
+			is_maa_type = light_footmen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:light_footmen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = skirmisher_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = bowmen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:bowmen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = bowmen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = light_horsemen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:light_horsemen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = light_cavalry_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = pikemen_unit
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:pikemen_unit
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = pikemen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = armored_footmen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:armored_footmen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = heavy_infantry_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = armored_horsemen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:armored_horsemen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = heavy_cavalry_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = crossbowmen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:crossbowmen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = crossbowmen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = onager
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:onager
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = onager_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = mangonel
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:mangonel
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = mangonel_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = trebuchet
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:trebuchet
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = trebuchet_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = bombard
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:bombard
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = bombard_recruitment_cost
+			}
+		}
+	}
+	# Dynasty Legacy MAA
+	if = {
+		limit = {
+			is_maa_type = house_guard
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:house_guard
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 50
+			}
+		}
+	}
+	# Regional MAA (2 types)
+	if = {
+		limit = {
+			is_maa_type = camel_rider
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:camel_rider
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = camel_rider_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = war_elephant
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:war_elephant
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = war_elephant_recruitment_cost
+			}
+		}
+	}
+	# Cultural MAA (64 types)
+	if = {
+		limit = {
+			is_maa_type = abudrar
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:abudrar
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = abudrar_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = akritai
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:akritai
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = akritai_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = archers_of_the_nile
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:archers_of_the_nile
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = archers_of_the_nile_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = asawira
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:asawira
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = asawira_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = ayrudzi
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:ayrudzi
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = ayrudzi_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = ayyar
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:ayyar
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = ayyar_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = ballistrai
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:ballistrai
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = ballistrai_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = bondi
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:bondi
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = bondi_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = bush_hunter
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:bush_hunter
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = bush_hunter_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = caballero
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:caballero
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = caballero_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = cataphract
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:cataphract
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = cataphract_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = cataphract_archers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:cataphract_archers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = cataphract_archers_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = chasseur
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:chasseur
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = chasseur_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = chu_ko_nu
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:chu_ko_nu
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = chu_ko_nu_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = conrois
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:conrois
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = conrois_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = druzhina
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:druzhina
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = druzhina_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = garudas
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:garudas
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = garudas_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = gendarme
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:gendarme
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = gendarme_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = goedendag
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:goedendag
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = goedendag_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = guanch_vaulter
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:guanch_vaulter
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = guanch_vaulter_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = guinea_warrior
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:guinea_warrior
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = guinea_warrior_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = handpicked_faithful
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:handpicked_faithful
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = handpicked_faithful_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = heavy_horse_archers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:heavy_horse_archers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = heavy_horse_archers_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = hobelar
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:hobelar
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = hobelar_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = horn_warrior
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:horn_warrior
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = horn_warrior_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = horse_archers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:horse_archers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = horse_archers_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = huscarl
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:huscarl
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = huscarls_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = hussar
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:hussar
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = hussar_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = jomsviking_pirates
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:jomsviking_pirates
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = jomsviking_pirates_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = khandayat
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:khandayat
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = khandayat_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = kheshig
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:kheshig
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = kheshig_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = landsknecht
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:landsknecht
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = landsknecht_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = longbowmen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:longbowmen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = longbowmen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = mangudai
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:mangudai
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = mangudai_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = maturkan_warriors
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:maturkan_warriors
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = maturkan_warriors_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = metsanvartija
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:metsanvartija
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = metsanvartija_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = monaspa
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:monaspa
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = monaspa_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = mountaineer
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:mountaineer
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = mountaineer_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = mubarizun
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:mubarizun
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = mubarizun_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = mulaththamun
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:mulaththamun
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = mulaththamun_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = nomad_lancers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:nomad_lancers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = nomad_lancers_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = paiks
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:paiks
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = paiks_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = palace_guards
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:palace_guards
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = palace_guards_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = picchieri
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:picchieri
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = picchieri_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = praetorian
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:praetorian
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = praetorian_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = sahel_horsemen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:sahel_horsemen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = sahel_rider_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = sarawit
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:sarawit
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = sarawit_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = schiltron
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:schiltron
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = schiltron_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = shomer
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:shomer
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = shomer_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = skoutatoi
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:skoutatoi
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = skoutatoi_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = steppe_raiders
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:steppe_raiders
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = steppe_raiders_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = tarkhan
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:tarkhan
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 150
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = tawashi
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:tawashi
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = tawashi_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = teutonic_knights
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:teutonic_knights
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 150
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = torch_bearers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:torch_bearers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = torch_bearers_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = varangian_guards
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:varangian_guards
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = varangian_guards_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = varangian_veterans
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:varangian_veterans
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = varangian_veterans_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = vigmen
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:vigmen
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = vigmen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = zbrojnosh
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:zbrojnosh
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = zbrojnosh_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = zupin_warrior
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:zupin_warrior
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 150
+			}
+		}
+	}
+	# Event Troops (4 types)
+	if = {
+		limit = {
+			is_maa_type = maa_bandits
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:maa_bandits
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 150
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = maa_marauders
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:maa_marauders
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 150
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = maa_poachers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:maa_poachers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 150
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = maa_thieves
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:maa_thieves
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = 150
+			}
+		}
+	}
+	# Accolade MAA (10 types)
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_archers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_archers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_bowmen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_skirmishers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_skirmishers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_skirmisher_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_pikes
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_pikes
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_pikemen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_outriders
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_outriders
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_light_cavalry_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_vanguards
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_vanguards
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_heavy_infantry_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_lancers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_lancers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_heavy_cavalry_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_crossbowers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_crossbowers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_crossbowmen_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_cameliers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_cameliers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_camel_rider_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_elephantiers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_elephantiers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_war_elephant_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = accolade_maa_horse_archers
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:accolade_maa_horse_archers
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = accolade_horse_archers_recruitment_cost
+			}
+		}
+	}
+}

@@ -7,7 +7,6 @@
 # 3. Adjust transfer amount (buttons appear in control panel)
 # 4. Confirm or Reset (executes transfer or returns to step 2)
 ######################################################
-
 ######################################################
 # Data Initialization
 ######################################################
@@ -15,7 +14,6 @@ maa_manager_data_create = {
 	scope = character
 	effect = {
 		debug_log = "MAA Manager: Initializing data..."
-		
 		# Clear any previous data
 		clear_variable_list = maa_regiment_list
 		clear_variable_list = maa_move_target_list
@@ -26,14 +24,11 @@ maa_manager_data_create = {
 		}
 		remove_global_variable = maa_manager_move_has_targets
 		
-		# Ensure we have the selected regiment scope variable
-		if = {
-			limit = { NOT = { has_variable = maa_manager_selected_regiment_scope } }
-			set_variable = {
-				name = maa_manager_selected_regiment_scope
-				value = ROOT
-			}
-		}
+		# Clear retrain-specific variables to ensure clean state
+		remove_variable = maa_manager_selected_regiment_scope
+		remove_variable = maa_manager_retrain_target_type
+		remove_variable = maa_manager_target_cost
+		remove_variable = maa_manager_source_cost
 		
 		# Collect all MAA regiments
 		every_maa_regiment = {
@@ -44,7 +39,6 @@ maa_manager_data_create = {
 				}
 			}
 		}
-		
 		debug_log = "MAA Manager: Data initialization complete."
 	}
 }
@@ -56,38 +50,35 @@ maa_manager_select_regiment = {
 	scope = character
 	effect = {
 		debug_log = "MAA Manager: Selecting source regiment..."
-		
 		# Clear target selection and move targets when selecting new source
 		clear_variable_list = maa_move_target_list
 		remove_global_variable = maa_manager_move_has_targets
-		
 		# Clear target selection by removing the saved scope
 		if = {
-			limit = { has_variable = maa_manager_selected_target_scope }
+			limit = {
+				has_variable = maa_manager_selected_target_scope
+			}
 			remove_variable = maa_manager_selected_target_scope
 		}
-		
 		# Clear any planned transfers
 		if = {
-			limit = { has_variable = maa_total_planned_transfers }
+			limit = {
+				has_variable = maa_total_planned_transfers
+			}
 			remove_variable = maa_total_planned_transfers
 		}
-		
 		# Save the selected source regiment
 		scope:regiment = {
 			save_scope_as = maa_manager_selected_regiment
-			
 			# Calculate stack size for this MAA type (max_troops / num_stacks)
 			save_temporary_scope_value_as = {
 				name = regiment_max_troops
 				value = maa_max_troops_count
 			}
-			
 			save_temporary_scope_value_as = {
 				name = regiment_num_stacks
 				value = maa_size
 			}
-			
 			save_temporary_scope_value_as = {
 				name = regiment_stack_size
 				value = {
@@ -95,13 +86,11 @@ maa_manager_select_regiment = {
 					divide = scope:regiment_num_stacks
 				}
 			}
-			
 			ROOT = {
 				set_variable = {
 					name = maa_manager_selected_regiment_scope
 					value = scope:regiment
 				}
-				
 				# Store stack size for GUI display and script use
 				set_variable = {
 					name = maa_stack_size
@@ -110,12 +99,13 @@ maa_manager_select_regiment = {
 			}
 			maa_manager_store_selected_type = yes
 		}
-		
 		# Build the list of compatible target regiments
 		every_maa_regiment = {
 			if = {
 				limit = {
-					NOT = { this = scope:maa_manager_selected_regiment }
+					NOT = {
+						this = scope:maa_manager_selected_regiment
+					}
 					maa_manager_type_matches_selection = yes
 				}
 				ROOT = {
@@ -130,7 +120,6 @@ maa_manager_select_regiment = {
 				}
 			}
 		}
-		
 		debug_log = "MAA Manager: Source selected, targets built."
 	}
 }
@@ -140,18 +129,14 @@ maa_manager_select_regiment = {
 ######################################################
 maa_manager_select_target = {
 	scope = character
-
 	is_shown = {
 		always = yes
 	}
-	
 	is_valid = {
 		always = yes
 	}
-	
 	effect = {
 		debug_log = "MAA Manager: Selecting target regiment..."
-		
 		# Store the selected target regiment as a scope variable
 		scope:target_regiment = {
 			ROOT = {
@@ -160,7 +145,6 @@ maa_manager_select_target = {
 					value = scope:target_regiment
 				}
 			}
-			
 			# Calculate and store target TROOP capacity
 			save_temporary_scope_value_as = {
 				name = target_capacity
@@ -169,20 +153,17 @@ maa_manager_select_target = {
 					subtract = maa_current_troops_count
 				}
 			}
-			
 			ROOT = {
 				set_variable = {
 					name = maa_target_capacity
 					value = scope:target_capacity
 				}
 			}
-			
 			# Calculate and store target REGIMENT capacity (max stacks)
 			save_temporary_scope_value_as = {
 				name = target_regiment_capacity
 				value = maa_size
 			}
-			
 			ROOT = {
 				set_variable = {
 					name = maa_target_regiment_capacity
@@ -190,28 +171,27 @@ maa_manager_select_target = {
 				}
 			}
 		}
-		
 		# Reset any existing transfer amounts when selecting a new target
 		if = {
-			limit = { has_variable = maa_total_planned_transfers }
+			limit = {
+				has_variable = maa_total_planned_transfers
+			}
 			remove_variable = maa_total_planned_transfers
 		}
-		
 		if = {
-			limit = { has_variable = maa_total_planned_regiment_transfers }
+			limit = {
+				has_variable = maa_total_planned_regiment_transfers
+			}
 			remove_variable = maa_total_planned_regiment_transfers
 		}
-		
 		set_variable = {
 			name = maa_total_planned_transfers
 			value = 0
 		}
-		
 		set_variable = {
 			name = maa_total_planned_regiment_transfers
 			value = 0
 		}
-		
 		debug_log = "MAA Manager: Target selected, ready for amount adjustment."
 	}
 }
@@ -219,49 +199,44 @@ maa_manager_select_target = {
 ######################################################
 # Step 3: Adjust Transfer Amount
 ######################################################
-
 # Increase transfer by 100
 maa_manager_increase_transfer = {
 	scope = character
-	
 	is_shown = {
 		always = yes
 	}
-	
 	is_valid = {
 		always = yes
 	}
-	
 	effect = {
 		debug_log = "MAA Manager: Increasing transfer amount..."
-		
 		# Initialize if needed
 		if = {
-			limit = { NOT = { has_variable = maa_total_planned_transfers } }
+			limit = {
+				NOT = {
+					has_variable = maa_total_planned_transfers
+				}
+			}
 			set_variable = {
 				name = maa_total_planned_transfers
 				value = 0
 			}
 		}
-		
 		# Get available troops from source and recalculate stack size
 		var:maa_manager_selected_regiment_scope = {
 			save_temporary_scope_value_as = {
 				name = source_current_troops
 				value = maa_current_troops_count
 			}
-			
 			# Recalculate stack size in case MAA size changed
 			save_temporary_scope_value_as = {
 				name = source_max_troops
 				value = maa_max_troops_count
 			}
-			
 			save_temporary_scope_value_as = {
 				name = source_num_stacks
 				value = maa_size
 			}
-			
 			save_temporary_scope_value_as = {
 				name = maa_stack_size
 				value = {
@@ -269,7 +244,6 @@ maa_manager_increase_transfer = {
 					divide = scope:source_num_stacks
 				}
 			}
-			
 			# Update stored stack size for GUI
 			ROOT = {
 				set_variable = {
@@ -278,7 +252,6 @@ maa_manager_increase_transfer = {
 				}
 			}
 		}
-		
 		# Get target capacity (max - current size in troops)
 		var:maa_manager_selected_target_scope = {
 			save_temporary_scope_value_as = {
@@ -290,17 +263,15 @@ maa_manager_increase_transfer = {
 				value = maa_current_troops_count
 			}
 		}
-		
 		# Calculate target remaining capacity (considering already planned transfers)
 		save_temporary_scope_value_as = {
 			name = target_remaining_capacity
 			value = {
 				value = scope:target_max_size
 				subtract = scope:target_current_size
-				subtract = var:maa_total_planned_transfers  # Account for already planned transfers!
+				subtract = var:maa_total_planned_transfers				# Account for already planned transfers!
 			}
 		}
-		
 		# Store TOTAL target capacity for GUI display (not the remaining after planned)
 		set_variable = {
 			name = maa_target_capacity
@@ -309,7 +280,6 @@ maa_manager_increase_transfer = {
 				subtract = scope:target_current_size
 			}
 		}
-		
 		# Calculate how much we can still transfer from source
 		save_temporary_scope_value_as = {
 			name = source_remaining_available
@@ -318,44 +288,43 @@ maa_manager_increase_transfer = {
 				subtract = var:maa_total_planned_transfers
 			}
 		}
-		
 		# The actual limit is the minimum of source available and target capacity
 		save_temporary_scope_value_as = {
 			name = transfer_limit
 			value = scope:source_remaining_available
 		}
-		
 		if = {
-			limit = { scope:target_remaining_capacity < scope:transfer_limit }
+			limit = {
+				scope:target_remaining_capacity < scope:transfer_limit
+			}
 			save_temporary_scope_value_as = {
 				name = transfer_limit
 				value = scope:target_remaining_capacity
 			}
 		}
-		
 		# Increase by stack_size or whatever is available (whichever is less)
 		if = {
-			limit = { scope:transfer_limit > 0 }
-			
+			limit = {
+				scope:transfer_limit > 0
+			}
 			# Determine how much to actually add (use dynamic stack size)
 			save_temporary_scope_value_as = {
 				name = amount_to_add
 				value = scope:maa_stack_size
 			}
-			
 			if = {
-				limit = { scope:transfer_limit < scope:maa_stack_size }
+				limit = {
+					scope:transfer_limit < scope:maa_stack_size
+				}
 				save_temporary_scope_value_as = {
 					name = amount_to_add
 					value = scope:transfer_limit
 				}
 			}
-			
 			change_variable = {
 				name = maa_total_planned_transfers
 				add = scope:amount_to_add
 			}
-			
 			debug_log = "MAA Manager: Increased transfer amount."
 		}
 		else = {
@@ -367,30 +336,24 @@ maa_manager_increase_transfer = {
 # Decrease transfer by 100
 maa_manager_decrease_transfer = {
 	scope = character
-	
 	is_shown = {
 		always = yes
 	}
-	
 	is_valid = {
 		always = yes
 	}
-	
 	effect = {
 		debug_log = "MAA Manager: Decreasing transfer amount..."
-		
 		# Recalculate stack size in case MAA size changed
 		var:maa_manager_selected_regiment_scope = {
 			save_temporary_scope_value_as = {
 				name = source_max_troops
 				value = maa_max_troops_count
 			}
-			
 			save_temporary_scope_value_as = {
 				name = source_num_stacks
 				value = maa_size
 			}
-			
 			save_temporary_scope_value_as = {
 				name = maa_stack_size
 				value = {
@@ -398,7 +361,6 @@ maa_manager_decrease_transfer = {
 					divide = scope:source_num_stacks
 				}
 			}
-			
 			# Update stored stack size for GUI
 			ROOT = {
 				set_variable = {
@@ -407,33 +369,30 @@ maa_manager_decrease_transfer = {
 				}
 			}
 		}
-		
 		# Only decrease if we have something to decrease
 		if = {
 			limit = {
 				has_variable = maa_total_planned_transfers
 				var:maa_total_planned_transfers > 0
 			}
-			
 			# Decrease by stack_size or whatever is currently planned (whichever is less)
 			save_temporary_scope_value_as = {
 				name = amount_to_subtract
 				value = scope:maa_stack_size
 			}
-			
 			if = {
-				limit = { var:maa_total_planned_transfers < scope:maa_stack_size }
+				limit = {
+					var:maa_total_planned_transfers < scope:maa_stack_size
+				}
 				save_temporary_scope_value_as = {
 					name = amount_to_subtract
 					value = var:maa_total_planned_transfers
 				}
 			}
-			
 			change_variable = {
 				name = maa_total_planned_transfers
 				subtract = scope:amount_to_subtract
 			}
-			
 			debug_log = "MAA Manager: Decreased transfer amount."
 		}
 		else = {
@@ -445,18 +404,14 @@ maa_manager_decrease_transfer = {
 # Transfer all available troops
 maa_manager_transfer_all = {
 	scope = character
-	
 	is_shown = {
 		always = yes
 	}
-	
 	is_valid = {
 		always = yes
 	}
-	
 	effect = {
 		debug_log = "MAA Manager: Setting transfer to ALL available..."
-		
 		# Get all available troops from source
 		var:maa_manager_selected_regiment_scope = {
 			save_temporary_scope_value_as = {
@@ -464,7 +419,6 @@ maa_manager_transfer_all = {
 				value = maa_current_troops_count
 			}
 		}
-		
 		# Get target capacity
 		var:maa_manager_selected_target_scope = {
 			save_temporary_scope_value_as = {
@@ -476,7 +430,6 @@ maa_manager_transfer_all = {
 				value = maa_current_troops_count
 			}
 		}
-		
 		# Calculate target remaining capacity
 		save_temporary_scope_value_as = {
 			name = target_remaining_capacity
@@ -485,84 +438,76 @@ maa_manager_transfer_all = {
 				subtract = scope:target_current_size
 			}
 		}
-		
 		# Store target capacity for GUI display
 		set_variable = {
 			name = maa_target_capacity
 			value = scope:target_remaining_capacity
 		}
-		
 		# Set planned transfer to minimum of source available and target capacity
 		save_temporary_scope_value_as = {
 			name = actual_transfer_amount
 			value = scope:source_all_troops
 		}
-		
 		if = {
-			limit = { scope:target_remaining_capacity < scope:actual_transfer_amount }
+			limit = {
+				scope:target_remaining_capacity < scope:actual_transfer_amount
+			}
 			save_temporary_scope_value_as = {
 				name = actual_transfer_amount
 				value = scope:target_remaining_capacity
 			}
 		}
-		
 		set_variable = {
 			name = maa_total_planned_transfers
 			value = scope:actual_transfer_amount
 		}
-		
 		debug_log = "MAA Manager: Set to transfer maximum allowed."
 	}
 }
 
-
 ######################################################
 # Step 4: Confirm or Reset
 ######################################################
-
 # Reset - Returns to target selection (step 2)
 maa_manager_reset_transfers = {
 	scope = character
-	
 	is_shown = {
 		always = yes
 	}
-	
 	is_valid = {
 		always = yes
 	}
-	
 	effect = {
 		debug_log = "MAA Manager: Resetting transfers..."
-		
 		# Clear the troop transfer amount
 		if = {
-			limit = { has_variable = maa_total_planned_transfers }
+			limit = {
+				has_variable = maa_total_planned_transfers
+			}
 			remove_variable = maa_total_planned_transfers
 		}
-		
 		# Clear the regiment transfer amount
 		if = {
-			limit = { has_variable = maa_total_planned_regiment_transfers }
+			limit = {
+				has_variable = maa_total_planned_regiment_transfers
+			}
 			remove_variable = maa_total_planned_regiment_transfers
 		}
-		
 		set_variable = {
 			name = maa_total_planned_transfers
 			value = 0
 		}
-		
 		set_variable = {
 			name = maa_total_planned_regiment_transfers
 			value = 0
 		}
-		
 		# Clear target selection - returns to step 2
 		if = {
-			limit = { has_variable = maa_manager_selected_target_scope }
+			limit = {
+				has_variable = maa_manager_selected_target_scope
+			}
 			remove_variable = maa_manager_selected_target_scope
 		}
-		
 		debug_log = "MAA Manager: Reset complete, returned to target selection."
 	}
 }
@@ -570,18 +515,14 @@ maa_manager_reset_transfers = {
 # Confirm - Executes BOTH troop and regiment transfers
 maa_manager_confirm_transfers = {
 	scope = character
-	
 	is_shown = {
 		always = yes
 	}
-	
 	is_valid = {
 		always = yes
 	}
-	
 	effect = {
 		debug_log = "MAA Manager: Confirming transfers..."
-		
 		# Execute TROOP transfer if valid
 		if = {
 			limit = {
@@ -590,14 +531,11 @@ maa_manager_confirm_transfers = {
 				has_variable = maa_total_planned_transfers
 				var:maa_total_planned_transfers > 0
 			}
-			
 			debug_log = "MAA Manager: Executing troop transfer..."
-			
 			save_temporary_scope_value_as = {
 				name = troop_transfer_amount
 				value = var:maa_total_planned_transfers
 			}
-			
 			# Execute the troop transfer
 			var:maa_manager_selected_regiment_scope = {
 				change_maa_troops_count = {
@@ -605,14 +543,11 @@ maa_manager_confirm_transfers = {
 					multiply = -1
 				}
 			}
-			
 			var:maa_manager_selected_target_scope = {
 				change_maa_troops_count = scope:troop_transfer_amount
 			}
-			
 			debug_log = "MAA Manager: Troop transfer executed!"
 		}
-		
 		# Execute REGIMENT transfer if valid
 		if = {
 			limit = {
@@ -621,14 +556,11 @@ maa_manager_confirm_transfers = {
 				has_variable = maa_total_planned_regiment_transfers
 				var:maa_total_planned_regiment_transfers > 0
 			}
-			
 			debug_log = "MAA Manager: Executing regiment transfer..."
-			
 			save_temporary_scope_value_as = {
 				name = regiment_transfer_amount
 				value = var:maa_total_planned_regiment_transfers
 			}
-			
 			# Check if source will be depleted
 			save_temporary_scope_value_as = {
 				name = source_remaining
@@ -637,11 +569,12 @@ maa_manager_confirm_transfers = {
 					subtract = scope:regiment_transfer_amount
 				}
 			}
-			
 			# Execute the regiment transfer on source
 			var:maa_manager_selected_regiment_scope = {
 				if = {
-					limit = { scope:source_remaining <= 0 }
+					limit = {
+						scope:source_remaining <= 0
+					}
 					# Destroy source regiment if depleted
 					destroy_maa_regiment = yes
 					debug_log = "MAA Manager: Source regiment destroyed (no stacks remaining)"
@@ -663,7 +596,6 @@ maa_manager_confirm_transfers = {
 					debug_log = "MAA Manager: Reduced source regiment by [scope:regiment_transfer_amount] stacks"
 				}
 			}
-			
 			# Increase target regiment stacks
 			var:maa_manager_selected_target_scope = {
 				change_maa_regiment_size = {
@@ -672,35 +604,39 @@ maa_manager_confirm_transfers = {
 				}
 				debug_log = "MAA Manager: Increased target regiment by [scope:regiment_transfer_amount] stacks"
 			}
-			
 			debug_log = "MAA Manager: Regiment transfer executed!"
 		}
-		
 		# Clear all data after successful transfers
 		if = {
-			limit = { has_variable = maa_total_planned_transfers }
+			limit = {
+				has_variable = maa_total_planned_transfers
+			}
 			remove_variable = maa_total_planned_transfers
 		}
-		
 		if = {
-			limit = { has_variable = maa_total_planned_regiment_transfers }
+			limit = {
+				has_variable = maa_total_planned_regiment_transfers
+			}
 			remove_variable = maa_total_planned_regiment_transfers
 		}
-		
 		if = {
-			limit = { has_variable = maa_manager_selected_target_scope }
+			limit = {
+				has_variable = maa_manager_selected_target_scope
+			}
 			remove_variable = maa_manager_selected_target_scope
 		}
-		
 		# Refresh data to show new state
 		maa_manager_data_create_effect = yes
-		
 		# Reselect the source regiment if it still exists
 		if = {
-			limit = { has_variable = maa_manager_selected_regiment_scope }
+			limit = {
+				has_variable = maa_manager_selected_regiment_scope
+			}
 			var:maa_manager_selected_regiment_scope = {
 				if = {
-					limit = { maa_current_troops_count > 0 }
+					limit = {
+						maa_current_troops_count > 0
+					}
 					save_temporary_scope_as = regiment
 					ROOT = {
 						maa_manager_select_regiment_effect = yes
@@ -708,7 +644,6 @@ maa_manager_confirm_transfers = {
 				}
 			}
 		}
-		
 		debug_log = "MAA Manager: All transfers confirmed and complete."
 	}
 }
@@ -717,7 +652,6 @@ maa_manager_confirm_transfers = {
 # IMMEDIATE REGIMENT STACK TRANSFERS
 # These execute instantly without confirmation
 ######################################################
-
 ######################################################
 # Transfer 1 Regiment FROM Source TO Target (immediate) - Internal Effect
 ######################################################
@@ -725,24 +659,24 @@ maa_manager_transfer_regiment_to_target_effect = {
 	scope = character
 	effect = {
 		debug_log = "MAA Manager: Transferring 1 regiment from source to target..."
-		
 		# Validate we have both regiments selected
 		if = {
 			limit = {
 				has_variable = maa_manager_selected_regiment_scope
 				has_variable = maa_manager_selected_target_scope
 			}
-			
 			# Check if target can accept more stacks
 			var:maa_manager_selected_target_scope = {
 				if = {
-					limit = { can_upgrade_maa = yes }
-					
+					limit = {
+						can_upgrade_maa = yes
+					}
 					# Target can accept, now check source
 					ROOT.var:maa_manager_selected_regiment_scope = {
 						if = {
-							limit = { maa_size > 1 }
-							
+							limit = {
+								maa_size > 1
+							}
 							# Source has more than 1 stack, proceed with transfer
 							# Greedy approach: Transfer full stack size (max soldiers per stack)
 							ROOT = {
@@ -766,27 +700,24 @@ maa_manager_transfer_regiment_to_target_effect = {
 									name = temp_full_stack_size
 									divide = var:temp_source_stacks
 								}
-								
 								debug_log = "MAA Manager: Source regiment transfer starting (greedy full stack approach)"
-								
 								# Calculate how many soldiers to actually transfer (full stack or what's available)
 								set_variable = {
 									name = temp_soldiers_to_transfer
 									value = var:temp_full_stack_size
 								}
-								
 								# If we don't have enough soldiers for a full stack, transfer what we have
 								if = {
-									limit = { var:temp_source_current < var:temp_full_stack_size }
+									limit = {
+										var:temp_source_current < var:temp_full_stack_size
+									}
 									set_variable = {
 										name = temp_soldiers_to_transfer
 										value = var:temp_source_current
 									}
 								}
-								
 								debug_log = "MAA Manager: Calculated transfer amount"
 							}
-							
 							# Remove soldiers from source (using ROOT's variable, make it negative)
 							ROOT = {
 								set_variable = {
@@ -804,7 +735,6 @@ maa_manager_transfer_regiment_to_target_effect = {
 								reinforce = no
 							}
 							debug_log = "MAA Manager: Removed 1 stack from source"
-							
 							# Add to target: increase size FIRST to expand capacity
 							ROOT.var:maa_manager_selected_target_scope = {
 								# Add 1 stack to target FIRST (to expand max capacity)
@@ -813,12 +743,10 @@ maa_manager_transfer_regiment_to_target_effect = {
 									reinforce = no
 								}
 								debug_log = "MAA Manager: Added 1 stack to target (expanded capacity)"
-								
 								# Then add soldiers (now there's room for them)
 								change_maa_troops_count = ROOT.var:temp_soldiers_to_transfer
 								debug_log = "MAA Manager: Added soldiers to target"
 							}
-							
 							ROOT = {
 								# Clean up temp variables
 								remove_variable = temp_source_max
@@ -831,18 +759,17 @@ maa_manager_transfer_regiment_to_target_effect = {
 							}
 						}
 						else_if = {
-							limit = { maa_size = 1 }
-							
+							limit = {
+								maa_size = 1
+							}
 							# Source has exactly 1 stack - transfer and destroy
 							# (User already confirmed by clicking the warning button in GUI)
 							# IMPORTANT: Must do everything in ROOT scope before destroying
-							
 							# Save soldier count before destroying
 							save_temporary_scope_value_as = {
 								name = final_soldiers
 								value = maa_current_troops_count
 							}
-							
 							ROOT = {
 								var:maa_manager_selected_target_scope = {
 									change_maa_regiment_size = {
@@ -852,14 +779,11 @@ maa_manager_transfer_regiment_to_target_effect = {
 									change_maa_troops_count = scope:final_soldiers
 									debug_log = "MAA Manager: Added final stack and all soldiers to target"
 								}
-								
 								var:maa_manager_selected_regiment_scope = {
 									destroy_maa_regiment = yes
 									# Regiment is now destroyed, don't access it anymore
 								}
-								
 								debug_log = "MAA Manager: Destroyed source regiment (was last stack)"
-								
 								# Clear source selection since it no longer exists
 								remove_variable = maa_manager_selected_regiment_scope
 								maa_manager_data_create_effect = yes
@@ -885,24 +809,24 @@ maa_manager_transfer_regiment_from_target_effect = {
 	scope = character
 	effect = {
 		debug_log = "MAA Manager: Transferring 1 regiment from target to source..."
-		
 		# Validate we have both regiments selected
 		if = {
 			limit = {
 				has_variable = maa_manager_selected_regiment_scope
 				has_variable = maa_manager_selected_target_scope
 			}
-			
 			# Check if source can accept more stacks
 			var:maa_manager_selected_regiment_scope = {
 				if = {
-					limit = { can_upgrade_maa = yes }
-					
+					limit = {
+						can_upgrade_maa = yes
+					}
 					# Source can accept, now check target
 					ROOT.var:maa_manager_selected_target_scope = {
 						if = {
-							limit = { maa_size > 1 }
-							
+							limit = {
+								maa_size > 1
+							}
 							# Target has more than 1 stack, proceed with transfer
 							# Greedy approach: Transfer full stack size (max soldiers per stack)
 							ROOT = {
@@ -926,27 +850,24 @@ maa_manager_transfer_regiment_from_target_effect = {
 									name = temp_full_stack_size
 									divide = var:temp_target_stacks
 								}
-								
 								debug_log = "MAA Manager: Target regiment transfer starting (greedy full stack approach)"
-								
 								# Calculate how many soldiers to actually transfer (full stack or what's available)
 								set_variable = {
 									name = temp_soldiers_to_transfer
 									value = var:temp_full_stack_size
 								}
-								
 								# If we don't have enough soldiers for a full stack, transfer what we have
 								if = {
-									limit = { var:temp_target_current < var:temp_full_stack_size }
+									limit = {
+										var:temp_target_current < var:temp_full_stack_size
+									}
 									set_variable = {
 										name = temp_soldiers_to_transfer
 										value = var:temp_target_current
 									}
 								}
-								
 								debug_log = "MAA Manager: Calculated transfer amount"
 							}
-							
 							# Remove soldiers from target (using ROOT's variable, make it negative)
 							ROOT = {
 								set_variable = {
@@ -959,14 +880,12 @@ maa_manager_transfer_regiment_from_target_effect = {
 							}
 							change_maa_troops_count = ROOT.var:temp_negative_soldiers
 							debug_log = "MAA Manager: Removed soldiers from target"
-							
 							# Remove 1 stack from target
 							change_maa_regiment_size = {
 								size = -1
 								reinforce = no
 							}
 							debug_log = "MAA Manager: Removed 1 stack from target"
-							
 							# Add to source: increase size FIRST to expand capacity
 							ROOT.var:maa_manager_selected_regiment_scope = {
 								# Add 1 stack to source FIRST (to expand max capacity)
@@ -975,12 +894,10 @@ maa_manager_transfer_regiment_from_target_effect = {
 									reinforce = no
 								}
 								debug_log = "MAA Manager: Added 1 stack to source (expanded capacity)"
-								
 								# Then add soldiers (now there's room for them)
 								change_maa_troops_count = ROOT.var:temp_soldiers_to_transfer
 								debug_log = "MAA Manager: Added soldiers to source"
 							}
-							
 							ROOT = {
 								# Clean up temp variables
 								remove_variable = temp_target_max
@@ -993,18 +910,17 @@ maa_manager_transfer_regiment_from_target_effect = {
 							}
 						}
 						else_if = {
-							limit = { maa_size = 1 }
-							
+							limit = {
+								maa_size = 1
+							}
 							# Target has exactly 1 stack - transfer and destroy
 							# (User already confirmed by clicking the warning button in GUI)
 							# IMPORTANT: Must do everything in ROOT scope before destroying
-							
 							# Save soldier count before destroying
 							save_temporary_scope_value_as = {
 								name = final_soldiers
 								value = maa_current_troops_count
 							}
-							
 							ROOT = {
 								var:maa_manager_selected_regiment_scope = {
 									change_maa_regiment_size = {
@@ -1014,14 +930,11 @@ maa_manager_transfer_regiment_from_target_effect = {
 									change_maa_troops_count = scope:final_soldiers
 									debug_log = "MAA Manager: Added final stack and all soldiers to source"
 								}
-								
 								var:maa_manager_selected_target_scope = {
 									destroy_maa_regiment = yes
 									# Regiment is now destroyed, don't access it anymore
 								}
-								
 								debug_log = "MAA Manager: Destroyed target regiment (was last stack)"
-								
 								# Clear target selection since it no longer exists
 								remove_variable = maa_manager_selected_target_scope
 								maa_manager_data_create_effect = yes
@@ -1037,5 +950,517 @@ maa_manager_transfer_regiment_from_target_effect = {
 		else = {
 			debug_log = "MAA Manager: Missing source or target regiment"
 		}
+	}
+}
+
+######################################################
+# Retrain Regiment
+######################################################
+maa_manager_execute_retrain = {
+	scope = character
+	is_shown = {
+		has_variable = maa_manager_selected_regiment_scope
+		has_variable = maa_manager_retrain_target_type
+		
+		# Verify the source variable actually points to a regiment in our list
+		var:maa_manager_selected_regiment_scope = {
+			is_target_in_variable_list = {
+				name = maa_regiment_list
+				target = this
+			}
+		}
+	}
+	is_valid = {
+		has_variable = maa_manager_selected_regiment_scope
+		has_variable = maa_manager_retrain_target_type
+		
+		# NOTE: List validation removed from is_valid - doesn't work reliably in this context
+		# Still validated in is_shown and effect safety check
+		
+		# Check if player has enough of the appropriate resource
+		# Tribal: prestige, Others: gold
+		OR = {
+			AND = {
+				has_government = tribal_government
+				prestige >= maa_manager_retrain_prestige_cost
+			}
+			AND = {
+				NOT = { has_government = tribal_government }
+				gold >= maa_manager_retrain_gold_cost
+			}
+		}
+	}
+	effect = {
+		debug_log = "MAA Manager: Executing retrain..."
+		debug_log_scopes = yes
+		
+		# Safety check: Verify source regiment is valid
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = maa_manager_selected_regiment_scope }
+					NOT = { has_variable = maa_manager_retrain_target_type }
+					NOT = {
+						var:maa_manager_selected_regiment_scope = {
+							is_target_in_variable_list = {
+								name = maa_regiment_list
+								target = this
+							}
+						}
+					}
+				}
+			}
+			debug_log = "MAA Manager: ERROR - Invalid source regiment or missing target type!"
+			debug_log = "MAA Manager: Aborting retrain execution."
+			return_hidden_effect = yes
+		}
+		
+		# Deduct cost based on government type
+		if = {
+			limit = { has_government = tribal_government }
+			# Tribal pays in prestige (need to negate the value)
+			add_prestige = {
+				value = maa_manager_retrain_prestige_cost
+				multiply = -1.0
+			}
+		}
+		else = {
+			# Feudal/Clan/Nomadic pay in gold
+			remove_short_term_gold = maa_manager_retrain_gold_cost
+		}
+		
+		# Save the source regiment and capture its size
+		var:maa_manager_selected_regiment_scope = {
+			save_scope_as = source_regiment
+		}
+
+		# Store source size in local variable (survives regiment destruction)
+		set_local_variable = {
+			name = temp_retrain_size
+			value = scope:source_regiment.maa_size
+		}
+
+		# Destroy the old regiment FIRST (prevents random_maa_regiment confusion)
+		scope:source_regiment = {
+			destroy_maa_regiment = yes
+		}
+
+		# Create new regiment based on the stored retrain target type flag
+		# Use giant if/else chain to match flag to type name
+		
+		# Base Game Regular MAA
+		if = {
+			limit = { var:maa_manager_retrain_target_type = flag:light_footmen }
+			create_maa_regiment = { type = light_footmen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:bowmen }
+			create_maa_regiment = { type = bowmen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:light_horsemen }
+			create_maa_regiment = { type = light_horsemen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:pikemen_unit }
+			create_maa_regiment = { type = pikemen_unit check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:armored_footmen }
+			create_maa_regiment = { type = armored_footmen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:armored_horsemen }
+			create_maa_regiment = { type = armored_horsemen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:crossbowmen }
+			create_maa_regiment = { type = crossbowmen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:onager }
+			create_maa_regiment = { type = onager check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:mangonel }
+			create_maa_regiment = { type = mangonel check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:trebuchet }
+			create_maa_regiment = { type = trebuchet check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:bombard }
+			create_maa_regiment = { type = bombard check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:house_guard }
+			create_maa_regiment = { type = house_guard check_can_recruit = no size = 1 }
+		}
+		
+		# Regional MAA
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:camel_rider }
+			create_maa_regiment = { type = camel_rider check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:war_elephant }
+			create_maa_regiment = { type = war_elephant check_can_recruit = no size = 1 }
+		}
+		
+		# Cultural MAA (88 total - adding all of them)
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:abudrar }
+			create_maa_regiment = { type = abudrar check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:akritai }
+			create_maa_regiment = { type = akritai check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:archers_of_the_nile }
+			create_maa_regiment = { type = archers_of_the_nile check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:asawira }
+			create_maa_regiment = { type = asawira check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:ayrudzi }
+			create_maa_regiment = { type = ayrudzi check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:ayyar }
+			create_maa_regiment = { type = ayyar check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:ballistrai }
+			create_maa_regiment = { type = ballistrai check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:bondi }
+			create_maa_regiment = { type = bondi check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:bush_hunter }
+			create_maa_regiment = { type = bush_hunter check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:caballero }
+			create_maa_regiment = { type = caballero check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:cataphract }
+			create_maa_regiment = { type = cataphract check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:cataphract_archers }
+			create_maa_regiment = { type = cataphract_archers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:chasseur }
+			create_maa_regiment = { type = chasseur check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:chu_ko_nu }
+			create_maa_regiment = { type = chu_ko_nu check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:conrois }
+			create_maa_regiment = { type = conrois check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:druzhina }
+			create_maa_regiment = { type = druzhina check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:garudas }
+			create_maa_regiment = { type = garudas check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:gendarme }
+			create_maa_regiment = { type = gendarme check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:goedendag }
+			create_maa_regiment = { type = goedendag check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:guanch_vaulter }
+			create_maa_regiment = { type = guanch_vaulter check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:guinea_warrior }
+			create_maa_regiment = { type = guinea_warrior check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:handpicked_faithful }
+			create_maa_regiment = { type = handpicked_faithful check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:heavy_horse_archers }
+			create_maa_regiment = { type = heavy_horse_archers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:hobelar }
+			create_maa_regiment = { type = hobelar check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:horn_warrior }
+			create_maa_regiment = { type = horn_warrior check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:horse_archers }
+			create_maa_regiment = { type = horse_archers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:huscarl }
+			create_maa_regiment = { type = huscarl check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:hussar }
+			create_maa_regiment = { type = hussar check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:jomsviking_pirates }
+			create_maa_regiment = { type = jomsviking_pirates check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:khandayat }
+			create_maa_regiment = { type = khandayat check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:kheshig }
+			create_maa_regiment = { type = kheshig check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:landsknecht }
+			create_maa_regiment = { type = landsknecht check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:longbowmen }
+			create_maa_regiment = { type = longbowmen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:maa_bandits }
+			create_maa_regiment = { type = maa_bandits check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:maa_marauders }
+			create_maa_regiment = { type = maa_marauders check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:maa_poachers }
+			create_maa_regiment = { type = maa_poachers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:maa_thieves }
+			create_maa_regiment = { type = maa_thieves check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:mangudai }
+			create_maa_regiment = { type = mangudai check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:maturkan_warriors }
+			create_maa_regiment = { type = maturkan_warriors check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:metsanvartija }
+			create_maa_regiment = { type = metsanvartija check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:monaspa }
+			create_maa_regiment = { type = monaspa check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:mountaineer }
+			create_maa_regiment = { type = mountaineer check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:mubarizun }
+			create_maa_regiment = { type = mubarizun check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:mulaththamun }
+			create_maa_regiment = { type = mulaththamun check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:nomad_lancers }
+			create_maa_regiment = { type = nomad_lancers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:paiks }
+			create_maa_regiment = { type = paiks check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:palace_guards }
+			create_maa_regiment = { type = palace_guards check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:picchieri }
+			create_maa_regiment = { type = picchieri check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:praetorian }
+			create_maa_regiment = { type = praetorian check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:sahel_horsemen }
+			create_maa_regiment = { type = sahel_horsemen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:sarawit }
+			create_maa_regiment = { type = sarawit check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:schiltron }
+			create_maa_regiment = { type = schiltron check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:shomer }
+			create_maa_regiment = { type = shomer check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:skoutatoi }
+			create_maa_regiment = { type = skoutatoi check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:steppe_raiders }
+			create_maa_regiment = { type = steppe_raiders check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:tarkhan }
+			create_maa_regiment = { type = tarkhan check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:tawashi }
+			create_maa_regiment = { type = tawashi check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:teutonic_knights }
+			create_maa_regiment = { type = teutonic_knights check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:torch_bearers }
+			create_maa_regiment = { type = torch_bearers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:varangian_guards }
+			create_maa_regiment = { type = varangian_guards check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:varangian_veterans }
+			create_maa_regiment = { type = varangian_veterans check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:vigmen }
+			create_maa_regiment = { type = vigmen check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:zbrojnosh }
+			create_maa_regiment = { type = zbrojnosh check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:zupin_warrior }
+			create_maa_regiment = { type = zupin_warrior check_can_recruit = no size = 1 }
+		}
+		
+		# Accolade MAA
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_archers }
+			create_maa_regiment = { type = accolade_maa_archers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_skirmishers }
+			create_maa_regiment = { type = accolade_maa_skirmishers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_pikes }
+			create_maa_regiment = { type = accolade_maa_pikes check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_outriders }
+			create_maa_regiment = { type = accolade_maa_outriders check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_vanguards }
+			create_maa_regiment = { type = accolade_maa_vanguards check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_lancers }
+			create_maa_regiment = { type = accolade_maa_lancers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_crossbowers }
+			create_maa_regiment = { type = accolade_maa_crossbowers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_cameliers }
+			create_maa_regiment = { type = accolade_maa_cameliers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_elephantiers }
+			create_maa_regiment = { type = accolade_maa_elephantiers check_can_recruit = no size = 1 }
+		}
+		else_if = {
+			limit = { var:maa_manager_retrain_target_type = flag:accolade_maa_horse_archers }
+			create_maa_regiment = { type = accolade_maa_horse_archers check_can_recruit = no size = 1 }
+		}
+		
+		# init loop counter
+		set_local_variable = {
+			name = current_value
+			value = 1
+		}
+
+		# find the newly created regiment and save it
+		# Use type filter to ensure we get the correct regiment
+		random_maa_regiment = {
+			limit = {
+				maa_size = 1
+				maa_manager_type_matches_retrain_target = yes
+			}
+			save_scope_as = new_regiment
+		}
+
+		# create the remaining number of stacks with loop (already have 1)
+		# Only proceed if we successfully found the new regiment
+		if = {
+			limit = { exists = scope:new_regiment }
+			
+			while = {
+				limit = {
+					local_var:current_value < local_var:temp_retrain_size
+				}
+
+				scope:new_regiment = {
+					change_maa_regiment_size = {
+						size = 1
+						reinforce = yes
+					}
+				}
+
+				# inc the counter
+				change_local_variable = {
+					name = current_value
+					add = 1
+				}
+			}
+		}
+		else = {
+			debug_log = "MAA Manager: ERROR - Could not find newly created regiment!"
+		}
+
+		# Clear variables
+		remove_variable = maa_manager_selected_regiment_scope
+		remove_variable = maa_manager_retrain_target_type
+		remove_variable = maa_manager_target_cost
+		remove_variable = maa_manager_source_cost
+
+		# Refresh data (this will also clear variables again via maa_manager_data_create_effect)
+		maa_manager_data_create_effect = yes
+		
+		debug_log = "MAA Manager: Retrain complete - all variables cleared"
 	}
 }

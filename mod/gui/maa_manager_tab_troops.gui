@@ -1,0 +1,296 @@
+﻿######################################################
+# Men-At-Arms Manager - Troops Tab Component
+#
+# Contains the troop transfer interface for moving individual soldiers
+# between regiments of the same MAA type.
+######################################################
+
+types MAAManager_Tab_Troops
+{
+	type vbox_maa_manager_tab_troops = vbox {
+		name = "tab_troops_content"
+		visible = "[VariableSystem.HasValue('maa_manager_tab', 'troops')]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		spacing = 10
+
+		using = Animation_Tab_Switch
+
+		# Instructions
+		text_label_center = {
+			text = "MAA_MANAGER_TROOPS_INSTRUCTIONS"
+			layoutpolicy_horizontal = expanding
+			default_format = "#weak"
+			margin = { 10 5 }
+		}
+
+		######################################################
+		# Target Regiment Selection
+		######################################################
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 5
+
+			scrollbox = {
+				name = "troops_target_scrollbox"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				scrollbarpolicy_horizontal = always_off
+
+				blockoverride "scrollbox_content" {
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						spacing = 10
+						margin = { 0 5 }
+
+						# Empty state - shown when no targets
+						vbox = {
+							visible = "[Not(GetGlobalVariable('maa_manager_move_has_targets').IsSet)]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 8
+
+							expand = {}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								
+								expand = {}
+								
+								icon = {
+									size = { 60 60 }
+									texture = "gfx/interface/icons/symbols/icon_cross.dds"
+									alpha = 0.5
+								}
+								
+								expand = {}
+							}
+
+							text_multi = {
+								text = "MAA_MANAGER_NO_MOVE_TARGETS"
+								layoutpolicy_horizontal = expanding
+								max_width = 350
+								default_format = "#weak"
+								align = center
+							}
+
+							expand = {}
+						}
+
+						# Target list - shown when targets exist
+						fixedgridbox = {
+							visible = "[GetGlobalVariable('maa_manager_move_has_targets').IsSet]"
+							datamodel = "[GetPlayer.MakeScope.GetList('maa_move_target_list')]"
+							layoutpolicy_horizontal = expanding
+							flipdirection = yes
+							datamodel_wrap = 4
+							addcolumn = 169
+							addrow = 93
+
+							item = {
+								container_maan_target_selection_item = {
+									datacontext = "[Scope.Regiment]"
+								}
+							}
+						}
+
+						expand = {}
+					}
+				}
+			}
+		}
+
+		######################################################
+		# Troop Transfer Controls
+		######################################################
+		vbox = {
+			name = "troops_transfer_panel"
+			visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet]"
+			layoutpolicy_horizontal = expanding
+			spacing = 15
+			margin = { 15 15 }
+			
+			background = {
+				using = Background_Area_Dark
+				alpha = 0.8
+			}
+
+			# Header
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				
+				icon = {
+					size = { 32 32 }
+					texture = "gfx/interface/icons/icon_soldier.dds"
+				}
+				
+				text_single = {
+					text = "MAA_MANAGER_TRANSFER_TROOPS_TITLE"
+					default_format = "#high"
+					align = left|nobaseline
+					margin_left = 8
+					using = Font_Size_Big
+				}
+
+				expand = {}
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			# Stats Display - Improved Layout
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+				margin = { 5 0 }
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 15
+
+					# Available Troops
+					vbox = {
+						spacing = 3
+
+						text_single = {
+							text = "MAA_MANAGER_AVAILABLE_TO_TRANSFER"
+							default_format = "#weak"
+							using = Font_Size_Small
+						}
+
+						text_single = {
+							datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+							text = "[Regiment.BuildCurrentRegimentCountString]"
+							default_format = "#high"
+							using = Font_Size_Medium
+							tooltip = "MAA_MANAGER_AVAILABLE_TOOLTIP"
+						}
+					}
+
+					expand = {}
+
+					# Transfer Buttons - Inline with numbers
+					hbox = {
+						spacing = 5
+
+						# Decrease button (arrow left)
+						button_round = {
+							size = { 36 36 }
+							tooltip = "MAA_MANAGER_DECREASE_TRANSFER_TOOLTIP"
+							enabled = "[GreaterThan_int32(GetPlayer.MakeScope.Var('maa_total_planned_transfers').GetValue, '(int32)0')]"
+							onclick = "[GetScriptedGui('maa_manager_decrease_transfer').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+
+							button_back = {
+								parentanchor = center
+								size = { 25 25 }
+								alwaystransparent = yes
+							}
+						}
+
+						# Stack size display
+						widget = {
+							size = { 60 36 }
+
+							background = {
+								using = Background_Area
+							}
+
+							text_single = {
+								parentanchor = center
+								raw_text = "[GetPlayer.MakeScope.Var('maa_stack_size').GetValue|100]"
+								default_format = "#high"
+								using = Font_Size_Medium
+							}
+						}
+
+						# Increase button (arrow right)
+						button_round = {
+							size = { 36 36 }
+							tooltip = "MAA_MANAGER_INCREASE_TRANSFER_TOOLTIP"
+							enabled = "[And(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet), LessThan_int32(GetPlayer.MakeScope.Var('maa_total_planned_transfers').GetValue, GetPlayer.MakeScope.Var('maa_target_capacity').GetValue))]"
+							onclick = "[GetScriptedGui('maa_manager_increase_transfer').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+
+							button_forward = {
+								parentanchor = center
+								size = { 25 25 }
+								alwaystransparent = yes
+							}
+						}
+
+						spacer = {
+							size = { 10 0 }
+						}
+
+						# Transfer All button
+						button_standard = {
+							text = "MAA_MANAGER_TRANSFER_ALL"
+							tooltip = "MAA_MANAGER_TRANSFER_ALL_TOOLTIP"
+							enabled = "[And(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet), GreaterThan_int32(GetPlayer.MakeScope.Var('maa_target_capacity').GetValue, '(int32)0'))]"
+							onclick = "[GetScriptedGui('maa_manager_transfer_all').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+							size = { 130 36 }
+							
+							default_format = "#high"
+						}
+					}
+
+					expand = {}
+
+					# Current Transfer
+					vbox = {
+						spacing = 3
+
+						text_single = {
+							text = "MAA_MANAGER_CURRENT_TRANSFER"
+							default_format = "#weak"
+							using = Font_Size_Small
+						}
+
+						text_single = {
+							raw_text = "[GetPlayer.MakeScope.Var('maa_total_planned_transfers').GetValue|0] / [GetPlayer.MakeScope.Var('maa_target_capacity').GetValue|0]"
+							default_format = "#P"
+							using = Font_Size_Medium
+							tooltip = "MAA_MANAGER_CURRENT_TOOLTIP"
+						}
+					}
+				}
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			# Action Buttons
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+
+				button_standard = {
+					name = "reset_troops"
+					layoutpolicy_horizontal = expanding
+					tooltip = "MAA_MANAGER_RESET_TOOLTIP"
+					onclick = "[GetScriptedGui('maa_manager_reset_transfers').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+
+					button_clear = {
+						parentanchor = center
+						alwaystransparent = yes
+					}
+				}
+				
+				button_primary = {
+					name = "confirm_troops"
+					layoutpolicy_horizontal = expanding
+					tooltip = "MAA_MANAGER_CONFIRM_TOOLTIP"
+					onclick = "[GetScriptedGui('maa_manager_confirm_transfers').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+					
+					button_army_reorganize = {
+						parentanchor = center
+						alwaystransparent = yes
+					}
+				}
+			}
+		}
+	}
+}

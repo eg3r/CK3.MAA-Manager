@@ -1,0 +1,144 @@
+﻿######################################################
+# MAA Manager - Script Values
+# Dynamic calculations for costs and other numeric values
+######################################################
+
+######################################################
+# Retrain Gold Cost Calculation
+# Formula: max(Target Cost - Source Cost, 10) × Stacks
+# For FEUDAL/CLAN governments (gold payment)
+# For NOMADIC governments (gold payment for non-horde MAA)
+# The minimum of 10 gold is applied PER STACK before multiplication
+# Scope: Character
+# Requires: maa_manager_selected_regiment_scope variable
+# Optional: maa_manager_target_cost and maa_manager_source_cost (fallback to 150 if not set)
+#
+# Note: Target and source costs are calculated and stored when user selects types
+# This approach works for ALL MAA types including nomadic/tribal without hardcoding
+# Falls back to 150 gold (standard MAA cost) if specific costs aren't calculated yet
+######################################################
+maa_manager_retrain_gold_cost = {
+	value = 0
+	
+	# Only apply gold cost if NOT tribal government
+	if = {
+		limit = { 
+			has_variable = maa_manager_selected_regiment_scope
+			NOT = { has_government = tribal_government }
+		}
+		
+		# Calculate per-stack cost: (target - source), minimum 10
+		# Store target cost (or use fallback)
+		if = {
+			limit = { has_variable = maa_manager_target_cost }
+			add = var:maa_manager_target_cost
+		}
+		else = {
+			add = 150  # Default fallback
+		}
+		
+		# Subtract source cost (or use fallback)
+		if = {
+			limit = { has_variable = maa_manager_source_cost }
+			subtract = var:maa_manager_source_cost
+		}
+		else = {
+			subtract = 150  # Default fallback
+		}
+				
+		# Multiply by number of stacks
+		multiply = var:maa_manager_selected_regiment_scope.maa_size
+
+		# Apply minimum of 10 gold per stack
+		min = 10
+	}
+}
+
+######################################################
+# Retrain Per-Stack Cost Calculation
+# Formula: max(Target Cost - Source Cost, 10)
+# Shows the cost per individual stack before multiplication
+# Applies government-specific multipliers:
+#   - Tribal: 2x (prestige instead of gold)
+#   - Feudal/Clan/Nomadic: 1x (gold)
+# Used for tooltip breakdown display
+# Scope: Character
+######################################################
+maa_manager_retrain_per_stack_cost = {
+	value = 0
+	
+	# Calculate per-stack cost: (target - source), minimum 10
+	# Add target cost (or use fallback)
+	if = {
+		limit = { has_variable = maa_manager_target_cost }
+		add = var:maa_manager_target_cost
+	}
+	else = {
+		add = 150  # Default fallback
+	}
+	
+	# Subtract source cost (or use fallback)
+	if = {
+		limit = { has_variable = maa_manager_source_cost }
+		subtract = var:maa_manager_source_cost
+	}
+	else = {
+		subtract = 150  # Default fallback
+	}
+	
+	# Apply minimum of 10 per stack
+	min = 10
+	
+	# Apply tribal 2x multiplier (they pay in prestige, which costs 2x)
+	if = {
+		limit = { has_government = tribal_government }
+		multiply = 2.0
+	}
+}
+
+######################################################
+# Retrain Prestige Cost Calculation  
+# Formula: max(Target Cost - Source Cost, 10) × Stacks × 2
+# For TRIBAL governments only (they pay 2x in prestige)
+# Returns 0 for non-tribal governments
+# Scope: Character
+######################################################
+maa_manager_retrain_prestige_cost = {
+	value = 0
+	
+	# Only apply prestige cost for tribal government
+	if = {
+		limit = { 
+			has_variable = maa_manager_selected_regiment_scope
+			has_government = tribal_government
+		}
+		
+		# Calculate per-stack cost: (target - source), minimum 10
+		# Add target cost (or use fallback)
+		if = {
+			limit = { has_variable = maa_manager_target_cost }
+			add = var:maa_manager_target_cost
+		}
+		else = {
+			add = 150  # Default fallback
+		}
+		
+		# Subtract source cost (or use fallback)
+		if = {
+			limit = { has_variable = maa_manager_source_cost }
+			subtract = var:maa_manager_source_cost
+		}
+		else = {
+			subtract = 150  # Default fallback
+		}
+		
+		# Apply minimum of 10 per stack
+		min = 10
+		
+		# Tribal pays 2x in prestige
+		multiply = 2
+		
+		# Multiply by number of stacks
+		multiply = var:maa_manager_selected_regiment_scope.maa_size
+	}
+}

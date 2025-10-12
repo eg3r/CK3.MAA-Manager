@@ -1,0 +1,22 @@
+﻿######################################################
+# Men-At-Arms Manager - Northern Lords (FP1) MAA Availability
+#
+# Scripted GUIs for Northern Lords DLC MAA types
+# Types: 4 types (vigmen, bondi, varangian_veterans, jomsviking_pirates)
+# Scope: Character (player)
+######################################################
+
+maa_manager_can_show_bondi = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_bondi = yes }
+}
+
+maa_manager_can_show_varangian_veterans = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_varangian_veterans = yes }
+}
+
+maa_manager_can_show_jomsviking_pirates = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_jomsviking_pirates = yes }
+}

@@ -1,0 +1,175 @@
+﻿######################################################
+# MAA Manager - Accolade MAA Recruitment Triggers
+#
+# Contains 10 accolade MAA types (00_accolade_maa_types.txt)
+# Unlocked through rank 3+ accolades with matching attributes
+# Only 1 regiment of each type allowed per character
+#
+# Types: archers, skirmishers, pikes, outriders, vanguards, lancers,
+#        crossbowers, cameliers, elephantiers, horse_archers_retinue
+######################################################
+
+maa_manager_can_recruit_archers = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_archers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:archer_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_skirmishers = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_skirmishers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:skirmisher_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_pikes = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_pikes
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:pike_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_outriders = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_outriders
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:outrider_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_vanguards = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_vanguards
+		}
+	}
+	# Check if has required accolade and not banned by culture
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:vanguard_attribute
+		}
+		accolade_rank >= 3
+	}
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_lancers = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_lancers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:lancer_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_crossbowers = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_crossbowers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:crossbowmen_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_cameliers = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_cameliers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:camelry_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_elephantiers = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_elephantiers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:elephantry_attribute
+		}
+		accolade_rank >= 3
+	}
+}
+
+maa_manager_can_recruit_horse_archers_retinue = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_horse_archers
+		}
+	}
+	# Check if has required accolade
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:horse_archer_attribute
+		}
+		accolade_rank >= 3
+	}
+}

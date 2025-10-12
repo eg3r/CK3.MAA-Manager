@@ -1,0 +1,501 @@
+﻿######################################################
+# Men-At-Arms Manager - Retrain Tab Component
+#
+# Contains the MAA type conversion interface for retraining regiments
+# to different unit types.
+######################################################
+
+types MAAManager_Tab_Retrain
+{
+	type vbox_maa_manager_tab_retrain = vbox {
+		name = "tab_retrain_content"
+		visible = "[VariableSystem.HasValue('maa_manager_tab', 'retrain')]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		spacing = 10
+
+		using = Animation_Tab_Switch
+
+		######################################################
+		# NO SOURCE SELECTED - Show hint message
+		######################################################
+		vbox = {
+			name = "no_source_message"
+			visible = "[Not(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet)]"
+
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 8
+
+			expand = {}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				
+				expand = {}
+				
+				icon = {
+					size = { 60 60 }
+					texture = "gfx/interface/icons/symbols/icon_cross.dds"
+					alpha = 0.5
+				}
+				
+				expand = {}
+			}
+
+			text_multi = {
+				text = "MAA_MANAGER_RETRAIN_NO_SOURCE_DESC"
+				layoutpolicy_horizontal = expanding
+				max_width = 350
+				default_format = "#weak"
+				align = center
+			}
+
+			expand = {}
+
+		}
+
+		######################################################
+		# MAIN RETRAIN INTERFACE - Only visible when source selected
+		######################################################
+		vbox = {
+			name = "retrain_interface"
+			visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 10
+
+			# Instructions
+			text_label_center = {
+				text = "MAA_MANAGER_RETRAIN_INSTRUCTIONS"
+				layoutpolicy_horizontal = expanding
+				default_format = "#weak"
+				margin = { 10 5 }
+			}
+
+			# Main Retrain Layout - Side by Side
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				spacing = 15
+
+				######################################################
+				# LEFT PANEL: Available MAA Types Selection
+				######################################################
+				vbox = {
+					name = "retrain_type_selection"
+					layoutpolicy_vertical = expanding
+					spacing = 5
+					minimumsize = { 350 0 }
+					maximumsize = { 350 -1 }
+
+					background = {
+						using = Background_Area
+						margin = { 5 5 }
+					}
+
+					text_label_center = {
+						text = "MAA_MANAGER_RETRAIN_SELECT_TYPE"
+						default_format = "#high"
+						margin = { 5 10 }
+					}
+
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+
+					# Scrollable list of available MAA types
+					scrollbox = {
+						name = "maa_types_scrollbox"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						scrollbarpolicy_horizontal = always_off
+
+						blockoverride "scrollbox_content" {
+							# Static list with individual visibility filtering for each MAA type
+							# Uses type defined in maa_filtered_types_list.gui
+							vbox_maa_filtered_list = {}
+						}
+					}
+				}
+
+				######################################################
+				# RIGHT PANEL: Conversion Details & Confirmation
+				######################################################
+				vbox = {
+					name = "retrain_details_panel"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					spacing = 5
+
+					background = {
+						using = Background_Area
+						margin = { 3 3 }
+					}
+
+					# Title
+					text_label_center = {
+						text = "MAA_MANAGER_RETRAIN_DETAILS"
+						default_format = "#high"
+						margin = { 5 5 }
+						using = Font_Size_Medium
+					}
+
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						scrollbarpolicy_horizontal = always_off
+
+						blockoverride "scrollbox_content" {
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								spacing = 8
+								margin = { 10 5 }
+
+								# Selection Status
+								vbox = {
+									visible = "[Not(VariableSystem.Exists('maa_manager_retrain_target_type'))]"
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+									spacing = 8
+
+									expand = {}
+
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										
+										expand = {}
+										
+										icon = {
+											size = { 60 60 }
+											texture = "gfx/interface/icons/symbols/icon_cross.dds"
+											alpha = 0.5
+										}
+										
+										expand = {}
+									}
+
+									text_multi = {
+										text = "MAA_MANAGER_RETRAIN_NO_SELECTION"
+										layoutpolicy_horizontal = expanding
+										autoresize = yes
+										max_width = 280
+										default_format = "#weak"
+										align = center
+										using = Font_Size_Small
+									}
+
+									expand = {}
+								}
+
+								# Conversion Preview (when target selected)
+								vbox = {
+									visible = "[VariableSystem.Exists('maa_manager_retrain_target_type')]"
+									layoutpolicy_horizontal = expanding
+									spacing = 8
+
+									# Source & Target Combined Section
+									vbox = {
+										visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet]"
+										layoutpolicy_horizontal = expanding
+										spacing = 5
+
+										background = {
+											using = Background_Area_Dark
+											alpha = 0.5
+											margin = { 3 3 }
+										}
+
+										# Current Type
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											spacing = 8
+											margin = { 8 5 }
+											margin_top = 8
+
+											text_single = {
+												text = "MAA_MANAGER_RETRAIN_CURRENT_TYPE"
+												default_format = "#weak"
+												using = Font_Size_Small
+												minimumsize = { 80 0 }
+											}
+
+											highlight_icon = {
+												datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+												size = { 35 35 }
+												texture = "[Regiment.GetMAAType.GetIcon]"
+											}
+
+											vbox = {
+												spacing = 0
+												layoutpolicy_horizontal = expanding
+
+												text_single = {
+													datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+													text = "[Regiment.GetMenAtArmsTypeNameNoTooltip]"
+													default_format = "#high"
+													using = Font_Size_Small
+												}
+
+												text_single = {
+													datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+													text = "MAA_MANAGER_RETRAIN_STACKS"
+													default_format = "#weak"
+													using = Font_Size_Small
+												}
+											}
+
+											expand = {}
+										}
+
+										divider_light = {
+											layoutpolicy_horizontal = expanding
+										}
+
+										# Arrow indicator
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											margin = { 0 2 }
+											
+											expand = {}
+											
+											icon = {
+												size = { 20 20 }
+												texture = "gfx/interface/icons/symbols/icon_arrow_down.dds"
+												alpha = 0.7
+											}
+											
+											expand = {}
+										}
+
+										# Target Type
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											spacing = 8
+											margin = { 8 5 }
+											margin_bottom = 8
+
+											text_single = {
+												text = "MAA_MANAGER_RETRAIN_TARGET_TYPE"
+												default_format = "#weak"
+												using = Font_Size_Small
+												minimumsize = { 80 0 }
+											}
+
+											icon = {
+												datacontext = "[GetPlayer]"
+												datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
+												size = { 35 35 }
+												texture = "[MenAtArmsType.GetIcon]"
+												tooltip = "RETRAIN_TO_MAA_TYPE_TOOLTIP"
+												using = tooltip_se
+											}
+
+											vbox = {
+												spacing = 0
+												layoutpolicy_horizontal = expanding
+
+												text_single = {
+													datacontext = "[GetPlayer]"
+													datacontext = "[GetMenAtArmsType(VariableSystem.Get('maa_manager_retrain_target_type'))]"
+													text = "[MenAtArmsType.GetName]"
+													default_format = "#P"
+													using = Font_Size_Small
+												}										text_single = {
+												text = "MAA_MANAGER_RETRAIN_NEW_TYPE"
+												default_format = "#weak"
+												using = Font_Size_Small
+											}
+										}
+
+										expand = {}
+										}
+									}
+
+									# Cost Calculation Section
+									vbox = {
+										visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet]"
+										layoutpolicy_horizontal = expanding
+										spacing = 5
+										margin = { 5 5 }
+
+										background = {
+											using = Background_Area_Dark
+											alpha = 0.3
+											margin = { 3 3 }
+										}
+
+										text_label_center = {
+											text = "MAA_MANAGER_RETRAIN_COST_BREAKDOWN"
+											default_format = "#high"
+											using = Font_Size_Small
+											margin_top = 5
+										}
+
+										divider_light = {
+											layoutpolicy_horizontal = expanding
+										}
+
+										# Cost Display
+										vbox = {
+											datacontext = "[GetPlayer]"
+											layoutpolicy_horizontal = expanding
+											spacing = 5
+											margin = { 8 5 }
+
+											# Cost display - shows gold OR prestige based on government
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												spacing = 5
+												tooltip = "MAA_MANAGER_RETRAIN_COST_TOOLTIP"
+												using = tooltip_se
+
+												text_single = {
+													text = "MAA_MANAGER_RETRAIN_COST_LABEL"
+													default_format = "#weak"
+													using = Font_Size_Small
+												}
+
+												expand = {}										
+												# Gold cost (feudal, clan, nomadic governments)
+												hbox = {
+													visible = "[Not(GetPlayer.GetGovernment.IsType('tribal_government'))]"
+													spacing = 3
+
+													icon = {
+														size = { 20 20 }
+														texture = "gfx/interface/icons/icon_gold.dds"
+													}
+
+													text_single = {
+														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_gold_cost')|0]"
+														default_format = "#high"
+														using = Font_Size_Small
+													}
+												}
+
+												# Prestige cost (tribal government)
+												hbox = {
+													visible = "[GetPlayer.GetGovernment.IsType('tribal_government')]"
+													spacing = 3
+
+													icon = {
+														size = { 20 20 }
+														texture = "gfx/interface/icons/currencies/icon_prestige_01.dds"
+													}
+
+													text_single = {
+														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_prestige_cost')|0]"
+														default_format = "#high"
+														using = Font_Size_Small
+													}
+												}
+											}
+										}
+									}								
+								
+									expand = {}
+
+									# Confirmation Button
+									vbox = {
+										visible = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, VariableSystem.Exists('maa_manager_retrain_target_type'))]"
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										margin_bottom = 8
+										margin = { 10 0 }
+
+										button_primary = {
+											name = "confirm_retrain"
+											size = { 270 38 }
+											
+											onclick = "[GetScriptedGui('maa_manager_execute_retrain').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+											enabled = "[GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+											tooltip = "[SelectLocalization(GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP', 'MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD')]"
+											
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												margin = { 10 0 }
+												spacing = 8
+												
+												expand = {}
+												
+												text_single = {
+													align = hcenter|top
+													text = "MAA_MANAGER_RETRAIN_CONFIRM"
+													using = Font_Size_Medium
+												}
+												
+												expand = {}
+												
+												# Gold cost (feudal, clan, nomadic governments)
+												hbox = {
+													visible = "[Not(GetPlayer.GetGovernment.IsType('tribal_government'))]"
+													spacing = 3
+													margin_right = 10
+													
+													icon = {
+														size = { 20 20 }
+														texture = "gfx/interface/icons/icon_gold.dds"
+													}
+													
+													text_single = {
+														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_gold_cost')|0]"
+														align = center|nobaseline
+														default_format = "#high"
+														using = Font_Size_Medium
+													}
+												}
+												
+												# Prestige cost (tribal government)
+												hbox = {
+													visible = "[GetPlayer.GetGovernment.IsType('tribal_government')]"
+													spacing = 3
+													margin_right = 10
+													
+													icon = {
+														size = { 20 20 }
+														texture = "gfx/interface/icons/currencies/icon_prestige_01.dds"
+													}
+													
+													text_single = {
+														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_prestige_cost')|0]"
+														align = center|nobaseline
+														default_format = "#high"
+														using = Font_Size_Medium
+													}
+												}
+											}
+										}									
+									
+										# Warning text with proper container
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											margin = { 0 3 }
+											
+											expand = {}
+											
+											text_single = {
+												text = "MAA_MANAGER_RETRAIN_WARNING"
+												default_format = "#X"
+												using = Font_Size_Small
+												max_width = 280
+												align = center
+											}
+											
+											expand = {}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} # Close retrain_interface vbox
+	}
+}

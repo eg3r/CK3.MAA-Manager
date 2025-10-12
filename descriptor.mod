@@ -1,5 +1,5 @@
 name="Men-At-Arms Manager"
-version="1.0.0"
+version="1.17.1"
 tags={
 	"Military"
 	"GUI"
@@ -7,7 +7,7 @@ tags={
 }
 supported_version="1.17.*"
 path="mod/MenAtArmsManager"
-remote_file_id="0"
+remote_file_id="3580440930"
 
 # Enhanced Men-At-Arms management interface for Crusader Kings III
 # Allows players to efficiently redistribute MAA units between armies

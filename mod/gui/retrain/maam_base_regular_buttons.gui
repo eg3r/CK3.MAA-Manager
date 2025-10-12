@@ -1,0 +1,188 @@
+﻿######################################################
+# MAA Manager - Retrain Tab - Base Game Regular MAA Buttons
+#
+# Contains the 12 core base game MAA types that are always available
+# (subject to innovation/government requirements)
+#
+# MAA Types (12):
+# - light_footmen, bowmen, light_horsemen, pikemen_unit
+# - armored_footmen, armored_horsemen, crossbowmen  
+# - onager, mangonel, trebuchet, bombard
+# - house_guard
+######################################################
+
+types MAAManager_Retrain_BaseRegular
+{
+	type vbox_retrain_regular_buttons = vbox {
+		name = "retrain_regular_buttons"
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+		margin = { 0 0 }
+
+		######################################################
+		# BASIC MAA (4 types) - Always available
+		######################################################
+
+		# Light Footmen
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('light_footmen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_light_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'light_footmen')]"
+				onclick = "[GetScriptedGui('maam_set_target_light_footmen').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Bowmen
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('bowmen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_bowmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'bowmen')]"
+				onclick = "[GetScriptedGui('maam_set_target_bowmen').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Light Horsemen
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('light_horsemen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_light_horsemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'light_horsemen')]"
+				onclick = "[GetScriptedGui('maam_set_target_light_horsemen').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Pikemen
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('pikemen_unit')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_pikemen_unit').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'pikemen_unit')]"
+				onclick = "[GetScriptedGui('maam_set_target_pikemen_unit').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# INNOVATION-GATED MAA (3 types)
+		######################################################
+
+		# Armored Footmen (requires innovation_quilted_armor)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('armored_footmen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_armored_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'armored_footmen')]"
+				onclick = "[GetScriptedGui('maam_set_target_armored_footmen').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Armored Horsemen (requires innovation_arched_saddle)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('armored_horsemen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_armored_horsemen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'armored_horsemen')]"
+				onclick = "[GetScriptedGui('maam_set_target_armored_horsemen').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Crossbowmen (requires innovation_advanced_bowmaking)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('crossbowmen')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_crossbowmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'crossbowmen')]"
+				onclick = "[GetScriptedGui('maam_set_target_crossbowmen').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		######################################################
+		# SIEGE WEAPONS (4 types) - Innovation-gated
+		######################################################
+
+		# Onager (Tier 1 - requires innovation_catapult)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('onager')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_onager').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'onager')]"
+				onclick = "[GetScriptedGui('maam_set_target_onager').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Mangonel (Tier 2 - requires innovation_mangonel)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('mangonel')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_mangonel').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'mangonel')]"
+				onclick = "[GetScriptedGui('maam_set_target_mangonel').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Trebuchet (Tier 3 - requires innovation_trebuchet)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('trebuchet')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_trebuchet').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'trebuchet')]"
+				onclick = "[GetScriptedGui('maam_set_target_trebuchet').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Bombard (Tier 4 - requires innovation_bombard)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('bombard')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_bombard').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'bombard')]"
+				onclick = "[GetScriptedGui('maam_set_target_bombard').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+	}
+}

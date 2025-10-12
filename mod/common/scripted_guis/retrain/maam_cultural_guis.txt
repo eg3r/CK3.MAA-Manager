@@ -1,0 +1,187 @@
+﻿######################################################
+# Men-At-Arms Manager - Cultural/Traditional MAA Availability
+#
+# Scripted GUIs for cultural and traditional MAA types
+# Types: 36 cultural types
+# Scope: Character (player)
+######################################################
+
+maa_manager_can_show_huscarl = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_huscarl = yes }
+}
+
+maa_manager_can_show_longbowmen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_longbowmen = yes }
+}
+
+maa_manager_can_show_cataphract = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_cataphract = yes }
+}
+
+maa_manager_can_show_monaspa = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_monaspa = yes }
+}
+
+maa_manager_can_show_metsanvartija = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_metsanvartija = yes }
+}
+
+maa_manager_can_show_gendarme = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_gendarme = yes }
+}
+
+maa_manager_can_show_hobelar = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_hobelar = yes }
+}
+
+maa_manager_can_show_ayyar = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_ayyar = yes }
+}
+
+maa_manager_can_show_druzhina = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_druzhina = yes }
+}
+
+maa_manager_can_show_mubarizun = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_mubarizun = yes }
+}
+
+maa_manager_can_show_sarawit = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_sarawit = yes }
+}
+
+maa_manager_can_show_landsknecht = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_landsknecht = yes }
+}
+
+maa_manager_can_show_goedendag = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_goedendag = yes }
+}
+
+maa_manager_can_show_chasseur = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_chasseur = yes }
+}
+
+maa_manager_can_show_picchieri = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_picchieri = yes }
+}
+
+maa_manager_can_show_praetorian = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_praetorian = yes }
+}
+
+maa_manager_can_show_caballero = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_caballero = yes }
+}
+
+maa_manager_can_show_schiltron = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_schiltron = yes }
+}
+
+maa_manager_can_show_mulaththamun = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_mulaththamun = yes }
+}
+
+maa_manager_can_show_archers_of_the_nile = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_archers_of_the_nile = yes }
+}
+
+maa_manager_can_show_paiks = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_paiks = yes }
+}
+
+maa_manager_can_show_hussar = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_hussar = yes }
+}
+
+maa_manager_can_show_horn_warrior = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_horn_warrior = yes }
+}
+
+maa_manager_can_show_bush_hunter = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_bush_hunter = yes }
+}
+
+maa_manager_can_show_shomer = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_shomer = yes }
+}
+
+maa_manager_can_show_garudas = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_garudas = yes }
+}
+
+maa_manager_can_show_khandayat = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_khandayat = yes }
+}
+
+maa_manager_can_show_mountaineer = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_mountaineer = yes }
+}
+
+maa_manager_can_show_sahel_horsemen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_sahel_horsemen = yes }
+}
+
+maa_manager_can_show_guinea_warrior = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_guinea_warrior = yes }
+}
+
+maa_manager_can_show_abudrar = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_abudrar = yes }
+}
+
+maa_manager_can_show_zbrojnosh = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_zbrojnosh = yes }
+}
+
+maa_manager_can_show_palace_guards = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_palace_guards = yes }
+}
+
+maa_manager_can_show_chu_ko_nu = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_chu_ko_nu = yes }
+}
+
+maa_manager_can_show_guanch_vaulter = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_guanch_vaulter = yes }
+}
+
+maa_manager_can_show_vigmen = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_vigmen = yes }
+}
