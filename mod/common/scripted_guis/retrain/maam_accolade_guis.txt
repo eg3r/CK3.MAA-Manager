@@ -1,0 +1,57 @@
+﻿######################################################
+# Men-At-Arms Manager - Accolade MAA Availability
+#
+# Scripted GUIs for accolade retinue MAA types
+# Types: 10 accolade types (requires rank 3+ accolade)
+# Scope: Character (player)
+######################################################
+
+maa_manager_can_show_archers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_archers = yes }
+}
+
+maa_manager_can_show_skirmishers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_skirmishers = yes }
+}
+
+maa_manager_can_show_pikes = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_pikes = yes }
+}
+
+maa_manager_can_show_outriders = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_outriders = yes }
+}
+
+maa_manager_can_show_vanguards = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_vanguards = yes }
+}
+
+maa_manager_can_show_lancers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_lancers = yes }
+}
+
+maa_manager_can_show_crossbowers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_crossbowers = yes }
+}
+
+maa_manager_can_show_cameliers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_cameliers = yes }
+}
+
+maa_manager_can_show_elephantiers = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_elephantiers = yes }
+}
+
+maa_manager_can_show_horse_archers_retinue = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_horse_archers_retinue = yes }
+}

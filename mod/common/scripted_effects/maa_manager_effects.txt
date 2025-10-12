@@ -1,104 +1,4 @@
-﻿maa_manager_store_selected_type = {
-	ROOT = {
-		save_scope_value_as = {
-			name = maa_manager_selected_type
-			value = flag:_maa_manager_unset
-		}
-	}
-
-	# Base game & DLC men-at-arms types
-	if = { limit = { is_maa_type = abudrar } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:abudrar } } }
-	if = { limit = { is_maa_type = accolade_maa_archers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_archers } } }
-	if = { limit = { is_maa_type = accolade_maa_cameliers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_cameliers } } }
-	if = { limit = { is_maa_type = accolade_maa_crossbowers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_crossbowers } } }
-	if = { limit = { is_maa_type = accolade_maa_elephantiers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_elephantiers } } }
-	if = { limit = { is_maa_type = accolade_maa_horse_archers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_horse_archers } } }
-	if = { limit = { is_maa_type = accolade_maa_lancers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_lancers } } }
-	if = { limit = { is_maa_type = accolade_maa_outriders } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_outriders } } }
-	if = { limit = { is_maa_type = accolade_maa_pikes } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_pikes } } }
-	if = { limit = { is_maa_type = accolade_maa_skirmishers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_skirmishers } } }
-	if = { limit = { is_maa_type = accolade_maa_vanguards } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:accolade_maa_vanguards } } }
-	if = { limit = { is_maa_type = akritai } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:akritai } } }
-	if = { limit = { is_maa_type = archers_of_the_nile } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:archers_of_the_nile } } }
-	if = { limit = { is_maa_type = armored_footmen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:armored_footmen } } }
-	if = { limit = { is_maa_type = armored_horsemen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:armored_horsemen } } }
-	if = { limit = { is_maa_type = asawira } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:asawira } } }
-	if = { limit = { is_maa_type = ayrudzi } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:ayrudzi } } }
-	if = { limit = { is_maa_type = ayyar } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:ayyar } } }
-	if = { limit = { is_maa_type = ballistrai } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:ballistrai } } }
-	if = { limit = { is_maa_type = bombard } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:bombard } } }
-	if = { limit = { is_maa_type = bondi } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:bondi } } }
-	if = { limit = { is_maa_type = bowmen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:bowmen } } }
-	if = { limit = { is_maa_type = bush_hunter } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:bush_hunter } } }
-	if = { limit = { is_maa_type = caballero } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:caballero } } }
-	if = { limit = { is_maa_type = camel_rider } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:camel_rider } } }
-	if = { limit = { is_maa_type = cataphract } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:cataphract } } }
-	if = { limit = { is_maa_type = cataphract_archers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:cataphract_archers } } }
-	if = { limit = { is_maa_type = chasseur } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:chasseur } } }
-	if = { limit = { is_maa_type = chu_ko_nu } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:chu_ko_nu } } }
-	if = { limit = { is_maa_type = conrois } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:conrois } } }
-	if = { limit = { is_maa_type = crossbowmen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:crossbowmen } } }
-	if = { limit = { is_maa_type = druzhina } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:druzhina } } }
-	if = { limit = { is_maa_type = garudas } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:garudas } } }
-	if = { limit = { is_maa_type = gendarme } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:gendarme } } }
-	if = { limit = { is_maa_type = goedendag } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:goedendag } } }
-	if = { limit = { is_maa_type = guanch_vaulter } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:guanch_vaulter } } }
-	if = { limit = { is_maa_type = guinea_warrior } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:guinea_warrior } } }
-	if = { limit = { is_maa_type = handpicked_faithful } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:handpicked_faithful } } }
-	if = { limit = { is_maa_type = heavy_horse_archers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:heavy_horse_archers } } }
-	if = { limit = { is_maa_type = hobelar } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:hobelar } } }
-	if = { limit = { is_maa_type = horn_warrior } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:horn_warrior } } }
-	if = { limit = { is_maa_type = horse_archers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:horse_archers } } }
-	if = { limit = { is_maa_type = house_guard } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:house_guard } } }
-	if = { limit = { is_maa_type = huscarl } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:huscarl } } }
-	if = { limit = { is_maa_type = hussar } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:hussar } } }
-	if = { limit = { is_maa_type = jomsviking_pirates } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:jomsviking_pirates } } }
-	if = { limit = { is_maa_type = khandayat } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:khandayat } } }
-	if = { limit = { is_maa_type = kheshig } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:kheshig } } }
-	if = { limit = { is_maa_type = landsknecht } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:landsknecht } } }
-	if = { limit = { is_maa_type = light_footmen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:light_footmen } } }
-	if = { limit = { is_maa_type = light_horsemen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:light_horsemen } } }
-	if = { limit = { is_maa_type = longbowmen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:longbowmen } } }
-	if = { limit = { is_maa_type = maa_bandits } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:maa_bandits } } }
-	if = { limit = { is_maa_type = maa_marauders } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:maa_marauders } } }
-	if = { limit = { is_maa_type = maa_poachers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:maa_poachers } } }
-	if = { limit = { is_maa_type = maa_thieves } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:maa_thieves } } }
-	if = { limit = { is_maa_type = mangonel } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:mangonel } } }
-	if = { limit = { is_maa_type = mangudai } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:mangudai } } }
-	if = { limit = { is_maa_type = maturkan_warriors } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:maturkan_warriors } } }
-	if = { limit = { is_maa_type = metsanvartija } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:metsanvartija } } }
-	if = { limit = { is_maa_type = monaspa } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:monaspa } } }
-	if = { limit = { is_maa_type = mountaineer } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:mountaineer } } }
-	if = { limit = { is_maa_type = mubarizun } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:mubarizun } } }
-	if = { limit = { is_maa_type = mulaththamun } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:mulaththamun } } }
-	if = { limit = { is_maa_type = nomad_lancers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:nomad_lancers } } }
-	if = { limit = { is_maa_type = nomadic_riders } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:nomadic_riders } } }
-	if = { limit = { is_maa_type = onager } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:onager } } }
-	if = { limit = { is_maa_type = paiks } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:paiks } } }
-	if = { limit = { is_maa_type = palace_guards } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:palace_guards } } }
-	if = { limit = { is_maa_type = picchieri } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:picchieri } } }
-	if = { limit = { is_maa_type = pikemen_unit } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:pikemen_unit } } }
-	if = { limit = { is_maa_type = praetorian } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:praetorian } } }
-	if = { limit = { is_maa_type = sahel_horsemen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:sahel_horsemen } } }
-	if = { limit = { is_maa_type = sarawit } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:sarawit } } }
-	if = { limit = { is_maa_type = schiltron } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:schiltron } } }
-	if = { limit = { is_maa_type = shomer } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:shomer } } }
-	if = { limit = { is_maa_type = skoutatoi } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:skoutatoi } } }
-	if = { limit = { is_maa_type = steppe_raiders } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:steppe_raiders } } }
-	if = { limit = { is_maa_type = tarkhan } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:tarkhan } } }
-	if = { limit = { is_maa_type = tawashi } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:tawashi } } }
-	if = { limit = { is_maa_type = teutonic_knights } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:teutonic_knights } } }
-	if = { limit = { is_maa_type = torch_bearers } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:torch_bearers } } }
-	if = { limit = { is_maa_type = trebuchet } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:trebuchet } } }
-	if = { limit = { is_maa_type = varangian_guards } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:varangian_guards } } }
-	if = { limit = { is_maa_type = varangian_veterans } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:varangian_veterans } } }
-	if = { limit = { is_maa_type = vigmen } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:vigmen } } }
-	if = { limit = { is_maa_type = war_elephant } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:war_elephant } } }
-	if = { limit = { is_maa_type = zbrojnosh } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:zbrojnosh } } }
-	if = { limit = { is_maa_type = zupin_warrior } ROOT = { save_scope_value_as = { name = maa_manager_selected_type value = flag:zupin_warrior } } }
-}
-
-######################################################
+﻿######################################################
 # MAA Manager - Helper Effects for Scripted GUIs
 ######################################################
 
@@ -112,17 +12,13 @@ maa_manager_data_create_effect = {
 		value = flag:_maa_manager_unset
 	}
 	remove_global_variable = maa_manager_move_has_targets
-	if = {
-		limit = {
-			NOT = {
-				has_variable = maa_manager_selected_regiment_scope
-			}
-		}
-		set_variable = {
-			name = maa_manager_selected_regiment_scope
-			value = ROOT
-		}
-	}
+	
+	# Clear retrain-specific variables to ensure clean state
+	remove_variable = maa_manager_selected_regiment_scope
+	remove_variable = maa_manager_retrain_target_type
+	remove_variable = maa_manager_target_cost
+	remove_variable = maa_manager_source_cost
+	
 	# Iterate through all of the character's MAA regiments
 	every_maa_regiment = {
 		ROOT = {

@@ -1,0 +1,62 @@
+﻿######################################################
+# MAA Manager - Retrain Tab - DLC FP3 (Fate of Persia) MAA Buttons
+#
+# Contains 4 Persia DLC MAA types
+#
+# Types:
+# - tarkhan: Persian tradition (unlock_maa_tarkhan)
+# - zupin_warrior: Caucasian tradition (unlock_maa_zupin_warrior)
+# - tawashi: Mamluk tradition (unlock_maa_tawashi)
+######################################################
+
+types MAAManager_Retrain_FP3
+{
+	type vbox_retrain_fp3_buttons = vbox {
+		name = "retrain_fp3_buttons"
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+		margin = { 0 0 }
+
+		# Tarkhan (Persian Tradition)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('tarkhan')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_tarkhan').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'tarkhan')]"
+				onclick = "[GetScriptedGui('maam_set_target_tarkhan').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Zupin Warrior (Caucasian Tradition)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('zupin_warrior')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_zupin_warrior').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'zupin_warrior')]"
+				onclick = "[GetScriptedGui('maam_set_target_zupin_warrior').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Tawashi
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('tawashi')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_tawashi').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'tawashi')]"
+				onclick = "[GetScriptedGui('maam_set_target_tawashi').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+	}
+}

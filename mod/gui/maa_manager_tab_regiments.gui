@@ -1,0 +1,318 @@
+﻿######################################################
+# Men-At-Arms Manager - Regiments Tab Component
+#
+# Contains the regiment transfer interface for moving entire stacks
+# between different armies.
+######################################################
+
+types MAAManager_Tab_Regiments
+{
+	type vbox_maa_manager_tab_regiments = vbox {
+		name = "tab_regiments_content"
+		visible = "[VariableSystem.HasValue('maa_manager_tab', 'regiments')]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		spacing = 10
+
+		using = Animation_Tab_Switch
+
+		# Instructions
+		text_label_center = {
+			text = "MAA_MANAGER_REGIMENTS_INSTRUCTIONS"
+			layoutpolicy_horizontal = expanding
+			default_format = "#weak"
+			margin = { 10 5 }
+		}
+
+		######################################################
+		# Target Regiment Selection
+		######################################################
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 5
+
+			scrollbox = {
+				name = "regiments_target_scrollbox"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				scrollbarpolicy_horizontal = always_off
+
+				blockoverride "scrollbox_content" {
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						spacing = 10
+						margin = { 0 5 }
+
+						# Empty state - shown when no targets
+						vbox = {
+							visible = "[Not(GetGlobalVariable('maa_manager_move_has_targets').IsSet)]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 8
+
+							expand = {}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								
+								expand = {}
+								
+								icon = {
+									size = { 60 60 }
+									texture = "gfx/interface/icons/symbols/icon_cross.dds"
+									alpha = 0.5
+								}
+								
+								expand = {}
+							}
+
+							text_multi = {
+								text = "MAA_MANAGER_NO_MOVE_TARGETS"
+								layoutpolicy_horizontal = expanding
+								max_width = 350
+								default_format = "#weak"
+								align = center
+							}
+
+							expand = {}
+						}
+
+						# Target list - shown when targets exist
+						fixedgridbox = {
+							visible = "[GetGlobalVariable('maa_manager_move_has_targets').IsSet]"
+							datamodel = "[GetPlayer.MakeScope.GetList('maa_move_target_list')]"
+							layoutpolicy_horizontal = expanding
+							flipdirection = yes
+							datamodel_wrap = 4
+							addcolumn = 169
+							addrow = 93
+
+							item = {
+								container_maan_target_selection_item = {
+									datacontext = "[Scope.Regiment]"
+								}
+							}
+						}
+
+						expand = {}
+					}
+				}
+			}
+		}
+
+		######################################################
+		# Regiment Transfer Controls
+		######################################################
+		vbox = {
+			name = "regiments_transfer_panel"
+			visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet]"
+			layoutpolicy_horizontal = expanding
+			spacing = 15
+			margin = { 15 15 }
+			
+			background = {
+				using = Background_Area_Dark
+				alpha = 0.8
+			}
+
+			# Header
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				
+				icon = {
+					size = { 32 32 }
+					texture = "gfx/interface/icons/icon_banner.dds"
+				}
+				
+				text_single = {
+					text = "MAA_MANAGER_TRANSFER_REGIMENTS_TITLE"
+					default_format = "#high"
+					align = left|nobaseline
+					margin_left = 8
+					using = Font_Size_Big
+				}
+
+				expand = {}
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			# Stats Display with Transfer Buttons - Horizontal Layout
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+				margin = { 10 10 }
+
+				# Stack numbers row
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 20
+
+					# Source Stacks (Left)
+					vbox = {
+						spacing = 5
+						layoutpolicy_horizontal = expanding
+
+						text_single = {
+							text = "MAA_MANAGER_SOURCE_REGIMENTS"
+							default_format = "#weak"
+							using = Font_Size_Small
+							align = center
+						}
+
+						text_single = {
+							datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+							raw_text = "[Regiment.GetMAAChunkCount]"
+							default_format = "#high"
+							using = Font_Size_Big
+							align = center
+							tooltip = "MAA_MANAGER_REGIMENTS_TOOLTIP"
+						}
+					}
+
+					expand = {}
+
+					# Transfer buttons - vbox to stack arrow buttons and "Move Last" buttons
+					vbox = {
+						spacing = 3
+
+						# Arrow buttons row
+						hbox = {
+							spacing = 5
+
+							# Transfer FROM target (← back arrow)
+							button_round = {
+								size = { 36 36 }
+								tooltip = "[SelectLocalization(And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, EqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, '(int32)1')), 'MAA_MANAGER_TRANSFER_DISABLED_LAST_STACK', SelectLocalization(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, GreaterThanOrEqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.CalcMaxMAAChunkCount)), 'MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL', 'MAA_MANAGER_TRANSFER_FROM_TARGET_TOOLTIP'))]"
+								onclick = "[GetScriptedGui('maa_manager_transfer_regiment_from_target_effect').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								enabled = "[And(And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, GreaterThan_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, '(int32)1')), And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, LessThan_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.CalcMaxMAAChunkCount)))]"
+
+								button_back = {
+									parentanchor = center
+									size = { 25 25 }
+									alwaystransparent = yes
+								}
+							}
+
+							# Stack size display
+							text_single = {
+								raw_text = "1"
+								default_format = "#high"
+								align = center|nobaseline
+								using = Font_Size_Medium
+								minimumsize = { 30 0 }
+							}
+
+							# Transfer TO target (→ forward arrow)
+							button_round = {
+								size = { 36 36 }
+								tooltip = "[SelectLocalization(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, EqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, '(int32)1')), 'MAA_MANAGER_TRANSFER_DISABLED_LAST_STACK', SelectLocalization(And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, GreaterThanOrEqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.CalcMaxMAAChunkCount)), 'MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL', 'MAA_MANAGER_TRANSFER_TO_TARGET_TOOLTIP'))]"
+								onclick = "[GetScriptedGui('maa_manager_transfer_regiment_to_target_effect').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								enabled = "[And(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, GreaterThan_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, '(int32)1')), And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, LessThan_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.CalcMaxMAAChunkCount)))]"
+								
+								button_forward = {
+									parentanchor = center
+									size = { 25 25 }
+									alwaystransparent = yes
+								}
+							}
+						}
+
+						# Move Last buttons row (horizontal, below arrows, aligned to inner edges)
+						hbox = {
+							visible = "[Or(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, EqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, '(int32)1')), And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, EqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, '(int32)1')))]"
+							spacing = 5
+
+							# Container for left button (90px to contain full button, aligned right)
+							widget = {
+								size = { 90 22 }
+
+								# Move Last button - FROM target (aligned RIGHT edge to container)
+								button_standard = {
+									visible = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, EqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, '(int32)1'))]"
+									enabled = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, LessThan_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.CalcMaxMAAChunkCount))]"
+									parentanchor = right|vcenter
+									size = { 90 22 }
+									text = "MAA_MANAGER_MOVE_LAST_FROM_TARGET"
+									onclick = "[GetScriptedGui('maa_manager_transfer_regiment_from_target_effect').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									tooltip = "[SelectLocalization(And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, GreaterThanOrEqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.CalcMaxMAAChunkCount)), 'MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL', 'MAA_MANAGER_MOVE_LAST_FROM_TARGET_WARNING')]"
+									using = Font_Size_Small
+									
+									background = {
+										using = Background_Area
+										tintcolor = { 0.8 0.3 0.2 1 }
+										margin = { 2 2 }
+									}
+								}
+							}
+
+							# Spacer (matches the "1" counter width)
+							widget = {
+								size = { 30 22 }
+							}
+
+							# Container for right button (90px to contain full button, aligned left)
+							widget = {
+								size = { 90 22 }
+
+								# Move Last button - TO target (aligned LEFT edge to container)
+								button_standard = {
+									visible = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, EqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount, '(int32)1'))]"
+									enabled = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, LessThan_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.CalcMaxMAAChunkCount))]"
+									parentanchor = left|vcenter
+									size = { 90 22 }
+									text = "MAA_MANAGER_MOVE_LAST_TO_TARGET"
+									onclick = "[GetScriptedGui('maa_manager_transfer_regiment_to_target_effect').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									tooltip = "[SelectLocalization(And(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, GreaterThanOrEqualTo_int32(GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment.CalcMaxMAAChunkCount)), 'MAA_MANAGER_TRANSFER_DISABLED_TARGET_FULL', 'MAA_MANAGER_MOVE_LAST_TO_TARGET_WARNING')]"
+									using = Font_Size_Small
+									
+									background = {
+										using = Background_Area
+										tintcolor = { 0.8 0.3 0.2 1 }
+										margin = { 2 2 }
+									}
+								}
+							}
+						}
+					}
+
+					expand = {}
+
+					# Target Stacks (Right)
+					vbox = {
+						spacing = 5
+						layoutpolicy_horizontal = expanding
+
+						text_single = {
+							text = "MAA_MANAGER_TARGET_REGIMENTS"
+							default_format = "#weak"
+							using = Font_Size_Small
+							align = center
+						}
+
+						text_single = {
+							datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment]"
+							raw_text = "[Regiment.GetMAAChunkCount]"
+							default_format = "#P"
+							using = Font_Size_Big
+							align = center
+							tooltip = "MAA_MANAGER_TARGET_REGIMENTS_TOOLTIP"
+						}
+					}
+				}
+			}
+
+			text_single = {
+				text = "MAA_MANAGER_REGIMENTS_IMMEDIATE_NOTE"
+				default_format = "#weak"
+				using = Font_Size_Small
+				align = center
+				margin_bottom = 5
+			}
+		}
+	}
+}

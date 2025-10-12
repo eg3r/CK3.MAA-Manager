@@ -1,0 +1,12 @@
+﻿######################################################
+# Men-At-Arms Manager - Special/Fallback MAA Availability
+#
+# Fallback scripted GUI for unknown/modded MAA types
+# Scope: Character (player)
+######################################################
+
+# Default for unknown/modded types - show them
+maa_manager_can_show_unknown = {
+	scope = character
+	is_shown = { always = yes }
+}

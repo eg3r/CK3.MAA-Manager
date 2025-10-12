@@ -1,0 +1,89 @@
+﻿######################################################
+# MAA Manager - DLC EP3 (Legacy of Rome/Byzantine) MAA Recruitment Triggers
+#
+# Contains 11 Byzantine DLC MAA types (07_ep3_maa_types.txt)
+# Cultural tradition and special condition-gated types
+#
+# Recruitable (7): ayrudzi, conrois, akritai, ballistrai, skoutatoi, 
+#                  varangian_guards, handpicked_faithful
+# Blocked (4): maa_bandits, maa_poachers, maa_marauders, maa_thieves
+######################################################
+
+maa_manager_can_recruit_ayrudzi = {
+	# Requires Armenian cultural tradition: unlock_maa_ayrudzi
+	culture = {
+		has_cultural_parameter = unlock_maa_ayrudzi
+	}
+}
+
+maa_manager_can_recruit_conrois = {
+	# Requires French/Norman cultural tradition: unlock_maa_conrois
+	culture = {
+		has_cultural_parameter = unlock_maa_conrois
+	}
+}
+
+maa_manager_can_recruit_akritai = {
+	# Requires Byzantine cultural tradition: unlock_maa_akritai
+	culture = {
+		has_cultural_parameter = unlock_maa_akritai
+	}
+}
+
+maa_manager_can_recruit_ballistrai = {
+	# Requires Byzantine cultural tradition: unlock_maa_ballistrai
+	culture = {
+		has_cultural_parameter = unlock_maa_ballistrai
+	}
+}
+
+maa_manager_can_recruit_skoutatoi = {
+	# Requires Byzantine cultural tradition: unlock_maa_skoutatoi
+	culture = {
+		has_cultural_parameter = unlock_maa_skoutatoi
+	}
+}
+
+maa_manager_can_recruit_varangian_guards = {
+	# Requires founded Varangian Guard (Byzantine special)
+	# Note: This is a title-specific check, may not work in retrain context
+	# TODO: Investigate proper scope for title check
+	exists = primary_title
+	primary_title = {
+		has_variable = founded_varangian_guard
+	}
+}
+
+maa_manager_can_recruit_handpicked_faithful = {
+	# Requires landless adventurer domicile with specific parameter
+	# Note: This check requires domicile system (Landless Adventurers DLC)
+	exists = domicile
+	domicile = {
+		has_domicile_parameter = camp_unlocks_handpicked_faithful_maa_type
+	}
+}
+
+######################################################
+# BLOCKED EP3 MAA TYPES (Not Recruitable)
+######################################################
+
+# Outcast/Adventurer MAA - NOT player-recruitable
+maa_manager_can_recruit_maa_bandits = {
+	always = no
+}
+
+maa_manager_can_recruit_maa_poachers = {
+	always = no
+}
+
+maa_manager_can_recruit_maa_marauders = {
+	always = no
+}
+
+maa_manager_can_recruit_maa_thieves = {
+	always = no
+}
+
+maa_manager_can_recruit_teutonic_knights = {
+	always = no
+}

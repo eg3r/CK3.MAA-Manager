@@ -1,0 +1,33 @@
+﻿######################################################
+# MAA Manager - DLC FP1 (Northern Lords) MAA Recruitment Triggers
+#
+# Contains 4 Northern Lords DLC MAA types (00_fp1_maa_types.txt)
+# Cultural tradition-gated types available to Norse cultures
+#
+# Types: vigmen, bondi, varangian_veterans, jomsviking_pirates (blocked)
+######################################################
+
+maa_manager_can_recruit_vigmen = {
+	culture = {
+		has_cultural_parameter = unlock_maa_vigmen
+	}
+}
+
+maa_manager_can_recruit_bondi = {
+	culture = {
+		has_cultural_parameter = unlock_maa_bondi
+	}
+}
+
+maa_manager_can_recruit_varangian_veterans = {
+	culture = {
+		has_cultural_parameter = unlock_maa_varangian_veterans
+		NOT = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_jomsviking_pirates = {
+	always = no	# Not manually recruitable in base game
+}

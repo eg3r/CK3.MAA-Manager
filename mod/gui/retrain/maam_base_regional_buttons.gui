@@ -1,0 +1,52 @@
+﻿######################################################
+# MAA Manager - Retrain Tab - Regional MAA Buttons
+#
+# Contains regional MAA types that are limited to specific regions
+# and require both innovations and proper terrain/culture
+#
+# MAA Types (2):
+# - camel_rider (requires innovation_war_camels + camel regions)
+# - war_elephant (requires innovation_elephantry + elephant regions)
+######################################################
+
+types MAAManager_Retrain_Regional
+{
+	type vbox_retrain_regional_buttons = vbox {
+		name = "retrain_regional_buttons"
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+		margin = { 0 0 }
+
+		######################################################
+		# REGIONAL MAA (2 types)
+		######################################################
+
+		# Camel Rider (requires innovation_war_camels + Arabia/North Africa)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('camel_rider')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_camel_rider').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'camel_rider')]"
+				onclick = "[GetScriptedGui('maam_set_target_camel_rider').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# War Elephant (requires innovation_elephantry + India/Burma)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('war_elephant')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_war_elephant').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'war_elephant')]"
+				onclick = "[GetScriptedGui('maam_set_target_war_elephant').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+	}
+}

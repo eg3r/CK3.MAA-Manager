@@ -1,0 +1,81 @@
+﻿######################################################
+# Men-At-Arms Manager - Filtered MAA Types List
+# 
+# This file instantiates MAA type button groups from the modular
+# button definition files in maa_manager/retrain/
+#
+# REFACTORED STRUCTURE:
+# - Base game buttons: maa_manager/retrain/base_*_buttons.gui
+# - Cultural buttons: maa_manager/retrain/cultural_buttons.gui (upcoming)
+# - DLC buttons: maa_manager/retrain/dlc_*_buttons.gui (upcoming)
+# - Blocked types: maa_manager/retrain/blocked_*_buttons.gui (upcoming)
+#
+# REMOVED NON-EXISTENT TYPES:
+# - siphonarius, zhande_pidagan, ghazi, konni, mangudai_legacy (DO NOT EXIST IN GAME)
+#
+# RETINUE TYPES (Accolade rank 3+):
+# - accolade_maa_* types (Wards & Wardens DLC) - NOT manually recruitable
+#
+# To enable DLC types: Uncomment the relevant vbox instantiations below.
+######################################################
+
+types MAAFilteredTypesList
+{
+	type vbox_maa_filtered_list = vbox {
+		name = "maa_filtered_types_list"
+		layoutpolicy_horizontal = expanding
+		spacing = 0
+		margin = { 0 0 }
+
+		######################################################
+		# BASE GAME MAA TYPES (14 types)
+		# Defined in: maa_manager/retrain/base_*_buttons.gui
+		######################################################
+		vbox_retrain_regular_buttons = {}   # 12 regular MAA types
+		vbox_retrain_regional_buttons = {}  # 2 regional MAA types
+
+		######################################################
+		# DLC MAA TYPES
+		# Defined in: maa_manager/retrain/dlc_*_buttons.gui
+		######################################################
+		vbox_retrain_ep3_buttons = {}     # 10 Byzantine/Legacy of Rome types (EP3)
+		vbox_retrain_mpo_buttons = {}     # 5 Nomadic types (MPO)
+		vbox_retrain_fp1_buttons = {}     # 4 Northern Lords types (FP1)
+		vbox_retrain_fp3_buttons = {}     # 3 Persia types (FP3)
+
+		######################################################
+		# CULTURAL/TRADITIONAL MAA TYPES (36 types)
+		# Defined in: maa_manager/retrain/cultural_buttons.gui
+		######################################################
+		vbox_retrain_cultural_buttons = {}   # 36 cultural/traditional MAA types
+
+		######################################################
+		# DYNASTY LEGACY MAA TYPES (2 types)
+		# Defined in: maa_manager/retrain/dynasty_legacy_buttons.gui
+		######################################################
+		vbox_retrain_dynasty_legacy_buttons = {}  # 2 dynasty legacy types
+
+		######################################################
+		# ACCOLADE MAA TYPES (10 types) - Wards & Wardens DLC
+		# Defined in: maa_manager/retrain/accolade_buttons.gui
+		# Requires: Rank 3+ accolade with matching attribute
+		# Limit: Only 1 active regiment per type allowed
+		######################################################
+		vbox_retrain_accolade_buttons = {}  # 10 accolade-based MAA types
+
+		######################################################
+		# OUTCAST/ADVENTURER MAA TYPES - Not manually recruitable
+		######################################################
+
+		# Bandits - maa_bandits (commented - not manually recruitable)
+		# Poachers - maa_poachers (commented - not manually recruitable)
+		# Marauders - maa_marauders (commented - not manually recruitable)
+		# Thieves - maa_thieves (commented - not manually recruitable)
+
+		######################################################
+		# HOLY ORDER MAA TYPES - Not player-recruitable
+		######################################################
+
+		# Teutonic Knights - teutonic_knights (commented - holy order type)
+	}
+}

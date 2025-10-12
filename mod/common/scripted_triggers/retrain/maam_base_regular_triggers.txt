@@ -1,0 +1,163 @@
+﻿######################################################
+# MAA Manager - Base Game Regular MAA Recruitment Triggers
+#
+# Contains 12 base game MAA types (00_maa_types.txt)
+# Innovation-gated and government-restricted types
+#
+# Types: light_footmen, bowmen, light_horsemen, pikemen_unit,
+#        armored_footmen, armored_horsemen, crossbowmen,
+#        onager, mangonel, trebuchet, bombard, house_guard
+######################################################
+
+maa_manager_can_recruit_light_footmen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_bowmen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_light_horsemen = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_pikemen_unit = {
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_armored_footmen = {
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement
+	culture = {
+		has_innovation = innovation_quilted_armor
+	}
+	# Cultural parameter check - some cultures ban heavy MAA
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_armored_horsemen = {
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement
+	culture = {
+		has_innovation = innovation_arched_saddle
+	}
+}
+
+maa_manager_can_recruit_crossbowmen = {
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement
+	culture = {
+		has_innovation = innovation_advanced_bowmaking
+	}
+}
+
+maa_manager_can_recruit_onager = {
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - Tribal Era siege weapon
+	culture = {
+		has_innovation = innovation_catapult
+	}
+}
+
+maa_manager_can_recruit_mangonel = {
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - Early Medieval siege weapon
+	culture = {
+		has_innovation = innovation_mangonel
+	}
+}
+
+maa_manager_can_recruit_trebuchet = {
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - High Medieval siege weapon
+	culture = {
+		has_innovation = innovation_trebuchet
+	}
+}
+
+maa_manager_can_recruit_bombard = {
+	# Base government check - exclude nomadic and herder governments
+	trigger_if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_herder
+			}
+		}
+		always = no
+	}
+	# Innovation requirement - Late Medieval siege weapon
+	culture = {
+		has_innovation = innovation_bombard
+	}
+}

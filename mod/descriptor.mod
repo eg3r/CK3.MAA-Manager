@@ -1,11 +1,12 @@
 name="Men-At-Arms Manager"
-version="1.0.0"
+version="1.17.1"
 tags={
 	"Military"
 	"GUI" 
 	"Gameplay"
 }
 supported_version="1.17.*"
+remote_file_id="3580440930"
 
 # Mod Description
 # Enhanced Men-At-Arms management interface for Crusader Kings III

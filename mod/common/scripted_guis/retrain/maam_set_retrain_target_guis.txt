@@ -1,0 +1,1594 @@
+﻿######################################################
+# Men-At-Arms Manager - Retrain Target Setter GUIs
+#
+# Individual scripted GUIs for each MAA type to set the retrain target flag
+# Each GUI sets the maa_manager_retrain_target_type scope value on the character
+# Scope: Character (player)
+######################################################
+# Base Game Regular MAA
+maam_set_target_light_footmen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:light_footmen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:light_footmen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = skirmisher_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_bowmen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:bowmen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:bowmen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = bowmen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_light_horsemen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:light_horsemen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:light_horsemen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = light_cavalry_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_pikemen_unit = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:pikemen_unit
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:pikemen_unit
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = pikemen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_armored_footmen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:armored_footmen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:armored_footmen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = heavy_infantry_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_armored_horsemen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:armored_horsemen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:armored_horsemen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = heavy_cavalry_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_crossbowmen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:crossbowmen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:crossbowmen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = crossbowmen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_onager = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:onager
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:onager
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = onager_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_mangonel = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:mangonel
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:mangonel
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = mangonel_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_trebuchet = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:trebuchet
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:trebuchet
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = trebuchet_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_bombard = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:bombard
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:bombard
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = bombard_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_house_guard = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:house_guard
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:house_guard
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 50
+		}		# Fixed cost from dynasty perk
+	}
+}
+
+# Regional MAA
+maam_set_target_camel_rider = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:camel_rider
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:camel_rider
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = camel_rider_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_war_elephant = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:war_elephant
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:war_elephant
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = war_elephant_recruitment_cost
+		}
+	}
+}
+
+# Cultural MAA (All 74 types from various DLCs and base game)
+maam_set_target_abudrar = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:abudrar
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:abudrar
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = abudrar_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_akritai = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:akritai
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:akritai
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = akritai_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_archers_of_the_nile = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:archers_of_the_nile
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:archers_of_the_nile
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = archers_of_the_nile_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_asawira = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:asawira
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:asawira
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = asawira_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_ayrudzi = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:ayrudzi
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:ayrudzi
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = ayrudzi_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_ayyar = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:ayyar
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:ayyar
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = ayyar_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_ballistrai = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:ballistrai
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:ballistrai
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = ballistrai_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_bondi = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:bondi
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:bondi
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = bondi_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_bush_hunter = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:bush_hunter
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:bush_hunter
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = bush_hunter_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_caballero = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:caballero
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:caballero
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = caballero_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_cataphract = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:cataphract
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:cataphract
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = cataphract_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_cataphract_archers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:cataphract_archers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:cataphract_archers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = cataphract_archers_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_chasseur = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:chasseur
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:chasseur
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = chasseur_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_chu_ko_nu = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:chu_ko_nu
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:chu_ko_nu
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = chu_ko_nu_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_conrois = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:conrois
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:conrois
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = conrois_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_druzhina = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:druzhina
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:druzhina
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = druzhina_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_garudas = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:garudas
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:garudas
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = garudas_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_gendarme = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:gendarme
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:gendarme
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = gendarme_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_goedendag = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:goedendag
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:goedendag
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = goedendag_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_guanch_vaulter = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:guanch_vaulter
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:guanch_vaulter
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = guanch_vaulter_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_guinea_warrior = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:guinea_warrior
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:guinea_warrior
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = guinea_warrior_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_handpicked_faithful = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:handpicked_faithful
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:handpicked_faithful
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = handpicked_faithful_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_heavy_horse_archers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:heavy_horse_archers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:heavy_horse_archers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = heavy_horse_archers_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_hobelar = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:hobelar
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:hobelar
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = hobelar_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_horn_warrior = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:horn_warrior
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:horn_warrior
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = horn_warrior_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_horse_archers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:horse_archers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:horse_archers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = horse_archers_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_huscarl = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:huscarl
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:huscarl
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = huscarls_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_hussar = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:hussar
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:hussar
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = hussar_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_jomsviking_pirates = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:jomsviking_pirates
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:jomsviking_pirates
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = jomsviking_pirates_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_khandayat = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:khandayat
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:khandayat
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = khandayat_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_kheshig = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:kheshig
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:kheshig
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = kheshig_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_landsknecht = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:landsknecht
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:landsknecht
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = landsknecht_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_longbowmen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:longbowmen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:longbowmen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = longbowmen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_maa_bandits = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_bandits
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_bandits
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 150
+		}		# Event troop, no recruitment cost defined
+	}
+}
+
+maam_set_target_maa_marauders = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_marauders
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_marauders
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 150
+		}		# Event troop, no recruitment cost defined
+	}
+}
+
+maam_set_target_maa_poachers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_poachers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_poachers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 150
+		}		# Event troop, no recruitment cost defined
+	}
+}
+
+maam_set_target_maa_thieves = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_thieves
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:maa_thieves
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 150
+		}		# Event troop, no recruitment cost defined
+	}
+}
+
+maam_set_target_mangudai = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:mangudai
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:mangudai
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = mangudai_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_maturkan_warriors = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:maturkan_warriors
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:maturkan_warriors
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = maturkan_warriors_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_metsanvartija = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:metsanvartija
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:metsanvartija
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = metsanvartija_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_monaspa = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:monaspa
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:monaspa
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = monaspa_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_mountaineer = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:mountaineer
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:mountaineer
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = mountaineer_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_mubarizun = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:mubarizun
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:mubarizun
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = mubarizun_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_mulaththamun = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:mulaththamun
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:mulaththamun
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = mulaththamun_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_nomad_lancers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:nomad_lancers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:nomad_lancers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = nomad_lancers_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_paiks = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:paiks
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:paiks
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = paiks_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_palace_guards = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:palace_guards
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:palace_guards
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = palace_guards_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_picchieri = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:picchieri
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:picchieri
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = picchieri_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_praetorian = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:praetorian
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:praetorian
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = praetorian_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_sahel_horsemen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:sahel_horsemen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:sahel_horsemen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = sahel_rider_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_sarawit = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:sarawit
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:sarawit
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = sarawit_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_schiltron = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:schiltron
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:schiltron
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = schiltron_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_shomer = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:shomer
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:shomer
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = shomer_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_skoutatoi = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:skoutatoi
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:skoutatoi
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = skoutatoi_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_steppe_raiders = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:steppe_raiders
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:steppe_raiders
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = steppe_raiders_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_tarkhan = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:tarkhan
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:tarkhan
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 150
+		}		# No recruitment cost found, use default
+	}
+}
+
+maam_set_target_tawashi = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:tawashi
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:tawashi
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = tawashi_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_teutonic_knights = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:teutonic_knights
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:teutonic_knights
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 150
+		}		# No recruitment cost found, use default
+	}
+}
+
+maam_set_target_torch_bearers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:torch_bearers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:torch_bearers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = torch_bearers_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_varangian_guards = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:varangian_guards
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:varangian_guards
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = varangian_guards_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_varangian_veterans = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:varangian_veterans
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:varangian_veterans
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = varangian_veterans_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_vigmen = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:vigmen
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:vigmen
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = vigmen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_zbrojnosh = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:zbrojnosh
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:zbrojnosh
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = zbrojnosh_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_zupin_warrior = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:zupin_warrior
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:zupin_warrior
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = 150
+		}		# No recruitment cost found, use default
+	}
+}
+
+# Accolade MAA (10 types)
+maam_set_target_accolade_maa_archers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_archers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_archers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_bowmen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_skirmishers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_skirmishers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_skirmishers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_skirmisher_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_pikes = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_pikes
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_pikes
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_pikemen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_outriders = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_outriders
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_outriders
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_light_cavalry_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_vanguards = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_vanguards
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_vanguards
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_heavy_infantry_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_lancers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_lancers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_lancers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_heavy_cavalry_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_crossbowers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_crossbowers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_crossbowers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_crossbowmen_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_cameliers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_cameliers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_cameliers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_camel_rider_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_elephantiers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_elephantiers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_elephantiers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_war_elephant_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_accolade_maa_horse_archers = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_horse_archers
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_horse_archers
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = accolade_horse_archers_recruitment_cost
+		}
+	}
+}
