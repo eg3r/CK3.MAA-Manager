@@ -79,6 +79,12 @@ maa_manager_type_matches_retrain_target = {
 			ROOT = {
 				var:maa_manager_retrain_target_type = flag:accolade_maa_vanguards
 			}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:accolade_maa_handgunners
+			}
+			is_maa_type = accolade_maa_handgunners
+		}
 			is_maa_type = accolade_maa_vanguards
 		}
 		AND = {
@@ -185,9 +191,9 @@ maa_manager_type_matches_retrain_target = {
 		}
 		AND = {
 			ROOT = {
-				var:maa_manager_retrain_target_type = flag:chu_ko_nu
+				var:maa_manager_retrain_target_type = flag:shenbigong
 			}
-			is_maa_type = chu_ko_nu
+			is_maa_type = shenbigong
 		}
 		AND = {
 			ROOT = {
@@ -543,5 +549,111 @@ maa_manager_type_matches_retrain_target = {
 			}
 			is_maa_type = zupin_warrior
 		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:handgunners
+			}
+			is_maa_type = handgunners
+		}
+		# TGP DLC - Cultural MAA
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:emishi_horse_archers
+			}
+			is_maa_type = emishi_horse_archers
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:japanese_horse_archers
+			}
+			is_maa_type = japanese_horse_archers
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:warrior_monks
+			}
+			is_maa_type = warrior_monks
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:fire_lancers
+			}
+			is_maa_type = fire_lancers
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:gakgung_archers
+			}
+			is_maa_type = gakgung_archers
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:pesilat_warriors
+			}
+			is_maa_type = pesilat_warriors
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:samurai
+			}
+			is_maa_type = samurai
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:zhanmadao_infantry
+			}
+			is_maa_type = zhanmadao_infantry
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:tiefutu
+			}
+			is_maa_type = tiefutu
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:burenjia
+			}
+			is_maa_type = burenjia
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:rocket_carts
+			}
+			is_maa_type = rocket_carts
+		}
+		# TGP DLC - Regional MAA
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:ballista_elephant
+			}
+			is_maa_type = ballista_elephant
+		}
+		# TGP DLC - Siege Weapons
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:ballista
+			}
+			is_maa_type = ballista
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:cloud_ladder
+			}
+			is_maa_type = cloud_ladder
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:siege_tower
+			}
+			is_maa_type = siege_tower
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:cannon
+			}
+			is_maa_type = cannon
+		}
 	}
 }
+

@@ -4,3 +4,5 @@ mockups/**
 .vscode/**
 agents.md
 /images/**
+extract_game_files.bat
+extract_game_files.ps1

@@ -21,6 +21,12 @@ maa_manager_can_recruit_conrois = {
 	culture = {
 		has_cultural_parameter = unlock_maa_conrois
 	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 maa_manager_can_recruit_akritai = {
@@ -52,6 +58,12 @@ maa_manager_can_recruit_varangian_guards = {
 	primary_title = {
 		has_variable = founded_varangian_guard
 	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 maa_manager_can_recruit_handpicked_faithful = {
@@ -60,6 +72,12 @@ maa_manager_can_recruit_handpicked_faithful = {
 	exists = domicile
 	domicile = {
 		has_domicile_parameter = camp_unlocks_handpicked_faithful_maa_type
+	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
 	}
 }
 

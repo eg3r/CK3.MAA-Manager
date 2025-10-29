@@ -13,7 +13,7 @@ maa_manager_can_recruit_tarkhan = {
 	# Note: Landless adventurers with planned_cultivation_perk also handled
 	OR = {
 		AND = {
-			is_landless_adventurer = yes
+			has_government = landless_adventurer_government
 			has_perk = planned_cultivation_perk
 			location.culture ?= {
 				has_cultural_parameter = unlock_maa_tarkhan
@@ -30,7 +30,7 @@ maa_manager_can_recruit_zupin_warrior = {
 	# Note: Landless adventurers with planned_cultivation_perk also handled
 	OR = {
 		AND = {
-			is_landless_adventurer = yes
+			has_government = landless_adventurer_government
 			has_perk = planned_cultivation_perk
 			location.culture ?= {
 				has_cultural_parameter = unlock_maa_zupin_warrior
@@ -47,7 +47,7 @@ maa_manager_can_recruit_tawashi = {
 	# Note: Landless adventurers with planned_cultivation_perk also handled
 	OR = {
 		AND = {
-			is_landless_adventurer = yes
+			has_government = landless_adventurer_government
 			has_perk = planned_cultivation_perk
 			location.culture ?= {
 				has_cultural_parameter = unlock_maa_tawashi

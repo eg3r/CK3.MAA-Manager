@@ -431,16 +431,16 @@ maa_manager_store_selected_type = {
 	}
 	if = {
 		limit = {
-			is_maa_type = chu_ko_nu
+			is_maa_type = shenbigong
 		}
 		ROOT = {
 			save_scope_value_as = {
 				name = maa_manager_selected_type
-				value = flag:chu_ko_nu
+				value = flag:shenbigong
 			}
 			set_variable = {
 				name = maa_manager_source_cost
-				value = chu_ko_nu_recruitment_cost
+				value = shenbigong_recruitment_cost
 			}
 		}
 	}
@@ -1271,6 +1271,19 @@ maa_manager_store_selected_type = {
 			}
 		}
 	}
+	else_if = {
+		limit = {
+			is_maa_type = accolade_maa_handgunners
+		}
+		set_variable = {
+			name = maa_manager_selected_type
+			value = flag:accolade_maa_handgunners
+		}
+		set_variable = {
+			name = maa_manager_selected_cost
+			value = handgunner_recruitment_cost
+		}
+	}
 	if = {
 		limit = {
 			is_maa_type = accolade_maa_lancers
@@ -1344,6 +1357,136 @@ maa_manager_store_selected_type = {
 				name = maa_manager_source_cost
 				value = accolade_horse_archers_recruitment_cost
 			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = handgunners
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:handgunners
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = handgunner_recruitment_cost
+			}
+		}
+	}
+	# TGP DLC - Cultural MAA
+	else_if = {
+		limit = { is_maa_type = emishi_horse_archers }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:emishi_horse_archers }
+			set_variable = { name = maa_manager_source_cost value = light_cavalry_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = japanese_horse_archers }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:japanese_horse_archers }
+			set_variable = { name = maa_manager_source_cost value = horse_archers_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = warrior_monks }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:warrior_monks }
+			set_variable = { name = maa_manager_source_cost value = warrior_monks_piety_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = fire_lancers }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:fire_lancers }
+			set_variable = { name = maa_manager_source_cost value = crossbowmen_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = gakgung_archers }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:gakgung_archers }
+			set_variable = { name = maa_manager_source_cost value = gakgung_archers_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = pesilat_warriors }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:pesilat_warriors }
+			set_variable = { name = maa_manager_source_cost value = pesilat_warriors_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = samurai }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:samurai }
+			set_variable = { name = maa_manager_source_cost value = samurai_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = zhanmadao_infantry }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:zhanmadao_infantry }
+			set_variable = { name = maa_manager_source_cost value = zhanmadao_infantry_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = tiefutu }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:tiefutu }
+			set_variable = { name = maa_manager_source_cost value = tiefutu_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = burenjia }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:burenjia }
+			set_variable = { name = maa_manager_source_cost value = burenjia_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = rocket_carts }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:rocket_carts }
+			set_variable = { name = maa_manager_source_cost value = rocket_carts_recruitment_cost }
+		}
+	}
+	# TGP DLC - Regional MAA
+	else_if = {
+		limit = { is_maa_type = ballista_elephant }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:ballista_elephant }
+			set_variable = { name = maa_manager_source_cost value = ballista_elephant_recruitment_cost }
+		}
+	}
+	# TGP DLC - Siege Weapons
+	else_if = {
+		limit = { is_maa_type = ballista }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:ballista }
+			set_variable = { name = maa_manager_source_cost value = ballista_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = cloud_ladder }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:cloud_ladder }
+			set_variable = { name = maa_manager_source_cost value = cloud_ladder_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = siege_tower }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:siege_tower }
+			set_variable = { name = maa_manager_source_cost value = siege_tower_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = cannon }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:cannon }
+			set_variable = { name = maa_manager_source_cost value = cannon_recruitment_cost }
 		}
 	}
 }

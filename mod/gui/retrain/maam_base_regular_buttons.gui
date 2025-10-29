@@ -184,5 +184,19 @@ types MAAManager_Retrain_BaseRegular
 				onclick = "[GetScriptedGui('maam_set_target_bombard').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 		}
+
+		# Handgunners (Late Medieval - requires unlock_late_medieval_gunpowder_units + powder magazine)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('handgunners')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_handgunners').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'handgunners')]"
+				onclick = "[GetScriptedGui('maam_set_target_handgunners').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
 	}
 }

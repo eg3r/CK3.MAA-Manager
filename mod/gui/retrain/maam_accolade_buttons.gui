@@ -164,5 +164,19 @@ types MAAManager_Retrain_Accolade
 				onclick = "[GetScriptedGui('maam_set_target_accolade_maa_horse_archers').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 		}
+
+		# Accolade Handgunners (Gunpowder Attribute Rank 3+)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('accolade_maa_handgunners')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_accolade_maa_handgunners').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'accolade_maa_handgunners')]"
+				onclick = "[GetScriptedGui('maam_set_target_accolade_maa_handgunners').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
 	}
 }

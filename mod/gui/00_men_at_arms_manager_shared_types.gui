@@ -103,7 +103,7 @@ types MenAtArmsManagerSharedTypes
 
 			hbox = {
 				layoutpolicy_horizontal = expanding
-				name = "maa_tiles"
+				name = "tutorial_maa_tiles"
 
 				fixedgridbox = {
 					datacontext = "[MilitaryView.GetMilitaryItem]"

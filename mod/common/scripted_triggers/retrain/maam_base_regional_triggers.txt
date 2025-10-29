@@ -20,12 +20,12 @@ maa_manager_can_recruit_war_elephant = {
 	OR = {
 		AND = {
 			# Regular recruitment path
-			culture = {
+			culture ?= {
 				has_innovation = innovation_elephantry
 			}
 			# Exclude landless adventurers (unless they have special parameter)
 			NOT = {
-				is_landless_adventurer = yes
+				has_government = landless_adventurer_government
 			}
 		}
 		# Adventurer special parameter path, can have no domicile?

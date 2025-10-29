@@ -171,9 +171,9 @@ maa_manager_can_show_palace_guards = {
 	is_shown = { maa_manager_can_recruit_palace_guards = yes }
 }
 
-maa_manager_can_show_chu_ko_nu = {
+maa_manager_can_show_shenbigong = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_chu_ko_nu = yes }
+	is_shown = { maa_manager_can_recruit_shenbigong = yes }
 }
 
 maa_manager_can_show_guanch_vaulter = {

@@ -1,0 +1,213 @@
+######################################################
+# MAA Manager - DLC TGP (The Grand Path) MAA Recruitment Triggers
+#
+# Contains 16 new MAA types from The Grand Path DLC (10_tgp_maa_types.txt)
+# East Asian cultural MAA + siege weapons for Chinese/Korean/Japanese heritages
+#
+# Cultural MAA (11): emishi_horse_archers, japanese_horse_archers, warrior_monks,
+#                     fire_lancers, gakgung_archers, pesilat_warriors, samurai,
+#                     zhanmadao_infantry, tiefutu, burenjia, rocket_carts
+# Regional MAA (1): ballista_elephant
+# Siege Weapons (4): ballista, cloud_ladder, siege_tower, cannon
+######################################################
+
+# ===== CULTURAL MAA =====
+
+maa_manager_can_recruit_emishi_horse_archers = {
+	# Requires Emishi cultural tradition (Japanese)
+	culture = {
+		has_cultural_parameter = unlock_emishi_horse_archers_units
+	}
+}
+
+maa_manager_can_recruit_japanese_horse_archers = {
+	# Requires Mounted Samurai cultural tradition (Japanese)
+	# Uses valid_for_maa_trigger pattern
+	culture = {
+		has_cultural_parameter = unlock_mounted_samurai_units
+	}
+}
+
+maa_manager_can_recruit_warrior_monks = {
+	# Requires Warrior Monk cultural tradition (Japanese)
+	# NOTE: Uses PIETY costs instead of gold!
+	culture = {
+		has_cultural_parameter = unlock_warrior_monk_units
+	}
+}
+
+maa_manager_can_recruit_fire_lancers = {
+	# Requires Fire Lancers cultural tradition + gunpowder building limit
+	# Similar to handgunners - needs powder magazine support
+	gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	culture = {
+		has_cultural_parameter = unlock_fire_lancers_units
+	}
+}
+
+maa_manager_can_recruit_gakgung_archers = {
+	# Requires Korean cultural tradition: unlock_maa_gakgung_archers
+	culture = {
+		has_cultural_parameter = unlock_maa_gakgung_archers
+	}
+}
+
+maa_manager_can_recruit_pesilat_warriors = {
+	# Requires Southeast Asian cultural tradition: unlock_maa_pesilat
+	culture = {
+		has_cultural_parameter = unlock_maa_pesilat
+	}
+}
+
+maa_manager_can_recruit_samurai = {
+	# Requires Infantry Samurai cultural tradition (Japanese)
+	culture = {
+		has_cultural_parameter = unlock_infantry_samurai_units
+	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_zhanmadao_infantry = {
+	# Requires Chinese cultural tradition + celestial province vassal contract
+	culture = {
+		has_cultural_parameter = unlock_zhanmadao
+	}
+	# Requires specific vassal contract flags
+	OR = {
+		vassal_contract_has_flag = celestial_province_military
+		vassal_contract_has_flag = celestial_province_celestial
+	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_tiefutu = {
+	# Requires Chinese cultural tradition: unlock_maa_tiefutu
+	culture = {
+		has_cultural_parameter = unlock_maa_tiefutu
+	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_burenjia = {
+	# Requires Chinese cultural tradition: unlock_burenjia
+	culture = {
+		has_cultural_parameter = unlock_burenjia
+	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_rocket_carts = {
+	# Rocket carts (Hwacha/Huoche) - Korean/Chinese siege weapon
+	# Requires innovation_rocket_cart
+	culture = {
+		has_innovation = innovation_rocket_cart
+	}
+}
+
+# ===== REGIONAL MAA =====
+
+maa_manager_can_recruit_ballista_elephant = {
+	# Requires elephantry + advanced bowmaking innovations
+	# Excluded for landless adventurers
+	culture ?= {
+		has_innovation = innovation_elephantry
+		has_innovation = innovation_advanced_bowmaking
+	}
+	NOT = {
+		is_landless_adventurer = yes
+	}
+}
+
+# ===== SIEGE WEAPONS (East Asian) =====
+
+maa_manager_can_recruit_ballista = {
+	# East Asian replacement for catapult
+	# Requires catapult innovation + East Asian heritage
+	culture = {
+		has_innovation = innovation_catapult
+		OR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
+	}
+	# Excluded for nomadic/herder governments
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_cloud_ladder = {
+	# East Asian replacement for mangonel
+	# Requires mangonel innovation + East Asian heritage
+	culture = {
+		has_innovation = innovation_mangonel
+		OR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
+	}
+	# Excluded for nomadic/herder governments
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_siege_tower = {
+	# East Asian replacement for trebuchet
+	# Requires trebuchet innovation + East Asian heritage
+	culture = {
+		has_innovation = innovation_trebuchet
+		OR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
+	}
+	# Excluded for nomadic/herder governments
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}
+
+maa_manager_can_recruit_cannon = {
+	# East Asian replacement for bombard
+	# Requires gunpowder cultural parameter + East Asian heritage
+	culture = {
+		has_cultural_parameter = unlock_late_medieval_gunpowder_units
+		OR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
+	}
+	# Excluded for nomadic/herder governments
+	NOR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
+}

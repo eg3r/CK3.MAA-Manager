@@ -55,3 +55,8 @@ maa_manager_can_show_horse_archers_retinue = {
 	scope = character
 	is_shown = { maa_manager_can_recruit_horse_archers_retinue = yes }
 }
+
+maa_manager_can_show_accolade_maa_handgunners = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_accolade_maa_handgunners = yes }
+}

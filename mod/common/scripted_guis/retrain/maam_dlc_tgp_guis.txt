@@ -1,0 +1,124 @@
+######################################################
+# MAA Manager - TGP MAA Button Visibility GUIs
+#
+# Scripted GUIs for showing/hiding TGP MAA type buttons
+# Uses triggers from maam_dlc_tgp_triggers.txt
+######################################################
+
+# ===== CULTURAL MAA =====
+
+maa_manager_can_show_emishi_horse_archers = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_emishi_horse_archers = yes
+	}
+}
+
+maa_manager_can_show_japanese_horse_archers = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_japanese_horse_archers = yes
+	}
+}
+
+maa_manager_can_show_warrior_monks = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_warrior_monks = yes
+	}
+}
+
+maa_manager_can_show_fire_lancers = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_fire_lancers = yes
+	}
+}
+
+maa_manager_can_show_gakgung_archers = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_gakgung_archers = yes
+	}
+}
+
+maa_manager_can_show_pesilat_warriors = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_pesilat_warriors = yes
+	}
+}
+
+maa_manager_can_show_samurai = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_samurai = yes
+	}
+}
+
+maa_manager_can_show_zhanmadao_infantry = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_zhanmadao_infantry = yes
+	}
+}
+
+maa_manager_can_show_tiefutu = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_tiefutu = yes
+	}
+}
+
+maa_manager_can_show_burenjia = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_burenjia = yes
+	}
+}
+
+maa_manager_can_show_rocket_carts = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_rocket_carts = yes
+	}
+}
+
+# ===== REGIONAL MAA =====
+
+maa_manager_can_show_ballista_elephant = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_ballista_elephant = yes
+	}
+}
+
+# ===== SIEGE WEAPONS =====
+
+maa_manager_can_show_ballista = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_ballista = yes
+	}
+}
+
+maa_manager_can_show_cloud_ladder = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_cloud_ladder = yes
+	}
+}
+
+maa_manager_can_show_siege_tower = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_siege_tower = yes
+	}
+}
+
+maa_manager_can_show_cannon = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_cannon = yes
+	}
+}

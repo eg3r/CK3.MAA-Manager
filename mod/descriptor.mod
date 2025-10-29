@@ -1,11 +1,11 @@
 name="Men-At-Arms Manager"
-version="1.17.1"
+version="1.18.0"
 tags={
 	"Military"
 	"GUI" 
 	"Gameplay"
 }
-supported_version="1.17.*"
+supported_version="1.18.*"
 remote_file_id="3580440930"
 
 # Mod Description

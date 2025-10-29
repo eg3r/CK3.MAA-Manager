@@ -204,6 +204,24 @@ maam_set_target_bombard = {
 	}
 }
 
+maam_set_target_handgunners = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:handgunners
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:handgunners
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = handgunner_recruitment_cost
+		}
+	}
+}
+
 maam_set_target_house_guard = {
 	scope = character
 	effect = {
@@ -494,20 +512,20 @@ maam_set_target_chasseur = {
 	}
 }
 
-maam_set_target_chu_ko_nu = {
+maam_set_target_shenbigong = {
 	scope = character
 	effect = {
 		save_scope_value_as = {
 			name = maa_manager_retrain_target_type
-			value = flag:chu_ko_nu
+			value = flag:shenbigong
 		}
 		set_variable = {
 			name = maa_manager_retrain_target_type
-			value = flag:chu_ko_nu
+			value = flag:shenbigong
 		}
 		set_variable = {
 			name = maa_manager_target_cost
-			value = chu_ko_nu_recruitment_cost
+			value = shenbigong_recruitment_cost
 		}
 	}
 }
@@ -1592,3 +1610,22 @@ maam_set_target_accolade_maa_horse_archers = {
 		}
 	}
 }
+
+maam_set_target_accolade_maa_handgunners = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_handgunners
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:accolade_maa_handgunners
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = handgunner_recruitment_cost
+		}
+	}
+}
+

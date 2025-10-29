@@ -173,3 +173,23 @@ maa_manager_can_recruit_horse_archers_retinue = {
 		accolade_rank >= 3
 	}
 }
+
+maa_manager_can_recruit_accolade_maa_handgunners = {
+	# Check if already has this accolade MAA type active
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = accolade_maa_handgunners
+		}
+	}
+	# Must have an active accolade with gunpowder attribute at rank 3+
+	any_active_accolade = {
+		primary_type = {
+			this = accolade_type:gunpowder_attribute
+		}
+		accolade_rank >= 3
+	}
+	# Must have gunpowder innovation (no powder magazine requirement for accolade variant)
+	culture = {
+		has_innovation = innovation_gunpowder
+	}
+}

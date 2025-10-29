@@ -106,8 +106,14 @@ maa_manager_can_recruit_onager = {
 		always = no
 	}
 	# Innovation requirement - Tribal Era siege weapon
+	# Exclude East Asian heritages (they use ballista instead)
 	culture = {
 		has_innovation = innovation_catapult
+		NOR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
 	}
 }
 
@@ -123,8 +129,14 @@ maa_manager_can_recruit_mangonel = {
 		always = no
 	}
 	# Innovation requirement - Early Medieval siege weapon
+	# Exclude East Asian heritages (they use cloud_ladder instead)
 	culture = {
 		has_innovation = innovation_mangonel
+		NOR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
 	}
 }
 
@@ -140,8 +152,14 @@ maa_manager_can_recruit_trebuchet = {
 		always = no
 	}
 	# Innovation requirement - High Medieval siege weapon
+	# Exclude East Asian heritages (they use siege_tower instead)
 	culture = {
 		has_innovation = innovation_trebuchet
+		NOR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
 	}
 }
 
@@ -156,8 +174,23 @@ maa_manager_can_recruit_bombard = {
 		}
 		always = no
 	}
-	# Innovation requirement - Late Medieval siege weapon
+	# Cultural parameter requirement - Late Medieval gunpowder units
+	# Exclude East Asian heritages (they don't have a tier 4 siege replacement in base game)
 	culture = {
-		has_innovation = innovation_bombard
+		has_cultural_parameter = unlock_late_medieval_gunpowder_units
+		NOR = {
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_japonic
+		}
+	}
+}
+
+maa_manager_can_recruit_handgunners = {
+	# Gunpowder building requirement - must have powder magazine to support regiments
+	gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	# Cultural parameter requirement - Late Medieval gunpowder units
+	culture = {
+		has_cultural_parameter = unlock_late_medieval_gunpowder_units
 	}
 }

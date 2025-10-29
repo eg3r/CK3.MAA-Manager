@@ -1,4 +1,4 @@
-﻿######################################################
+######################################################
 # MAA Manager - Retrain Tab - Cultural/Traditional MAA Buttons
 #
 # Contains 36 cultural/traditional MAA types unlocked by:
@@ -14,7 +14,7 @@
 # - guinea_warrior, abudrar, zbrojnosh, palace_guards
 #
 # Innovation-Gated (14 types):
-# - Tribal Era (6): caballero, paiks, sahel_horsemen, chu_ko_nu, guanch_vaulter
+# - Tribal Era (6): caballero, paiks, sahel_horsemen, shenbigong, guanch_vaulter
 # - High Medieval (5): picchieri, chasseur, hobelar, sarawit
 # - Late Medieval (5): landsknecht, goedendag, gendarme, praetorian, schiltron
 ######################################################
@@ -520,14 +520,14 @@ types MAAManager_Retrain_Cultural
 		# Chu Ko Nu (innovation_repeating_crossbow - Tribal, Chinese)
 		button_maa_type_filtered = {
 			blockoverride "maa_key" {
-				datacontext = "[GetMenAtArmsType('chu_ko_nu')]"
+				datacontext = "[GetMenAtArmsType('shenbigong')]"
 			}
 			blockoverride "scripted_gui_key" {
-				visible = "[And(GetScriptedGui('maa_manager_can_show_chu_ko_nu').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+				visible = "[And(GetScriptedGui('maa_manager_can_show_shenbigong').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
 			}
 			blockoverride "onclick_actions" {
-				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'chu_ko_nu')]"
-				onclick = "[GetScriptedGui('maam_set_target_chu_ko_nu').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'shenbigong')]"
+				onclick = "[GetScriptedGui('maam_set_target_shenbigong').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 		}
 

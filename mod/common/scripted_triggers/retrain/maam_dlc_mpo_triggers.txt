@@ -42,6 +42,12 @@ maa_manager_can_recruit_heavy_horse_archers = {
 maa_manager_can_recruit_nomad_lancers = {
 	# Use game's native trigger directly
 	mpo_can_recruit_nomad_heavy_cavalry_maa_trigger = yes
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 maa_manager_can_recruit_mangudai = {
@@ -55,6 +61,12 @@ maa_manager_can_recruit_cataphract_archers = {
 	# Requires cultural tradition + either non-nomadic OR has dominance
 	culture = {
 		has_cultural_parameter = unlock_maa_cataphract_archers
+	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
 	}
 	OR = {
 		NOT = {

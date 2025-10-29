@@ -60,3 +60,8 @@ maa_manager_can_show_bombard = {
 	scope = character
 	is_shown = { maa_manager_can_recruit_bombard = yes }
 }
+
+maa_manager_can_show_handgunners = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_handgunners = yes }
+}
