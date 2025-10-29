@@ -396,7 +396,12 @@ types MenAtArmsManagerTypes
 		
 		# Common tooltip - using the same detailed tooltip as the MAA type selection
 		tooltipwidget = {
-			using = maa_type_container_tooltip
+			widget_maa_type_container_tooltip = {
+				blockoverride "maa_texture"
+				{
+					texture = "[MenAtArmsType.GetHorizontalImageForCulture( GetPlayer.GetCulture )]"
+				}
+			}
 		}
 	}
 }

@@ -44,6 +44,13 @@ types MAAFilteredTypesList
 		vbox_retrain_fp3_buttons = {}     # 3 Persia types (FP3)
 
 		######################################################
+		# TGP DLC MAA TYPES (16 types) - The Grand Path
+		# Defined in: maa_manager/retrain/tgp_*_buttons.gui
+		######################################################
+		vbox_retrain_tgp_cultural_buttons = {}   # 11 East Asian cultural MAA types
+		vbox_retrain_tgp_regional_buttons = {}   # 1 regional + 4 siege weapons
+
+		######################################################
 		# CULTURAL/TRADITIONAL MAA TYPES (36 types)
 		# Defined in: maa_manager/retrain/cultural_buttons.gui
 		######################################################

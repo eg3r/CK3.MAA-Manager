@@ -5,7 +5,7 @@ echo.
 
 REM Set the target directory where the mod is installed
 set "TARGET_DIR=%USERPROFILE%\Documents\Paradox Interactive\Crusader Kings III\mod"
-set "MOD_NAME=MenAtManager"
+set "MOD_NAME=MenAtArmsManager"
 
 echo Target Directory: %TARGET_DIR%
 echo Mod Name: %MOD_NAME%

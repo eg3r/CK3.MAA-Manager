@@ -1007,9 +1007,6 @@ maa_manager_execute_retrain = {
 					}
 				}
 			}
-			debug_log = "MAA Manager: ERROR - Invalid source regiment or missing target type!"
-			debug_log = "MAA Manager: Aborting retrain execution."
-			return_hidden_effect = yes
 		}
 		
 		# Deduct cost based on government type

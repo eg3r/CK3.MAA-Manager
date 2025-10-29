@@ -1,0 +1,87 @@
+######################################################
+# MAA Manager - Retrain Tab - TGP DLC Regional MAA & Siege Weapons
+#
+# Contains 5 TGP (The Grand Path) types:
+# - ballista_elephant (regional MAA)
+# - ballista, cloud_ladder, siege_tower, cannon (East Asian siege weapons)
+######################################################
+
+types MAAManager_Retrain_TGP_Regional
+{
+	type vbox_retrain_tgp_regional_buttons = vbox {
+		name = "retrain_tgp_regional_buttons"
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+		margin = { 0 0 }
+
+		# Ballista Elephant (Regional - innovation_elephantry + innovation_advanced_bowmaking)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('ballista_elephant')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_ballista_elephant').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'ballista_elephant')]"
+				onclick = "[GetScriptedGui('maam_set_target_ballista_elephant').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Ballista (East Asian siege - innovation_catapult + East Asian heritage)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('ballista')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_ballista').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'ballista')]"
+				onclick = "[GetScriptedGui('maam_set_target_ballista').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Cloud Ladder (East Asian siege - innovation_mangonel + East Asian heritage)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('cloud_ladder')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_cloud_ladder').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'cloud_ladder')]"
+				onclick = "[GetScriptedGui('maam_set_target_cloud_ladder').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Siege Tower (East Asian siege - innovation_trebuchet + East Asian heritage)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('siege_tower')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_siege_tower').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'siege_tower')]"
+				onclick = "[GetScriptedGui('maam_set_target_siege_tower').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Cannon (East Asian siege - unlock_late_medieval_gunpowder_units + East Asian heritage)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('cannon')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_cannon').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'cannon')]"
+				onclick = "[GetScriptedGui('maam_set_target_cannon').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+	}
+}

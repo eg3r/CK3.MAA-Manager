@@ -1,0 +1,175 @@
+######################################################
+# MAA Manager - Retrain Tab - TGP DLC Cultural MAA Buttons
+#
+# Contains 11 TGP (The Grand Path) cultural MAA types
+# East Asian cultural traditions + innovations
+#
+# Types:
+# - emishi_horse_archers, japanese_horse_archers, warrior_monks
+# - fire_lancers, gakgung_archers, pesilat_warriors
+# - samurai, zhanmadao_infantry, tiefutu, burenjia, rocket_carts
+######################################################
+
+types MAAManager_Retrain_TGP_Cultural
+{
+	type vbox_retrain_tgp_cultural_buttons = vbox {
+		name = "retrain_tgp_cultural_buttons"
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+		margin = { 0 0 }
+
+		# Emishi Horse Archers (Japanese - unlock_emishi_horse_archers_units)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('emishi_horse_archers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_emishi_horse_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'emishi_horse_archers')]"
+				onclick = "[GetScriptedGui('maam_set_target_emishi_horse_archers').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Japanese Horse Archers (Japanese - unlock_mounted_samurai_units)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('japanese_horse_archers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_japanese_horse_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'japanese_horse_archers')]"
+				onclick = "[GetScriptedGui('maam_set_target_japanese_horse_archers').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Warrior Monks (Japanese - unlock_warrior_monk_units - PIETY cost)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('warrior_monks')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_warrior_monks').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'warrior_monks')]"
+				onclick = "[GetScriptedGui('maam_set_target_warrior_monks').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Fire Lancers (unlock_fire_lancers_units + gunpowder limit)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('fire_lancers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_fire_lancers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'fire_lancers')]"
+				onclick = "[GetScriptedGui('maam_set_target_fire_lancers').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Gakgung Archers (Korean - unlock_maa_gakgung_archers)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('gakgung_archers')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_gakgung_archers').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'gakgung_archers')]"
+				onclick = "[GetScriptedGui('maam_set_target_gakgung_archers').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Pesilat Warriors (Southeast Asian - unlock_maa_pesilat)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('pesilat_warriors')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_pesilat_warriors').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'pesilat_warriors')]"
+				onclick = "[GetScriptedGui('maam_set_target_pesilat_warriors').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Samurai (Japanese - unlock_infantry_samurai_units)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('samurai')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_samurai').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'samurai')]"
+				onclick = "[GetScriptedGui('maam_set_target_samurai').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Zhanmadao Infantry (Chinese - unlock_zhanmadao + celestial province contract)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('zhanmadao_infantry')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_zhanmadao_infantry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'zhanmadao_infantry')]"
+				onclick = "[GetScriptedGui('maam_set_target_zhanmadao_infantry').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Tiefutu (Chinese heavy cavalry - unlock_maa_tiefutu)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('tiefutu')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_tiefutu').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'tiefutu')]"
+				onclick = "[GetScriptedGui('maam_set_target_tiefutu').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Burenjia (Chinese heavy infantry - unlock_burenjia)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('burenjia')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_burenjia').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'burenjia')]"
+				onclick = "[GetScriptedGui('maam_set_target_burenjia').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Rocket Carts / Hwacha (Korean/Chinese - innovation_rocket_cart)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('rocket_carts')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_rocket_carts').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'rocket_carts')]"
+				onclick = "[GetScriptedGui('maam_set_target_rocket_carts').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+	}
+}
