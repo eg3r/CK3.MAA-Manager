@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - TGP MAA Target Setter GUIs
 #
 # Scripted GUIs for setting retrain targets to TGP MAA types

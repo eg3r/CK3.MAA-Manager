@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - DLC TGP (The Grand Path) MAA Recruitment Triggers
 #
 # Contains 16 new MAA types from The Grand Path DLC (10_tgp_maa_types.txt)

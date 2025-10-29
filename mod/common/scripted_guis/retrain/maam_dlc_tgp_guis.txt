@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 # MAA Manager - TGP MAA Button Visibility GUIs
 #
 # Scripted GUIs for showing/hiding TGP MAA type buttons
