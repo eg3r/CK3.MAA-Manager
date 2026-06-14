@@ -1266,6 +1266,16 @@ maa_manager_execute_retrain = {
 		}
 		else_if = {
 			limit = {
+				var:maa_manager_retrain_target_type = flag:black_armor_cavalry
+			}
+			create_maa_regiment = {
+				type = black_armor_cavalry
+				check_can_recruit = no
+				size = 1
+			}
+		}
+		else_if = {
+			limit = {
 				var:maa_manager_retrain_target_type = flag:burenjia
 			}
 			create_maa_regiment = {
@@ -1623,6 +1633,16 @@ maa_manager_execute_retrain = {
 			}
 			create_maa_regiment = {
 				type = huscarl
+				check_can_recruit = no
+				size = 1
+			}
+		}
+		else_if = {
+			limit = {
+				var:maa_manager_retrain_target_type = flag:teulu
+			}
+			create_maa_regiment = {
+				type = teulu
 				check_can_recruit = no
 				size = 1
 			}

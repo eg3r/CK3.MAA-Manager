@@ -144,6 +144,21 @@ maam_set_target_tiefutu = {
 	}
 }
 
+maam_set_target_black_armor_cavalry = {
+	scope = character
+	is_shown = { always = yes }
+	effect = {
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:black_armor_cavalry
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_cost
+			value = tiefutu_recruitment_cost
+		}
+	}
+}
+
 maam_set_target_burenjia = {
 	scope = character
 	is_shown = { always = yes }

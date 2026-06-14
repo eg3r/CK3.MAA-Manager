@@ -70,6 +70,13 @@ maa_manager_can_show_tiefutu = {
 	}
 }
 
+maa_manager_can_show_black_armor_cavalry = {
+	scope = character
+	is_shown = {
+		maa_manager_can_recruit_black_armor_cavalry = yes
+	}
+}
+
 maa_manager_can_show_burenjia = {
 	scope = character
 	is_shown = {

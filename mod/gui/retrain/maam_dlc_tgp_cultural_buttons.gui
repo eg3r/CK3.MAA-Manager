@@ -1,13 +1,14 @@
 ######################################################
 # MAA Manager - Retrain Tab - TGP DLC Cultural MAA Buttons
 #
-# Contains 11 TGP (The Grand Path) cultural MAA types
+# Contains 12 TGP (The Grand Path) cultural MAA types
 # East Asian cultural traditions + innovations
 #
 # Types:
 # - emishi_horse_archers, japanese_horse_archers, warrior_monks
 # - fire_lancers, gakgung_archers, pesilat_warriors
 # - samurai, zhanmadao_infantry, tiefutu, burenjia, rocket_carts
+# - black_armor_cavalry (v1.19)
 ######################################################
 
 types MAAManager_Retrain_TGP_Cultural
@@ -141,6 +142,20 @@ types MAAManager_Retrain_TGP_Cultural
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'tiefutu')]"
 				onclick = "[GetScriptedGui('maam_set_target_tiefutu').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Black Armor Cavalry (Chinese heavy cavalry - unlock_maa_black_armor_cavalry, v1.19)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('black_armor_cavalry')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_black_armor_cavalry').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'black_armor_cavalry')]"
+				onclick = "[GetScriptedGui('maam_set_target_black_armor_cavalry').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 		}
 

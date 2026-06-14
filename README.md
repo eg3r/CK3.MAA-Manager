@@ -42,7 +42,7 @@ A Crusader Kings III mod that provides an enhanced interface for managing your M
 
 ## Compatibility
 
-- **CK3 Version**: 1.17.*
+- **CK3 Version**: 1.19.*
 - **Ironman**: Yes (achievements enabled)
 - **Save Game Compatible**: Yes
 

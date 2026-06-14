@@ -1,12 +1,13 @@
 ﻿######################################################
 # MAA Manager - DLC TGP (The Grand Path) MAA Recruitment Triggers
 #
-# Contains 16 new MAA types from The Grand Path DLC (10_tgp_maa_types.txt)
+# Contains 17 new MAA types from The Grand Path DLC (10_tgp_maa_types.txt)
 # East Asian cultural MAA + siege weapons for Chinese/Korean/Japanese heritages
 #
-# Cultural MAA (11): emishi_horse_archers, japanese_horse_archers, warrior_monks,
+# Cultural MAA (12): emishi_horse_archers, japanese_horse_archers, warrior_monks,
 #                     fire_lancers, gakgung_archers, pesilat_warriors, samurai,
-#                     zhanmadao_infantry, tiefutu, burenjia, rocket_carts
+#                     zhanmadao_infantry, tiefutu, burenjia, rocket_carts,
+#                     black_armor_cavalry (v1.19)
 # Regional MAA (1): ballista_elephant
 # Siege Weapons (4): ballista, cloud_ladder, siege_tower, cannon
 ######################################################
@@ -94,6 +95,19 @@ maa_manager_can_recruit_tiefutu = {
 	# Requires Chinese cultural tradition: unlock_maa_tiefutu
 	culture = {
 		has_cultural_parameter = unlock_maa_tiefutu
+	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
+}
+
+maa_manager_can_recruit_black_armor_cavalry = {
+	# Requires cultural parameter: unlock_maa_black_armor_cavalry (TGP, v1.19)
+	culture = {
+		has_cultural_parameter = unlock_maa_black_armor_cavalry
 	}
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {

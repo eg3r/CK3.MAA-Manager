@@ -2,13 +2,18 @@
 # Men-At-Arms Manager - Cultural/Traditional MAA Availability
 #
 # Scripted GUIs for cultural and traditional MAA types
-# Types: 36 cultural types
+# Types: 37 cultural types
 # Scope: Character (player)
 ######################################################
 
 maa_manager_can_show_huscarl = {
 	scope = character
 	is_shown = { maa_manager_can_recruit_huscarl = yes }
+}
+
+maa_manager_can_show_teulu = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_teulu = yes }
 }
 
 maa_manager_can_show_longbowmen = {

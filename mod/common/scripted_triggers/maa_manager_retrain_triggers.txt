@@ -287,6 +287,12 @@ maa_manager_type_matches_retrain_target = {
 		}
 		AND = {
 			ROOT = {
+				var:maa_manager_retrain_target_type = flag:teulu
+			}
+			is_maa_type = teulu
+		}
+		AND = {
+			ROOT = {
 				var:maa_manager_retrain_target_type = flag:hussar
 			}
 			is_maa_type = hussar
@@ -609,6 +615,12 @@ maa_manager_type_matches_retrain_target = {
 				var:maa_manager_retrain_target_type = flag:tiefutu
 			}
 			is_maa_type = tiefutu
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:black_armor_cavalry
+			}
+			is_maa_type = black_armor_cavalry
 		}
 		AND = {
 			ROOT = {

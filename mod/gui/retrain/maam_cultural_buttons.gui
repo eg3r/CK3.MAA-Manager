@@ -1,11 +1,12 @@
 ######################################################
 # MAA Manager - Retrain Tab - Cultural/Traditional MAA Buttons
 #
-# Contains 36 cultural/traditional MAA types unlocked by:
+# Contains 37 cultural/traditional MAA types unlocked by:
 # - Cultural traditions (22 types) - checked via has_cultural_parameter
 # - Innovations (14 types) - checked via has_innovation, era-appropriate
+# - Culture-specific (1 type) - checked via direct culture match
 #
-# Status: 🧪 TESTING - All 36 types ready for in-game testing
+# Status: 🧪 TESTING - All 37 types ready for in-game testing
 #
 # Tradition-Based (22 types):
 # - huscarl, longbowmen, monaspa, cataphract, metsanvartija, horse_archers
@@ -17,6 +18,9 @@
 # - Tribal Era (6): caballero, paiks, sahel_horsemen, shenbigong, guanch_vaulter
 # - High Medieval (5): picchieri, chasseur, hobelar, sarawit
 # - Late Medieval (5): landsknecht, goedendag, gendarme, praetorian, schiltron
+#
+# Culture-Specific (1 type):
+# - teulu (Welsh/Cumbrian light cavalry, v1.19)
 ######################################################
 
 types MAAManager_Retrain_Cultural
@@ -42,6 +46,20 @@ types MAAManager_Retrain_Cultural
 			blockoverride "onclick_actions" {
 				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'huscarl')]"
 				onclick = "[GetScriptedGui('maam_set_target_huscarl').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			}
+		}
+
+		# Teulu (Welsh/Cumbrian light cavalry - culture-gated, v1.19)
+		button_maa_type_filtered = {
+			blockoverride "maa_key" {
+				datacontext = "[GetMenAtArmsType('teulu')]"
+			}
+			blockoverride "scripted_gui_key" {
+				visible = "[And(GetScriptedGui('maa_manager_can_show_teulu').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), Not(GetVariableSystem.HasValue('maa_manager_selected_regiment_type_name', MenAtArmsType.GetNameNoTooltip)))]"
+			}
+			blockoverride "onclick_actions" {
+				onclick = "[GetVariableSystem.Set('maa_manager_retrain_target_type', 'teulu')]"
+				onclick = "[GetScriptedGui('maam_set_target_teulu').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 			}
 		}
 

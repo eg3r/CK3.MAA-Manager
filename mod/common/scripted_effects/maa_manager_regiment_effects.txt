@@ -641,6 +641,21 @@ maa_manager_store_selected_type = {
 	}
 	if = {
 		limit = {
+			is_maa_type = teulu
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_selected_type
+				value = flag:teulu
+			}
+			set_variable = {
+				name = maa_manager_source_cost
+				value = teulu_recruitment_cost
+			}
+		}
+	}
+	if = {
+		limit = {
 			is_maa_type = hussar
 		}
 		ROOT = {
@@ -1435,6 +1450,13 @@ maa_manager_store_selected_type = {
 		limit = { is_maa_type = tiefutu }
 		ROOT = {
 			save_scope_value_as = { name = maa_manager_selected_type value = flag:tiefutu }
+			set_variable = { name = maa_manager_source_cost value = tiefutu_recruitment_cost }
+		}
+	}
+	else_if = {
+		limit = { is_maa_type = black_armor_cavalry }
+		ROOT = {
+			save_scope_value_as = { name = maa_manager_selected_type value = flag:black_armor_cavalry }
 			set_variable = { name = maa_manager_source_cost value = tiefutu_recruitment_cost }
 		}
 	}
