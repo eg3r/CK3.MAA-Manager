@@ -24,23 +24,26 @@ maa_manager_can_recruit_emishi_horse_archers = {
 maa_manager_can_recruit_japanese_horse_archers = {
 	# Requires Mounted Samurai cultural tradition (Japanese)
 	# Uses valid_for_maa_trigger pattern
-	culture = {
-		has_cultural_parameter = unlock_mounted_samurai_units
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_mounted_samurai_units }
 }
 
 maa_manager_can_recruit_warrior_monks = {
 	# Requires Warrior Monk cultural tradition (Japanese)
 	# NOTE: Uses PIETY costs instead of gold!
-	culture = {
-		has_cultural_parameter = unlock_warrior_monk_units
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_warrior_monk_units }
 }
 
 maa_manager_can_recruit_fire_lancers = {
 	# Requires Fire Lancers cultural tradition + gunpowder building limit
 	# Similar to handgunners - needs powder magazine support
-	gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	# (a gunpowder source being replaced frees its own quota slot)
+	trigger_if = {
+		limit = { maa_manager_retrain_replaces_gunpowder_unit = yes }
+		gunpowder_raise_limit_existing_gunpowder_units <= gunpowder_raise_limit_existing_gunpowder_buildings
+	}
+	trigger_else = {
+		gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	}
 	culture = {
 		has_cultural_parameter = unlock_fire_lancers_units
 	}
@@ -48,23 +51,17 @@ maa_manager_can_recruit_fire_lancers = {
 
 maa_manager_can_recruit_gakgung_archers = {
 	# Requires Korean cultural tradition: unlock_maa_gakgung_archers
-	culture = {
-		has_cultural_parameter = unlock_maa_gakgung_archers
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_gakgung_archers }
 }
 
 maa_manager_can_recruit_pesilat_warriors = {
 	# Requires Southeast Asian cultural tradition: unlock_maa_pesilat
-	culture = {
-		has_cultural_parameter = unlock_maa_pesilat
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_pesilat }
 }
 
 maa_manager_can_recruit_samurai = {
 	# Requires Infantry Samurai cultural tradition (Japanese)
-	culture = {
-		has_cultural_parameter = unlock_infantry_samurai_units
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_infantry_samurai_units }
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
 		culture = {
@@ -74,14 +71,12 @@ maa_manager_can_recruit_samurai = {
 }
 
 maa_manager_can_recruit_zhanmadao_infantry = {
-	# Requires Chinese cultural tradition + celestial province vassal contract
-	culture = {
-		has_cultural_parameter = unlock_zhanmadao
-	}
-	# Requires specific vassal contract flags
+	# Requires Chinese cultural tradition + military/protectorate province contract or independence
+	valid_for_maa_trigger = { PARAMETER = unlock_zhanmadao }
 	OR = {
 		vassal_contract_has_flag = celestial_province_military
-		vassal_contract_has_flag = celestial_province_celestial
+		vassal_contract_has_flag = celestial_province_protectorate
+		is_independent_ruler = yes
 	}
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
@@ -101,9 +96,7 @@ maa_manager_can_recruit_tiefutu = {
 
 maa_manager_can_recruit_black_armor_cavalry = {
 	# Requires cultural parameter: unlock_maa_black_armor_cavalry (TGP, v1.19)
-	culture = {
-		has_cultural_parameter = unlock_maa_black_armor_cavalry
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_black_armor_cavalry }
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
 		culture = {
@@ -114,9 +107,7 @@ maa_manager_can_recruit_black_armor_cavalry = {
 
 maa_manager_can_recruit_burenjia = {
 	# Requires Chinese cultural tradition: unlock_burenjia
-	culture = {
-		has_cultural_parameter = unlock_burenjia
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_burenjia }
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
 		culture = {

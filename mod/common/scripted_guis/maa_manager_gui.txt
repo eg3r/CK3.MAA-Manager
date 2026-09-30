@@ -14,32 +14,8 @@ maa_manager_data_create = {
 	scope = character
 	effect = {
 		debug_log = "MAA Manager: Initializing data..."
-		# Clear any previous data
-		clear_variable_list = maa_regiment_list
-		clear_variable_list = maa_move_target_list
-		clear_saved_scope = maa_manager_selected_regiment
-		save_scope_value_as = {
-			name = maa_manager_selected_type
-			value = flag:_maa_manager_unset
-		}
-		remove_global_variable = maa_manager_move_has_targets
-		
-		# Clear retrain-specific variables to ensure clean state
-		remove_variable = maa_manager_selected_regiment_scope
-		remove_variable = maa_manager_retrain_target_type
-		remove_variable = maa_manager_target_cost
-		remove_variable = maa_manager_source_cost
-		
-		# Collect all personal MAA regiments (see maa_manager_is_manageable_regiment)
-		every_maa_regiment = {
-			limit = { maa_manager_is_manageable_regiment = yes }
-			ROOT = {
-				add_to_variable_list = {
-					name = maa_regiment_list
-					target = prev
-				}
-			}
-		}
+		# Full reset and regiment list rebuild (single shared implementation)
+		maa_manager_data_create_effect = yes
 		debug_log = "MAA Manager: Data initialization complete."
 	}
 }
@@ -53,7 +29,7 @@ maa_manager_select_regiment = {
 		debug_log = "MAA Manager: Selecting source regiment..."
 		# Clear target selection and move targets when selecting new source
 		clear_variable_list = maa_move_target_list
-		remove_global_variable = maa_manager_move_has_targets
+		remove_variable = maa_manager_move_has_targets
 		# Clear target selection by removing the saved scope
 		if = {
 			limit = {
@@ -68,6 +44,9 @@ maa_manager_select_regiment = {
 			}
 			remove_variable = maa_total_planned_transfers
 		}
+		# A retrain target chosen for the previous source does not carry over
+		remove_variable = maa_manager_retrain_target_type
+		remove_variable = maa_manager_target_cost
 		# Save the selected source regiment
 		scope:regiment = {
 			save_scope_as = maa_manager_selected_regiment
@@ -115,7 +94,7 @@ maa_manager_select_regiment = {
 						name = maa_move_target_list
 						target = prev
 					}
-					set_global_variable = {
+					set_variable = {
 						name = maa_manager_move_has_targets
 						value = yes
 					}
@@ -521,131 +500,66 @@ maa_manager_confirm_transfers = {
 		always = yes
 	}
 	is_valid = {
-		always = yes
+		maa_manager_can_modify_regiments = yes
+		maa_manager_transfer_selection_valid = yes
 	}
 	effect = {
 		debug_log = "MAA Manager: Confirming transfers..."
-		# Execute TROOP transfer if valid
+		# Gate: re-check the policy and the live selection before changing anything
 		if = {
 			limit = {
-				has_variable = maa_manager_selected_regiment_scope
-				has_variable = maa_manager_selected_target_scope
+				maa_manager_can_modify_regiments = yes
+				maa_manager_transfer_selection_valid = yes
 				has_variable = maa_total_planned_transfers
 				var:maa_total_planned_transfers > 0
 			}
 			debug_log = "MAA Manager: Executing troop transfer..."
+			# The plan may be stale (e.g. after an immediate stack move), so bound it by
+			# the CURRENT source troops and target free capacity, and apply the same
+			# amount to both regiments so the total number of troops is conserved
+			var:maa_manager_selected_regiment_scope = {
+				save_temporary_scope_value_as = {
+					name = source_available
+					value = maa_current_troops_count
+				}
+			}
+			var:maa_manager_selected_target_scope = {
+				save_temporary_scope_value_as = {
+					name = target_free
+					value = {
+						value = maa_max_troops_count
+						subtract = maa_current_troops_count
+					}
+				}
+			}
 			save_temporary_scope_value_as = {
 				name = troop_transfer_amount
-				value = var:maa_total_planned_transfers
-			}
-			# Execute the troop transfer
-			var:maa_manager_selected_regiment_scope = {
-				change_maa_troops_count = {
-					value = scope:troop_transfer_amount
-					multiply = -1
-				}
-			}
-			var:maa_manager_selected_target_scope = {
-				change_maa_troops_count = scope:troop_transfer_amount
-			}
-			debug_log = "MAA Manager: Troop transfer executed!"
-		}
-		# Execute REGIMENT transfer if valid
-		if = {
-			limit = {
-				has_variable = maa_manager_selected_regiment_scope
-				has_variable = maa_manager_selected_target_scope
-				has_variable = maa_total_planned_regiment_transfers
-				var:maa_total_planned_regiment_transfers > 0
-			}
-			debug_log = "MAA Manager: Executing regiment transfer..."
-			save_temporary_scope_value_as = {
-				name = regiment_transfer_amount
-				value = var:maa_total_planned_regiment_transfers
-			}
-			# Check if source will be depleted
-			save_temporary_scope_value_as = {
-				name = source_remaining
 				value = {
-					value = var:maa_manager_selected_regiment_scope.maa_size
-					subtract = scope:regiment_transfer_amount
+					value = var:maa_total_planned_transfers
+					max = scope:source_available
+					max = scope:target_free
+					min = 0
 				}
 			}
-			# Execute the regiment transfer on source
-			var:maa_manager_selected_regiment_scope = {
-				if = {
-					limit = {
-						scope:source_remaining <= 0
-					}
-					# Destroy source regiment if depleted
-					destroy_maa_regiment = yes
-					debug_log = "MAA Manager: Source regiment destroyed (no stacks remaining)"
-				}
-				else = {
-					# Reduce source regiment stacks
-					# Note: negative value to subtract
-					save_temporary_scope_value_as = {
-						name = negative_amount
-						value = {
-							value = scope:regiment_transfer_amount
-							multiply = -1
-						}
-					}
-					change_maa_regiment_size = {
-						size = scope:negative_amount
-						reinforce = no
-					}
-					debug_log = "MAA Manager: Reduced source regiment by [scope:regiment_transfer_amount] stacks"
-				}
-			}
-			# Increase target regiment stacks
-			var:maa_manager_selected_target_scope = {
-				change_maa_regiment_size = {
-					size = scope:regiment_transfer_amount
-					reinforce = no
-				}
-				debug_log = "MAA Manager: Increased target regiment by [scope:regiment_transfer_amount] stacks"
-			}
-			debug_log = "MAA Manager: Regiment transfer executed!"
-		}
-		# Clear all data after successful transfers
-		if = {
-			limit = {
-				has_variable = maa_total_planned_transfers
-			}
-			remove_variable = maa_total_planned_transfers
-		}
-		if = {
-			limit = {
-				has_variable = maa_total_planned_regiment_transfers
-			}
-			remove_variable = maa_total_planned_regiment_transfers
-		}
-		if = {
-			limit = {
-				has_variable = maa_manager_selected_target_scope
-			}
-			remove_variable = maa_manager_selected_target_scope
-		}
-		# Refresh data to show new state
-		maa_manager_data_create_effect = yes
-		# Reselect the source regiment if it still exists
-		if = {
-			limit = {
-				has_variable = maa_manager_selected_regiment_scope
-			}
-			var:maa_manager_selected_regiment_scope = {
-				if = {
-					limit = {
-						maa_current_troops_count > 0
-					}
-					save_temporary_scope_as = regiment
-					ROOT = {
-						maa_manager_select_regiment_effect = yes
+			if = {
+				limit = { scope:troop_transfer_amount > 0 }
+				var:maa_manager_selected_regiment_scope = {
+					change_maa_troops_count = {
+						value = scope:troop_transfer_amount
+						multiply = -1
 					}
 				}
+				var:maa_manager_selected_target_scope = {
+					change_maa_troops_count = scope:troop_transfer_amount
+				}
+				debug_log = "MAA Manager: Troop transfer executed!"
 			}
 		}
+		else = {
+			debug_log = "MAA Manager: Transfer aborted - selection, policy or planned amount no longer valid"
+		}
+		# Refresh everything (target, plans, capacities), keeping the source selected if it still exists
+		maa_manager_refresh_keep_source_effect = yes
 		debug_log = "MAA Manager: All transfers confirmed and complete."
 	}
 }
@@ -659,13 +573,17 @@ maa_manager_confirm_transfers = {
 ######################################################
 maa_manager_transfer_regiment_to_target_effect = {
 	scope = character
+	is_valid = {
+		maa_manager_can_modify_regiments = yes
+		maa_manager_transfer_selection_valid = yes
+	}
 	effect = {
 		debug_log = "MAA Manager: Transferring 1 regiment from source to target..."
-		# Validate we have both regiments selected
+		# Validate the policy and that both selected regiments are still valid
 		if = {
 			limit = {
-				has_variable = maa_manager_selected_regiment_scope
-				has_variable = maa_manager_selected_target_scope
+				maa_manager_can_modify_regiments = yes
+				maa_manager_transfer_selection_valid = yes
 			}
 			# Check if target can accept more stacks
 			var:maa_manager_selected_target_scope = {
@@ -757,6 +675,11 @@ maa_manager_transfer_regiment_to_target_effect = {
 								remove_variable = temp_full_stack_size
 								remove_variable = temp_soldiers_to_transfer
 								remove_variable = temp_negative_soldiers
+								# A pending troop plan was based on the old sizes - invalidate it
+								set_variable = {
+									name = maa_total_planned_transfers
+									value = 0
+								}
 								debug_log = "MAA Manager: Successfully transferred 1 regiment stack with soldiers"
 							}
 						}
@@ -809,13 +732,17 @@ maa_manager_transfer_regiment_to_target_effect = {
 ######################################################
 maa_manager_transfer_regiment_from_target_effect = {
 	scope = character
+	is_valid = {
+		maa_manager_can_modify_regiments = yes
+		maa_manager_transfer_selection_valid = yes
+	}
 	effect = {
 		debug_log = "MAA Manager: Transferring 1 regiment from target to source..."
-		# Validate we have both regiments selected
+		# Validate the policy and that both selected regiments are still valid
 		if = {
 			limit = {
-				has_variable = maa_manager_selected_regiment_scope
-				has_variable = maa_manager_selected_target_scope
+				maa_manager_can_modify_regiments = yes
+				maa_manager_transfer_selection_valid = yes
 			}
 			# Check if source can accept more stacks
 			var:maa_manager_selected_regiment_scope = {
@@ -908,6 +835,11 @@ maa_manager_transfer_regiment_from_target_effect = {
 								remove_variable = temp_full_stack_size
 								remove_variable = temp_soldiers_to_transfer
 								remove_variable = temp_negative_soldiers
+								# A pending troop plan was based on the old sizes - invalidate it
+								set_variable = {
+									name = maa_total_planned_transfers
+									value = 0
+								}
 								debug_log = "MAA Manager: Successfully transferred 1 regiment stack back with soldiers"
 							}
 						}
@@ -937,9 +869,8 @@ maa_manager_transfer_regiment_from_target_effect = {
 									# Regiment is now destroyed, don't access it anymore
 								}
 								debug_log = "MAA Manager: Destroyed target regiment (was last stack)"
-								# Clear target selection since it no longer exists
-								remove_variable = maa_manager_selected_target_scope
-								maa_manager_data_create_effect = yes
+								# The target no longer exists: full refresh, keeping the (still existing) source selected
+								maa_manager_refresh_keep_source_effect = yes
 							}
 						}
 					}
@@ -967,6 +898,17 @@ maa_manager_retrain_affordable = {
 }
 
 ######################################################
+# Retrain target is paid in piety (Warrior Monks) - drives the retrain
+# tab's cost row, icon and tooltips
+######################################################
+maa_manager_retrain_piety_payment = {
+	scope = character
+	is_shown = {
+		maa_manager_retrain_pays_piety = yes
+	}
+}
+
+######################################################
 # Retrain Regiment
 ######################################################
 maa_manager_execute_retrain = {
@@ -989,8 +931,36 @@ maa_manager_execute_retrain = {
 			maa_manager_data_create_effect = yes
 		}
 		else = {
-			# Deduct cost based on government type
+			# Record what this retrain charges before anything changes. The cost values
+			# read the source regiment's size, which is gone after destruction, so any
+			# refund below uses these records. Exactly one of them is non-zero.
+			set_local_variable = {
+				name = retrain_paid_piety
+				value = maa_manager_retrain_piety_cost
+			}
+			set_local_variable = {
+				name = retrain_paid_prestige
+				value = maa_manager_retrain_prestige_cost
+			}
+			set_local_variable = {
+				name = retrain_paid_gold
+				value = maa_manager_retrain_gold_cost
+			}
+			set_local_variable = {
+				name = retrain_refund_fraction
+				value = 0
+			}
+
+			# Deduct cost: piety for piety-priced targets (Warrior Monks),
+			# otherwise based on government type
 			if = {
+				limit = { maa_manager_retrain_pays_piety = yes }
+				add_piety = {
+					value = maa_manager_retrain_piety_cost
+					multiply = -1
+				}
+			}
+			else_if = {
 				limit = { has_government = tribal_government }
 				# Tribal pays in prestige (need to negate the value)
 				add_prestige = {
@@ -1003,7 +973,7 @@ maa_manager_execute_retrain = {
 				# (replace_gold_cost_by_treasury) - same resource as native MAA recruitment
 				remove_treasury_or_gold = maa_manager_retrain_gold_cost
 			}
-		
+
 			# Save the source regiment and capture its size
 			var:maa_manager_selected_regiment_scope = {
 				save_scope_as = source_regiment
@@ -1035,7 +1005,7 @@ maa_manager_execute_retrain = {
 
 			# Create new regiment based on the stored retrain target type flag
 			# Use giant if/else chain to match flag to type name
-		
+
 			# Base Game Regular MAA
 			if = {
 				limit = {
@@ -2162,7 +2132,7 @@ maa_manager_execute_retrain = {
 			# Only proceed if we successfully found the new regiment
 			if = {
 				limit = { exists = scope:new_regiment }
-			
+
 				while = {
 					limit = {
 						local_var:current_value < local_var:temp_retrain_size
@@ -2181,9 +2151,65 @@ maa_manager_execute_retrain = {
 						add = 1
 					}
 				}
+				debug_log = "MAA Manager: Retrain executed - replacement regiment created and grown"
+
+				# Verify the final size. Stacks the game did not add (for example a smaller
+				# size limit for the target type) are refunded, so the player only pays for
+				# the stacks actually created.
+				scope:new_regiment = {
+					save_temporary_scope_value_as = {
+						name = retrain_result_size
+						value = maa_size
+					}
+				}
+				if = {
+					limit = { scope:retrain_result_size < local_var:temp_retrain_size }
+					set_local_variable = {
+						name = retrain_refund_fraction
+						value = {
+							value = local_var:temp_retrain_size
+							subtract = scope:retrain_result_size
+							divide = local_var:temp_retrain_size
+						}
+					}
+					debug_log = "MAA Manager: Retrain created fewer stacks than requested - refunding the missing stacks"
+				}
 			}
 			else = {
-				debug_log = "MAA Manager: ERROR - Could not find newly created regiment!"
+				# The source is already gone and cannot be restored, but nothing replaced
+				# it: refund the full cost
+				set_local_variable = {
+					name = retrain_refund_fraction
+					value = 1
+				}
+				debug_log = "MAA Manager: ERROR - Could not find newly created regiment! Refunding the full cost"
+			}
+
+			# Refund (0 when the replacement was created at full size). Gold goes back
+			# through add_treasury_or_gold, mirroring remove_treasury_or_gold.
+			if = {
+				limit = { local_var:retrain_refund_fraction > 0 }
+				if = {
+					limit = { local_var:retrain_paid_gold > 0 }
+					add_treasury_or_gold = {
+						value = local_var:retrain_paid_gold
+						multiply = local_var:retrain_refund_fraction
+					}
+				}
+				if = {
+					limit = { local_var:retrain_paid_prestige > 0 }
+					add_prestige = {
+						value = local_var:retrain_paid_prestige
+						multiply = local_var:retrain_refund_fraction
+					}
+				}
+				if = {
+					limit = { local_var:retrain_paid_piety > 0 }
+					add_piety = {
+						value = local_var:retrain_paid_piety
+						multiply = local_var:retrain_refund_fraction
+					}
+				}
 			}
 
 			# Clear variables

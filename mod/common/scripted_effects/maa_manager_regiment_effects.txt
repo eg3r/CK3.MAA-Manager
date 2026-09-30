@@ -1025,7 +1025,7 @@ maa_manager_store_selected_type = {
 			}
 			set_variable = {
 				name = maa_manager_source_cost
-				value = 150
+				value = cataphract_recruitment_cost
 			}
 		}
 	}
@@ -1160,7 +1160,7 @@ maa_manager_store_selected_type = {
 			}
 			set_variable = {
 				name = maa_manager_source_cost
-				value = 150
+				value = bondi_recruitment_cost
 			}
 		}
 	}
@@ -1176,7 +1176,7 @@ maa_manager_store_selected_type = {
 			}
 			set_variable = {
 				name = maa_manager_source_cost
-				value = 150
+				value = jomsviking_pirates_recruitment_cost
 			}
 		}
 	}
@@ -1191,7 +1191,7 @@ maa_manager_store_selected_type = {
 			}
 			set_variable = {
 				name = maa_manager_source_cost
-				value = 150
+				value = jomsviking_pirates_recruitment_cost
 			}
 		}
 	}
@@ -1206,7 +1206,7 @@ maa_manager_store_selected_type = {
 			}
 			set_variable = {
 				name = maa_manager_source_cost
-				value = 150
+				value = jomsviking_pirates_recruitment_cost
 			}
 		}
 	}
@@ -1221,7 +1221,7 @@ maa_manager_store_selected_type = {
 			}
 			set_variable = {
 				name = maa_manager_source_cost
-				value = 150
+				value = jomsviking_pirates_recruitment_cost
 			}
 		}
 	}
@@ -1425,7 +1425,8 @@ maa_manager_store_selected_type = {
 		limit = { is_maa_type = warrior_monks }
 		ROOT = {
 			save_scope_value_as = { name = maa_manager_selected_type value = flag:warrior_monks }
-			set_variable = { name = maa_manager_source_cost value = warrior_monks_piety_recruitment_cost }
+			# Recruited with piety: no gold value to credit against a gold/treasury/prestige target
+			set_variable = { name = maa_manager_source_cost value = 0 }
 		}
 	}
 	else_if = {

@@ -14,7 +14,79 @@ maa_manager_is_manageable_regiment = {
 }
 
 ######################################################
+# Manager policy: regiments may only be changed at peace with nothing raised
+# (same rule as the button that opens the manager window).
+# Checked again by every mutating action, not only when the window opens.
+# Scope: character
+######################################################
+maa_manager_can_modify_regiments = {
+	is_at_war = no
+	has_raised_armies = no
+	NOT = {
+		any_maa_regiment = {
+			is_raised = yes
+		}
+	}
+}
+
+######################################################
+# Live check of the selected transfer source and target
+# Both must still be owned, manageable and distinct, and the target must
+# still be in the compatible (same-type) target list built for this source.
+# Scope: character (root)
+######################################################
+maa_manager_transfer_selection_valid = {
+	has_variable = maa_manager_selected_regiment_scope
+	has_variable = maa_manager_selected_target_scope
+	any_maa_regiment = {
+		this = root.var:maa_manager_selected_regiment_scope
+		maa_manager_is_manageable_regiment = yes
+	}
+	any_maa_regiment = {
+		this = root.var:maa_manager_selected_target_scope
+		maa_manager_is_manageable_regiment = yes
+	}
+	var:maa_manager_selected_regiment_scope = {
+		NOT = { this = root.var:maa_manager_selected_target_scope }
+	}
+	is_target_in_variable_list = {
+		name = maa_move_target_list
+		target = var:maa_manager_selected_target_scope
+	}
+}
+
+######################################################
+# Retrain target is paid in piety
+# Warrior Monks are the only MAA the game recruits with piety
+# (buy_cost = { piety = warrior_monks_piety_recruitment_cost }).
+# Scope: character
+######################################################
+maa_manager_retrain_pays_piety = {
+	has_variable = maa_manager_retrain_target_type
+	var:maa_manager_retrain_target_type = flag:warrior_monks
+}
+
+######################################################
+# The retrain source is a gunpowder regiment counted by the native quota
+# (gunpowder_raise_limit_existing_gunpowder_units counts personal handgunners
+# and fire lancers). Replacing it frees its quota slot, so the quota check for
+# a gunpowder target may allow one more.
+# Scope: character
+######################################################
+maa_manager_retrain_replaces_gunpowder_unit = {
+	has_variable = maa_manager_selected_regiment_scope
+	var:maa_manager_selected_regiment_scope = {
+		is_personal_maa_regiment = yes
+		OR = {
+			is_maa_type = handgunners
+			is_maa_type = fire_lancers
+		}
+	}
+}
+
+######################################################
 # Retrain affordability
+# Warrior Monks target: piety (their native currency).
 # Tribal: prestige. Everyone else: treasury_or_gold, which checks the
 # treasury for treasury governments (replace_gold_cost_by_treasury) and
 # gold otherwise - the same resource the game charges for MAA recruitment.
@@ -22,6 +94,10 @@ maa_manager_is_manageable_regiment = {
 ######################################################
 maa_manager_can_afford_retrain = {
 	trigger_if = {
+		limit = { maa_manager_retrain_pays_piety = yes }
+		piety >= maa_manager_retrain_piety_cost
+	}
+	trigger_else_if = {
 		limit = { has_government = tribal_government }
 		prestige >= maa_manager_retrain_prestige_cost
 	}
@@ -37,6 +113,7 @@ maa_manager_can_afford_retrain = {
 # Scope: character (root)
 ######################################################
 maa_manager_can_execute_retrain = {
+	maa_manager_can_modify_regiments = yes
 	has_variable = maa_manager_selected_regiment_scope
 	has_variable = maa_manager_retrain_target_type
 	# Source must still be one of this character's manageable regiments

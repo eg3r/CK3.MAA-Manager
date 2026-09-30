@@ -47,7 +47,7 @@ types MAAManager_Tab_Troops
 
 						# Empty state - shown when no targets
 						vbox = {
-							visible = "[Not(GetGlobalVariable('maa_manager_move_has_targets').IsSet)]"
+							visible = "[Not(GetPlayer.MakeScope.Var('maa_manager_move_has_targets').IsSet)]"
 							layoutpolicy_horizontal = expanding
 							layoutpolicy_vertical = expanding
 							spacing = 8
@@ -81,7 +81,7 @@ types MAAManager_Tab_Troops
 
 						# Target list - shown when targets exist
 						fixedgridbox = {
-							visible = "[GetGlobalVariable('maa_manager_move_has_targets').IsSet]"
+							visible = "[GetPlayer.MakeScope.Var('maa_manager_move_has_targets').IsSet]"
 							datamodel = "[GetPlayer.MakeScope.GetList('maa_move_target_list')]"
 							layoutpolicy_horizontal = expanding
 							flipdirection = yes

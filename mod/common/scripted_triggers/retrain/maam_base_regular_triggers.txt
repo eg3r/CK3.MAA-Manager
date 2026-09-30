@@ -110,7 +110,14 @@ maa_manager_can_recruit_bombard = {
 
 maa_manager_can_recruit_handgunners = {
 	# Gunpowder building requirement - must have powder magazine to support regiments
-	gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	# (a gunpowder source being replaced frees its own quota slot)
+	trigger_if = {
+		limit = { maa_manager_retrain_replaces_gunpowder_unit = yes }
+		gunpowder_raise_limit_existing_gunpowder_units <= gunpowder_raise_limit_existing_gunpowder_buildings
+	}
+	trigger_else = {
+		gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	}
 	# Cultural parameter requirement - Late Medieval gunpowder units
 	culture = {
 		has_cultural_parameter = unlock_late_medieval_gunpowder_units

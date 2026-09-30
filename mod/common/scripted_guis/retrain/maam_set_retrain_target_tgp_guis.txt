@@ -45,8 +45,9 @@ maam_set_target_warrior_monks = {
 			name = maa_manager_retrain_target_type
 			value = flag:warrior_monks
 		}
-		# NOTE: warrior_monks uses PIETY cost, not gold
-		# Using warrior_monks_piety_recruitment_cost
+		# NOTE: warrior_monks are recruited with PIETY, not gold. Retraining into them
+		# is charged in piety by maa_manager_retrain_piety_cost; this per-stack value
+		# is only shown in the piety cost tooltip.
 		set_variable = {
 			name = maa_manager_target_cost
 			value = warrior_monks_piety_recruitment_cost

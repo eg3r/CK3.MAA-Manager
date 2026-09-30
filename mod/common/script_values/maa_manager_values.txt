@@ -22,11 +22,12 @@
 maa_manager_retrain_gold_cost = {
 	value = 0
 	
-	# Only apply gold cost if NOT tribal government
+	# Only apply gold cost if NOT tribal government (and the target is not piety-priced)
 	if = {
-		limit = { 
+		limit = {
 			has_variable = maa_manager_selected_regiment_scope
 			NOT = { has_government = tribal_government }
+			maa_manager_retrain_pays_piety = no
 		}
 		
 		# Calculate per-stack cost: (target - source), minimum 10
@@ -108,11 +109,12 @@ maa_manager_retrain_per_stack_cost = {
 maa_manager_retrain_prestige_cost = {
 	value = 0
 	
-	# Only apply prestige cost for tribal government
+	# Only apply prestige cost for tribal government (and the target is not piety-priced)
 	if = {
-		limit = { 
+		limit = {
 			has_variable = maa_manager_selected_regiment_scope
 			has_government = tribal_government
+			maa_manager_retrain_pays_piety = no
 		}
 		
 		# Calculate per-stack cost: (target - source), minimum 10
@@ -139,8 +141,31 @@ maa_manager_retrain_prestige_cost = {
 		
 		# Tribal pays 2x in prestige
 		multiply = 2
-		
+
 		# Multiply by number of stacks
+		multiply = var:maa_manager_selected_regiment_scope.maa_size
+	}
+}
+
+######################################################
+# Retrain Piety Cost Calculation
+# Formula: Warrior Monks piety cost × Stacks
+# Warrior Monks are recruited with piety in the game
+# (buy_cost = { piety = warrior_monks_piety_recruitment_cost }), so retraining
+# into them costs their full piety price for every stack. Gold, treasury and
+# prestige are different currencies, so the source regiment is not credited.
+# Returns 0 for every other target.
+# Scope: Character
+######################################################
+maa_manager_retrain_piety_cost = {
+	value = 0
+
+	if = {
+		limit = {
+			has_variable = maa_manager_selected_regiment_scope
+			maa_manager_retrain_pays_piety = yes
+		}
+		add = warrior_monks_piety_recruitment_cost
 		multiply = var:maa_manager_selected_regiment_scope.maa_size
 	}
 }
