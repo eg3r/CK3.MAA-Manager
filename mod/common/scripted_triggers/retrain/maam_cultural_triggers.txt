@@ -14,9 +14,7 @@
 ######################################################
 
 maa_manager_can_recruit_huscarl = {
-	culture = {
-		has_cultural_parameter = unlock_maa_huscarls
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_huscarls }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -48,9 +46,7 @@ maa_manager_can_recruit_landsknecht = {
 }
 
 maa_manager_can_recruit_longbowmen = {
-	culture = {
-		has_cultural_parameter = unlock_maa_longbowmen
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_longbowmen }
 }
 
 maa_manager_can_recruit_goedendag = {
@@ -90,9 +86,7 @@ maa_manager_can_recruit_caballero = {
 }
 
 maa_manager_can_recruit_monaspa = {
-	culture = {
-		has_cultural_parameter = unlock_maa_monaspa
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_monaspa }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -101,9 +95,7 @@ maa_manager_can_recruit_monaspa = {
 }
 
 maa_manager_can_recruit_cataphract = {
-	culture = {
-		has_cultural_parameter = unlock_maa_cataphract
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_cataphract }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -124,9 +116,7 @@ maa_manager_can_recruit_schiltron = {
 }
 
 maa_manager_can_recruit_metsanvartija = {
-	culture = {
-		has_cultural_parameter = unlock_maa_metsanvartija
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_metsanvartija }
 }
 
 maa_manager_can_recruit_horse_archers = {
@@ -148,9 +138,7 @@ maa_manager_can_recruit_horse_archers = {
 }
 
 maa_manager_can_recruit_ayyar = {
-	culture = {
-		has_cultural_parameter = unlock_maa_ayyar
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_ayyar }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -159,9 +147,7 @@ maa_manager_can_recruit_ayyar = {
 }
 
 maa_manager_can_recruit_mubarizun = {
-	culture = {
-		has_cultural_parameter = unlock_maa_mubarizun
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mubarizun }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -170,15 +156,11 @@ maa_manager_can_recruit_mubarizun = {
 }
 
 maa_manager_can_recruit_mulaththamun = {
-	culture = {
-		has_cultural_parameter = unlock_maa_mulaththamun
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mulaththamun }
 }
 
 maa_manager_can_recruit_archers_of_the_nile = {
-	culture = {
-		has_cultural_parameter = unlock_maa_archers_of_the_nile
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_archers_of_the_nile }
 }
 
 maa_manager_can_recruit_paiks = {
@@ -188,9 +170,7 @@ maa_manager_can_recruit_paiks = {
 }
 
 maa_manager_can_recruit_druzhina = {
-	culture = {
-		has_cultural_parameter = unlock_maa_druzhina
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_druzhina }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -199,33 +179,23 @@ maa_manager_can_recruit_druzhina = {
 }
 
 maa_manager_can_recruit_hussar = {
-	culture = {
-		has_cultural_parameter = unlock_maa_hussar
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_hussar }
 }
 
 maa_manager_can_recruit_horn_warrior = {
-	culture = {
-		has_cultural_parameter = unlock_maa_horn_warrior
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_horn_warrior }
 }
 
 maa_manager_can_recruit_bush_hunter = {
-	culture = {
-		has_cultural_parameter = unlock_maa_bush_hunter
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_bush_hunter }
 }
 
 maa_manager_can_recruit_shomer = {
-	culture = {
-		has_cultural_parameter = unlock_maa_shomer
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_shomer }
 }
 
 maa_manager_can_recruit_garudas = {
-	culture = {
-		has_cultural_parameter = unlock_maa_garudas
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_garudas }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -234,9 +204,7 @@ maa_manager_can_recruit_garudas = {
 }
 
 maa_manager_can_recruit_khandayat = {
-	culture = {
-		has_cultural_parameter = unlock_maa_khandayat
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_khandayat }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -245,9 +213,7 @@ maa_manager_can_recruit_khandayat = {
 }
 
 maa_manager_can_recruit_mountaineer = {
-	culture = {
-		has_cultural_parameter = unlock_maa_mountaineer
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mountaineer }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -262,9 +228,7 @@ maa_manager_can_recruit_sahel_horsemen = {
 }
 
 maa_manager_can_recruit_guinea_warrior = {
-	culture = {
-		has_cultural_parameter = unlock_maa_guinea_warrior
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_guinea_warrior }
 }
 
 maa_manager_can_recruit_sarawit = {
@@ -274,15 +238,11 @@ maa_manager_can_recruit_sarawit = {
 }
 
 maa_manager_can_recruit_abudrar = {
-	culture = {
-		has_cultural_parameter = unlock_maa_abudrar
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_abudrar }
 }
 
 maa_manager_can_recruit_zbrojnosh = {
-	culture = {
-		has_cultural_parameter = unlock_maa_zbrojnosh
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_zbrojnosh }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
@@ -291,9 +251,7 @@ maa_manager_can_recruit_zbrojnosh = {
 }
 
 maa_manager_can_recruit_palace_guards = {
-	culture = {
-		has_cultural_parameter = unlock_maa_palace_guards
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_palace_guards }
 	NOT = {
 		culture = {
 			has_cultural_parameter = strength_in_numbers_heavy_maa_ban

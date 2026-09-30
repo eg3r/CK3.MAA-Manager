@@ -159,7 +159,7 @@ types MAAManager_Tab_Retrain
 
 								# Selection Status
 								vbox = {
-									visible = "[Not(VariableSystem.Exists('maa_manager_retrain_target_type'))]"
+									visible = "[Not(And(VariableSystem.Exists('maa_manager_retrain_target_type'), GetPlayer.MakeScope.Var('maa_manager_retrain_target_type').IsSet))]"
 									layoutpolicy_horizontal = expanding
 									layoutpolicy_vertical = expanding
 									spacing = 8
@@ -195,7 +195,7 @@ types MAAManager_Tab_Retrain
 
 								# Conversion Preview (when target selected)
 								vbox = {
-									visible = "[VariableSystem.Exists('maa_manager_retrain_target_type')]"
+									visible = "[And(VariableSystem.Exists('maa_manager_retrain_target_type'), GetPlayer.MakeScope.Var('maa_manager_retrain_target_type').IsSet)]"
 									layoutpolicy_horizontal = expanding
 									spacing = 8
 
@@ -266,7 +266,9 @@ types MAAManager_Tab_Retrain
 											
 											icon = {
 												size = { 20 20 }
-												texture = "gfx/interface/icons/symbols/icon_arrow_down.dds"
+												# Down arrow: native flat arrow mirrored (icons/symbols/icon_arrow_down.dds does not exist)
+												texture = "gfx/interface/icons/flat_icons/arrow_vertical.dds"
+												mirror = vertical
 												alpha = 0.7
 											}
 											
@@ -348,11 +350,11 @@ types MAAManager_Tab_Retrain
 											spacing = 5
 											margin = { 8 5 }
 
-											# Cost display - shows gold OR prestige based on government
+											# Cost display - piety for Warrior Monks, otherwise gold/treasury or prestige by government
 											hbox = {
 												layoutpolicy_horizontal = expanding
 												spacing = 5
-												tooltip = "MAA_MANAGER_RETRAIN_COST_TOOLTIP"
+												tooltip = "[SelectLocalization(GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_COST_PIETY_TOOLTIP', 'MAA_MANAGER_RETRAIN_COST_TOOLTIP')]"
 												using = tooltip_se
 
 												text_single = {
@@ -362,14 +364,26 @@ types MAAManager_Tab_Retrain
 												}
 
 												expand = {}										
-												# Gold cost (feudal, clan, nomadic governments)
+												# Gold cost (non-tribal governments; treasury icon for treasury governments)
 												hbox = {
-													visible = "[Not(GetPlayer.GetGovernment.IsType('tribal_government'))]"
+													visible = "[And(Not(GetPlayer.GetGovernment.IsType('tribal_government')), Not(GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]"
 													spacing = 3
 
-													icon = {
+													# Gold or treasury icon (native pattern: one icon per currency, toggled by HasTreasury)
+													widget = {
 														size = { 20 20 }
-														texture = "gfx/interface/icons/icon_gold.dds"
+
+														icon = {
+															visible = "[Not(GetPlayer.HasTreasury)]"
+															size = { 20 20 }
+															texture = "gfx/interface/icons/icon_gold.dds"
+														}
+
+														icon = {
+															visible = "[GetPlayer.HasTreasury]"
+															size = { 20 20 }
+															texture = "gfx/interface/icons/icon_imperial_treasury.dds"
+														}
 													}
 
 													text_single = {
@@ -381,16 +395,33 @@ types MAAManager_Tab_Retrain
 
 												# Prestige cost (tribal government)
 												hbox = {
-													visible = "[GetPlayer.GetGovernment.IsType('tribal_government')]"
+													visible = "[And(GetPlayer.GetGovernment.IsType('tribal_government'), Not(GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]"
 													spacing = 3
 
 													icon = {
 														size = { 20 20 }
-														texture = "gfx/interface/icons/currencies/icon_prestige_01.dds"
+														texture = "[GetPlayer.GetPrestigeLevelTexture]"
 													}
 
 													text_single = {
 														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_prestige_cost')|0]"
+														default_format = "#high"
+														using = Font_Size_Small
+													}
+												}
+
+												# Piety cost (Warrior Monks target - recruited with piety)
+												hbox = {
+													visible = "[GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+													spacing = 3
+
+													icon = {
+														size = { 20 20 }
+														texture = "[GetPlayer.GetPietyLevelTexture]"
+													}
+
+													text_single = {
+														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_piety_cost')|0]"
 														default_format = "#high"
 														using = Font_Size_Small
 													}
@@ -403,7 +434,7 @@ types MAAManager_Tab_Retrain
 
 									# Confirmation Button
 									vbox = {
-										visible = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, VariableSystem.Exists('maa_manager_retrain_target_type'))]"
+										visible = "[And(GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').IsSet, And(VariableSystem.Exists('maa_manager_retrain_target_type'), GetPlayer.MakeScope.Var('maa_manager_retrain_target_type').IsSet))]"
 										layoutpolicy_horizontal = expanding
 										spacing = 3
 										margin_bottom = 8
@@ -415,7 +446,7 @@ types MAAManager_Tab_Retrain
 											
 											onclick = "[GetScriptedGui('maa_manager_execute_retrain').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 											enabled = "[GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-											tooltip = "[SelectLocalization(GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP', 'MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD')]"
+											tooltip = "[SelectLocalization(GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP', SelectLocalization(GetScriptedGui('maa_manager_retrain_affordable').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_TARGET_UNAVAILABLE', SelectLocalization(GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_INSUFFICIENT_PIETY', 'MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD')))]"
 											
 											hbox = {
 												layoutpolicy_horizontal = expanding
@@ -432,15 +463,27 @@ types MAAManager_Tab_Retrain
 												
 												expand = {}
 												
-												# Gold cost (feudal, clan, nomadic governments)
+												# Gold cost (non-tribal governments; treasury icon for treasury governments)
 												hbox = {
-													visible = "[Not(GetPlayer.GetGovernment.IsType('tribal_government'))]"
+													visible = "[And(Not(GetPlayer.GetGovernment.IsType('tribal_government')), Not(GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]"
 													spacing = 3
 													margin_right = 10
 													
-													icon = {
+													# Gold or treasury icon (native pattern: one icon per currency, toggled by HasTreasury)
+													widget = {
 														size = { 20 20 }
-														texture = "gfx/interface/icons/icon_gold.dds"
+
+														icon = {
+															visible = "[Not(GetPlayer.HasTreasury)]"
+															size = { 20 20 }
+															texture = "gfx/interface/icons/icon_gold.dds"
+														}
+
+														icon = {
+															visible = "[GetPlayer.HasTreasury]"
+															size = { 20 20 }
+															texture = "gfx/interface/icons/icon_imperial_treasury.dds"
+														}
 													}
 													
 													text_single = {
@@ -453,17 +496,36 @@ types MAAManager_Tab_Retrain
 												
 												# Prestige cost (tribal government)
 												hbox = {
-													visible = "[GetPlayer.GetGovernment.IsType('tribal_government')]"
+													visible = "[And(GetPlayer.GetGovernment.IsType('tribal_government'), Not(GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]"
 													spacing = 3
 													margin_right = 10
 													
 													icon = {
 														size = { 20 20 }
-														texture = "gfx/interface/icons/currencies/icon_prestige_01.dds"
+														texture = "[GetPlayer.GetPrestigeLevelTexture]"
 													}
 													
 													text_single = {
 														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_prestige_cost')|0]"
+														align = center|nobaseline
+														default_format = "#high"
+														using = Font_Size_Medium
+													}
+												}
+
+												# Piety cost (Warrior Monks target - recruited with piety)
+												hbox = {
+													visible = "[GetScriptedGui('maa_manager_retrain_piety_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+													spacing = 3
+													margin_right = 10
+
+													icon = {
+														size = { 20 20 }
+														texture = "[GetPlayer.GetPietyLevelTexture]"
+													}
+
+													text_single = {
+														text = "[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_piety_cost')|0]"
 														align = center|nobaseline
 														default_format = "#high"
 														using = Font_Size_Medium

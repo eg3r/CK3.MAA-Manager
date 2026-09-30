@@ -33,4 +33,10 @@ maa_manager_can_recruit_war_elephant = {
 			has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere
 		}
 	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }

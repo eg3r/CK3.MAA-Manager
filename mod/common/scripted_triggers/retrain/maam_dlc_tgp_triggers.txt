@@ -24,23 +24,26 @@ maa_manager_can_recruit_emishi_horse_archers = {
 maa_manager_can_recruit_japanese_horse_archers = {
 	# Requires Mounted Samurai cultural tradition (Japanese)
 	# Uses valid_for_maa_trigger pattern
-	culture = {
-		has_cultural_parameter = unlock_mounted_samurai_units
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_mounted_samurai_units }
 }
 
 maa_manager_can_recruit_warrior_monks = {
 	# Requires Warrior Monk cultural tradition (Japanese)
 	# NOTE: Uses PIETY costs instead of gold!
-	culture = {
-		has_cultural_parameter = unlock_warrior_monk_units
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_warrior_monk_units }
 }
 
 maa_manager_can_recruit_fire_lancers = {
 	# Requires Fire Lancers cultural tradition + gunpowder building limit
 	# Similar to handgunners - needs powder magazine support
-	gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	# (a gunpowder source being replaced frees its own quota slot)
+	trigger_if = {
+		limit = { maa_manager_retrain_replaces_gunpowder_unit = yes }
+		gunpowder_raise_limit_existing_gunpowder_units <= gunpowder_raise_limit_existing_gunpowder_buildings
+	}
+	trigger_else = {
+		gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+	}
 	culture = {
 		has_cultural_parameter = unlock_fire_lancers_units
 	}
@@ -48,23 +51,17 @@ maa_manager_can_recruit_fire_lancers = {
 
 maa_manager_can_recruit_gakgung_archers = {
 	# Requires Korean cultural tradition: unlock_maa_gakgung_archers
-	culture = {
-		has_cultural_parameter = unlock_maa_gakgung_archers
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_gakgung_archers }
 }
 
 maa_manager_can_recruit_pesilat_warriors = {
 	# Requires Southeast Asian cultural tradition: unlock_maa_pesilat
-	culture = {
-		has_cultural_parameter = unlock_maa_pesilat
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_pesilat }
 }
 
 maa_manager_can_recruit_samurai = {
 	# Requires Infantry Samurai cultural tradition (Japanese)
-	culture = {
-		has_cultural_parameter = unlock_infantry_samurai_units
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_infantry_samurai_units }
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
 		culture = {
@@ -74,14 +71,12 @@ maa_manager_can_recruit_samurai = {
 }
 
 maa_manager_can_recruit_zhanmadao_infantry = {
-	# Requires Chinese cultural tradition + celestial province vassal contract
-	culture = {
-		has_cultural_parameter = unlock_zhanmadao
-	}
-	# Requires specific vassal contract flags
+	# Requires Chinese cultural tradition + military/protectorate province contract or independence
+	valid_for_maa_trigger = { PARAMETER = unlock_zhanmadao }
 	OR = {
 		vassal_contract_has_flag = celestial_province_military
-		vassal_contract_has_flag = celestial_province_celestial
+		vassal_contract_has_flag = celestial_province_protectorate
+		is_independent_ruler = yes
 	}
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
@@ -92,23 +87,16 @@ maa_manager_can_recruit_zhanmadao_infantry = {
 }
 
 maa_manager_can_recruit_tiefutu = {
-	# Requires Chinese cultural tradition: unlock_maa_tiefutu
+	# Unlocked by the regional innovation innovation_tiefutu (unlock_maa = tiefutu).
+	# The game defines no can_recruit for tiefutu, so there is no heavy-MAA ban check.
 	culture = {
-		has_cultural_parameter = unlock_maa_tiefutu
-	}
-	# Excluded by Strength in Numbers tradition (bans heavy MAA)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
-		}
+		has_innovation = innovation_tiefutu
 	}
 }
 
 maa_manager_can_recruit_black_armor_cavalry = {
 	# Requires cultural parameter: unlock_maa_black_armor_cavalry (TGP, v1.19)
-	culture = {
-		has_cultural_parameter = unlock_maa_black_armor_cavalry
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_black_armor_cavalry }
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
 		culture = {
@@ -119,9 +107,7 @@ maa_manager_can_recruit_black_armor_cavalry = {
 
 maa_manager_can_recruit_burenjia = {
 	# Requires Chinese cultural tradition: unlock_burenjia
-	culture = {
-		has_cultural_parameter = unlock_burenjia
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_burenjia }
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
 		culture = {
@@ -150,6 +136,12 @@ maa_manager_can_recruit_ballista_elephant = {
 	NOT = {
 		is_landless_adventurer = yes
 	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 # ===== SIEGE WEAPONS (East Asian) =====
@@ -159,17 +151,10 @@ maa_manager_can_recruit_ballista = {
 	# Requires catapult innovation + East Asian heritage
 	culture = {
 		has_innovation = innovation_catapult
-		OR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = yes
 	}
-	# Excluded for nomadic/herder governments
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	# Excluded for steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 }
 
 maa_manager_can_recruit_cloud_ladder = {
@@ -177,17 +162,10 @@ maa_manager_can_recruit_cloud_ladder = {
 	# Requires mangonel innovation + East Asian heritage
 	culture = {
 		has_innovation = innovation_mangonel
-		OR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = yes
 	}
-	# Excluded for nomadic/herder governments
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	# Excluded for steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 }
 
 maa_manager_can_recruit_siege_tower = {
@@ -195,17 +173,10 @@ maa_manager_can_recruit_siege_tower = {
 	# Requires trebuchet innovation + East Asian heritage
 	culture = {
 		has_innovation = innovation_trebuchet
-		OR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = yes
 	}
-	# Excluded for nomadic/herder governments
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	# Excluded for steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 }
 
 maa_manager_can_recruit_cannon = {
@@ -213,15 +184,8 @@ maa_manager_can_recruit_cannon = {
 	# Requires gunpowder cultural parameter + East Asian heritage
 	culture = {
 		has_cultural_parameter = unlock_late_medieval_gunpowder_units
-		OR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = yes
 	}
-	# Excluded for nomadic/herder governments
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	# Excluded for steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 }

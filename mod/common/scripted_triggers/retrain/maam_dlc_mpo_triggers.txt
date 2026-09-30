@@ -14,9 +14,15 @@ maa_manager_can_recruit_torch_bearers = {
 }
 
 maa_manager_can_recruit_kheshig = {
-	# Requires dynasty with mpo_nomad_legacy_3 perk (max 1 regiment)
+	# Only one regiment of this type allowed (max_regiments = 1)
+	NOT = {
+		any_maa_regiment = {
+			is_maa_type = kheshig
+		}
+	}
+	# Requires dynasty with mpo_nomad_legacy_4 perk
 	dynasty ?= {
-		has_dynasty_perk = mpo_nomad_legacy_3
+		has_dynasty_perk = mpo_nomad_legacy_4
 	}
 }
 
@@ -52,16 +58,12 @@ maa_manager_can_recruit_nomad_lancers = {
 
 maa_manager_can_recruit_mangudai = {
 	# Requires Mongolic cultural tradition: unlock_maa_mangudai
-	culture = {
-		has_cultural_parameter = unlock_maa_mangudai
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_mangudai }
 }
 
 maa_manager_can_recruit_cataphract_archers = {
 	# Requires cultural tradition + either non-nomadic OR has dominance
-	culture = {
-		has_cultural_parameter = unlock_maa_cataphract_archers
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_cataphract_archers }
 	# Excluded by Strength in Numbers tradition (bans heavy MAA)
 	NOT = {
 		culture = {
@@ -78,7 +80,5 @@ maa_manager_can_recruit_cataphract_archers = {
 
 maa_manager_can_recruit_maturkan_warriors = {
 	# Requires Caucasian cultural tradition: unlock_maa_maturkan_warriors
-	culture = {
-		has_cultural_parameter = unlock_maa_maturkan_warriors
-	}
+	valid_for_maa_trigger = { PARAMETER = unlock_maa_maturkan_warriors }
 }

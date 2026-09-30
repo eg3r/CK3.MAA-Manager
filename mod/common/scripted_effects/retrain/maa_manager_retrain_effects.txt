@@ -135,13 +135,15 @@ maa_manager_store_retrain_target_type = {
 			}
 		}
 	}
-	else_if = {
+	if = {
 		limit = {
 			is_maa_type = accolade_maa_handgunners
 		}
-		set_variable = {
-			name = maa_manager_retrain_target_type
-			value = flag:accolade_maa_handgunners
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_retrain_target_type
+				value = flag:accolade_maa_handgunners
+			}
 		}
 	}
 	if = {
@@ -905,12 +907,23 @@ maa_manager_store_retrain_target_type = {
 	}
 	if = {
 		limit = {
-			is_maa_type = teutonic_knights
+			is_maa_type = order_serjeants
 		}
 		ROOT = {
 			save_scope_value_as = {
 				name = maa_manager_retrain_target_type
-				value = flag:teutonic_knights
+				value = flag:order_serjeants
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_maa_type = order_knights
+		}
+		ROOT = {
+			save_scope_value_as = {
+				name = maa_manager_retrain_target_type
+				value = flag:order_knights
 			}
 		}
 	}

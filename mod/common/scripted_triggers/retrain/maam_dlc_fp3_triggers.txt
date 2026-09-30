@@ -23,6 +23,12 @@ maa_manager_can_recruit_tarkhan = {
 			has_cultural_parameter = unlock_maa_tarkhan
 		}
 	}
+	# Excluded by Strength in Numbers tradition (bans heavy MAA)
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 maa_manager_can_recruit_zupin_warrior = {

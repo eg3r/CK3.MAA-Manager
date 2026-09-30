@@ -69,7 +69,12 @@ maa_manager_can_show_maa_thieves = {
 # Holy Order MAA Types (Non-Recruitable in EP3)
 ######################################################
 
-maa_manager_can_show_teutonic_knights = {
+maa_manager_can_show_order_serjeants = {
 	scope = character
-	is_shown = { maa_manager_can_recruit_teutonic_knights = yes }
+	is_shown = { maa_manager_can_recruit_order_serjeants = yes }
+}
+
+maa_manager_can_show_order_knights = {
+	scope = character
+	is_shown = { maa_manager_can_recruit_order_knights = yes }
 }

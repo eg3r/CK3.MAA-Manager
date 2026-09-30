@@ -79,13 +79,13 @@ maa_manager_type_matches_retrain_target = {
 			ROOT = {
 				var:maa_manager_retrain_target_type = flag:accolade_maa_vanguards
 			}
+			is_maa_type = accolade_maa_vanguards
+		}
 		AND = {
 			ROOT = {
 				var:maa_manager_retrain_target_type = flag:accolade_maa_handgunners
 			}
 			is_maa_type = accolade_maa_handgunners
-		}
-			is_maa_type = accolade_maa_vanguards
 		}
 		AND = {
 			ROOT = {
@@ -503,9 +503,15 @@ maa_manager_type_matches_retrain_target = {
 		}
 		AND = {
 			ROOT = {
-				var:maa_manager_retrain_target_type = flag:teutonic_knights
+				var:maa_manager_retrain_target_type = flag:order_serjeants
 			}
-			is_maa_type = teutonic_knights
+			is_maa_type = order_serjeants
+		}
+		AND = {
+			ROOT = {
+				var:maa_manager_retrain_target_type = flag:order_knights
+			}
+			is_maa_type = order_knights
 		}
 		AND = {
 			ROOT = {

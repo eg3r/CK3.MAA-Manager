@@ -83,6 +83,7 @@ types MAAFilteredTypesList
 		# HOLY ORDER MAA TYPES - Not player-recruitable
 		######################################################
 
-		# Teutonic Knights - teutonic_knights (commented - holy order type)
+		# Order Foot Knights - order_serjeants (commented - holy order type)
+		# Order Knights - order_knights (commented - holy order type)
 	}
 }

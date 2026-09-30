@@ -500,9 +500,15 @@ maa_manager_type_matches_selection = {
 		}
 		AND = {
 			ROOT = {
-				scope:maa_manager_selected_type = flag:teutonic_knights
+				scope:maa_manager_selected_type = flag:order_serjeants
 			}
-			is_maa_type = teutonic_knights
+			is_maa_type = order_serjeants
+		}
+		AND = {
+			ROOT = {
+				scope:maa_manager_selected_type = flag:order_knights
+			}
+			is_maa_type = order_knights
 		}
 		AND = {
 			ROOT = {

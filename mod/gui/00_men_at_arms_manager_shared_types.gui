@@ -53,6 +53,8 @@ types MenAtArmsManagerSharedTypes
 
 							text_single = {
 								layoutpolicy_horizontal = expanding
+								autoresize = no
+
 								text = "[MilitaryView.GetMAACountAndCapString]"
 								default_format = "#high"
 								tooltip = "[MilitaryView.GetMAACountAndCapTooltip]"
@@ -337,11 +339,6 @@ types MenAtArmsManagerSharedTypes
 						datacontext = "[HiredTroopItem.GetMercenaryCompany]"
 						layoutpolicy_horizontal = expanding
 						size = { 504 92 }
-
-						blockoverride "HiredTroopMenAtArmsTypesDataModel"
-						{
-							datamodel = "[HiredTroopItem.GetRegiments]"
-						}
 					}
 				}
 			}
@@ -352,16 +349,7 @@ types MenAtArmsManagerSharedTypes
 				spacing = 5
 
 				item = {
-					button_holyorder_list_item = {
-						datacontext = "[HiredTroopItem.GetHolyOrder]"
-						layoutpolicy_horizontal = expanding
-						size = { 504 92 }
-
-						blockoverride "HiredTroopMenAtArmsTypesDataModel"
-						{
-							datamodel = "[HiredTroopItem.GetRegiments]"
-						}
-					}
+					button_holyorder_list_item = {}
 				}
 			}
 		}
