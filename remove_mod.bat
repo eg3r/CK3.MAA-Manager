@@ -23,7 +23,7 @@ if exist "%TARGET_DIR%\%MOD_NAME%" (
     rmdir /s /q "%TARGET_DIR%\%MOD_NAME%"
     echo - Removed mod folder: %TARGET_DIR%\%MOD_NAME%
 ) else (
-    echo - Mod folder not found (already removed?)
+    echo - Mod folder not found ^(already removed?^)
 )
 
 echo Removing mod descriptor...
@@ -31,7 +31,7 @@ if exist "%TARGET_DIR%\%MOD_NAME%.mod" (
     del /q "%TARGET_DIR%\%MOD_NAME%.mod"
     echo - Removed mod descriptor: %TARGET_DIR%\%MOD_NAME%.mod
 ) else (
-    echo - Mod descriptor not found (already removed?)
+    echo - Mod descriptor not found ^(already removed?^)
 )
 
 echo.

@@ -24,8 +24,7 @@ echo 3. Enable "Men-At-Arms Manager"
 echo 4. Create/select a playset
 echo 5. Start the game
 echo 6. Press F3 to open Military View
-echo 7. Look for "Manage Men-At-Arms" button
-echo.
-echo For direct testing, open console (~) and type:
-echo effect maa_manager_open_window
+echo 7. Click the Men-At-Arms Manager icon button next to "Raise All"
+echo    (tooltip "Open Men-at-Arms Manager"; disabled while at war
+echo    or while regiments are raised)
 echo.

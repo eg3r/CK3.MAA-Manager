@@ -16,7 +16,7 @@ maam_set_target_emishi_horse_archers = {
 			value = flag:emishi_horse_archers
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = light_cavalry_recruitment_cost
 		}
 	}
@@ -31,7 +31,7 @@ maam_set_target_japanese_horse_archers = {
 			value = flag:japanese_horse_archers
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = horse_archers_recruitment_cost
 		}
 	}
@@ -48,7 +48,7 @@ maam_set_target_warrior_monks = {
 		# NOTE: warrior_monks uses PIETY cost, not gold
 		# Using warrior_monks_piety_recruitment_cost
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = warrior_monks_piety_recruitment_cost
 		}
 	}
@@ -63,7 +63,7 @@ maam_set_target_fire_lancers = {
 			value = flag:fire_lancers
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = crossbowmen_recruitment_cost
 		}
 	}
@@ -78,7 +78,7 @@ maam_set_target_gakgung_archers = {
 			value = flag:gakgung_archers
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = gakgung_archers_recruitment_cost
 		}
 	}
@@ -93,7 +93,7 @@ maam_set_target_pesilat_warriors = {
 			value = flag:pesilat_warriors
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = pesilat_warriors_recruitment_cost
 		}
 	}
@@ -108,7 +108,7 @@ maam_set_target_samurai = {
 			value = flag:samurai
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = samurai_recruitment_cost
 		}
 	}
@@ -123,7 +123,7 @@ maam_set_target_zhanmadao_infantry = {
 			value = flag:zhanmadao_infantry
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = zhanmadao_infantry_recruitment_cost
 		}
 	}
@@ -138,7 +138,7 @@ maam_set_target_tiefutu = {
 			value = flag:tiefutu
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = tiefutu_recruitment_cost
 		}
 	}
@@ -153,7 +153,7 @@ maam_set_target_black_armor_cavalry = {
 			value = flag:black_armor_cavalry
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = tiefutu_recruitment_cost
 		}
 	}
@@ -168,7 +168,7 @@ maam_set_target_burenjia = {
 			value = flag:burenjia
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = burenjia_recruitment_cost
 		}
 	}
@@ -183,7 +183,7 @@ maam_set_target_rocket_carts = {
 			value = flag:rocket_carts
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = rocket_carts_recruitment_cost
 		}
 	}
@@ -200,7 +200,7 @@ maam_set_target_ballista_elephant = {
 			value = flag:ballista_elephant
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = ballista_elephant_recruitment_cost
 		}
 	}
@@ -217,7 +217,7 @@ maam_set_target_ballista = {
 			value = flag:ballista
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = ballista_recruitment_cost
 		}
 	}
@@ -232,7 +232,7 @@ maam_set_target_cloud_ladder = {
 			value = flag:cloud_ladder
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = cloud_ladder_recruitment_cost
 		}
 	}
@@ -247,7 +247,7 @@ maam_set_target_siege_tower = {
 			value = flag:siege_tower
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = siege_tower_recruitment_cost
 		}
 	}
@@ -262,7 +262,7 @@ maam_set_target_cannon = {
 			value = flag:cannon
 		}
 		set_variable = {
-			name = maa_manager_retrain_target_cost
+			name = maa_manager_target_cost
 			value = cannon_recruitment_cost
 		}
 	}

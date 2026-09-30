@@ -1,0 +1,440 @@
+﻿######################################################
+# MAA Manager - Retrain Target Eligibility Dispatcher
+#
+# Maps the stored retrain target flag to that type's recruit trigger, so the
+# confirm step re-checks eligibility instead of trusting the list selection.
+# One entry per retrain button in gui/retrain/*.gui (103 types).
+# Types without a retrain button (special_recruit_only units) never match.
+#
+# When adding a new MAA type, add its entry here as well.
+# Scope: character (reads var:maa_manager_retrain_target_type)
+######################################################
+
+maa_manager_retrain_target_is_recruitable = {
+	has_variable = maa_manager_retrain_target_type
+	OR = {
+		# maam_base_regular_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:light_footmen
+			maa_manager_can_recruit_light_footmen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:bowmen
+			maa_manager_can_recruit_bowmen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:light_horsemen
+			maa_manager_can_recruit_light_horsemen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:pikemen_unit
+			maa_manager_can_recruit_pikemen_unit = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:armored_footmen
+			maa_manager_can_recruit_armored_footmen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:armored_horsemen
+			maa_manager_can_recruit_armored_horsemen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:crossbowmen
+			maa_manager_can_recruit_crossbowmen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:onager
+			maa_manager_can_recruit_onager = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:mangonel
+			maa_manager_can_recruit_mangonel = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:trebuchet
+			maa_manager_can_recruit_trebuchet = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:bombard
+			maa_manager_can_recruit_bombard = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:handgunners
+			maa_manager_can_recruit_handgunners = yes
+		}
+		# maam_base_regional_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:camel_rider
+			maa_manager_can_recruit_camel_rider = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:war_elephant
+			maa_manager_can_recruit_war_elephant = yes
+		}
+		# maam_cultural_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:huscarl
+			maa_manager_can_recruit_huscarl = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:teulu
+			maa_manager_can_recruit_teulu = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:longbowmen
+			maa_manager_can_recruit_longbowmen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:monaspa
+			maa_manager_can_recruit_monaspa = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:cataphract
+			maa_manager_can_recruit_cataphract = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:metsanvartija
+			maa_manager_can_recruit_metsanvartija = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:horse_archers
+			maa_manager_can_recruit_horse_archers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:ayyar
+			maa_manager_can_recruit_ayyar = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:mubarizun
+			maa_manager_can_recruit_mubarizun = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:mulaththamun
+			maa_manager_can_recruit_mulaththamun = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:archers_of_the_nile
+			maa_manager_can_recruit_archers_of_the_nile = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:druzhina
+			maa_manager_can_recruit_druzhina = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:hussar
+			maa_manager_can_recruit_hussar = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:horn_warrior
+			maa_manager_can_recruit_horn_warrior = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:bush_hunter
+			maa_manager_can_recruit_bush_hunter = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:shomer
+			maa_manager_can_recruit_shomer = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:garudas
+			maa_manager_can_recruit_garudas = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:khandayat
+			maa_manager_can_recruit_khandayat = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:mountaineer
+			maa_manager_can_recruit_mountaineer = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:guinea_warrior
+			maa_manager_can_recruit_guinea_warrior = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:abudrar
+			maa_manager_can_recruit_abudrar = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:zbrojnosh
+			maa_manager_can_recruit_zbrojnosh = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:palace_guards
+			maa_manager_can_recruit_palace_guards = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:landsknecht
+			maa_manager_can_recruit_landsknecht = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:goedendag
+			maa_manager_can_recruit_goedendag = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:gendarme
+			maa_manager_can_recruit_gendarme = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:praetorian
+			maa_manager_can_recruit_praetorian = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:schiltron
+			maa_manager_can_recruit_schiltron = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:chasseur
+			maa_manager_can_recruit_chasseur = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:picchieri
+			maa_manager_can_recruit_picchieri = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:hobelar
+			maa_manager_can_recruit_hobelar = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:sarawit
+			maa_manager_can_recruit_sarawit = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:caballero
+			maa_manager_can_recruit_caballero = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:paiks
+			maa_manager_can_recruit_paiks = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:sahel_horsemen
+			maa_manager_can_recruit_sahel_horsemen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:shenbigong
+			maa_manager_can_recruit_shenbigong = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:guanch_vaulter
+			maa_manager_can_recruit_guanch_vaulter = yes
+		}
+		# maam_accolade_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_archers
+			maa_manager_can_recruit_archers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_skirmishers
+			maa_manager_can_recruit_skirmishers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_pikes
+			maa_manager_can_recruit_pikes = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_outriders
+			maa_manager_can_recruit_outriders = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_vanguards
+			maa_manager_can_recruit_vanguards = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_lancers
+			maa_manager_can_recruit_lancers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_crossbowers
+			maa_manager_can_recruit_crossbowers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_cameliers
+			maa_manager_can_recruit_cameliers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_elephantiers
+			maa_manager_can_recruit_elephantiers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_horse_archers
+			maa_manager_can_recruit_horse_archers_retinue = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:accolade_maa_handgunners
+			maa_manager_can_recruit_accolade_maa_handgunners = yes
+		}
+		# maam_dynasty_legacy_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:house_guard
+			maa_manager_can_recruit_house_guard = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:asawira
+			maa_manager_can_recruit_asawira = yes
+		}
+		# maam_dlc_fp1_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:vigmen
+			maa_manager_can_recruit_vigmen = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:bondi
+			maa_manager_can_recruit_bondi = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:varangian_veterans
+			maa_manager_can_recruit_varangian_veterans = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:jomsviking_pirates
+			maa_manager_can_recruit_jomsviking_pirates = yes
+		}
+		# maam_dlc_fp3_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:tarkhan
+			maa_manager_can_recruit_tarkhan = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:zupin_warrior
+			maa_manager_can_recruit_zupin_warrior = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:tawashi
+			maa_manager_can_recruit_tawashi = yes
+		}
+		# maam_dlc_ep3_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:ayrudzi
+			maa_manager_can_recruit_ayrudzi = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:conrois
+			maa_manager_can_recruit_conrois = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:akritai
+			maa_manager_can_recruit_akritai = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:ballistrai
+			maa_manager_can_recruit_ballistrai = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:skoutatoi
+			maa_manager_can_recruit_skoutatoi = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:varangian_guards
+			maa_manager_can_recruit_varangian_guards = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:handpicked_faithful
+			maa_manager_can_recruit_handpicked_faithful = yes
+		}
+		# maam_dlc_mpo_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:mangudai
+			maa_manager_can_recruit_mangudai = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:nomad_lancers
+			maa_manager_can_recruit_nomad_lancers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:kheshig
+			maa_manager_can_recruit_kheshig = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:steppe_raiders
+			maa_manager_can_recruit_steppe_raiders = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:torch_bearers
+			maa_manager_can_recruit_torch_bearers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:heavy_horse_archers
+			maa_manager_can_recruit_heavy_horse_archers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:cataphract_archers
+			maa_manager_can_recruit_cataphract_archers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:maturkan_warriors
+			maa_manager_can_recruit_maturkan_warriors = yes
+		}
+		# maam_dlc_tgp_cultural_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:emishi_horse_archers
+			maa_manager_can_recruit_emishi_horse_archers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:japanese_horse_archers
+			maa_manager_can_recruit_japanese_horse_archers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:warrior_monks
+			maa_manager_can_recruit_warrior_monks = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:fire_lancers
+			maa_manager_can_recruit_fire_lancers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:gakgung_archers
+			maa_manager_can_recruit_gakgung_archers = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:pesilat_warriors
+			maa_manager_can_recruit_pesilat_warriors = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:samurai
+			maa_manager_can_recruit_samurai = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:zhanmadao_infantry
+			maa_manager_can_recruit_zhanmadao_infantry = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:tiefutu
+			maa_manager_can_recruit_tiefutu = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:black_armor_cavalry
+			maa_manager_can_recruit_black_armor_cavalry = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:burenjia
+			maa_manager_can_recruit_burenjia = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:rocket_carts
+			maa_manager_can_recruit_rocket_carts = yes
+		}
+		# maam_dlc_tgp_regional_buttons
+		AND = {
+			var:maa_manager_retrain_target_type = flag:ballista_elephant
+			maa_manager_can_recruit_ballista_elephant = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:ballista
+			maa_manager_can_recruit_ballista = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:cloud_ladder
+			maa_manager_can_recruit_cloud_ladder = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:siege_tower
+			maa_manager_can_recruit_siege_tower = yes
+		}
+		AND = {
+			var:maa_manager_retrain_target_type = flag:cannon
+			maa_manager_can_recruit_cannon = yes
+		}
+	}
+}

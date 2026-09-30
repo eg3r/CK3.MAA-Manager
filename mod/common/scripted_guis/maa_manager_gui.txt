@@ -30,8 +30,9 @@ maa_manager_data_create = {
 		remove_variable = maa_manager_target_cost
 		remove_variable = maa_manager_source_cost
 		
-		# Collect all MAA regiments
+		# Collect all personal MAA regiments (see maa_manager_is_manageable_regiment)
 		every_maa_regiment = {
+			limit = { maa_manager_is_manageable_regiment = yes }
 			ROOT = {
 				add_to_variable_list = {
 					name = maa_regiment_list
@@ -106,6 +107,7 @@ maa_manager_select_regiment = {
 					NOT = {
 						this = scope:maa_manager_selected_regiment
 					}
+					maa_manager_is_manageable_regiment = yes
 					maa_manager_type_matches_selection = yes
 				}
 				ROOT = {
@@ -954,6 +956,17 @@ maa_manager_transfer_regiment_from_target_effect = {
 }
 
 ######################################################
+# Retrain affordability - lets the confirm button tooltip tell
+# "not enough gold/treasury/prestige" apart from "target no longer valid"
+######################################################
+maa_manager_retrain_affordable = {
+	scope = character
+	is_valid = {
+		maa_manager_can_afford_retrain = yes
+	}
+}
+
+######################################################
 # Retrain Regiment
 ######################################################
 maa_manager_execute_retrain = {
@@ -961,1111 +974,1103 @@ maa_manager_execute_retrain = {
 	is_shown = {
 		has_variable = maa_manager_selected_regiment_scope
 		has_variable = maa_manager_retrain_target_type
-		
-		# Verify the source variable actually points to a regiment in our list
-		var:maa_manager_selected_regiment_scope = {
-			is_target_in_variable_list = {
-				name = maa_regiment_list
-				target = this
-			}
-		}
 	}
 	is_valid = {
-		has_variable = maa_manager_selected_regiment_scope
-		has_variable = maa_manager_retrain_target_type
-		
-		# NOTE: List validation removed from is_valid - doesn't work reliably in this context
-		# Still validated in is_shown and effect safety check
-		
-		# Check if player has enough of the appropriate resource
-		# Tribal: prestige, Others: gold
-		OR = {
-			AND = {
-				has_government = tribal_government
-				prestige >= maa_manager_retrain_prestige_cost
-			}
-			AND = {
-				NOT = { has_government = tribal_government }
-				gold >= maa_manager_retrain_gold_cost
-			}
-		}
+		# Source still owned and manageable, target still recruitable, cost affordable
+		# (treasury/gold, or prestige for tribal) - see maa_manager_validation_triggers.txt
+		maa_manager_can_execute_retrain = yes
 	}
 	effect = {
-		# Safety check: Verify source regiment is valid
+		# Gate: re-run the is_valid checks before charging or destroying anything
 		if = {
-			limit = {
-				OR = {
-					NOT = { has_variable = maa_manager_selected_regiment_scope }
-					NOT = { has_variable = maa_manager_retrain_target_type }
-					NOT = {
-						var:maa_manager_selected_regiment_scope = {
-							is_target_in_variable_list = {
-								name = maa_regiment_list
-								target = this
-							}
-						}
+			limit = { maa_manager_can_execute_retrain = no }
+			debug_log = "MAA Manager: Retrain aborted - source regiment, target type or cost no longer valid"
+			# Clear the stale selection and rebuild the regiment list
+			maa_manager_data_create_effect = yes
+		}
+		else = {
+			# Deduct cost based on government type
+			if = {
+				limit = { has_government = tribal_government }
+				# Tribal pays in prestige (need to negate the value)
+				add_prestige = {
+					value = maa_manager_retrain_prestige_cost
+					multiply = -1.0
+				}
+			}
+			else = {
+				# Everyone else pays gold, or treasury for treasury governments
+				# (replace_gold_cost_by_treasury) - same resource as native MAA recruitment
+				remove_treasury_or_gold = maa_manager_retrain_gold_cost
+			}
+		
+			# Save the source regiment and capture its size
+			var:maa_manager_selected_regiment_scope = {
+				save_scope_as = source_regiment
+			}
+
+			# Store source size in local variable (survives regiment destruction)
+			set_local_variable = {
+				name = temp_retrain_size
+				value = scope:source_regiment.maa_size
+			}
+
+			# Destroy the old regiment FIRST (prevents random_maa_regiment confusion)
+			scope:source_regiment = {
+				destroy_maa_regiment = yes
+			}
+
+			# Snapshot the remaining regiments so the newly created one can be
+			# identified unambiguously (an existing 1-stack regiment of the target
+			# type must not receive the extra stacks)
+			clear_variable_list = maa_manager_pre_retrain_regiments
+			every_maa_regiment = {
+				ROOT = {
+					add_to_variable_list = {
+						name = maa_manager_pre_retrain_regiments
+						target = prev
 					}
 				}
 			}
-		}
-		
-		# Deduct cost based on government type
-		if = {
-			limit = { has_government = tribal_government }
-			# Tribal pays in prestige (need to negate the value)
-			add_prestige = {
-				value = maa_manager_retrain_prestige_cost
-				multiply = -1.0
-			}
-		}
-		else = {
-			# Feudal/Clan/Nomadic pay in gold
-			remove_short_term_gold = maa_manager_retrain_gold_cost
-		}
-		
-		# Save the source regiment and capture its size
-		var:maa_manager_selected_regiment_scope = {
-			save_scope_as = source_regiment
-		}
 
-		# Store source size in local variable (survives regiment destruction)
-		set_local_variable = {
-			name = temp_retrain_size
-			value = scope:source_regiment.maa_size
-		}
-
-		# Destroy the old regiment FIRST (prevents random_maa_regiment confusion)
-		scope:source_regiment = {
-			destroy_maa_regiment = yes
-		}
-
-		# Create new regiment based on the stored retrain target type flag
-		# Use giant if/else chain to match flag to type name
+			# Create new regiment based on the stored retrain target type flag
+			# Use giant if/else chain to match flag to type name
 		
-		# Base Game Regular MAA
-		if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:light_footmen
-			}
-			create_maa_regiment = {
-				type = light_footmen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:bowmen
-			}
-			create_maa_regiment = {
-				type = bowmen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:light_horsemen
-			}
-			create_maa_regiment = {
-				type = light_horsemen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:pikemen_unit
-			}
-			create_maa_regiment = {
-				type = pikemen_unit
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:armored_footmen
-			}
-			create_maa_regiment = {
-				type = armored_footmen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:armored_horsemen
-			}
-			create_maa_regiment = {
-				type = armored_horsemen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:crossbowmen
-			}
-			create_maa_regiment = {
-				type = crossbowmen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:onager
-			}
-			create_maa_regiment = {
-				type = onager
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:mangonel
-			}
-			create_maa_regiment = {
-				type = mangonel
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:trebuchet
-			}
-			create_maa_regiment = {
-				type = trebuchet
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:bombard
-			}
-			create_maa_regiment = {
-				type = bombard
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:house_guard
-			}
-			create_maa_regiment = {
-				type = house_guard
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:handgunners
-			}
-			create_maa_regiment = {
-				type = handgunners
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		# TGP DLC - Cultural MAA
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:emishi_horse_archers
-			}
-			create_maa_regiment = {
-				type = emishi_horse_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:japanese_horse_archers
-			}
-			create_maa_regiment = {
-				type = japanese_horse_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:warrior_monks
-			}
-			create_maa_regiment = {
-				type = warrior_monks
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:fire_lancers
-			}
-			create_maa_regiment = {
-				type = fire_lancers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:gakgung_archers
-			}
-			create_maa_regiment = {
-				type = gakgung_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:pesilat_warriors
-			}
-			create_maa_regiment = {
-				type = pesilat_warriors
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:samurai
-			}
-			create_maa_regiment = {
-				type = samurai
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:zhanmadao_infantry
-			}
-			create_maa_regiment = {
-				type = zhanmadao_infantry
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:tiefutu
-			}
-			create_maa_regiment = {
-				type = tiefutu
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:black_armor_cavalry
-			}
-			create_maa_regiment = {
-				type = black_armor_cavalry
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:burenjia
-			}
-			create_maa_regiment = {
-				type = burenjia
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:rocket_carts
-			}
-			create_maa_regiment = {
-				type = rocket_carts
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		# TGP DLC - Regional MAA & Siege Weapons (grouped with regional)
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:ballista_elephant
-			}
-			create_maa_regiment = {
-				type = ballista_elephant
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:ballista
-			}
-			create_maa_regiment = {
-				type = ballista
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:cloud_ladder
-			}
-			create_maa_regiment = {
-				type = cloud_ladder
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:siege_tower
-			}
-			create_maa_regiment = {
-				type = siege_tower
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:cannon
-			}
-			create_maa_regiment = {
-				type = cannon
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		# Regional MAA
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:camel_rider
-			}
-			create_maa_regiment = {
-				type = camel_rider
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:war_elephant
-			}
-			create_maa_regiment = {
-				type = war_elephant
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		# Cultural MAA (88 total - adding all of them)
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:abudrar
-			}
-			create_maa_regiment = {
-				type = abudrar
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:akritai
-			}
-			create_maa_regiment = {
-				type = akritai
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:archers_of_the_nile
-			}
-			create_maa_regiment = {
-				type = archers_of_the_nile
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:asawira
-			}
-			create_maa_regiment = {
-				type = asawira
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:ayrudzi
-			}
-			create_maa_regiment = {
-				type = ayrudzi
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:ayyar
-			}
-			create_maa_regiment = {
-				type = ayyar
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:ballistrai
-			}
-			create_maa_regiment = {
-				type = ballistrai
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:bondi
-			}
-			create_maa_regiment = {
-				type = bondi
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:bush_hunter
-			}
-			create_maa_regiment = {
-				type = bush_hunter
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:caballero
-			}
-			create_maa_regiment = {
-				type = caballero
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:cataphract
-			}
-			create_maa_regiment = {
-				type = cataphract
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:cataphract_archers
-			}
-			create_maa_regiment = {
-				type = cataphract_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:chasseur
-			}
-			create_maa_regiment = {
-				type = chasseur
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:shenbigong
-			}
-			create_maa_regiment = {
-				type = shenbigong
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:conrois
-			}
-			create_maa_regiment = {
-				type = conrois
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:druzhina
-			}
-			create_maa_regiment = {
-				type = druzhina
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:garudas
-			}
-			create_maa_regiment = {
-				type = garudas
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:gendarme
-			}
-			create_maa_regiment = {
-				type = gendarme
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:goedendag
-			}
-			create_maa_regiment = {
-				type = goedendag
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:guanch_vaulter
-			}
-			create_maa_regiment = {
-				type = guanch_vaulter
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:guinea_warrior
-			}
-			create_maa_regiment = {
-				type = guinea_warrior
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:handpicked_faithful
-			}
-			create_maa_regiment = {
-				type = handpicked_faithful
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:heavy_horse_archers
-			}
-			create_maa_regiment = {
-				type = heavy_horse_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:hobelar
-			}
-			create_maa_regiment = {
-				type = hobelar
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:horn_warrior
-			}
-			create_maa_regiment = {
-				type = horn_warrior
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:horse_archers
-			}
-			create_maa_regiment = {
-				type = horse_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:huscarl
-			}
-			create_maa_regiment = {
-				type = huscarl
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:teulu
-			}
-			create_maa_regiment = {
-				type = teulu
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:hussar
-			}
-			create_maa_regiment = {
-				type = hussar
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:jomsviking_pirates
-			}
-			create_maa_regiment = {
-				type = jomsviking_pirates
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:khandayat
-			}
-			create_maa_regiment = {
-				type = khandayat
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:kheshig
-			}
-			create_maa_regiment = {
-				type = kheshig
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:landsknecht
-			}
-			create_maa_regiment = {
-				type = landsknecht
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:longbowmen
-			}
-			create_maa_regiment = {
-				type = longbowmen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:maa_bandits
-			}
-			create_maa_regiment = {
-				type = maa_bandits
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:maa_marauders
-			}
-			create_maa_regiment = {
-				type = maa_marauders
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:maa_poachers
-			}
-			create_maa_regiment = {
-				type = maa_poachers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:maa_thieves
-			}
-			create_maa_regiment = {
-				type = maa_thieves
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:mangudai
-			}
-			create_maa_regiment = {
-				type = mangudai
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:maturkan_warriors
-			}
-			create_maa_regiment = {
-				type = maturkan_warriors
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:metsanvartija
-			}
-			create_maa_regiment = {
-				type = metsanvartija
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:monaspa
-			}
-			create_maa_regiment = {
-				type = monaspa
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:mountaineer
-			}
-			create_maa_regiment = {
-				type = mountaineer
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:mubarizun
-			}
-			create_maa_regiment = {
-				type = mubarizun
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:mulaththamun
-			}
-			create_maa_regiment = {
-				type = mulaththamun
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:nomad_lancers
-			}
-			create_maa_regiment = {
-				type = nomad_lancers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:paiks
-			}
-			create_maa_regiment = {
-				type = paiks
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:palace_guards
-			}
-			create_maa_regiment = {
-				type = palace_guards
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:picchieri
-			}
-			create_maa_regiment = {
-				type = picchieri
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:praetorian
-			}
-			create_maa_regiment = {
-				type = praetorian
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:sahel_horsemen
-			}
-			create_maa_regiment = {
-				type = sahel_horsemen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:sarawit
-			}
-			create_maa_regiment = {
-				type = sarawit
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:schiltron
-			}
-			create_maa_regiment = {
-				type = schiltron
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:shomer
-			}
-			create_maa_regiment = {
-				type = shomer
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:skoutatoi
-			}
-			create_maa_regiment = {
-				type = skoutatoi
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:steppe_raiders
-			}
-			create_maa_regiment = {
-				type = steppe_raiders
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:tarkhan
-			}
-			create_maa_regiment = {
-				type = tarkhan
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:tawashi
-			}
-			create_maa_regiment = {
-				type = tawashi
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:teutonic_knights
-			}
-			create_maa_regiment = {
-				type = teutonic_knights
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:torch_bearers
-			}
-			create_maa_regiment = {
-				type = torch_bearers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:varangian_guards
-			}
-			create_maa_regiment = {
-				type = varangian_guards
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:varangian_veterans
-			}
-			create_maa_regiment = {
-				type = varangian_veterans
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:vigmen
-			}
-			create_maa_regiment = {
-				type = vigmen
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:zbrojnosh
-			}
-			create_maa_regiment = {
-				type = zbrojnosh
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:zupin_warrior
-			}
-			create_maa_regiment = {
-				type = zupin_warrior
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		# Accolade MAA
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_archers
-			}
-			create_maa_regiment = {
-				type = accolade_maa_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_skirmishers
-			}
-			create_maa_regiment = {
-				type = accolade_maa_skirmishers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_pikes
-			}
-			create_maa_regiment = {
-				type = accolade_maa_pikes
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_outriders
-			}
-			create_maa_regiment = {
-				type = accolade_maa_outriders
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_vanguards
-			}
-			create_maa_regiment = {
-				type = accolade_maa_vanguards
-				check_can_recruit = no
-				size = 1
+			# Base Game Regular MAA
+			if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:light_footmen
+				}
+				create_maa_regiment = {
+					type = light_footmen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:bowmen
+				}
+				create_maa_regiment = {
+					type = bowmen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:light_horsemen
+				}
+				create_maa_regiment = {
+					type = light_horsemen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:pikemen_unit
+				}
+				create_maa_regiment = {
+					type = pikemen_unit
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:armored_footmen
+				}
+				create_maa_regiment = {
+					type = armored_footmen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:armored_horsemen
+				}
+				create_maa_regiment = {
+					type = armored_horsemen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:crossbowmen
+				}
+				create_maa_regiment = {
+					type = crossbowmen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:onager
+				}
+				create_maa_regiment = {
+					type = onager
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:mangonel
+				}
+				create_maa_regiment = {
+					type = mangonel
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:trebuchet
+				}
+				create_maa_regiment = {
+					type = trebuchet
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:bombard
+				}
+				create_maa_regiment = {
+					type = bombard
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:house_guard
+				}
+				create_maa_regiment = {
+					type = house_guard
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:handgunners
+				}
+				create_maa_regiment = {
+					type = handgunners
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			# TGP DLC - Cultural MAA
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:emishi_horse_archers
+				}
+				create_maa_regiment = {
+					type = emishi_horse_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:japanese_horse_archers
+				}
+				create_maa_regiment = {
+					type = japanese_horse_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:warrior_monks
+				}
+				create_maa_regiment = {
+					type = warrior_monks
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:fire_lancers
+				}
+				create_maa_regiment = {
+					type = fire_lancers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:gakgung_archers
+				}
+				create_maa_regiment = {
+					type = gakgung_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:pesilat_warriors
+				}
+				create_maa_regiment = {
+					type = pesilat_warriors
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:samurai
+				}
+				create_maa_regiment = {
+					type = samurai
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:zhanmadao_infantry
+				}
+				create_maa_regiment = {
+					type = zhanmadao_infantry
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:tiefutu
+				}
+				create_maa_regiment = {
+					type = tiefutu
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:black_armor_cavalry
+				}
+				create_maa_regiment = {
+					type = black_armor_cavalry
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:burenjia
+				}
+				create_maa_regiment = {
+					type = burenjia
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:rocket_carts
+				}
+				create_maa_regiment = {
+					type = rocket_carts
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			# TGP DLC - Regional MAA & Siege Weapons (grouped with regional)
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:ballista_elephant
+				}
+				create_maa_regiment = {
+					type = ballista_elephant
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:ballista
+				}
+				create_maa_regiment = {
+					type = ballista
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:cloud_ladder
+				}
+				create_maa_regiment = {
+					type = cloud_ladder
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:siege_tower
+				}
+				create_maa_regiment = {
+					type = siege_tower
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:cannon
+				}
+				create_maa_regiment = {
+					type = cannon
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			# Regional MAA
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:camel_rider
+				}
+				create_maa_regiment = {
+					type = camel_rider
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:war_elephant
+				}
+				create_maa_regiment = {
+					type = war_elephant
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			# Cultural MAA (88 total - adding all of them)
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:abudrar
+				}
+				create_maa_regiment = {
+					type = abudrar
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:akritai
+				}
+				create_maa_regiment = {
+					type = akritai
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:archers_of_the_nile
+				}
+				create_maa_regiment = {
+					type = archers_of_the_nile
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:asawira
+				}
+				create_maa_regiment = {
+					type = asawira
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:ayrudzi
+				}
+				create_maa_regiment = {
+					type = ayrudzi
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:ayyar
+				}
+				create_maa_regiment = {
+					type = ayyar
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:ballistrai
+				}
+				create_maa_regiment = {
+					type = ballistrai
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:bondi
+				}
+				create_maa_regiment = {
+					type = bondi
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:bush_hunter
+				}
+				create_maa_regiment = {
+					type = bush_hunter
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:caballero
+				}
+				create_maa_regiment = {
+					type = caballero
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:cataphract
+				}
+				create_maa_regiment = {
+					type = cataphract
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:cataphract_archers
+				}
+				create_maa_regiment = {
+					type = cataphract_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:chasseur
+				}
+				create_maa_regiment = {
+					type = chasseur
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:shenbigong
+				}
+				create_maa_regiment = {
+					type = shenbigong
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:conrois
+				}
+				create_maa_regiment = {
+					type = conrois
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:druzhina
+				}
+				create_maa_regiment = {
+					type = druzhina
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:garudas
+				}
+				create_maa_regiment = {
+					type = garudas
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:gendarme
+				}
+				create_maa_regiment = {
+					type = gendarme
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:goedendag
+				}
+				create_maa_regiment = {
+					type = goedendag
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:guanch_vaulter
+				}
+				create_maa_regiment = {
+					type = guanch_vaulter
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:guinea_warrior
+				}
+				create_maa_regiment = {
+					type = guinea_warrior
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:handpicked_faithful
+				}
+				create_maa_regiment = {
+					type = handpicked_faithful
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:heavy_horse_archers
+				}
+				create_maa_regiment = {
+					type = heavy_horse_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:hobelar
+				}
+				create_maa_regiment = {
+					type = hobelar
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:horn_warrior
+				}
+				create_maa_regiment = {
+					type = horn_warrior
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:horse_archers
+				}
+				create_maa_regiment = {
+					type = horse_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:huscarl
+				}
+				create_maa_regiment = {
+					type = huscarl
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:teulu
+				}
+				create_maa_regiment = {
+					type = teulu
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:hussar
+				}
+				create_maa_regiment = {
+					type = hussar
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:jomsviking_pirates
+				}
+				create_maa_regiment = {
+					type = jomsviking_pirates
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:khandayat
+				}
+				create_maa_regiment = {
+					type = khandayat
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:kheshig
+				}
+				create_maa_regiment = {
+					type = kheshig
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:landsknecht
+				}
+				create_maa_regiment = {
+					type = landsknecht
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:longbowmen
+				}
+				create_maa_regiment = {
+					type = longbowmen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:maa_bandits
+				}
+				create_maa_regiment = {
+					type = maa_bandits
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:maa_marauders
+				}
+				create_maa_regiment = {
+					type = maa_marauders
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:maa_poachers
+				}
+				create_maa_regiment = {
+					type = maa_poachers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:maa_thieves
+				}
+				create_maa_regiment = {
+					type = maa_thieves
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:mangudai
+				}
+				create_maa_regiment = {
+					type = mangudai
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:maturkan_warriors
+				}
+				create_maa_regiment = {
+					type = maturkan_warriors
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:metsanvartija
+				}
+				create_maa_regiment = {
+					type = metsanvartija
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:monaspa
+				}
+				create_maa_regiment = {
+					type = monaspa
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:mountaineer
+				}
+				create_maa_regiment = {
+					type = mountaineer
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:mubarizun
+				}
+				create_maa_regiment = {
+					type = mubarizun
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:mulaththamun
+				}
+				create_maa_regiment = {
+					type = mulaththamun
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:nomad_lancers
+				}
+				create_maa_regiment = {
+					type = nomad_lancers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:paiks
+				}
+				create_maa_regiment = {
+					type = paiks
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:palace_guards
+				}
+				create_maa_regiment = {
+					type = palace_guards
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:picchieri
+				}
+				create_maa_regiment = {
+					type = picchieri
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:praetorian
+				}
+				create_maa_regiment = {
+					type = praetorian
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:sahel_horsemen
+				}
+				create_maa_regiment = {
+					type = sahel_horsemen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:sarawit
+				}
+				create_maa_regiment = {
+					type = sarawit
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:schiltron
+				}
+				create_maa_regiment = {
+					type = schiltron
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:shomer
+				}
+				create_maa_regiment = {
+					type = shomer
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:skoutatoi
+				}
+				create_maa_regiment = {
+					type = skoutatoi
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:steppe_raiders
+				}
+				create_maa_regiment = {
+					type = steppe_raiders
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:tarkhan
+				}
+				create_maa_regiment = {
+					type = tarkhan
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:tawashi
+				}
+				create_maa_regiment = {
+					type = tawashi
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:order_serjeants
+				}
+				create_maa_regiment = {
+					type = order_serjeants
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:order_knights
+				}
+				create_maa_regiment = {
+					type = order_knights
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:torch_bearers
+				}
+				create_maa_regiment = {
+					type = torch_bearers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:varangian_guards
+				}
+				create_maa_regiment = {
+					type = varangian_guards
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:varangian_veterans
+				}
+				create_maa_regiment = {
+					type = varangian_veterans
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:vigmen
+				}
+				create_maa_regiment = {
+					type = vigmen
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:zbrojnosh
+				}
+				create_maa_regiment = {
+					type = zbrojnosh
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:zupin_warrior
+				}
+				create_maa_regiment = {
+					type = zupin_warrior
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			# Accolade MAA
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_archers
+				}
+				create_maa_regiment = {
+					type = accolade_maa_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_skirmishers
+				}
+				create_maa_regiment = {
+					type = accolade_maa_skirmishers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_pikes
+				}
+				create_maa_regiment = {
+					type = accolade_maa_pikes
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_outriders
+				}
+				create_maa_regiment = {
+					type = accolade_maa_outriders
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_vanguards
+				}
+				create_maa_regiment = {
+					type = accolade_maa_vanguards
+					check_can_recruit = no
+					size = 1
+				}
 			}
 			else_if = {
 				limit = {
@@ -2077,110 +2082,119 @@ maa_manager_execute_retrain = {
 					size = 1
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_lancers
-			}
-			create_maa_regiment = {
-				type = accolade_maa_lancers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_crossbowers
-			}
-			create_maa_regiment = {
-				type = accolade_maa_crossbowers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_cameliers
-			}
-			create_maa_regiment = {
-				type = accolade_maa_cameliers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_elephantiers
-			}
-			create_maa_regiment = {
-				type = accolade_maa_elephantiers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		else_if = {
-			limit = {
-				var:maa_manager_retrain_target_type = flag:accolade_maa_horse_archers
-			}
-			create_maa_regiment = {
-				type = accolade_maa_horse_archers
-				check_can_recruit = no
-				size = 1
-			}
-		}
-		
-		# init loop counter
-		set_local_variable = {
-			name = current_value
-			value = 1
-		}
-
-		# find the newly created regiment and save it
-		# Use type filter to ensure we get the correct regiment
-		random_maa_regiment = {
-			limit = {
-				maa_size = 1
-				maa_manager_type_matches_retrain_target = yes
-			}
-			save_scope_as = new_regiment
-		}
-
-		# create the remaining number of stacks with loop (already have 1)
-		# Only proceed if we successfully found the new regiment
-		if = {
-			limit = { exists = scope:new_regiment }
-			
-			while = {
+			else_if = {
 				limit = {
-					local_var:current_value < local_var:temp_retrain_size
+					var:maa_manager_retrain_target_type = flag:accolade_maa_lancers
 				}
+				create_maa_regiment = {
+					type = accolade_maa_lancers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_crossbowers
+				}
+				create_maa_regiment = {
+					type = accolade_maa_crossbowers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_cameliers
+				}
+				create_maa_regiment = {
+					type = accolade_maa_cameliers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_elephantiers
+				}
+				create_maa_regiment = {
+					type = accolade_maa_elephantiers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+			else_if = {
+				limit = {
+					var:maa_manager_retrain_target_type = flag:accolade_maa_horse_archers
+				}
+				create_maa_regiment = {
+					type = accolade_maa_horse_archers
+					check_can_recruit = no
+					size = 1
+				}
+			}
+		
+			# init loop counter
+			set_local_variable = {
+				name = current_value
+				value = 1
+			}
 
-				scope:new_regiment = {
-					change_maa_regiment_size = {
-						size = 1
-						reinforce = yes
+			# find the newly created regiment and save it:
+			# the target type, and not present before creation
+			random_maa_regiment = {
+				limit = {
+					maa_size = 1
+					maa_manager_type_matches_retrain_target = yes
+					NOT = {
+						ROOT = {
+							is_target_in_variable_list = {
+								name = maa_manager_pre_retrain_regiments
+								target = prev
+							}
+						}
 					}
 				}
+				save_scope_as = new_regiment
+			}
+			clear_variable_list = maa_manager_pre_retrain_regiments
 
-				# inc the counter
-				change_local_variable = {
-					name = current_value
-					add = 1
+			# create the remaining number of stacks with loop (already have 1)
+			# Only proceed if we successfully found the new regiment
+			if = {
+				limit = { exists = scope:new_regiment }
+			
+				while = {
+					limit = {
+						local_var:current_value < local_var:temp_retrain_size
+					}
+
+					scope:new_regiment = {
+						change_maa_regiment_size = {
+							size = 1
+							reinforce = yes
+						}
+					}
+
+					# inc the counter
+					change_local_variable = {
+						name = current_value
+						add = 1
+					}
 				}
 			}
-		}
-		else = {
-			debug_log = "MAA Manager: ERROR - Could not find newly created regiment!"
-		}
+			else = {
+				debug_log = "MAA Manager: ERROR - Could not find newly created regiment!"
+			}
 
-		# Clear variables
-		remove_variable = maa_manager_selected_regiment_scope
-		remove_variable = maa_manager_retrain_target_type
-		remove_variable = maa_manager_target_cost
-		remove_variable = maa_manager_source_cost
+			# Clear variables
+			remove_variable = maa_manager_selected_regiment_scope
+			remove_variable = maa_manager_retrain_target_type
+			remove_variable = maa_manager_target_cost
+			remove_variable = maa_manager_source_cost
 
-		# Refresh data (this will also clear variables again via maa_manager_data_create_effect)
-		maa_manager_data_create_effect = yes
+			# Refresh data (this will also clear variables again via maa_manager_data_create_effect)
+			maa_manager_data_create_effect = yes
+		}
 	}
 }
 

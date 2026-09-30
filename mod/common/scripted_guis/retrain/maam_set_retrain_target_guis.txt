@@ -1322,21 +1322,39 @@ maam_set_target_tawashi = {
 	}
 }
 
-maam_set_target_teutonic_knights = {
+maam_set_target_order_serjeants = {
 	scope = character
 	effect = {
 		save_scope_value_as = {
 			name = maa_manager_retrain_target_type
-			value = flag:teutonic_knights
+			value = flag:order_serjeants
 		}
 		set_variable = {
 			name = maa_manager_retrain_target_type
-			value = flag:teutonic_knights
+			value = flag:order_serjeants
 		}
 		set_variable = {
 			name = maa_manager_target_cost
-			value = 150
-		}		# No recruitment cost found, use default
+			value = heavy_infantry_recruitment_cost
+		}
+	}
+}
+
+maam_set_target_order_knights = {
+	scope = character
+	effect = {
+		save_scope_value_as = {
+			name = maa_manager_retrain_target_type
+			value = flag:order_knights
+		}
+		set_variable = {
+			name = maa_manager_retrain_target_type
+			value = flag:order_knights
+		}
+		set_variable = {
+			name = maa_manager_target_cost
+			value = heavy_cavalry_recruitment_cost
+		}
 	}
 }
 

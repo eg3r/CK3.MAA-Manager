@@ -70,10 +70,6 @@ if errorlevel 1 (
     exit /b 1
 )
 
-REM Update the descriptor file with correct path
-echo Updating descriptor file path...
-powershell -Command "(Get-Content '%CK3_MOD_DIR%\%MOD_NAME%.mod') -replace 'path=\"mod/MenAtManager\"', 'path=\"mod/%MOD_NAME%\"' | Set-Content '%CK3_MOD_DIR%\%MOD_NAME%.mod'"
-
 echo.
 echo ============================================
 echo Deployment Complete!
@@ -89,6 +85,11 @@ echo 3. Enable "Men-At-Arms Manager"
 echo 4. Create or select a playset
 echo 5. Start the game to test
 echo.
-echo For testing: Open console (~) and type:
-echo effect maa_manager_open_window
+echo To open the manager in game: press F3 (Military View) and click the
+echo Men-At-Arms Manager icon button next to "Raise All"
+echo (tooltip "Open Men-at-Arms Manager"). It is disabled while at war
+echo or while regiments are raised.
+echo.
+echo Note: enable only this local copy. Do not enable a Workshop
+echo subscription of the mod in the same playset.
 echo.

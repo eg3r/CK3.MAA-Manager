@@ -1,11 +1,11 @@
 name="Men-At-Arms Manager"
-version="1.19.0"
+version="1.20.0"
 tags={
 	"Military"
 	"GUI"
 	"Gameplay"
 }
-supported_version="1.19.*"
+supported_version="1.20.*"
 path="mod/MenAtArmsManager"
 remote_file_id="3580440930"
 

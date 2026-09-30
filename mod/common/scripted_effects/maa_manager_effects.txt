@@ -19,8 +19,10 @@ maa_manager_data_create_effect = {
 	remove_variable = maa_manager_target_cost
 	remove_variable = maa_manager_source_cost
 	
-	# Iterate through all of the character's MAA regiments
+	# Iterate through all of the character's personal MAA regiments
+	# (title MAA and other non-personal regiments excluded - see maa_manager_is_manageable_regiment)
 	every_maa_regiment = {
+		limit = { maa_manager_is_manageable_regiment = yes }
 		ROOT = {
 			add_to_variable_list = {
 				name = maa_regiment_list
@@ -49,6 +51,7 @@ maa_manager_select_regiment_effect = {
 				NOT = {
 					this = scope:maa_manager_selected_regiment
 				}
+				maa_manager_is_manageable_regiment = yes
 				maa_manager_type_matches_selection = yes
 			}
 			ROOT = {

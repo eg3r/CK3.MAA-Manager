@@ -6,9 +6,11 @@
 ######################################################
 # Retrain Gold Cost Calculation
 # Formula: max(Target Cost - Source Cost, 10) × Stacks
-# For FEUDAL/CLAN governments (gold payment)
-# For NOMADIC governments (gold payment for non-horde MAA)
+# For all non-tribal governments. Paid from the treasury for treasury
+# governments (remove_treasury_or_gold), otherwise from gold.
 # The minimum of 10 gold is applied PER STACK before multiplication
+# Uses base recruitment costs: recruitment-cost modifiers (e.g. acclaimed
+# mercenary discounts) are intentionally not applied - script cannot read them.
 # Scope: Character
 # Requires: maa_manager_selected_regiment_scope variable
 # Optional: maa_manager_target_cost and maa_manager_source_cost (fallback to 150 if not set)
@@ -45,12 +47,12 @@ maa_manager_retrain_gold_cost = {
 		else = {
 			subtract = 150  # Default fallback
 		}
-				
+
+		# Apply minimum of 10 gold per stack (before multiplying)
+		min = 10
+
 		# Multiply by number of stacks
 		multiply = var:maa_manager_selected_regiment_scope.maa_size
-
-		# Apply minimum of 10 gold per stack
-		min = 10
 	}
 }
 

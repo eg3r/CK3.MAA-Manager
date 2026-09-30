@@ -102,6 +102,11 @@ maa_manager_can_recruit_maa_thieves = {
 	always = no
 }
 
-maa_manager_can_recruit_teutonic_knights = {
+# Holy order MAA (00_holy_order_maa_types.txt) - special_recruit_only, hired by holy orders only
+maa_manager_can_recruit_order_serjeants = {
+	always = no
+}
+
+maa_manager_can_recruit_order_knights = {
 	always = no
 }

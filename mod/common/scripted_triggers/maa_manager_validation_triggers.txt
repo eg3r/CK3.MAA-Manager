@@ -1,0 +1,50 @@
+﻿######################################################
+# MAA Manager - Validation Triggers
+######################################################
+
+######################################################
+# Regiments the manager may list, move and retrain
+# Only personal MAA. Title MAA (administrative governments) and other
+# non-personal regiments are excluded: the manager can only create personal
+# regiments, so retraining or merging them would convert their ownership.
+# Scope: regiment
+######################################################
+maa_manager_is_manageable_regiment = {
+	is_personal_maa_regiment = yes
+}
+
+######################################################
+# Retrain affordability
+# Tribal: prestige. Everyone else: treasury_or_gold, which checks the
+# treasury for treasury governments (replace_gold_cost_by_treasury) and
+# gold otherwise - the same resource the game charges for MAA recruitment.
+# Scope: character
+######################################################
+maa_manager_can_afford_retrain = {
+	trigger_if = {
+		limit = { has_government = tribal_government }
+		prestige >= maa_manager_retrain_prestige_cost
+	}
+	trigger_else = {
+		treasury_or_gold >= maa_manager_retrain_gold_cost
+	}
+}
+
+######################################################
+# Full confirm-time check for maa_manager_execute_retrain
+# Used by is_valid AND as the gate inside the effect, so a stale selection
+# can never charge the player or destroy the source regiment.
+# Scope: character (root)
+######################################################
+maa_manager_can_execute_retrain = {
+	has_variable = maa_manager_selected_regiment_scope
+	has_variable = maa_manager_retrain_target_type
+	# Source must still be one of this character's manageable regiments
+	any_maa_regiment = {
+		this = root.var:maa_manager_selected_regiment_scope
+		maa_manager_is_manageable_regiment = yes
+	}
+	# Target must still pass its recruit trigger (culture, government, accolades, ...)
+	maa_manager_retrain_target_is_recruitable = yes
+	maa_manager_can_afford_retrain = yes
+}

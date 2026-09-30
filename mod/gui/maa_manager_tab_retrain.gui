@@ -362,14 +362,14 @@ types MAAManager_Tab_Retrain
 												}
 
 												expand = {}										
-												# Gold cost (feudal, clan, nomadic governments)
+												# Gold cost (non-tribal governments; treasury icon for treasury governments)
 												hbox = {
 													visible = "[Not(GetPlayer.GetGovernment.IsType('tribal_government'))]"
 													spacing = 3
 
 													icon = {
 														size = { 20 20 }
-														texture = "gfx/interface/icons/icon_gold.dds"
+														texture = "[Select_CString(GetPlayer.HasTreasury, 'gfx/interface/icons/icon_imperial_treasury.dds', 'gfx/interface/icons/icon_gold.dds')]"
 													}
 
 													text_single = {
@@ -415,7 +415,7 @@ types MAAManager_Tab_Retrain
 											
 											onclick = "[GetScriptedGui('maa_manager_execute_retrain').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 											enabled = "[GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-											tooltip = "[SelectLocalization(GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP', 'MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD')]"
+											tooltip = "[SelectLocalization(GetScriptedGui('maa_manager_execute_retrain').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP', SelectLocalization(GetScriptedGui('maa_manager_retrain_affordable').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_TARGET_UNAVAILABLE', 'MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD'))]"
 											
 											hbox = {
 												layoutpolicy_horizontal = expanding
@@ -432,7 +432,7 @@ types MAAManager_Tab_Retrain
 												
 												expand = {}
 												
-												# Gold cost (feudal, clan, nomadic governments)
+												# Gold cost (non-tribal governments; treasury icon for treasury governments)
 												hbox = {
 													visible = "[Not(GetPlayer.GetGovernment.IsType('tribal_government'))]"
 													spacing = 3
@@ -440,7 +440,7 @@ types MAAManager_Tab_Retrain
 													
 													icon = {
 														size = { 20 20 }
-														texture = "gfx/interface/icons/icon_gold.dds"
+														texture = "[Select_CString(GetPlayer.HasTreasury, 'gfx/interface/icons/icon_imperial_treasury.dds', 'gfx/interface/icons/icon_gold.dds')]"
 													}
 													
 													text_single = {

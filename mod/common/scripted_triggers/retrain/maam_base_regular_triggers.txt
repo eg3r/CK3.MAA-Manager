@@ -10,44 +10,24 @@
 ######################################################
 
 maa_manager_can_recruit_light_footmen = {
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	NOT = { government_has_flag = government_is_in_steppe }
 }
 
 maa_manager_can_recruit_bowmen = {
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	NOT = { government_has_flag = government_is_in_steppe }
 }
 
 maa_manager_can_recruit_light_horsemen = {
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	NOT = { government_has_flag = government_is_in_steppe }
 }
 
 maa_manager_can_recruit_pikemen_unit = {
-	NOR = {
-		government_has_flag = government_is_nomadic
-		government_has_flag = government_is_herder
-	}
+	NOT = { government_has_flag = government_is_in_steppe }
 }
 
 maa_manager_can_recruit_armored_footmen = {
-	# Base government check - exclude nomadic and herder governments
-	trigger_if = {
-		limit = {
-			OR = {
-				government_has_flag = government_is_nomadic
-				government_has_flag = government_is_herder
-			}
-		}
-		always = no
-	}
+	# Base government check - exclude steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 	# Innovation requirement
 	culture = {
 		has_innovation = innovation_quilted_armor
@@ -61,33 +41,23 @@ maa_manager_can_recruit_armored_footmen = {
 }
 
 maa_manager_can_recruit_armored_horsemen = {
-	# Base government check - exclude nomadic and herder governments
-	trigger_if = {
-		limit = {
-			OR = {
-				government_has_flag = government_is_nomadic
-				government_has_flag = government_is_herder
-			}
-		}
-		always = no
-	}
+	# Base government check - exclude steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 	# Innovation requirement
 	culture = {
 		has_innovation = innovation_arched_saddle
 	}
+	# Cultural parameter check - some cultures ban heavy MAA
+	NOT = {
+		culture = {
+			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		}
+	}
 }
 
 maa_manager_can_recruit_crossbowmen = {
-	# Base government check - exclude nomadic and herder governments
-	trigger_if = {
-		limit = {
-			OR = {
-				government_has_flag = government_is_nomadic
-				government_has_flag = government_is_herder
-			}
-		}
-		always = no
-	}
+	# Base government check - exclude steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 	# Innovation requirement
 	culture = {
 		has_innovation = innovation_advanced_bowmaking
@@ -95,94 +65,46 @@ maa_manager_can_recruit_crossbowmen = {
 }
 
 maa_manager_can_recruit_onager = {
-	# Base government check - exclude nomadic and herder governments
-	trigger_if = {
-		limit = {
-			OR = {
-				government_has_flag = government_is_nomadic
-				government_has_flag = government_is_herder
-			}
-		}
-		always = no
-	}
+	# Base government check - exclude steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 	# Innovation requirement - Tribal Era siege weapon
-	# Exclude East Asian heritages (they use ballista instead)
+	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use ballista instead
 	culture = {
 		has_innovation = innovation_catapult
-		NOR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = no
 	}
 }
 
 maa_manager_can_recruit_mangonel = {
-	# Base government check - exclude nomadic and herder governments
-	trigger_if = {
-		limit = {
-			OR = {
-				government_has_flag = government_is_nomadic
-				government_has_flag = government_is_herder
-			}
-		}
-		always = no
-	}
+	# Base government check - exclude steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 	# Innovation requirement - Early Medieval siege weapon
-	# Exclude East Asian heritages (they use cloud_ladder instead)
+	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use cloud_ladder instead
 	culture = {
 		has_innovation = innovation_mangonel
-		NOR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = no
 	}
 }
 
 maa_manager_can_recruit_trebuchet = {
-	# Base government check - exclude nomadic and herder governments
-	trigger_if = {
-		limit = {
-			OR = {
-				government_has_flag = government_is_nomadic
-				government_has_flag = government_is_herder
-			}
-		}
-		always = no
-	}
+	# Base government check - exclude steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 	# Innovation requirement - High Medieval siege weapon
-	# Exclude East Asian heritages (they use siege_tower instead)
+	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use siege_tower instead
 	culture = {
 		has_innovation = innovation_trebuchet
-		NOR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = no
 	}
 }
 
 maa_manager_can_recruit_bombard = {
-	# Base government check - exclude nomadic and herder governments
-	trigger_if = {
-		limit = {
-			OR = {
-				government_has_flag = government_is_nomadic
-				government_has_flag = government_is_herder
-			}
-		}
-		always = no
-	}
+	# Base government check - exclude steppe governments (nomadic and herder)
+	NOT = { government_has_flag = government_is_in_steppe }
 	# Cultural parameter requirement - Late Medieval gunpowder units
-	# Exclude East Asian heritages (they don't have a tier 4 siege replacement in base game)
+	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use cannon instead
 	culture = {
 		has_cultural_parameter = unlock_late_medieval_gunpowder_units
-		NOR = {
-			has_cultural_pillar = heritage_chinese
-			has_cultural_pillar = heritage_korean
-			has_cultural_pillar = heritage_japonic
-		}
+		culture_uses_eastern_siege_weapons_trigger = no
 	}
 }
 
