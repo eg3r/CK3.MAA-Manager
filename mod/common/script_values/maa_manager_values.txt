@@ -21,7 +21,7 @@
 ######################################################
 maa_manager_retrain_gold_cost = {
 	value = 0
-	
+
 	# Only apply gold cost if NOT tribal government (and the target is not piety-priced)
 	if = {
 		limit = {
@@ -29,7 +29,7 @@ maa_manager_retrain_gold_cost = {
 			NOT = { has_government = tribal_government }
 			maa_manager_retrain_pays_piety = no
 		}
-		
+
 		# Calculate per-stack cost: (target - source), minimum 10
 		# Store target cost (or use fallback)
 		if = {
@@ -39,7 +39,7 @@ maa_manager_retrain_gold_cost = {
 		else = {
 			add = 150  # Default fallback
 		}
-		
+
 		# Subtract source cost (or use fallback)
 		if = {
 			limit = { has_variable = maa_manager_source_cost }
@@ -51,6 +51,11 @@ maa_manager_retrain_gold_cost = {
 
 		# Apply minimum of 10 gold per stack (before multiplying)
 		min = 10
+
+		if = {
+			limit = { maa_manager_title_uses_treasury = yes }
+			multiply = define:NArmy|MAA_TREASURY_BUY_COST_MULT
+		}
 
 		# Multiply by number of stacks
 		multiply = var:maa_manager_selected_regiment_scope.maa_size
@@ -69,7 +74,7 @@ maa_manager_retrain_gold_cost = {
 ######################################################
 maa_manager_retrain_per_stack_cost = {
 	value = 0
-	
+
 	# Calculate per-stack cost: (target - source), minimum 10
 	# Add target cost (or use fallback)
 	if = {
@@ -79,7 +84,7 @@ maa_manager_retrain_per_stack_cost = {
 	else = {
 		add = 150  # Default fallback
 	}
-	
+
 	# Subtract source cost (or use fallback)
 	if = {
 		limit = { has_variable = maa_manager_source_cost }
@@ -88,19 +93,23 @@ maa_manager_retrain_per_stack_cost = {
 	else = {
 		subtract = 150  # Default fallback
 	}
-	
+
 	# Apply minimum of 10 per stack
 	min = 10
-	
+
 	# Apply tribal 2x multiplier (they pay in prestige, which costs 2x)
 	if = {
 		limit = { has_government = tribal_government }
 		multiply = 2.0
 	}
+	else_if = {
+		limit = { maa_manager_title_uses_treasury = yes }
+		multiply = define:NArmy|MAA_TREASURY_BUY_COST_MULT
+	}
 }
 
 ######################################################
-# Retrain Prestige Cost Calculation  
+# Retrain Prestige Cost Calculation
 # Formula: max(Target Cost - Source Cost, 10) × Stacks × 2
 # For TRIBAL governments only (they pay 2x in prestige)
 # Returns 0 for non-tribal governments
@@ -108,7 +117,7 @@ maa_manager_retrain_per_stack_cost = {
 ######################################################
 maa_manager_retrain_prestige_cost = {
 	value = 0
-	
+
 	# Only apply prestige cost for tribal government (and the target is not piety-priced)
 	if = {
 		limit = {
@@ -116,7 +125,7 @@ maa_manager_retrain_prestige_cost = {
 			has_government = tribal_government
 			maa_manager_retrain_pays_piety = no
 		}
-		
+
 		# Calculate per-stack cost: (target - source), minimum 10
 		# Add target cost (or use fallback)
 		if = {
@@ -126,7 +135,7 @@ maa_manager_retrain_prestige_cost = {
 		else = {
 			add = 150  # Default fallback
 		}
-		
+
 		# Subtract source cost (or use fallback)
 		if = {
 			limit = { has_variable = maa_manager_source_cost }
@@ -135,10 +144,10 @@ maa_manager_retrain_prestige_cost = {
 		else = {
 			subtract = 150  # Default fallback
 		}
-		
+
 		# Apply minimum of 10 per stack
 		min = 10
-		
+
 		# Tribal pays 2x in prestige
 		multiply = 2
 

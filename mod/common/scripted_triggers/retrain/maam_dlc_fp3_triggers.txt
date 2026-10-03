@@ -9,58 +9,76 @@
 ######################################################
 
 maa_manager_can_recruit_tarkhan = {
-	# Requires Persian cultural tradition: unlock_maa_tarkhan
-	# Note: Landless adventurers with planned_cultivation_perk also handled
-	OR = {
-		AND = {
-			has_government = landless_adventurer_government
-			has_perk = planned_cultivation_perk
-			location.culture ?= {
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = tarkhan }
+	}
+	trigger_else = {
+		# Requires Persian cultural tradition: unlock_maa_tarkhan
+		# Note: Landless adventurers with planned_cultivation_perk also handled
+		OR = {
+			AND = {
+				has_government = landless_adventurer_government
+				has_perk = planned_cultivation_perk
+				location.culture ?= {
+					has_cultural_parameter = unlock_maa_tarkhan
+				}
+			}
+			culture = {
 				has_cultural_parameter = unlock_maa_tarkhan
 			}
 		}
-		culture = {
-			has_cultural_parameter = unlock_maa_tarkhan
-		}
-	}
-	# Excluded by Strength in Numbers tradition (bans heavy MAA)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		# Excluded by Strength in Numbers tradition (bans heavy MAA)
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_zupin_warrior = {
-	# Requires Caucasian cultural tradition: unlock_maa_zupin_warrior
-	# Note: Landless adventurers with planned_cultivation_perk also handled
-	OR = {
-		AND = {
-			has_government = landless_adventurer_government
-			has_perk = planned_cultivation_perk
-			location.culture ?= {
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = zupin_warrior }
+	}
+	trigger_else = {
+		# Requires Caucasian cultural tradition: unlock_maa_zupin_warrior
+		# Note: Landless adventurers with planned_cultivation_perk also handled
+		OR = {
+			AND = {
+				has_government = landless_adventurer_government
+				has_perk = planned_cultivation_perk
+				location.culture ?= {
+					has_cultural_parameter = unlock_maa_zupin_warrior
+				}
+			}
+			culture = {
 				has_cultural_parameter = unlock_maa_zupin_warrior
 			}
-		}
-		culture = {
-			has_cultural_parameter = unlock_maa_zupin_warrior
 		}
 	}
 }
 
 maa_manager_can_recruit_tawashi = {
-	# Requires Mamluk cultural tradition: unlock_maa_tawashi
-	# Note: Landless adventurers with planned_cultivation_perk also handled
-	OR = {
-		AND = {
-			has_government = landless_adventurer_government
-			has_perk = planned_cultivation_perk
-			location.culture ?= {
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = tawashi }
+	}
+	trigger_else = {
+		# Requires Mamluk cultural tradition: unlock_maa_tawashi
+		# Note: Landless adventurers with planned_cultivation_perk also handled
+		OR = {
+			AND = {
+				has_government = landless_adventurer_government
+				has_perk = planned_cultivation_perk
+				location.culture ?= {
+					has_cultural_parameter = unlock_maa_tawashi
+				}
+			}
+			culture = {
 				has_cultural_parameter = unlock_maa_tawashi
 			}
-		}
-		culture = {
-			has_cultural_parameter = unlock_maa_tawashi
 		}
 	}
 }

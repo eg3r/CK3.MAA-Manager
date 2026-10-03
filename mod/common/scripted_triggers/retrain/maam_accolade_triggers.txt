@@ -15,199 +15,265 @@
 ######################################################
 
 maa_manager_can_recruit_archers = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_archers
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_archers }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = archer_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_archers
+			}
+		}
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = archer_attribute
+				level >= 2
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_skirmishers = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_skirmishers
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_skirmishers }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = skirmisher_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_skirmishers
+			}
+		}
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = skirmisher_attribute
+				level >= 2
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_pikes = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_pikes
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_pikes }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = pike_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_pikes
+			}
+		}
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = pike_attribute
+				level >= 2
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_outriders = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_outriders
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_outriders }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = outrider_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_outriders
+			}
+		}
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = outrider_attribute
+				level >= 2
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_vanguards = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_vanguards
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_vanguards }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = vanguard_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_vanguards
+			}
 		}
-	}
-	# Excluded by Strength in Numbers tradition (bans heavy MAA)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = vanguard_attribute
+				level >= 2
+			}
+		}
+		# Excluded by Strength in Numbers tradition (bans heavy MAA)
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_lancers = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_lancers
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_lancers }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = lancer_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_lancers
+			}
 		}
-	}
-	# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = lancer_attribute
+				level >= 2
+			}
+		}
+		# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_crossbowers = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_crossbowers
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_crossbowers }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = crossbowmen_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_crossbowers
+			}
+		}
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = crossbowmen_attribute
+				level >= 2
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_cameliers = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_cameliers
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_cameliers }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = camelry_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_cameliers
+			}
+		}
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = camelry_attribute
+				level >= 2
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_elephantiers = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_elephantiers
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_elephantiers }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = elephantry_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_elephantiers
+			}
 		}
-	}
-	# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = elephantry_attribute
+				level >= 2
+			}
+		}
+		# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_horse_archers_retinue = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_horse_archers
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_horse_archers }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = horse_archer_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_horse_archers
+			}
+		}
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = horse_archer_attribute
+				level >= 2
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_accolade_maa_handgunners = {
-	# Only one regiment of this type allowed
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = accolade_maa_handgunners
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = accolade_maa_handgunners }
 	}
-	# Requires an accolade with the attribute at level 2+
-	any_accolade = {
-		accolade_attribute_level = {
-			type = gunpowder_attribute
-			level >= 2
+	trigger_else = {
+		# Only one regiment of this type allowed
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = accolade_maa_handgunners
+			}
 		}
-	}
-	# Must have gunpowder innovation (no powder magazine requirement for accolade variant)
-	culture = {
-		has_innovation = innovation_gunpowder
+		# Requires an accolade with the attribute at level 2+
+		any_accolade = {
+			accolade_attribute_level = {
+				type = gunpowder_attribute
+				level >= 2
+			}
+		}
+		# Must have gunpowder innovation (no powder magazine requirement for accolade variant)
+		culture = {
+			has_innovation = innovation_gunpowder
+		}
 	}
 }

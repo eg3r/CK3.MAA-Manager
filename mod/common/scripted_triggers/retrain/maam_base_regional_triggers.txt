@@ -8,35 +8,47 @@
 ######################################################
 
 maa_manager_can_recruit_camel_rider = {
-	# Regional innovation requirement
-	# Direct culture access - we're in character scope from scripted GUI
-	culture = {
-		has_innovation = innovation_war_camels
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = camel_rider }
+	}
+	trigger_else = {
+		# Regional innovation requirement
+		# Direct culture access - we're in character scope from scripted GUI
+		culture = {
+			has_innovation = innovation_war_camels
+		}
 	}
 }
 
 maa_manager_can_recruit_war_elephant = {
-	# Must have innovation OR special adventurer parameter
-	OR = {
-		AND = {
-			# Regular recruitment path
-			culture ?= {
-				has_innovation = innovation_elephantry
-			}
-			# Exclude landless adventurers (unless they have special parameter)
-			NOT = {
-				has_government = landless_adventurer_government
-			}
-		}
-		# Adventurer special parameter path, can have no domicile?
-		domicile ?= {
-			has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere
-		}
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = war_elephant }
 	}
-	# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_else = {
+		# Must have innovation OR special adventurer parameter
+		OR = {
+			AND = {
+				# Regular recruitment path
+				culture ?= {
+					has_innovation = innovation_elephantry
+				}
+				# Exclude landless adventurers (unless they have special parameter)
+				NOT = {
+					has_government = landless_adventurer_government
+				}
+			}
+			# Adventurer special parameter path, can have no domicile?
+			domicile ?= {
+				has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere
+			}
+		}
+		# Excluded by Strength in Numbers tradition (bans heavy MAA, v1.20)
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }

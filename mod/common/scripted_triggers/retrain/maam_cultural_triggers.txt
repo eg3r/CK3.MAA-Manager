@@ -14,259 +14,481 @@
 ######################################################
 
 maa_manager_can_recruit_huscarl = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_huscarls }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = huscarl }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_huscarls }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_teulu = {
-	# Welsh/Cumbrian cultures, or Brythonic-heritage parent cultures (light cavalry)
-	culture = {
-		OR = {
-			this = culture:welsh
-			this = culture:cumbrian
-			any_parent_culture_or_above = {
-				OR = {
-					this = culture:welsh
-					this = culture:cumbrian
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = teulu }
+	}
+	trigger_else = {
+		# Welsh/Cumbrian cultures, or Brythonic-heritage parent cultures (light cavalry)
+		culture = {
+			OR = {
+				this = culture:welsh
+				this = culture:cumbrian
+				any_parent_culture_or_above = {
+					OR = {
+						this = culture:welsh
+						this = culture:cumbrian
+					}
+					has_cultural_pillar = heritage_brythonic
 				}
-				has_cultural_pillar = heritage_brythonic
 			}
 		}
 	}
 }
 
 maa_manager_can_recruit_landsknecht = {
-	culture = {
-		has_innovation = innovation_zweihanders
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = landsknecht }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_zweihanders
+		}
 	}
 }
 
 maa_manager_can_recruit_longbowmen = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_longbowmen }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = longbowmen }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_longbowmen }
+	}
 }
 
 maa_manager_can_recruit_goedendag = {
-	culture = {
-		has_innovation = innovation_adaptive_militia
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = goedendag }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_adaptive_militia
+		}
 	}
 }
 
 maa_manager_can_recruit_gendarme = {
-	culture = {
-		has_innovation = innovation_valets
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = gendarme }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_valets
+		}
 	}
 }
 
 maa_manager_can_recruit_chasseur = {
-	culture = {
-		has_innovation = innovation_desert_tactics
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = chasseur }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_desert_tactics
+		}
 	}
 }
 
 maa_manager_can_recruit_picchieri = {
-	culture = {
-		has_innovation = innovation_pike_columns
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = picchieri }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_pike_columns
+		}
 	}
 }
 
 maa_manager_can_recruit_praetorian = {
-	culture = {
-		has_innovation = innovation_legionnaires
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = praetorian }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_legionnaires
+		}
 	}
 }
 
 maa_manager_can_recruit_caballero = {
-	culture = {
-		has_innovation = innovation_caballeros
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = caballero }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_caballeros
+		}
 	}
 }
 
 maa_manager_can_recruit_monaspa = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_monaspa }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = monaspa }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_monaspa }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_cataphract = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_cataphract }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = cataphract }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_cataphract }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_hobelar = {
-	culture = {
-		has_innovation = innovation_hobbies
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = hobelar }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_hobbies
+		}
 	}
 }
 
 maa_manager_can_recruit_schiltron = {
-	culture = {
-		has_innovation = innovation_rectilinear_schiltron
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = schiltron }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_rectilinear_schiltron
+		}
 	}
 }
 
 maa_manager_can_recruit_metsanvartija = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_metsanvartija }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = metsanvartija }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_metsanvartija }
+	}
 }
 
 maa_manager_can_recruit_horse_archers = {
-	# Horse archers can be recruited through multiple paths
-	OR = {
-		# Landless adventurer with planned cultivation perk in archer cavalry culture
-		AND = {
-			is_landless_adventurer = yes
-			has_perk = planned_cultivation_perk
-			location.county.culture ?= { culture_has_archer_cavalry_maa = yes }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = horse_archers }
+	}
+	trigger_else = {
+		# Horse archers can be recruited through multiple paths
+		OR = {
+			# Landless adventurer with planned cultivation perk in archer cavalry culture
+			AND = {
+				is_landless_adventurer = yes
+				has_perk = planned_cultivation_perk
+				location.county.culture ?= { culture_has_archer_cavalry_maa = yes }
+			}
+			# Cultural parameter unlock
+			culture = {
+				has_cultural_parameter = unlock_maa_horse_archers
+			}
+			# OR nomadic recruitment path
+			mpo_can_recruit_nomad_maa_trigger = yes
 		}
-		# Cultural parameter unlock
-		culture = {
-			has_cultural_parameter = unlock_maa_horse_archers
-		}
-		# OR nomadic recruitment path
-		mpo_can_recruit_nomad_maa_trigger = yes
 	}
 }
 
 maa_manager_can_recruit_ayyar = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_ayyar }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = ayyar }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_ayyar }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_mubarizun = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_mubarizun }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = mubarizun }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_mubarizun }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_mulaththamun = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_mulaththamun }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = mulaththamun }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_mulaththamun }
+	}
 }
 
 maa_manager_can_recruit_archers_of_the_nile = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_archers_of_the_nile }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = archers_of_the_nile }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_archers_of_the_nile }
+	}
 }
 
 maa_manager_can_recruit_paiks = {
-	culture = {
-		has_innovation = innovation_bamboo_bows
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = paiks }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_bamboo_bows
+		}
 	}
 }
 
 maa_manager_can_recruit_druzhina = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_druzhina }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = druzhina }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_druzhina }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_hussar = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_hussar }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = hussar }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_hussar }
+	}
 }
 
 maa_manager_can_recruit_horn_warrior = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_horn_warrior }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = horn_warrior }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_horn_warrior }
+	}
 }
 
 maa_manager_can_recruit_bush_hunter = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_bush_hunter }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = bush_hunter }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_bush_hunter }
+	}
 }
 
 maa_manager_can_recruit_shomer = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_shomer }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = shomer }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_shomer }
+	}
 }
 
 maa_manager_can_recruit_garudas = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_garudas }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = garudas }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_garudas }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_khandayat = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_khandayat }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = khandayat }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_khandayat }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_mountaineer = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_mountaineer }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = mountaineer }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_mountaineer }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_sahel_horsemen = {
-	culture = {
-		has_innovation = innovation_sahel_horsemen
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = sahel_horsemen }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_sahel_horsemen
+		}
 	}
 }
 
 maa_manager_can_recruit_guinea_warrior = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_guinea_warrior }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = guinea_warrior }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_guinea_warrior }
+	}
 }
 
 maa_manager_can_recruit_sarawit = {
-	culture = {
-		has_innovation = innovation_sarawit
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = sarawit }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_sarawit
+		}
 	}
 }
 
 maa_manager_can_recruit_abudrar = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_abudrar }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = abudrar }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_abudrar }
+	}
 }
 
 maa_manager_can_recruit_zbrojnosh = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_zbrojnosh }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = zbrojnosh }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_zbrojnosh }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_palace_guards = {
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_palace_guards }
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = palace_guards }
+	}
+	trigger_else = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_palace_guards }
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_shenbigong = {
-	culture = {
-		has_innovation = innovation_repeating_crossbow
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = shenbigong }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_repeating_crossbow
+		}
 	}
 }
 
 maa_manager_can_recruit_guanch_vaulter = {
-	culture = {
-		has_innovation = innovation_pole_vault
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = guanch_vaulter }
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_pole_vault
+		}
 	}
 }

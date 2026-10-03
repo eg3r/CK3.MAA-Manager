@@ -1,6 +1,6 @@
 ﻿######################################################
 # Men-At-Arms Manager - Late Load Military Window Override
-# 
+#
 # This file overrides the military window to add the
 # MAA Manager button. Uses zz_ prefix for late loading.
 ######################################################

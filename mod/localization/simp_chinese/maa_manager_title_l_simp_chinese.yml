@@ -1,0 +1,11 @@
+﻿l_simp_chinese:
+ MAA_MANAGER_TITLE_WINDOW_TITLE:0 "头衔兵士管理器"
+ MAA_MANAGER_TITLE_BUTTON_TOOLTIP:0 "管理头衔兵士"
+ MAA_MANAGER_TITLE_MODE_HINT:0 "只能在同一所属头衔内调动。借出的部队仅供查看。"
+ MAA_MANAGER_TITLE_REGIMENT_TOOLTIP:0 "所属头衔：[Regiment.GetOwningTitle.GetName]\n控制头衔：[Regiment.GetControllingTitle.GetName]"
+ MAA_MANAGER_TITLE_RETRAIN_STATIONED:0 "#X 无法转训驻扎中的军团。#!\n请先在原版军团窗口中取消驻扎。"
+ MAA_MANAGER_TITLE_RETRAIN_UNAVAILABLE:0 "#X 无法转训头衔部队。#!\n头衔必须有资格招募目标兵种，并有空余军团名额及游戏要求的资金。军团必须由你控制且未驻扎。"
+ MAA_MANAGER_TITLE_RETRAIN_FAILED:0 "#X 转训未能完成。#!原军团已保留，意外扣除的资金已退还。"
+ MAA_MANAGER_TITLE_COST_TREASURY_TOOLTIP:0 "基础费用为金币等值。现有转训费用将换算为国库资金。\n每级：[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_per_stack_cost')|0] [treasury|E]\n总计：[GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_gold_cost')|0] [treasury|E]"
+ MAA_MANAGER_TITLE_EMPTY:0 "你持有的头衔没有所属兵士。"
+ MAA_MANAGER_TITLE_RETRAIN_REQUIREMENTS:0 "头衔必须有资格招募目标兵种，并有空余军团名额及游戏要求的资金。军团必须由你控制且未驻扎。"

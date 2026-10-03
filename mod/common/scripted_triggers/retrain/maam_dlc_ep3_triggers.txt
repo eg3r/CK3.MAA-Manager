@@ -4,60 +4,102 @@
 # Contains 11 Byzantine DLC MAA types (07_ep3_maa_types.txt)
 # Cultural tradition and special condition-gated types
 #
-# Recruitable (7): ayrudzi, conrois, akritai, ballistrai, skoutatoi, 
+# Recruitable (7): ayrudzi, conrois, akritai, ballistrai, skoutatoi,
 #                  varangian_guards, handpicked_faithful
 # Blocked (4): maa_bandits, maa_poachers, maa_marauders, maa_thieves
 ######################################################
 
 maa_manager_can_recruit_ayrudzi = {
-	# Requires Armenian cultural tradition: unlock_maa_ayrudzi
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_ayrudzi }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = ayrudzi }
+	}
+	trigger_else = {
+		# Requires Armenian cultural tradition: unlock_maa_ayrudzi
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_ayrudzi }
+	}
 }
 
 maa_manager_can_recruit_conrois = {
-	# Requires French/Norman cultural tradition: unlock_maa_conrois
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_conrois }
-	# Excluded by Strength in Numbers tradition (bans heavy MAA)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = conrois }
+	}
+	trigger_else = {
+		# Requires French/Norman cultural tradition: unlock_maa_conrois
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_conrois }
+		# Excluded by Strength in Numbers tradition (bans heavy MAA)
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_akritai = {
-	# Requires Byzantine cultural tradition: unlock_maa_akritai
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_akritai }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = akritai }
+	}
+	trigger_else = {
+		# Requires Byzantine cultural tradition: unlock_maa_akritai
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_akritai }
+	}
 }
 
 maa_manager_can_recruit_ballistrai = {
-	# Requires Byzantine cultural tradition: unlock_maa_ballistrai
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_ballistrai }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = ballistrai }
+	}
+	trigger_else = {
+		# Requires Byzantine cultural tradition: unlock_maa_ballistrai
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_ballistrai }
+	}
 }
 
 maa_manager_can_recruit_skoutatoi = {
-	# Requires Byzantine cultural tradition: unlock_maa_skoutatoi
-	valid_for_maa_trigger = { PARAMETER = unlock_maa_skoutatoi }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = skoutatoi }
+	}
+	trigger_else = {
+		# Requires Byzantine cultural tradition: unlock_maa_skoutatoi
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_skoutatoi }
+	}
 }
 
 maa_manager_can_recruit_varangian_guards = {
-	# Title-only troops: the game recruits them with exists = scope:title
-	# (a title that founded the Varangian Guard). The manager only creates
-	# personal regiments, so they are never a retrain target.
-	always = no
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = varangian_guards }
+	}
+	trigger_else = {
+		# Title-only troops: the game recruits them with exists = scope:title
+		# (a title that founded the Varangian Guard). The manager only creates
+		# personal regiments, so they are never a retrain target.
+		always = no
+	}
 }
 
 maa_manager_can_recruit_handpicked_faithful = {
-	# Requires landless adventurer domicile with specific parameter
-	# Note: This check requires domicile system (Landless Adventurers DLC)
-	exists = domicile
-	domicile = {
-		has_domicile_parameter = camp_unlocks_handpicked_faithful_maa_type
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = handpicked_faithful }
 	}
-	# Excluded by Strength in Numbers tradition (bans heavy MAA)
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+	trigger_else = {
+		# Requires landless adventurer domicile with specific parameter
+		# Note: This check requires domicile system (Landless Adventurers DLC)
+		exists = domicile
+		domicile = {
+			has_domicile_parameter = camp_unlocks_handpicked_faithful_maa_type
+		}
+		# Excluded by Strength in Numbers tradition (bans heavy MAA)
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
