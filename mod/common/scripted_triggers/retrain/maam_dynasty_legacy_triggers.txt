@@ -8,27 +8,39 @@
 ######################################################
 
 maa_manager_can_recruit_house_guard = {
-	# Only one regiment of this type allowed (max_regiments = 1)
-	NOT = {
-		any_maa_regiment = {
-			is_maa_type = house_guard
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = house_guard }
+	}
+	trigger_else = {
+		# Only one regiment of this type allowed (max_regiments = 1)
+		NOT = {
+			any_maa_regiment = {
+				is_maa_type = house_guard
+			}
 		}
-	}
-	# Dynasty must have warfare legacy perk 5 (safe null check with ?=)
-	dynasty ?= {
-		has_dynasty_perk = warfare_legacy_5
-	}
-	# Cultural parameter check - some cultures ban heavy MAA
-	NOT = {
-		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+		# Dynasty must have warfare legacy perk 5 (safe null check with ?=)
+		dynasty ?= {
+			has_dynasty_perk = warfare_legacy_5
+		}
+		# Cultural parameter check - some cultures ban heavy MAA
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_asawira = {
-	# Requires dynasty with fp3_khvarenah_legacy_4 perk
-	dynasty ?= {
-		has_dynasty_perk = fp3_khvarenah_legacy_4
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = asawira }
+	}
+	trigger_else = {
+		# Requires dynasty with fp3_khvarenah_legacy_4 perk
+		dynasty ?= {
+			has_dynasty_perk = fp3_khvarenah_legacy_4
+		}
 	}
 }

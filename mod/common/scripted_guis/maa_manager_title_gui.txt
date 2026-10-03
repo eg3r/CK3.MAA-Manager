@@ -1,0 +1,42 @@
+﻿maa_manager_open_personal = {
+	scope = character
+	is_valid = { maa_manager_can_modify_regiments = yes }
+	effect = {
+		if = {
+			limit = { maa_manager_can_modify_regiments = yes }
+			remove_variable = maa_manager_title_mode
+			maa_manager_data_create_effect = yes
+		}
+	}
+}
+
+maa_manager_open_title = {
+	scope = character
+	is_valid = { maa_manager_can_modify_regiments = yes }
+	effect = {
+		if = {
+			limit = { maa_manager_can_modify_regiments = yes }
+			set_variable = { name = maa_manager_title_mode value = yes }
+			maa_manager_data_create_effect = yes
+		}
+	}
+}
+
+maa_manager_title_mode = {
+	scope = character
+	is_shown = { maa_manager_is_title_mode = yes }
+}
+
+maa_manager_retrain_treasury_payment = {
+	scope = character
+	is_shown = { maa_manager_retrain_uses_treasury = yes }
+}
+
+maa_manager_title_retrain_stationed = {
+	scope = character
+	is_shown = {
+		maa_manager_is_title_mode = yes
+		exists = var:maa_manager_selected_regiment_scope
+		var:maa_manager_selected_regiment_scope = { exists = regiment_station }
+	}
+}

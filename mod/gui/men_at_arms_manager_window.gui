@@ -18,7 +18,7 @@ window = {
 
 	using = Window_Background
 	using = Window_Decoration
-	
+
 	# Same rule as the opener button: only usable at peace with no regiments raised.
 	# If a war starts or troops are raised while open, the window hides (the actions
 	# are also rejected in script - see maa_manager_can_modify_regiments).
@@ -30,6 +30,7 @@ window = {
 		using = Sound_WindowShow_Standard
 		on_start = "[PdxGuiWidget.StackTop]"
 		on_start = "[GetVariableSystem.Clear( 'maa_manager_selected_regiment_id' )]"
+		on_start = "[GetVariableSystem.Clear( 'maa_manager_selected_regiment_type_name' )]"
 		on_start = "[GetVariableSystem.Clear( 'maa_manager_retrain_target_type' )]"
 		on_start = "[GetScriptedGui('maa_manager_data_create').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		on_start = "[VariableSystem.Set('maa_manager_tab', 'troops')]"
@@ -43,29 +44,31 @@ window = {
 		# in _show, and running scripted GUIs on hide fails when the window hides during session
 		# teardown (no player character: "Scoped object of type 'character' is not valid").
 		on_start = "[GetVariableSystem.Clear( 'maa_manager_selected_regiment_id' )]"
+		on_start = "[GetVariableSystem.Clear( 'maa_manager_selected_regiment_type_name' )]"
 		on_start = "[GetVariableSystem.Clear( 'maa_manager_retrain_target_type' )]"
 		on_start = "[VariableSystem.Clear( 'maa_manager_tab' )]"
 	}
-	
+
 	vbox = {
 		using = Window_Margins
-		
+
 		# Window Header
 		header_pattern = {
 			layoutpolicy_horizontal = expanding
-			
+
 			blockoverride "header_text" {
-				text = "MEN_AT_ARMS_MANAGER_WINDOW_TITLE"
+				text = "[SelectLocalization(GetScriptedGui('maa_manager_title_mode').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_TITLE_WINDOW_TITLE', 'MEN_AT_ARMS_MANAGER_WINDOW_TITLE')]"
 			}
-			
+
 			blockoverride "button_close" {
 				onclick = "[VariableSystem.Clear('men_at_arms_manager_open')]"
 			}
 		}
-		
+
 		# Main Content Area
 		vbox = {
 			name = "maa_manager_main_vbox"
+			ignoreinvisible = yes
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
 			spacing = 10
@@ -85,6 +88,26 @@ window = {
 				}
 			}
 
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				visible = "[GetScriptedGui('maa_manager_title_mode').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				text = "MAA_MANAGER_TITLE_MODE_HINT"
+				using = Font_Size_Small
+			}
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				visible = "[GetPlayer.MakeScope.Var('maa_manager_title_retrain_failed').IsSet]"
+				text = "MAA_MANAGER_TITLE_RETRAIN_FAILED"
+				using = Font_Size_Small
+			}
+
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				visible = "[And(GetScriptedGui('maa_manager_title_mode').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), IsDataModelEmpty(GetPlayer.MakeScope.GetList('maa_regiment_list')))]"
+				text = "MAA_MANAGER_TITLE_EMPTY"
+				using = Font_Size_Small
+			}
+
 			# select regiment label
 			text_single = {
 				parentanchor = left
@@ -92,7 +115,7 @@ window = {
 				text = "MAA_MANAGER_SELECT_REGIMENT"
 				using = Font_Size_Small
 				# align left
-				
+
 			}
 
 			######################################################
@@ -107,7 +130,7 @@ window = {
 				blockoverride "scrollbox_content" {
 					hbox = {
 						layoutpolicy_horizontal = expanding
-						
+
 						parentanchor = top|left
 
 						name = "main_selection_tiles"
@@ -166,7 +189,7 @@ window = {
 			######################################################
 			# TAB CONTENTS - Refactored into separate component files
 			######################################################
-			
+
 			# TAB 1: TROOP MOVEMENT
 			vbox_maa_manager_tab_troops = {}
 

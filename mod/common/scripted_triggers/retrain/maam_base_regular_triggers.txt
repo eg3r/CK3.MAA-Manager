@@ -10,116 +10,188 @@
 ######################################################
 
 maa_manager_can_recruit_light_footmen = {
-	NOT = { government_has_flag = government_is_in_steppe }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = light_footmen }
+	}
+	trigger_else = {
+		NOT = { government_has_flag = government_is_in_steppe }
+	}
 }
 
 maa_manager_can_recruit_bowmen = {
-	NOT = { government_has_flag = government_is_in_steppe }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = bowmen }
+	}
+	trigger_else = {
+		NOT = { government_has_flag = government_is_in_steppe }
+	}
 }
 
 maa_manager_can_recruit_light_horsemen = {
-	NOT = { government_has_flag = government_is_in_steppe }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = light_horsemen }
+	}
+	trigger_else = {
+		NOT = { government_has_flag = government_is_in_steppe }
+	}
 }
 
 maa_manager_can_recruit_pikemen_unit = {
-	NOT = { government_has_flag = government_is_in_steppe }
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = pikemen_unit }
+	}
+	trigger_else = {
+		NOT = { government_has_flag = government_is_in_steppe }
+	}
 }
 
 maa_manager_can_recruit_armored_footmen = {
-	# Base government check - exclude steppe governments (nomadic and herder)
-	NOT = { government_has_flag = government_is_in_steppe }
-	# Innovation requirement
-	culture = {
-		has_innovation = innovation_quilted_armor
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = armored_footmen }
 	}
-	# Cultural parameter check - some cultures ban heavy MAA
-	NOT = {
+	trigger_else = {
+		# Base government check - exclude steppe governments (nomadic and herder)
+		NOT = { government_has_flag = government_is_in_steppe }
+		# Innovation requirement
 		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			has_innovation = innovation_quilted_armor
+		}
+		# Cultural parameter check - some cultures ban heavy MAA
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_armored_horsemen = {
-	# Base government check - exclude steppe governments (nomadic and herder)
-	NOT = { government_has_flag = government_is_in_steppe }
-	# Innovation requirement
-	culture = {
-		has_innovation = innovation_arched_saddle
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = armored_horsemen }
 	}
-	# Cultural parameter check - some cultures ban heavy MAA
-	NOT = {
+	trigger_else = {
+		# Base government check - exclude steppe governments (nomadic and herder)
+		NOT = { government_has_flag = government_is_in_steppe }
+		# Innovation requirement
 		culture = {
-			has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			has_innovation = innovation_arched_saddle
+		}
+		# Cultural parameter check - some cultures ban heavy MAA
+		NOT = {
+			culture = {
+				has_cultural_parameter = strength_in_numbers_heavy_maa_ban
+			}
 		}
 	}
 }
 
 maa_manager_can_recruit_crossbowmen = {
-	# Base government check - exclude steppe governments (nomadic and herder)
-	NOT = { government_has_flag = government_is_in_steppe }
-	# Innovation requirement
-	culture = {
-		has_innovation = innovation_advanced_bowmaking
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = crossbowmen }
+	}
+	trigger_else = {
+		# Base government check - exclude steppe governments (nomadic and herder)
+		NOT = { government_has_flag = government_is_in_steppe }
+		# Innovation requirement
+		culture = {
+			has_innovation = innovation_advanced_bowmaking
+		}
 	}
 }
 
 maa_manager_can_recruit_onager = {
-	# Base government check - exclude steppe governments (nomadic and herder)
-	NOT = { government_has_flag = government_is_in_steppe }
-	# Innovation requirement - Tribal Era siege weapon
-	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use ballista instead
-	culture = {
-		has_innovation = innovation_catapult
-		culture_uses_eastern_siege_weapons_trigger = no
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = onager }
+	}
+	trigger_else = {
+		# Base government check - exclude steppe governments (nomadic and herder)
+		NOT = { government_has_flag = government_is_in_steppe }
+		# Innovation requirement - Tribal Era siege weapon
+		# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use ballista instead
+		culture = {
+			has_innovation = innovation_catapult
+			culture_uses_eastern_siege_weapons_trigger = no
+		}
 	}
 }
 
 maa_manager_can_recruit_mangonel = {
-	# Base government check - exclude steppe governments (nomadic and herder)
-	NOT = { government_has_flag = government_is_in_steppe }
-	# Innovation requirement - Early Medieval siege weapon
-	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use cloud_ladder instead
-	culture = {
-		has_innovation = innovation_mangonel
-		culture_uses_eastern_siege_weapons_trigger = no
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = mangonel }
+	}
+	trigger_else = {
+		# Base government check - exclude steppe governments (nomadic and herder)
+		NOT = { government_has_flag = government_is_in_steppe }
+		# Innovation requirement - Early Medieval siege weapon
+		# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use cloud_ladder instead
+		culture = {
+			has_innovation = innovation_mangonel
+			culture_uses_eastern_siege_weapons_trigger = no
+		}
 	}
 }
 
 maa_manager_can_recruit_trebuchet = {
-	# Base government check - exclude steppe governments (nomadic and herder)
-	NOT = { government_has_flag = government_is_in_steppe }
-	# Innovation requirement - High Medieval siege weapon
-	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use siege_tower instead
-	culture = {
-		has_innovation = innovation_trebuchet
-		culture_uses_eastern_siege_weapons_trigger = no
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = trebuchet }
+	}
+	trigger_else = {
+		# Base government check - exclude steppe governments (nomadic and herder)
+		NOT = { government_has_flag = government_is_in_steppe }
+		# Innovation requirement - High Medieval siege weapon
+		# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use siege_tower instead
+		culture = {
+			has_innovation = innovation_trebuchet
+			culture_uses_eastern_siege_weapons_trigger = no
+		}
 	}
 }
 
 maa_manager_can_recruit_bombard = {
-	# Base government check - exclude steppe governments (nomadic and herder)
-	NOT = { government_has_flag = government_is_in_steppe }
-	# Cultural parameter requirement - Late Medieval gunpowder units
-	# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use cannon instead
-	culture = {
-		has_cultural_parameter = unlock_late_medieval_gunpowder_units
-		culture_uses_eastern_siege_weapons_trigger = no
+	trigger_if = {
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = bombard }
+	}
+	trigger_else = {
+		# Base government check - exclude steppe governments (nomadic and herder)
+		NOT = { government_has_flag = government_is_in_steppe }
+		# Cultural parameter requirement - Late Medieval gunpowder units
+		# Exclude eastern-siege cultures (culture_uses_eastern_siege_weapons_trigger) - they use cannon instead
+		culture = {
+			has_cultural_parameter = unlock_late_medieval_gunpowder_units
+			culture_uses_eastern_siege_weapons_trigger = no
+		}
 	}
 }
 
 maa_manager_can_recruit_handgunners = {
-	# Gunpowder building requirement - must have powder magazine to support regiments
-	# (a gunpowder source being replaced frees its own quota slot)
 	trigger_if = {
-		limit = { maa_manager_retrain_replaces_gunpowder_unit = yes }
-		gunpowder_raise_limit_existing_gunpowder_units <= gunpowder_raise_limit_existing_gunpowder_buildings
+		limit = { maa_manager_is_title_mode = yes }
+		maa_manager_can_recruit_title_type = { TYPE = handgunners }
 	}
 	trigger_else = {
-		gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
-	}
-	# Cultural parameter requirement - Late Medieval gunpowder units
-	culture = {
-		has_cultural_parameter = unlock_late_medieval_gunpowder_units
+		# Gunpowder building requirement - must have powder magazine to support regiments
+		# (a gunpowder source being replaced frees its own quota slot)
+		trigger_if = {
+			limit = { maa_manager_retrain_replaces_gunpowder_unit = yes }
+			gunpowder_raise_limit_existing_gunpowder_units <= gunpowder_raise_limit_existing_gunpowder_buildings
+		}
+		trigger_else = {
+			gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings
+		}
+		# Cultural parameter requirement - Late Medieval gunpowder units
+		culture = {
+			has_cultural_parameter = unlock_late_medieval_gunpowder_units
+		}
 	}
 }

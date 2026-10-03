@@ -1,26 +1,26 @@
 ﻿l_french:
  # Window Title
  MEN_AT_ARMS_MANAGER_WINDOW_TITLE:0 "Gestionnaire de [men_at_arms|E]"
- 
+
  # Button Tooltips
  MAA_MANAGER_BUTTON_TOOLTIP:0 "Ouvrir le gestionnaire de [men_at_arms|E]"
  MAA_MANAGER_BUTTON_DISABLED_TOOLTIP:0 "#X Impossible d'ouvrir le gestionnaire de [men_at_arms|E]#!\n\n[SelectLocalization(GetPlayer.IsAtWar, 'MAA_MANAGER_DISABLED_AT_WAR', 'MAA_MANAGER_DISABLED_RAISED')]"
  MAA_MANAGER_DISABLED_AT_WAR:0 "#R Impossible de gérer les régiments pendant la guerre#!\nVous devez être en paix pour réorganiser vos [men_at_arms|E]."
  MAA_MANAGER_DISABLED_RAISED:0 "#R Impossible de gérer les régiments levés#!\nVous devez abaisser tous les [men_at_arms|E] avant de les réorganiser."
- 
+
  # Main Regiment Selection
  MAA_MANAGER_SELECT_REGIMENT:0 "Sélectionner le [regiment|E] à gérer"
- 
+
  # Tab Navigation
  MAA_MANAGER_TAB_TROOPS:0 "Transférer les [soldiers|E]"
  MAA_MANAGER_TAB_REGIMENTS:0 "Transférer les [regiments|E]"
  MAA_MANAGER_TAB_RETRAIN:0 "Réentraîner les [men_at_arms|E]"
- 
+
  # Tab Instructions
  MAA_MANAGER_TROOPS_INSTRUCTIONS:0 "#Bold Sélectionnez d'abord la cible [men_at_arms|E] ci-dessous#!. \nPlanifiez les transferts de [soldier|E], puis confirmez pour exécuter."
  MAA_MANAGER_REGIMENTS_INSTRUCTIONS:0 "#Bold Sélectionnez d'abord la cible [men_at_arms|E] ci-dessous#!.\nTransférez les [regiments|E] immédiatement. Chaque clic exécute le transfert sans confirmation."
  MAA_MANAGER_RETRAIN_INSTRUCTIONS:0 "Changez les types de [regiment|E] ou reconfigurez vos [men_at_arms|E]."
- 
+
  # Troop Transfer Section
  MAA_MANAGER_TRANSFER_TROOPS_TITLE:0 "Transférer les [soldiers|E]"
  MAA_MANAGER_AVAILABLE_TO_TRANSFER:0 "Disponible pour le transfert :"
@@ -33,7 +33,7 @@
  MAA_MANAGER_TRANSFER_ALL_TOOLTIP:0 "Transférer tous les soldats disponibles"
  MAA_MANAGER_RESET_TOOLTIP:0 "Réinitialiser tous les transferts planifiés"
  MAA_MANAGER_CONFIRM_TOOLTIP:0 "Confirmer et exécuter tous les transferts planifiés"
- 
+
  # Regiment Transfer Section
  MAA_MANAGER_TRANSFER_REGIMENTS_TITLE:0 "Transférer les [regiments|E]"
  MAA_MANAGER_SOURCE_REGIMENTS:0 "[regiments|E] source :"
@@ -49,7 +49,7 @@
  MAA_MANAGER_MOVE_LAST_FROM_TARGET:0 "#warning ← Déplacer le dernier#!"
  MAA_MANAGER_MOVE_LAST_TO_TARGET_WARNING:0 "#warning ⚠ CONFIRMER :#! Transférer le #bold DERNIER#! [regiment|E] vers la cible\n\nCela va #bold supprimer définitivement#! les [men_at_arms|E] source et les fusionner avec la cible.\n\n#weak Cliquez pour confirmer cette action destructive.#!"
  MAA_MANAGER_MOVE_LAST_FROM_TARGET_WARNING:0 "#warning ⚠ CONFIRMER :#! Transférer le #bold DERNIER#! [regiment|E] depuis la cible\n\nCela va #bold supprimer définitivement#! les [men_at_arms|E] cible et les fusionner avec la source.\n\n#weak Cliquez pour confirmer cette action destructive.#!"
- 
+
  # Retrain Tab
  MAA_MANAGER_RETRAIN_NO_SOURCE_DESC:0 "Pour réentraîner les [men_at_arms|E], vous devez d'abord sélectionner un [regiment|E] source depuis l'onglet [regiments|E]."
  MAA_MANAGER_RETRAIN_SELECT_TYPE:0 "Sélectionner le type [men_at_arms|E] cible"
@@ -64,10 +64,10 @@
  MAA_MANAGER_RETRAIN_CONFIRM_TOOLTIP:0 "Réentraîner ce [regiment|E] au type sélectionné.\n\nCela va #X détruire définitivement#! le [regiment|E] actuel et en créer un nouveau du type cible avec le même nombre de piles.\n\n#weak Note :#! Le nouveau régiment commencera avec sa force complète."
  RETRAIN_TO_MAA_TYPE_TOOLTIP:0 "Type [men_at_arms|E] cible :\n[MenAtArmsType.GetName]"
  MAA_MANAGER_RETRAIN_COST_LABEL:0 "Coût de réentraînement :"
- MAA_MANAGER_RETRAIN_COST_TOOLTIP:0 "[SelectLocalization(GetPlayer.GetGovernment.IsType('tribal_government'), 'MAA_MANAGER_RETRAIN_COST_PRESTIGE_TOOLTIP', SelectLocalization(GetPlayer.HasTreasury, 'MAA_MANAGER_RETRAIN_COST_TREASURY_TOOLTIP', 'MAA_MANAGER_RETRAIN_COST_GOLD_TOOLTIP'))]"
+ MAA_MANAGER_RETRAIN_COST_TOOLTIP:0 "[SelectLocalization(GetPlayer.GetGovernment.IsType('tribal_government'), 'MAA_MANAGER_RETRAIN_COST_PRESTIGE_TOOLTIP', SelectLocalization(GetScriptedGui('maa_manager_retrain_treasury_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), SelectLocalization(GetScriptedGui('maa_manager_title_mode').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_TITLE_COST_TREASURY_TOOLTIP', 'MAA_MANAGER_RETRAIN_COST_TREASURY_TOOLTIP'), 'MAA_MANAGER_RETRAIN_COST_GOLD_TOOLTIP'))]"
  MAA_MANAGER_RETRAIN_COST_GOLD_TOOLTIP:0 "#bold Détail du coût :#!\n\n#weak Coût du type cible :#! [GetPlayer.MakeScope.Var('maa_manager_target_cost').GetValue|0] [gold|E]\n#weak Coût du type source :#! [GetPlayer.MakeScope.Var('maa_manager_source_cost').GetValue|0] [gold|E]\n#weak Coût par pile :#! max([GetPlayer.MakeScope.Var('maa_manager_target_cost').GetValue|0] - [GetPlayer.MakeScope.Var('maa_manager_source_cost').GetValue|0], 10) = [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_per_stack_cost')|0] [gold|E]\n#weak Nombre de piles :#! [GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount|0]\n\n#bold Coût total :#! [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_gold_cost')|0] [gold|E]"
  MAA_MANAGER_RETRAIN_COST_PRESTIGE_TOOLTIP:0 "#bold Détail du coût :#!\n\n#weak Coût du type cible :#! [GetPlayer.MakeScope.Var('maa_manager_target_cost').GetValue|0] [gold|E] équivalent\n#weak Coût du type source :#! [GetPlayer.MakeScope.Var('maa_manager_source_cost').GetValue|0] [gold|E] équivalent\n#weak Coût par pile :#! max([GetPlayer.MakeScope.Var('maa_manager_target_cost').GetValue|0] - [GetPlayer.MakeScope.Var('maa_manager_source_cost').GetValue|0], 10) × 2 = [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_per_stack_cost')|0] [prestige|E]\n#weak Nombre de piles :#! [GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount|0]\n\n#bold Coût total :#! [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_prestige_cost')|0] [prestige|E]\n\n#weak Note :#! Les dirigeants [tribal|E] paient en [prestige|E] au double de la valeur [gold|E]."
- MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD:0 "[SelectLocalization(GetPlayer.GetGovernment.IsType('tribal_government'), 'MAA_MANAGER_RETRAIN_INSUFFICIENT_PRESTIGE', SelectLocalization(GetPlayer.HasTreasury, 'MAA_MANAGER_RETRAIN_INSUFFICIENT_TREASURY', 'MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD_ACTUAL'))]"
+ MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD:0 "[SelectLocalization(GetPlayer.GetGovernment.IsType('tribal_government'), 'MAA_MANAGER_RETRAIN_INSUFFICIENT_PRESTIGE', SelectLocalization(GetScriptedGui('maa_manager_retrain_treasury_payment').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'MAA_MANAGER_RETRAIN_INSUFFICIENT_TREASURY', 'MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD_ACTUAL'))]"
  MAA_MANAGER_RETRAIN_INSUFFICIENT_GOLD_ACTUAL:0 "#X Pas assez d'or#!\n\nVous avez besoin de [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_gold_cost')|0] [gold|E] pour réentraîner ce [regiment|E].\n\nOr actuel : [GetPlayer.GetGold|0]"
  MAA_MANAGER_RETRAIN_INSUFFICIENT_PRESTIGE:0 "#X Pas assez de prestige#!\n\nVous avez besoin de [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_prestige_cost')|0] [prestige|E] pour réentraîner ce [regiment|E].\n\nPrestige actuel : [GetPlayer.GetPrestige|0]\n\n#weak Note :#! Les dirigeants [tribal|E] paient en [prestige|E] au double du coût de base."
  MAA_MANAGER_RETRAIN_COST_TREASURY_TOOLTIP:0 "#bold Détail du coût :#!\n\n#weak Coût du type cible :#! [GetPlayer.MakeScope.Var('maa_manager_target_cost').GetValue|0] [treasury|E]\n#weak Coût du type source :#! [GetPlayer.MakeScope.Var('maa_manager_source_cost').GetValue|0] [treasury|E]\n#weak Coût par pile :#! max([GetPlayer.MakeScope.Var('maa_manager_target_cost').GetValue|0] - [GetPlayer.MakeScope.Var('maa_manager_source_cost').GetValue|0], 10) = [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_per_stack_cost')|0] [treasury|E]\n#weak Nombre de piles :#! [GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAChunkCount|0]\n\n#bold Coût total :#! [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_gold_cost')|0] [treasury|E]"
@@ -77,7 +77,7 @@
  MAA_MANAGER_RETRAIN_INSUFFICIENT_PIETY:0 "#X Pas assez de piété#!\n\nVous avez besoin de [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_piety_cost')|0] [piety|E] pour réentraîner ce [regiment|E].\n\nPiété actuelle : [GetPlayer.GetPiety|0]"
  MAA_MANAGER_RETRAIN_WARNING:0 "⚠ Cela changera définitivement le type de [regiment|E]"
  MAA_MANAGER_RETRAIN_TYPE_UNAVAILABLE_TOOLTIP:0 "Ce type de [men_at_arms|E] n'est #X pas disponible#! pour vous.\n\n#italic Exigences non remplies :#! Vous avez besoin de la [culture|E], du type de [government|E] ou des [innovations|E] appropriées pour recruter ce type d'unité.\n\nVérifiez les détails de l'unité pour les exigences spécifiques."
- 
+
  # Messages
  MAA_MANAGER_NO_MOVE_TARGETS:0 "Aucun [regiments|E] disponible pour le transfert. Seuls les [regiments|E] du même type peuvent se transférer entre eux."
  MAA_MANAGER_MOVE_TILE_TOOLTIP:0 "Utilisez les boutons pour ajuster les transferts"

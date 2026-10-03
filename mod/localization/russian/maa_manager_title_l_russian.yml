@@ -1,0 +1,11 @@
+﻿l_russian:
+ MAA_MANAGER_TITLE_WINDOW_TITLE:0 "Управление профессионалами титула"
+ MAA_MANAGER_TITLE_BUTTON_TOOLTIP:0 "Управлять профессионалами титула"
+ MAA_MANAGER_TITLE_MODE_HINT:0 "Перевод возможен только в пределах одного титула-владельца. Переданные войска доступны лишь для просмотра."
+ MAA_MANAGER_TITLE_REGIMENT_TOOLTIP:0 "Титул-владелец: [Regiment.GetOwningTitle.GetName]\nКонтролирующий титул: [Regiment.GetControllingTitle.GetName]"
+ MAA_MANAGER_TITLE_RETRAIN_STATIONED:0 "#X Нельзя переобучить расквартированный полк.#!\nСначала отмените расквартирование в обычном окне полка."
+ MAA_MANAGER_TITLE_RETRAIN_UNAVAILABLE:0 "#X Переобучение войск титула недоступно.#!\nТитул должен иметь право нанять выбранный тип, свободное место и средства, требуемые игрой. Полк должен быть под вашим контролем и не расквартирован."
+ MAA_MANAGER_TITLE_RETRAIN_FAILED:0 "#X Переобучение не завершено.#! Исходный полк сохранён, непредвиденные списания возвращены."
+ MAA_MANAGER_TITLE_COST_TREASURY_TOOLTIP:0 "Базовые цены указаны в золотом эквиваленте. Обычная плата за переобучение пересчитывается в казну.\nЗа подразделение: [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_per_stack_cost')|0] [treasury|E]\nВсего: [GetPlayer.MakeScope.ScriptValue('maa_manager_retrain_gold_cost')|0] [treasury|E]"
+ MAA_MANAGER_TITLE_EMPTY:0 "У ваших титулов нет собственных профессионалов."
+ MAA_MANAGER_TITLE_RETRAIN_REQUIREMENTS:0 "Титул должен иметь право нанять выбранный тип, свободное место и средства, требуемые игрой. Полк должен быть под вашим контролем и не расквартирован."

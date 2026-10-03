@@ -1,6 +1,6 @@
 ﻿######################################################
 # Men-At-Arms Manager - Custom GUI Types
-# 
+#
 # Following CK3 mod compatibility best practices:
 # - Uses "00_" prefix to ensure load order priority
 # - Extracts custom GUI elements into reusable types
@@ -16,13 +16,22 @@ types MenAtArmsManagerTypes
 		visible = "[GetPlayer.IsValid]"
 		datacontext = "[MilitaryView]"
         name = "maa_manager_button"
-		onclick = "[GetVariableSystem.Toggle('men_at_arms_manager_open')]"
+		block "maa_manager_open_actions" {
+			onclick = "[GetScriptedGui('maa_manager_open_personal').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			onclick = "[VariableSystem.Clear('maa_manager_selected_regiment_id')]"
+			onclick = "[VariableSystem.Clear('maa_manager_selected_regiment_type_name')]"
+			onclick = "[VariableSystem.Clear('maa_manager_retrain_target_type')]"
+			onclick = "[VariableSystem.Set('maa_manager_tab', 'troops')]"
+			onclick = "[VariableSystem.Set('men_at_arms_manager_open', 'yes')]"
+		}
 		enabled = "[And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments))]"
 		button_ignore = none
-		
+
 		size = { 36 36 }
 
-		tooltip = "[SelectLocalization(And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments)), 'MAA_MANAGER_BUTTON_TOOLTIP', 'MAA_MANAGER_BUTTON_DISABLED_TOOLTIP')]"
+		block "maa_manager_opener_tooltip" {
+			tooltip = "[SelectLocalization(And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments)), 'MAA_MANAGER_BUTTON_TOOLTIP', 'MAA_MANAGER_BUTTON_DISABLED_TOOLTIP')]"
+		}
 		using = tooltip_sw
 		clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
 
@@ -33,13 +42,28 @@ types MenAtArmsManagerTypes
 		}
 	}
 
+	type title_men_at_arms_manager_button = men_at_arms_manager_button {
+		name = "maa_manager_title_button"
+		blockoverride "maa_manager_open_actions" {
+			onclick = "[GetScriptedGui('maa_manager_open_title').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			onclick = "[VariableSystem.Clear('maa_manager_selected_regiment_id')]"
+			onclick = "[VariableSystem.Clear('maa_manager_selected_regiment_type_name')]"
+			onclick = "[VariableSystem.Clear('maa_manager_retrain_target_type')]"
+			onclick = "[VariableSystem.Set('maa_manager_tab', 'troops')]"
+			onclick = "[VariableSystem.Set('men_at_arms_manager_open', 'yes')]"
+		}
+		blockoverride "maa_manager_opener_tooltip" {
+			tooltip = "[SelectLocalization(And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments)), 'MAA_MANAGER_TITLE_BUTTON_TOOLTIP', 'MAA_MANAGER_BUTTON_DISABLED_TOOLTIP')]"
+		}
+	}
+
 	# MAA Manager - Main Selection Item in the main grid
 	type container_maan_mainselection_item = container {
 
 		using = tooltip_es
 
 		background = {
-			texture = "[Regiment.GetMAAType.GetHorizontalImage]"
+			texture = "[Regiment.GetMAAType.GetHorizontalImageForCulture( Regiment.GetOwner.GetCulture )]"
 			alpha = 0.7
 			fittype = centercrop
 			margin = { -2 -2 }
@@ -56,6 +80,13 @@ types MenAtArmsManagerTypes
 			using = regiment_container_text_tooltip
 
 			blockoverride "extra_info" {
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.GetOwningTitle.IsValid]"
+					text = "MAA_MANAGER_TITLE_REGIMENT_TOOLTIP"
+					margin = { 10 0 }
+				}
+
 				divider_light = {
 					layoutpolicy_horizontal = expanding
 				}
@@ -75,6 +106,7 @@ types MenAtArmsManagerTypes
 
 		button_standard_clean = {
 			name = "maa_entry"
+			enabled = "[GetScriptedGui('maa_manager_select_regiment').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('regiment', Regiment.MakeScope).End)]"
 			size = { 166 90 }
 			button_ignore = none
 
@@ -136,6 +168,7 @@ types MenAtArmsManagerTypes
 		}
 
 
+
 	}
 
 	# MAA Manager - Move Target Display (non-interactive)
@@ -143,7 +176,7 @@ types MenAtArmsManagerTypes
 		using = tooltip_es
 
 		background = {
-			texture = "[Regiment.GetMAAType.GetHorizontalImage]"
+			texture = "[Regiment.GetMAAType.GetHorizontalImageForCulture( Regiment.GetOwner.GetCulture )]"
 			alpha = 0.7
 			fittype = centercrop
 			margin = { -2 -2 }
@@ -160,6 +193,13 @@ types MenAtArmsManagerTypes
 			using = regiment_container_text_tooltip
 
 			blockoverride "extra_info" {
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.GetOwningTitle.IsValid]"
+					text = "MAA_MANAGER_TITLE_REGIMENT_TOOLTIP"
+					margin = { 10 0 }
+				}
+
 				divider_light = {
 					layoutpolicy_horizontal = expanding
 				}
@@ -233,6 +273,7 @@ types MenAtArmsManagerTypes
 				position = {-10 1}
 			}
 		}
+
 	}
 
 	# MAA Manager - Target Selection Item (Interactive - selects target)
@@ -240,7 +281,7 @@ types MenAtArmsManagerTypes
 		using = tooltip_es
 
 		background = {
-			texture = "[Regiment.GetMAAType.GetHorizontalImage]"
+			texture = "[Regiment.GetMAAType.GetHorizontalImageForCulture( Regiment.GetOwner.GetCulture )]"
 			alpha = 0.7
 			fittype = centercrop
 			margin = { -2 -2 }
@@ -257,6 +298,13 @@ types MenAtArmsManagerTypes
 			using = regiment_container_text_tooltip
 
 			blockoverride "extra_info" {
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.GetOwningTitle.IsValid]"
+					text = "MAA_MANAGER_TITLE_REGIMENT_TOOLTIP"
+					margin = { 10 0 }
+				}
+
 				divider_light = {
 					layoutpolicy_horizontal = expanding
 				}
@@ -276,6 +324,7 @@ types MenAtArmsManagerTypes
 
 		button_standard_clean = {
 			name = "maa_target_selection"
+			enabled = "[GetScriptedGui('maa_manager_select_target').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('target_regiment', Regiment.MakeScope).End)]"
 			size = { 166 90 }
 			button_ignore = none
 
@@ -344,11 +393,12 @@ types MenAtArmsManagerTypes
 				size = { 30 30 }
 			}
 		}
+
 	}
 
 	######################################################
 	# Filtered MAA Type Button
-	# 
+	#
 	# Reusable type for static MAA type list with visibility filtering
 	# Each instance must override:
 	#   - "maa_key" block with the MAA type script key
@@ -358,16 +408,16 @@ types MenAtArmsManagerTypes
 		layoutpolicy_horizontal = expanding
 		minimumsize = { 0 35 }
 		maximumsize = { -1 35 }
-		
+
 		# Default values - MUST be overridden using blockoverride
 		block "maa_key" {
 			datacontext = "[GetMenAtArmsType('light_footmen')]"
 		}
-		
+
 		block "scripted_gui_key" {
 			visible = "[GetScriptedGui('maa_manager_can_show_light_footmen').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 		}
-		
+
 		# Override onclick actions in each button instance with literal MAA key string
 		block "onclick_actions" {
 			# This block MUST be overridden in each button instance
@@ -375,25 +425,25 @@ types MenAtArmsManagerTypes
 			# onclick = "[GetVariableSystem.Set('maa_manager_retrain_maa_type', 'huscarl')]"
 			# onclick = "[GetScriptedGui('maa_manager_select_retrain_type').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 		}
-		
+
 		# Common layout and appearance
 		hbox = {
 			margin = { 10 0 }
 			spacing = 10
-			
+
 			icon = {
 				size = { 30 30 }
 				texture = "[MenAtArmsType.GetIcon]"
 			}
-			
+
 			text_single = {
 				text = "[MenAtArmsType.GetNameNoTooltip]"
 				default_format = "#clickable"
 			}
-			
+
 			expand = {}
 		}
-		
+
 		# Common tooltip - using the same detailed tooltip as the MAA type selection
 		tooltipwidget = {
 			widget_maa_type_container_tooltip = {

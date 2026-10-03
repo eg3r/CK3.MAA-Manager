@@ -9,6 +9,7 @@
 # Scope: character
 ######################################################
 maa_manager_data_create_effect = {
+	remove_variable = maa_manager_title_retrain_failed
 	# Clear any previously collected data to ensure a fresh list
 	clear_variable_list = maa_regiment_list
 	clear_variable_list = maa_move_target_list
@@ -32,15 +33,22 @@ maa_manager_data_create_effect = {
 	remove_variable = maa_manager_target_cost
 	remove_variable = maa_manager_source_cost
 
-	# Iterate through all of the character's personal MAA regiments
-	# (title MAA and other non-personal regiments excluded - see maa_manager_is_manageable_regiment)
-	every_maa_regiment = {
-		limit = { maa_manager_is_manageable_regiment = yes }
-		ROOT = {
-			add_to_variable_list = {
-				name = maa_regiment_list
-				target = prev
+	remove_variable = maa_stack_size
+	# The title collection deliberately includes loaned-out troops for display.
+	if = {
+		limit = { maa_manager_is_title_mode = yes }
+		every_held_title = {
+			every_owned_title_maa_regiment = {
+				root = {
+					add_to_variable_list = { name = maa_regiment_list target = prev }
+				}
 			}
+		}
+	}
+	else = {
+		every_maa_regiment = {
+			limit = { maa_manager_is_manageable_regiment = yes }
+			root = { add_to_variable_list = { name = maa_regiment_list target = prev } }
 		}
 	}
 }
@@ -52,61 +60,56 @@ maa_manager_data_create_effect = {
 # Scope: character
 ######################################################
 maa_manager_refresh_keep_source_effect = {
+	clear_saved_scope = maa_manager_reselect_regiment
 	if = {
-		limit = { has_variable = maa_manager_selected_regiment_scope }
-		var:maa_manager_selected_regiment_scope = {
-			save_scope_as = maa_manager_reselect_regiment
-		}
+		limit = { exists = var:maa_manager_selected_regiment_scope }
+		var:maa_manager_selected_regiment_scope = { save_scope_as = maa_manager_reselect_regiment }
 	}
 	maa_manager_data_create_effect = yes
 	if = {
 		limit = {
 			exists = scope:maa_manager_reselect_regiment
-			any_maa_regiment = {
-				this = scope:maa_manager_reselect_regiment
-				maa_manager_is_manageable_regiment = yes
-			}
+			scope:maa_manager_reselect_regiment = { maa_manager_is_manageable_regiment = yes }
 		}
-		scope:maa_manager_reselect_regiment = {
-			save_scope_as = regiment
-		}
+		scope:maa_manager_reselect_regiment = { save_scope_as = regiment }
 		maa_manager_select_regiment_effect = yes
 	}
+	clear_saved_scope = maa_manager_reselect_regiment
 }
 
+# Single source selection path, also used when reselecting after a transfer.
 maa_manager_select_regiment_effect = {
-	clear_variable_list = maa_move_target_list
-	remove_variable = maa_manager_move_has_targets
-	scope:regiment = {
-		save_scope_as = maa_manager_selected_regiment
-		ROOT = {
-			set_variable = {
-				name = maa_manager_selected_regiment_scope
-				value = scope:regiment
+	if = {
+		limit = { maa_manager_select_source_valid = yes }
+		remove_variable = maa_manager_title_retrain_failed
+		clear_variable_list = maa_move_target_list
+		remove_variable = maa_manager_move_has_targets
+		remove_variable = maa_manager_selected_target_scope
+		remove_variable = maa_total_planned_transfers
+		remove_variable = maa_total_planned_regiment_transfers
+		remove_variable = maa_target_capacity
+		remove_variable = maa_target_regiment_capacity
+		remove_variable = maa_manager_retrain_target_type
+		remove_variable = maa_manager_target_cost
+		set_variable = { name = maa_manager_selected_regiment_scope value = scope:regiment }
+		scope:regiment = {
+			save_scope_as = maa_manager_selected_regiment
+			maa_manager_store_selected_type = yes
+		}
+		set_variable = {
+			name = maa_stack_size
+			value = {
+				value = scope:regiment.maa_max_troops_count
+				divide = scope:regiment.maa_size
 			}
 		}
-		maa_manager_store_selected_type = yes
-	}
-	every_maa_regiment = {
-		if = {
-			limit = {
-				NOT = {
-					this = scope:maa_manager_selected_regiment
-				}
-				maa_manager_is_manageable_regiment = yes
-				maa_manager_type_matches_selection = yes
-			}
-			ROOT = {
-				add_to_variable_list = {
-					name = maa_move_target_list
-					target = prev
-				}
-				set_variable = {
-					name = maa_manager_move_has_targets
-					value = yes
-				}
+		every_in_list = {
+			variable = maa_regiment_list
+			limit = { maa_manager_compatible_target = yes }
+			root = {
+				add_to_variable_list = { name = maa_move_target_list target = prev }
+				set_variable = { name = maa_manager_move_has_targets value = yes }
 			}
 		}
 	}
 }
-

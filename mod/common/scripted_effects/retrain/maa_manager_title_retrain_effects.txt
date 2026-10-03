@@ -1,0 +1,142 @@
+﻿# Character scope. Source remains intact until a complete replacement is verified.
+# Native creation eligibility is checked before creation, not after the candidate
+# has consumed a slot. Full pools and stationed sources are rejected by the GUI.
+maa_manager_execute_title_retrain_effect = {
+	if = {
+		limit = {
+			maa_manager_is_title_mode = yes
+			maa_manager_can_execute_retrain = yes
+		}
+		clear_saved_scope = maa_manager_new_title_regiment
+		var:maa_manager_selected_regiment_scope = {
+			save_scope_as = maa_manager_title_source
+			regiment_owning_title = { save_scope_as = maa_manager_owning_title }
+		}
+		set_local_variable = { name = maa_title_size value = scope:maa_manager_title_source.maa_size }
+		set_local_variable = { name = maa_title_price value = maa_manager_retrain_gold_cost }
+		set_local_variable = { name = maa_title_piety_price value = maa_manager_retrain_piety_cost }
+		set_local_variable = { name = maa_title_prestige_price value = maa_manager_retrain_prestige_cost }
+		set_local_variable = { name = maa_title_gold_before value = gold }
+		set_local_variable = { name = maa_title_prestige_before value = prestige }
+		set_local_variable = { name = maa_title_piety_before value = piety }
+		set_local_variable = { name = maa_title_treasury_before value = 0 }
+		if = {
+			limit = { has_treasury = yes }
+			set_local_variable = { name = maa_title_treasury_before value = treasury }
+		}
+		clear_variable_list = maa_manager_pre_retrain_regiments
+		clear_variable_list = maa_manager_title_candidates
+		scope:maa_manager_owning_title = {
+			every_owned_title_maa_regiment = {
+				root = { add_to_variable_list = { name = maa_manager_pre_retrain_regiments target = prev } }
+			}
+		}
+		maa_manager_create_selected_retrain_effect = yes
+		set_local_variable = { name = maa_title_candidate_count value = 0 }
+		scope:maa_manager_owning_title = {
+			every_owned_title_maa_regiment = {
+				limit = {
+					NOT = {
+						root = { is_target_in_variable_list = { name = maa_manager_pre_retrain_regiments target = prev } }
+					}
+				}
+				save_scope_as = maa_manager_new_title_regiment
+				root = {
+					add_to_variable_list = { name = maa_manager_title_candidates target = prev }
+					change_local_variable = { name = maa_title_candidate_count add = 1 }
+				}
+			}
+		}
+		if = {
+			limit = {
+				local_var:maa_title_candidate_count = 1
+				scope:maa_manager_new_title_regiment = {
+					maa_manager_title_regiment_manageable = yes
+					maa_manager_type_matches_retrain_target = yes
+				}
+			}
+			# Bound iterations even if the engine refuses a growth step.
+			set_local_variable = { name = maa_title_growth_step value = 1 }
+			while = {
+				limit = {
+					local_var:maa_title_growth_step < local_var:maa_title_size
+					scope:maa_manager_new_title_regiment = { can_upgrade_maa = yes }
+				}
+				scope:maa_manager_new_title_regiment = {
+					change_maa_regiment_size = { size = 1 reinforce = yes }
+				}
+				change_local_variable = { name = maa_title_growth_step add = 1 }
+			}
+		}
+		if = {
+			limit = {
+				local_var:maa_title_candidate_count = 1
+				maa_manager_can_modify_regiments = yes
+				maa_manager_title_retrain_source_valid = yes
+				maa_manager_can_afford_retrain = yes
+				scope:maa_manager_new_title_regiment = {
+					maa_manager_title_regiment_manageable = yes
+					regiment_owning_title = scope:maa_manager_owning_title
+					maa_manager_type_matches_retrain_target = yes
+					maa_size = local_var:maa_title_size
+				}
+				# Do not double-charge if a game update adds automatic payment.
+				gold = local_var:maa_title_gold_before
+				prestige = local_var:maa_title_prestige_before
+				piety = local_var:maa_title_piety_before
+				trigger_if = {
+					limit = { has_treasury = yes }
+					treasury = local_var:maa_title_treasury_before
+				}
+			}
+			if = {
+				limit = { maa_manager_retrain_pays_piety = yes }
+				add_piety = { value = local_var:maa_title_piety_price multiply = -1 }
+			}
+			else_if = {
+				limit = { has_government = tribal_government }
+				add_prestige = { value = local_var:maa_title_prestige_price multiply = -1 }
+			}
+			else_if = {
+				limit = { maa_manager_title_uses_treasury = yes }
+				remove_treasury = local_var:maa_title_price
+			}
+			else = { remove_short_term_gold = local_var:maa_title_price }
+			scope:maa_manager_title_source = { destroy_maa_regiment = yes }
+			maa_manager_data_create_effect = yes
+			debug_log = "MAA Manager: Title retrain committed with original owning title"
+		}
+		else = {
+			# Only scopes absent from the original title snapshot are removed.
+			every_in_list = {
+				variable = maa_manager_title_candidates
+				destroy_maa_regiment = yes
+			}
+			# Restore any unexpected automatic deductions. Never charge for failure.
+			if = {
+				limit = { gold < local_var:maa_title_gold_before }
+				add_gold = { value = local_var:maa_title_gold_before subtract = gold }
+			}
+			if = {
+				limit = { prestige < local_var:maa_title_prestige_before }
+				add_prestige = { value = local_var:maa_title_prestige_before subtract = prestige }
+			}
+			if = {
+				limit = { piety < local_var:maa_title_piety_before }
+				add_piety = { value = local_var:maa_title_piety_before subtract = piety }
+			}
+			if = {
+				limit = { has_treasury = yes treasury < local_var:maa_title_treasury_before }
+				add_treasury = { value = local_var:maa_title_treasury_before subtract = treasury }
+			}
+			maa_manager_refresh_keep_source_effect = yes
+			set_variable = { name = maa_manager_title_retrain_failed value = yes }
+			debug_log = "MAA Manager: Title retrain rolled back; original regiment retained"
+		}
+		clear_variable_list = maa_manager_pre_retrain_regiments
+		clear_variable_list = maa_manager_title_candidates
+		clear_saved_scope = maa_manager_new_title_regiment
+		clear_saved_scope = maa_manager_title_source
+		clear_saved_scope = maa_manager_owning_title
+	}
+}
