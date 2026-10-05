@@ -1,0 +1,483 @@
+﻿######################################################
+# MAA Manager - Dynamic retrain transaction (native picker + measured prices)
+#
+# Ported from the 2026-10-05 real-source prototype (see the dynamic retrain
+# handoff). Native recruitment pays first; only the tracked new purchase may be
+# refunded; the original source is destroyed LAST, after growth and payment
+# have been verified. Window hiding never calls anything in this file.
+#
+# Flow (all character scope, ROOT = player):
+#   start -> [native buy: begin + Create] -> capture -> accept (quote source)
+#   -> [native buy: begin + Create] -> capture -> accept (commit) | rollback
+#   cancel (before any purchase) / recover (interrupted, verified receipt)
+######################################################
+
+# Clears every transaction variable. Result variables survive for display.
+maam_rt_reset = {
+	remove_character_modifier = maam_rt_slot_modifier
+	remove_variable = maam_rt_active
+	remove_variable = maam_rt_armed
+	remove_variable = maam_rt_pending
+	remove_variable = maam_rt_captured
+	remove_variable = maam_rt_need_source
+	remove_variable = maam_rt_source
+	remove_variable = maam_rt_candidate
+	remove_variable = maam_rt_initial_count
+	remove_variable = maam_rt_initial_cap
+	remove_variable = maam_rt_count_before
+	remove_variable = maam_rt_gold_before
+	remove_variable = maam_rt_gold_paid
+	remove_variable = maam_rt_new_count
+	remove_variable = maam_rt_valid_count
+	remove_variable = maam_rt_size
+	remove_variable = maam_rt_troops
+	remove_variable = maam_rt_max
+	remove_variable = maam_rt_prestige
+	remove_variable = maam_rt_piety
+	remove_variable = maam_rt_click_guard
+	remove_variable = maam_rt_quote_guard
+	remove_variable = maam_rt_floor
+	remove_variable = maam_rt_source_price
+	remove_variable = maam_rt_target_price
+	remove_variable = maam_rt_fee
+	remove_variable = maam_rt_relation
+	remove_variable = maam_rt_steps
+	remove_variable = maam_rt_previous_size
+	remove_variable = maam_rt_growth_ok
+	remove_variable = maam_rt_settled
+	remove_variable = maam_rt_paid_receipt
+	remove_variable = maam_rt_receipt_guard
+	remove_variable = maam_rt_recovery_gold_before
+	remove_variable = maam_rt_capture_failed
+	remove_variable = maam_rt_rollback_gold_before
+	clear_variable_list = maam_rt_before
+	clear_variable_list = maam_rt_new
+}
+
+# Result shown after the transaction ends. RESULT is a flag key.
+maam_rt_set_result = {
+	remove_variable = maam_rt_result
+	set_variable = { name = maam_rt_result value = flag:$RESULT$ }
+}
+
+maam_rt_clear_result = {
+	remove_variable = maam_rt_result
+	remove_variable = maam_rt_result_fee
+	remove_variable = maam_rt_result_refund
+}
+
+# Ends the transaction. Every caller has already removed the slot modifier and
+# recalculated, so finishing is unconditional (a cap that changed meanwhile
+# must never leave the board locked).
+maam_rt_try_finish = {
+	if = {
+		limit = { NOT = { maam_rt_slots_restored = yes } }
+		debug_log = "MAAM RT: finish with slot/count mismatch (cap changed during the retrain)."
+	}
+	debug_log = "MAAM RT: FINISH; transaction state cleared, troops and final gold retained."
+	maam_rt_reset = yes
+	remove_variable = maam_rt_done
+}
+
+# Start: store the source and add one temporary purchase slot (scope:real_source).
+maam_rt_start_effect = {
+	maam_rt_reset = yes
+	maam_rt_clear_result = yes
+	remove_variable = maam_rt_done
+	set_variable = { name = maam_rt_source value = scope:real_source }
+	set_variable = { name = maam_rt_initial_count value = maa_regiments_count }
+	set_variable = { name = maam_rt_initial_cap value = maa_regiments_max_count }
+	set_variable = { name = maam_rt_floor value = maam_rt_minimum_fee_value }
+	set_variable = { name = maam_rt_active value = yes }
+	set_variable = { name = maam_rt_need_source value = yes }
+	set_variable = { name = maam_rt_armed value = yes }
+	add_character_modifier = { modifier = maam_rt_slot_modifier days = 3 }
+	# Refreshes the cached regiment cap while paused (verified with debug mode off).
+	scriptedtests_recalculate_character_modifier = yes
+	if = {
+		limit = { maa_regiments_max_count = { value = var:maam_rt_initial_cap add = 1 } }
+		debug_log = "MAAM RT: STARTED; temporary slot active."
+	}
+	else = { debug_log = "MAAM RT: STARTED, but the cap did not increase yet." }
+}
+
+# Snapshot before a native purchase (scope:real_source, scope:real_relation).
+maam_rt_begin_effect = {
+	set_variable = { name = maam_rt_relation value = scope:real_relation }
+	if = {
+		limit = {
+			OR = {
+				AND = { has_variable = maam_rt_need_source var:maam_rt_relation = flag:same }
+				AND = { NOT = { has_variable = maam_rt_need_source } var:maam_rt_relation = flag:different }
+			}
+		}
+		clear_variable_list = maam_rt_before
+		clear_variable_list = maam_rt_new
+		every_maa_regiment = { root = { add_to_variable_list = { name = maam_rt_before target = prev } } }
+		set_variable = { name = maam_rt_gold_before value = gold }
+		set_variable = { name = maam_rt_count_before value = maa_regiments_count }
+		set_variable = { name = maam_rt_new_count value = 0 }
+		set_variable = { name = maam_rt_valid_count value = 0 }
+		set_variable = { name = maam_rt_size value = var:maam_rt_source.maa_size }
+		set_variable = { name = maam_rt_troops value = var:maam_rt_source.maa_current_troops_count }
+		set_variable = { name = maam_rt_max value = var:maam_rt_source.maa_max_troops_count }
+		set_variable = { name = maam_rt_prestige value = prestige }
+		set_variable = { name = maam_rt_piety value = piety }
+		set_variable = { name = maam_rt_click_guard value = yes days = 1 }
+		remove_variable = maam_rt_relation
+		remove_variable = maam_rt_captured
+		remove_variable = maam_rt_paid_receipt
+		remove_variable = maam_rt_receipt_guard
+		set_variable = { name = maam_rt_pending value = yes }
+		remove_variable = maam_rt_armed
+		debug_log = "MAAM RT: PURCHASE SNAPSHOT READY; native purchase follows."
+	}
+	else = { debug_log = "MAAM RT: PURCHASE TYPE REJECTED; wrong phase/type relation." }
+}
+
+# Finds exactly one new owned personal size-1 regiment and the gold debit.
+maam_rt_collect = {
+	clear_variable_list = maam_rt_new
+	remove_variable = maam_rt_candidate
+	set_variable = { name = maam_rt_new_count value = 0 }
+	set_variable = { name = maam_rt_valid_count value = 0 }
+	every_maa_regiment = {
+		limit = {
+			NOT = { root = { is_target_in_variable_list = { name = maam_rt_before target = prev } } }
+		}
+		root = {
+			add_to_variable_list = { name = maam_rt_new target = prev }
+			change_variable = { name = maam_rt_new_count add = 1 }
+		}
+		if = {
+			limit = { is_personal_maa_regiment = yes regiment_owner = root is_raised = no maa_size = 1 }
+			root = {
+				set_variable = { name = maam_rt_candidate value = prev }
+				change_variable = { name = maam_rt_valid_count add = 1 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			var:maam_rt_new_count = 1
+			var:maam_rt_valid_count = 1
+			exists = var:maam_rt_candidate
+			maa_regiments_count = { value = var:maam_rt_count_before add = 1 }
+		}
+		remove_variable = maam_rt_pending
+		set_variable = { name = maam_rt_gold_paid value = { value = var:maam_rt_gold_before subtract = gold } }
+		debug_log = "MAAM RT: CAPTURE; one new regiment stored."
+	}
+	else_if = {
+		limit = { var:maam_rt_new_count = 0 }
+		debug_log = "MAAM RT: NO NEW REGIMENT YET; pending retained."
+	}
+	else = {
+		remove_variable = maam_rt_candidate
+		debug_log = "MAAM RT: AMBIGUOUS CAPTURE; nothing accepted, nothing deleted."
+	}
+}
+
+maam_rt_capture_effect = {
+	if = {
+		limit = { is_ai = no has_variable = maam_rt_active has_variable = maam_rt_click_guard has_variable = maam_rt_pending }
+		maam_rt_collect = yes
+		if = {
+			limit = { maam_rt_purchase_intact = yes }
+			set_variable = { name = maam_rt_captured value = yes }
+			# Freeze the verified debit before time can advance. Recovery never
+			# derives a price from balances after income or upkeep changed.
+			set_variable = { name = maam_rt_paid_receipt value = var:maam_rt_gold_paid }
+			set_variable = { name = maam_rt_receipt_guard value = yes days = 3 }
+			debug_log = "MAAM RT: CAPTURE PASS; new regiment and gold-only debit verified."
+		}
+		else = {
+			if = {
+				limit = { maa_regiments_count > var:maam_rt_count_before }
+				remove_variable = maam_rt_pending
+				set_variable = { name = maam_rt_capture_failed value = yes }
+			}
+			debug_log = "MAAM RT: CAPTURE VALIDATION FAILED; no source deletion or guessed refund."
+		}
+	}
+}
+
+# Quote phase: record the source price, remove the test regiment, refund it.
+maam_rt_quote_source = {
+	if = {
+		limit = {
+			maam_rt_purchase_intact = yes
+			has_variable = maam_rt_captured
+			has_variable = maam_rt_need_source
+			var:maam_rt_relation = flag:same
+			maam_rt_candidate_shape_ok = yes
+		}
+		set_variable = { name = maam_rt_source_price value = var:maam_rt_gold_paid }
+		var:maam_rt_candidate = { destroy_maa_regiment = yes }
+		if = {
+			limit = {
+				NOT = { exists = var:maam_rt_candidate }
+				maa_regiments_count = var:maam_rt_initial_count
+				maam_rt_source_unchanged = yes
+			}
+			add_gold = var:maam_rt_source_price
+			if = {
+				limit = { gold = var:maam_rt_gold_before }
+				remove_variable = maam_rt_candidate
+				remove_variable = maam_rt_captured
+				remove_variable = maam_rt_paid_receipt
+				remove_variable = maam_rt_receipt_guard
+				remove_variable = maam_rt_need_source
+				remove_variable = maam_rt_relation
+				clear_variable_list = maam_rt_new
+				set_variable = { name = maam_rt_armed value = yes }
+				set_variable = { name = maam_rt_quote_guard value = yes days = 1 }
+				debug_log = "MAAM RT: SOURCE QUOTE PASS; test regiment removed and refunded."
+			}
+			else = { debug_log = "MAAM RT: SOURCE REFUND FAILED." }
+		}
+		else = { debug_log = "MAAM RT: SOURCE QUOTE DELETE POSTCHECK FAILED; no refund." }
+	}
+	else = { debug_log = "MAAM RT: SOURCE QUOTE REJECTED; original source retained." }
+}
+
+# Removes only the tracked purchase and refunds its recorded debit onto the
+# current gold (works in both phases; nothing else needs to be untouched).
+maam_rt_rollback_effect = {
+	if = {
+		limit = { maam_rt_can_rollback = yes }
+		set_variable = { name = maam_rt_rollback_gold_before value = gold }
+		set_local_variable = { name = maam_rt_refund value = var:maam_rt_gold_paid }
+		var:maam_rt_candidate = { destroy_maa_regiment = yes }
+		if = {
+			limit = { NOT = { exists = var:maam_rt_candidate } }
+			add_gold = var:maam_rt_gold_paid
+			if = {
+				limit = { gold = { value = var:maam_rt_rollback_gold_before add = local_var:maam_rt_refund } }
+				remove_character_modifier = maam_rt_slot_modifier
+				scriptedtests_recalculate_character_modifier = yes
+				maam_rt_set_result = { RESULT = rolled_back }
+				set_variable = { name = maam_rt_result_refund value = local_var:maam_rt_refund }
+				debug_log = "MAAM RT: ROLLBACK PASS; purchase removed and refunded."
+				maam_rt_reset = yes
+				remove_variable = maam_rt_done
+			}
+			else = { debug_log = "MAAM RT: ROLLBACK REFUND POSTCHECK FAILED." }
+		}
+		else = { debug_log = "MAAM RT: ROLLBACK DELETE FAILED; no refund." }
+	}
+	else = { debug_log = "MAAM RT: ROLLBACK REJECTED; no tracked purchase." }
+}
+
+# End after a purchase that could not be verified: keep whatever was bought,
+# never refund a guessed amount.
+maam_rt_release_effect = {
+	if = {
+		limit = { maam_rt_can_release = yes }
+		remove_character_modifier = maam_rt_slot_modifier
+		scriptedtests_recalculate_character_modifier = yes
+		maam_rt_set_result = { RESULT = released }
+		debug_log = "MAAM RT: RELEASED; unverified purchase kept, no refund."
+		maam_rt_reset = yes
+		remove_variable = maam_rt_done
+	}
+}
+
+# Target phase: grow the purchase to the source, settle the fee, delete source.
+maam_rt_commit = {
+	if = {
+		limit = {
+			maam_rt_purchase_intact = yes
+			has_variable = maam_rt_captured
+			NOT = { has_variable = maam_rt_need_source }
+			has_variable = maam_rt_quote_guard
+			has_variable = maam_rt_source_price
+			var:maam_rt_relation = flag:different
+			maam_rt_candidate_shape_ok = yes
+		}
+		set_variable = { name = maam_rt_target_price value = var:maam_rt_gold_paid }
+		set_variable = { name = maam_rt_fee value = maam_rt_fee_value }
+		if = {
+			limit = { var:maam_rt_gold_before < var:maam_rt_fee }
+			debug_log = "MAAM RT: Fee unaffordable; rolling back without touching the source."
+			maam_rt_rollback_effect = yes
+			maam_rt_set_result = { RESULT = unaffordable }
+		}
+		else = {
+			remove_variable = maam_rt_growth_ok
+			remove_variable = maam_rt_settled
+			set_variable = { name = maam_rt_steps value = 0 }
+			set_variable = { name = maam_rt_previous_size value = 0 }
+			var:maam_rt_candidate = {
+				while = {
+					limit = {
+						maa_size < root.var:maam_rt_size
+						maa_size > root.var:maam_rt_previous_size
+						root.var:maam_rt_steps < 64
+						can_upgrade_maa = yes
+					}
+					root = {
+						set_variable = { name = maam_rt_previous_size value = prev.maa_size }
+						change_variable = { name = maam_rt_steps add = 1 }
+					}
+					change_maa_regiment_size = { size = 1 reinforce = yes }
+				}
+				change_maa_troops_count = { value = root.var:maam_rt_troops subtract = maa_current_troops_count }
+			}
+			if = {
+				limit = {
+					maam_rt_purchase_intact = yes
+					var:maam_rt_candidate = {
+						maa_size = root.var:maam_rt_size
+						maa_current_troops_count = root.var:maam_rt_troops
+						maa_max_troops_count = root.var:maam_rt_max
+					}
+				}
+				set_variable = { name = maam_rt_growth_ok value = yes }
+				debug_log = "MAAM RT: GROWTH VERIFIED."
+				if = {
+					limit = { var:maam_rt_gold_paid > var:maam_rt_fee }
+					add_gold = { value = var:maam_rt_gold_paid subtract = var:maam_rt_fee }
+				}
+				else_if = {
+					limit = { var:maam_rt_gold_paid < var:maam_rt_fee }
+					remove_short_term_gold = { value = var:maam_rt_fee subtract = var:maam_rt_gold_paid }
+				}
+				if = {
+					limit = { gold = { value = var:maam_rt_gold_before subtract = var:maam_rt_fee } }
+					set_variable = { name = maam_rt_settled value = yes }
+					debug_log = "MAAM RT: SETTLEMENT PASS."
+					# The ONLY destruction of the original source in this flow.
+					var:maam_rt_source = { destroy_maa_regiment = yes }
+					if = {
+						limit = {
+							NOT = { exists = var:maam_rt_source }
+							exists = var:maam_rt_candidate
+							maa_regiments_count = var:maam_rt_initial_count
+						}
+						remove_character_modifier = maam_rt_slot_modifier
+						scriptedtests_recalculate_character_modifier = yes
+						maam_rt_set_result = { RESULT = retrained }
+						set_variable = { name = maam_rt_result_fee value = var:maam_rt_fee }
+						debug_log = "MAAM RT: COMMIT PASS; source replaced."
+						maam_rt_try_finish = yes
+					}
+					else = { debug_log = "MAAM RT: COMMIT POSTCHECK FAILED." }
+				}
+				else = { debug_log = "MAAM RT: SETTLEMENT FAILED; both regiments retained." }
+			}
+			else = {
+				debug_log = "MAAM RT: GROWTH FAILED; rolling back, source retained."
+				maam_rt_rollback_effect = yes
+				maam_rt_set_result = { RESULT = failed }
+			}
+		}
+	}
+	else = { debug_log = "MAAM RT: COMMIT REJECTED; quote, type, stack size or state invalid." }
+}
+
+# Accept: quote in phase 1, commit in phase 2 (GUI passes exact scopes).
+maam_rt_accept_effect = {
+	if = {
+		limit = {
+			maam_rt_purchase_intact = yes
+			has_variable = maam_rt_captured
+			exists = scope:real_source
+			exists = scope:real_candidate
+			exists = scope:real_relation
+			scope:real_source = var:maam_rt_source
+			scope:real_candidate = var:maam_rt_candidate
+		}
+		set_variable = { name = maam_rt_relation value = scope:real_relation }
+		if = {
+			limit = { has_variable = maam_rt_need_source }
+			maam_rt_quote_source = yes
+		}
+		else = { maam_rt_commit = yes }
+	}
+}
+
+# Cancel before any purchase: no troop or gold changes.
+maam_rt_cancel_effect = {
+	if = {
+		limit = { maam_rt_can_cancel = yes }
+		remove_variable = maam_rt_armed
+		remove_variable = maam_rt_active
+		remove_character_modifier = maam_rt_slot_modifier
+		scriptedtests_recalculate_character_modifier = yes
+		maam_rt_set_result = { RESULT = cancelled }
+		debug_log = "MAAM RT: CANCEL BEFORE BUY PASS."
+		maam_rt_try_finish = yes
+	}
+}
+
+# Interrupted purchase: remove only the captured regiment, refund its receipt
+# on top of the current balance (income and upkeep since then are kept).
+maam_rt_recover_effect = {
+	if = {
+		limit = { maam_rt_can_recover_expired = yes }
+		set_variable = { name = maam_rt_recovery_gold_before value = gold }
+		set_local_variable = { name = maam_rt_refund value = var:maam_rt_paid_receipt }
+		var:maam_rt_candidate = { destroy_maa_regiment = yes }
+		if = {
+			limit = {
+				NOT = { exists = var:maam_rt_candidate }
+				maa_regiments_count = var:maam_rt_initial_count
+				maam_rt_source_valid = yes
+				var:maam_rt_source = { maa_size = root.var:maam_rt_size }
+			}
+			add_gold = var:maam_rt_paid_receipt
+			if = {
+				limit = { gold = { value = var:maam_rt_recovery_gold_before add = var:maam_rt_paid_receipt } }
+				remove_variable = maam_rt_paid_receipt
+				remove_variable = maam_rt_receipt_guard
+				remove_variable = maam_rt_captured
+				remove_variable = maam_rt_active
+				remove_character_modifier = maam_rt_slot_modifier
+				scriptedtests_recalculate_character_modifier = yes
+				maam_rt_set_result = { RESULT = recovered }
+				set_variable = { name = maam_rt_result_refund value = local_var:maam_rt_refund }
+				debug_log = "MAAM RT: RECOVERY PASS."
+				maam_rt_try_finish = yes
+			}
+			else = { debug_log = "MAAM RT: RECOVERY REFUND POSTCHECK FAILED." }
+		}
+		else = { debug_log = "MAAM RT: RECOVERY DELETE POSTCHECK FAILED; no refund." }
+	}
+}
+
+# The native purchase did not go through (no new regiment, gold unchanged):
+# return to the armed state so the player can try again.
+maam_rt_unpend_effect = {
+	if = {
+		limit = {
+			has_variable = maam_rt_active
+			has_variable = maam_rt_pending
+			has_variable = maam_rt_count_before
+			maa_regiments_count = var:maam_rt_count_before
+			gold = var:maam_rt_gold_before
+		}
+		remove_variable = maam_rt_pending
+		set_variable = { name = maam_rt_armed value = yes }
+		debug_log = "MAAM RT: PURCHASE NOT COMPLETED; armed again, nothing changed."
+	}
+}
+
+# Ends an interrupted transaction that cannot be recovered from a receipt.
+# Never touches troops or gold: a purchased regiment, if any, is simply kept.
+maam_rt_abandon_effect = {
+	if = {
+		limit = {
+			has_variable = maam_rt_active
+			NOT = { has_variable = maam_rt_click_guard }
+			NOT = { maam_rt_can_recover_expired = yes }
+			NOT = { has_variable = maam_rt_settled }
+		}
+		remove_character_modifier = maam_rt_slot_modifier
+		scriptedtests_recalculate_character_modifier = yes
+		maam_rt_set_result = { RESULT = abandoned }
+		debug_log = "MAAM RT: ABANDONED interrupted transaction; troops and gold untouched."
+		maam_rt_reset = yes
+		remove_variable = maam_rt_done
+	}
+}

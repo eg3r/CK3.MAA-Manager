@@ -1,0 +1,1105 @@
+﻿######################################################
+# Men-At-Arms Manager - Muster board (Native Flow v4.1)
+#
+# Only the Men-at-Arms block of the Military window is redrawn; the native
+# shell (header, tabs, levies, knights, rally points, upkeep) is untouched.
+#
+# Rules:
+# - Stack moves are immediate. Give/Take never move a last stack (also refused
+#   in script). Merging is a separate red control at the far end of the bench.
+# - No board or retrain button carries the Enter/confirm shortcut.
+# - Paid clicks set a busy flag first and stay disabled until the next phase.
+# - While a retrain runs, tiles are inert and native recruit/raise controls
+#   are disabled (see 00_men_at_arms_manager_shared_types.gui).
+######################################################
+
+types MAAManagerBoard
+{
+	# Gold button WITHOUT the confirm shortcut (button_primary binds Enter).
+	type maam_button_gold = button_standard
+	{
+		clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_confirm"
+
+		background = {
+			texture = "gfx/interface/buttons/button_standard.dds"
+			framesize = { 252 80 }
+			frame = 4
+		}
+
+		buttonText = {
+			text_single = {
+				size = { 100% 100% }
+				autoresize = no
+				margin = { 8 0 }
+				align = center|nobaseline
+				default_format = "#high"
+				alwaystransparent = yes
+			}
+		}
+
+		blockoverride "button_pattern" {}
+
+		icon = {
+			size = { 100% 100% }
+			texture = "gfx/interface/colors/black.dds"
+			alpha = 0.2
+			using = Mask_Rough_Edges
+
+			modify_texture = {
+				texture = "gfx/interface/skinned/mask_pattern.dds"
+				blend_mode = alphaMultiply
+				spriteType = Corneredtiled
+				texture_density = 3
+			}
+		}
+	}
+
+	######################################################
+	# Tile: native 166x90 MAA tile + name, roles, kin glow, lock
+	# (Regiment datacontext from MilitaryItem.GetOwnedMaa)
+	######################################################
+	type maam_tile = container
+	{
+		datacontext = "[Regiment.GetMAAType]"
+		using = tooltip_es
+
+		# Dim tiles that are neither selected, partner nor a possible partner.
+		alpha = "[Select_float( And( And( GetScriptedGui('maam_board_has_selection').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) ), Not( Or( Or( GetScriptedGui('maam_board_card_selected').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), GetScriptedGui('maam_board_card_partner').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ) ), And( GetScriptedGui('maam_board_card_kin').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), ObjectsEqual( Regiment.GetMAAType, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAType ) ) ) ) ), '(float)0.45', '(float)1.0' )]"
+
+		background = {
+			block "maam_tile_texture"
+			{
+				texture = "[MenAtArmsType.GetHorizontalImageForCulture( GetPlayer.GetCulture )]"
+			}
+			alpha = 0.7
+			fittype = centercrop
+			margin = { -2 -2 }
+		}
+
+		# Native "open tile" highlight, used for the board selection.
+		background = {
+			using = Background_Button_Illustration
+			visible = "[GetScriptedGui('maam_board_card_selected').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+		}
+
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+			margin = { -2 -2 }
+		}
+
+		# Close this regiment's native window when a retrain starts (the
+		# source and the test regiment must stay untouched).
+		state = {
+			name = maam_close_on_retrain
+			trigger_when = "[And( GetPlayer.MakeScope.Var('maam_rt_active').IsSet, Regiment.IsShownInMaaView )]"
+			on_start = "[Regiment.ToggleMaaView]"
+		}
+
+		tooltipwidget = {
+			using = regiment_container_text_tooltip
+
+			blockoverride "extra_info" {
+				divider_light = {
+					layoutpolicy_horizontal = expanding
+				}
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.GetOwningTitle.IsValid]"
+					text = "MAA_MANAGER_TITLE_REGIMENT_TOOLTIP"
+					margin = { 10 0 }
+				}
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					visible = "[MenAtArmsType.GetSubjectProvider( GetPlayer ).IsValid]"
+					text = "MEN_AT_ARMS_PROVIDED_BY_SUBJECT"
+					margin = { 10 0 }
+				}
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "[SelectLocalization( GetPlayer.MakeScope.Var('maam_rt_active').IsSet, 'MAAM_TILE_LOCKED_HINT', 'MAAM_TILE_CLICK_HINT' )]"
+					margin = { 10 0 }
+				}
+			}
+		}
+
+		button_standard_clean = {
+			name = "maa_entry"
+			size = { 166 90 }
+
+			vbox = {
+				expand = {}
+
+				hbox = {
+					margin = { 8 4 }
+					spacing = 2
+					layoutpolicy_horizontal = expanding
+
+					background = {
+						using = Background_Area_Dark
+					}
+
+					icon = {
+						name = "icon_maa"
+						texture = "[MenAtArmsType.GetIcon]"
+						size = { 20 20 }
+					}
+
+					text_single = {
+						text = "[Regiment.BuildCurrentRegimentCountString|V]"
+						default_format = "#high"
+					}
+
+					expand = {}
+
+					text_single = {
+						text = "TOTAL_MAA_COST"
+						tooltip = "TOTAL_MAA_COST_TOOLTIP"
+						default_format = "#high"
+					}
+				}
+			}
+
+			# Understrength: thin strength bar above the bottom row.
+			progressbar_standard = {
+				visible = "[Not( Regiment.IsAtFullStength )]"
+				parentanchor = bottom|left
+				position = { 0 -26 }
+				size = { 166 4 }
+				min = 0
+				max = "[IntToFloat( Regiment.GetMaxCount )]"
+				value = "[IntToFloat( Regiment.CalcMenAliveCount )]"
+			}
+
+			# Type name (hidden while a role banner is shown).
+			text_single = {
+				visible = "[Not( GetScriptedGui('maam_board_card_has_banner').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ) )]"
+				parentanchor = top|left
+				position = { 6 2 }
+				max_width = 92
+				text = "[Regiment.GetNameNoTooltip]"
+				using = Font_Size_Small
+				default_format = "#high"
+				fontsize_min = 10
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.7
+					margin = { 4 1 }
+				}
+			}
+
+			text_label_right = {
+				visible = "[And( Not(Regiment.IsRaised), GetPlayer.IsAtWar)]"
+				text = "MAA_UNRAISED"
+				using = Font_Size_Small
+				default_format = "#X"
+				parentanchor = top|right
+				position = { -10 1 }
+			}
+
+			text_label_right = {
+				visible = "[Not(And( Not(Regiment.IsRaised), GetPlayer.IsAtWar))]"
+				text = "MAA_CURRENT_SIZE"
+				using = Font_Size_Small
+				parentanchor = top|right
+				position = { -10 1 }
+			}
+
+			text_label_right = {
+				visible = "[And( Not( Regiment.GetOriginProvince.IsValid ), GetPlayer.HasDomainProvincesForMAAOrigin )]"
+				text = "MAA_UNSTATIONED"
+				default_format = "#X"
+				using = Font_Size_Small
+				parentanchor = top|right
+				position = { -10 22 }
+			}
+
+			# Role banners (native military banners)
+			maam_tile_banner = {
+				visible = "[And( GetScriptedGui('maam_board_card_selected').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+				blockoverride "maam_banner" {
+					texture = "gfx/interface/window_military/military_banner_blue.dds"
+				}
+				blockoverride "maam_banner_text" {
+					text = "MAAM_ROLE_SELECTED"
+				}
+			}
+			maam_tile_banner = {
+				visible = "[And( GetScriptedGui('maam_board_card_partner').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+				blockoverride "maam_banner" {
+					texture = "gfx/interface/window_military/military_banner_green.dds"
+				}
+				blockoverride "maam_banner_text" {
+					text = "MAAM_ROLE_PARTNER"
+				}
+			}
+			maam_tile_banner = {
+				visible = "[GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+				blockoverride "maam_banner" {
+					texture = "gfx/interface/window_military/military_banner_red.dds"
+				}
+				blockoverride "maam_banner_text" {
+					text = "MAAM_ROLE_RETRAINING"
+				}
+			}
+			maam_tile_banner = {
+				visible = "[GetScriptedGui('maam_rt_tile_is_test').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+				blockoverride "maam_banner" {
+					texture = "gfx/interface/window_military/military_banner_gray.dds"
+				}
+				blockoverride "maam_banner_text" {
+					text = "MAAM_ROLE_TEST"
+				}
+			}
+
+			# Kin glow: a regiment that can be paired with the selection.
+			icon = {
+				visible = "[And( GetScriptedGui('maam_board_card_kin').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), ObjectsEqual( Regiment.GetMAAType, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAType ) )]"
+				size = { 100% 100% }
+				texture = "gfx/interface/component_tiles/tile_selected.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 8 8 }
+				alpha = 0.8
+				alwaystransparent = yes
+			}
+
+			block "maam_tile_extra" {}
+
+			# --- Click overlays (none while a retrain runs: tiles are inert) ---
+
+			# Pair a kin regiment (GUI type equality passed to script).
+			button_normal = {
+				visible = "[And( GetScriptedGui('maam_board_card_kin').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), ObjectsEqual( Regiment.GetMAAType, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAType ) )]"
+				size = { 100% 100% }
+				onclick = "[GetScriptedGui('maam_board_pair').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'target_regiment', Regiment.MakeScope ).AddScope( 'type_relation', MakeScopeFlag( 'same' ) ).End )]"
+				clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
+			}
+
+			# The selected regiment: keeps the pairing; only toggles its native window.
+			button_normal = {
+				visible = "[And( GetScriptedGui('maam_board_card_selected').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+				size = { 100% 100% }
+				onclick = "[Regiment.ToggleMaaView]"
+			}
+
+			# The partner: idempotent; only toggles its native window.
+			button_normal = {
+				visible = "[And( GetScriptedGui('maam_board_card_partner').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+				size = { 100% 100% }
+				onclick = "[Regiment.ToggleMaaView]"
+			}
+
+			# Any other tile: select it for the bench and open its native window
+			# (native immediate path when no MAA window is open) ...
+			button_normal = {
+				visible = "[And( And( GetScriptedGui('maam_board_card_plain').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), Not( And( GetScriptedGui('maam_board_card_kin').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), ObjectsEqual( Regiment.GetMAAType, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAType ) ) ) ), Not( GetVariableSystem.Exists( 'menatarms_open' ) ) )]"
+				size = { 100% 100% }
+				onclick = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
+				onclick = "[GetScriptedGui('maam_board_select').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+				onclick = "[Regiment.ToggleMaaView]"
+			}
+
+			# ... and the native delayed path while another MAA window is open.
+			button_normal = {
+				visible = "[And( And( GetScriptedGui('maam_board_card_plain').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), Not( And( GetScriptedGui('maam_board_card_kin').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ), ObjectsEqual( Regiment.GetMAAType, GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAType ) ) ) ), GetVariableSystem.Exists( 'menatarms_open' ) )]"
+				size = { 100% 100% }
+				onclick = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
+				onclick = "[GetScriptedGui('maam_board_select').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+				onclick = "[PdxGuiTriggerAllAnimations('menatarms_refresh')]"
+
+				state = {
+					name = _mouse_click
+					delay = 0.2
+					on_finish = "[Regiment.ToggleMaaView]"
+				}
+			}
+		}
+	}
+
+	# Title regiments: holder culture art and the native loaned overlay.
+	type maam_tile_title = maam_tile
+	{
+		blockoverride "maam_tile_texture"
+		{
+			texture = "[MenAtArmsType.GetHorizontalImageForCulture( Regiment.GetOwningTitle.GetHolder.GetCulture )]"
+		}
+
+		blockoverride "maam_tile_extra"
+		{
+			widget = {
+				size = { 68 46 }
+				position = { 0 18 }
+				visible = "[Not( ObjectsEqual( Regiment.GetOwningTitle, Regiment.GetControllingTitle ) )]"
+
+				background = {
+					using = Background_Area_Dark
+				}
+
+				text_single = {
+					parentanchor = top|hcenter
+					text = MV_ADMIN_ARMY_ARMIES_LOANED_LABEL
+					align = center
+				}
+
+				coa_title_tiny = {
+					datacontext = "[Regiment.GetControllingTitle]"
+					parentanchor = bottom|hcenter
+					position = { 0 2 }
+				}
+			}
+		}
+	}
+
+	type maam_tile_banner = widget
+	{
+		size = { 96 18 }
+		parentanchor = top|left
+		alwaystransparent = yes
+
+		background = {
+			block "maam_banner" {
+				texture = "gfx/interface/window_military/military_banner_gray.dds"
+			}
+			fittype = start
+		}
+
+		text_single = {
+			parentanchor = vcenter
+			position = { 6 0 }
+			block "maam_banner_text" {
+				text = "MAAM_ROLE_SELECTED"
+			}
+			using = Font_Size_Small
+			default_format = "#high"
+		}
+	}
+
+	######################################################
+	# Mini card in the bench (Regiment datacontext)
+	######################################################
+	type maam_mini = vbox
+	{
+		minimumsize = { 170 62 }
+		maximumsize = { 170 -1 }
+		margin = { 6 4 }
+		spacing = 1
+
+		background = { using = Background_Area_Dark }
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 5
+
+			widget = {
+				size = { 60 16 }
+				background = {
+					block "maam_mini_banner" {
+						texture = "gfx/interface/window_military/military_banner_blue.dds"
+					}
+					fittype = start
+				}
+				text_single = {
+					parentanchor = vcenter
+					position = { 4 0 }
+					block "maam_mini_role" {
+						text = "MAAM_ROLE_SELECTED"
+					}
+					using = Font_Size_Small
+					default_format = "#high"
+				}
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "[Regiment.GetNameNoTooltip]"
+				default_format = "#high"
+				max_width = 70
+				fontsize_min = 10
+			}
+
+			block "maam_mini_unpair" {}
+		}
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			text = "MAAM_MINI_LINE"
+			using = Font_Size_Small
+		}
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			visible = "[And( Not( Regiment.GetOriginProvince.IsValid ), GetPlayer.HasDomainProvincesForMAAOrigin )]"
+			text = "MAA_UNSTATIONED"
+			default_format = "#X"
+			using = Font_Size_Small
+		}
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			visible = "[Regiment.GetOriginProvince.IsValid]"
+			text = "MAAM_MINI_STATIONED"
+			default_format = "#weak"
+			using = Font_Size_Small
+		}
+	}
+
+	######################################################
+	# Bench (selected regiment) - compact, top of the MAA area
+	######################################################
+	type maam_bench = vbox
+	{
+		layoutpolicy_horizontal = expanding
+		margin = { 8 6 }
+		spacing = 5
+
+		background = { using = Background_Area_Dark }
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+		}
+
+		# Header
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 8
+
+			text_single = {
+				text = "MAAM_BENCH_TITLE"
+				using = Font_Size_Medium
+				default_format = "#high"
+			}
+			text_single = {
+				text = "MAAM_BENCH_HINT"
+				using = Font_Size_Small
+				default_format = "#weak"
+			}
+			expand = {}
+			button_close = {
+				size = { 22 22 }
+				tooltip = "MAAM_BENCH_CLOSE_TT"
+				onclick = "[GetScriptedGui('maam_board_close').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
+			}
+		}
+
+		# War or raised armies: nothing on the bench can act.
+		text_multi = {
+			visible = "[GetScriptedGui('maam_board_blocked').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			layoutpolicy_horizontal = expanding
+			autoresize = yes
+			max_width = 470
+			text = "MAAM_BENCH_BLOCKED"
+			background = { using = Status_Bad }
+		}
+
+		# Pair row: selected | Give / Take | partner
+		hbox = {
+			visible = "[Not( GetScriptedGui('maam_board_blocked').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+			layoutpolicy_horizontal = expanding
+			spacing = 6
+
+			maam_mini = {
+				datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+			}
+
+			vbox = {
+				spacing = 4
+				datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment]"
+
+				button_standard = {
+					name = "maam_give"
+					size = { 122 28 }
+					text = "MAAM_BENCH_GIVE"
+					enabled = "[GetScriptedGui('maam_board_give').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[GetScriptedGui('maam_board_give').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					tooltip = "MAAM_BENCH_GIVE_TT"
+					using = tooltip_se
+				}
+				button_standard = {
+					name = "maam_take"
+					size = { 122 28 }
+					text = "MAAM_BENCH_TAKE"
+					enabled = "[GetScriptedGui('maam_board_take').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[GetScriptedGui('maam_board_take').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					tooltip = "MAAM_BENCH_TAKE_TT"
+					using = tooltip_se
+				}
+			}
+
+			# Partner mini (with unpair) or a hint
+			widget = {
+				size = { 170 62 }
+
+				maam_mini = {
+					visible = "[GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet]"
+					datacontext = "[GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').Regiment]"
+
+					blockoverride "maam_mini_banner" {
+						texture = "gfx/interface/window_military/military_banner_green.dds"
+					}
+					blockoverride "maam_mini_role" {
+						text = "MAAM_ROLE_PARTNER"
+					}
+					blockoverride "maam_mini_unpair" {
+						button_close = {
+							size = { 16 16 }
+							tooltip = "MAAM_BENCH_UNPAIR_TT"
+							onclick = "[GetScriptedGui('maam_board_unpair').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						}
+					}
+				}
+
+				widget = {
+					visible = "[Not( GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet )]"
+					size = { 100% 100% }
+					background = { using = Background_Area }
+					text_multi = {
+						parentanchor = center
+						size = { 160 54 }
+						align = center|nobaseline
+						text = "[SelectLocalization( GetScriptedGui('maa_manager_title_mode').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), 'MAAM_BENCH_PICK_PARTNER_TITLE', 'MAAM_BENCH_PICK_PARTNER' )]"
+						default_format = "#weak"
+						using = Font_Size_Small
+					}
+				}
+			}
+		}
+
+		# Soldiers: signed plan, then Transfer (no Enter shortcut).
+		hbox = {
+			visible = "[And( GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, Not( GetScriptedGui('maam_board_blocked').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+			layoutpolicy_horizontal = expanding
+			spacing = 4
+
+			text_single = {
+				text = "MAAM_BENCH_SOLDIERS"
+				default_format = "#high"
+			}
+
+			button_round = {
+				size = { 26 26 }
+				tooltip = "MAAM_BENCH_SOLDIERS_LEFT_TT"
+				enabled = "[GetScriptedGui('maam_board_soldiers_left').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui('maam_board_soldiers_left').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				button_back = { parentanchor = center size = { 18 18 } alwaystransparent = yes }
+			}
+			widget = {
+				size = { 74 26 }
+				background = { using = Background_Area }
+				text_single = {
+					parentanchor = center
+					text = "[SelectLocalization( GreaterThan_int32( FixedPointToInt( GetPlayer.MakeScope.Var('maa_total_planned_transfers').GetValue ), '(int32)0' ), 'MAAM_PLAN_RIGHT', SelectLocalization( LessThan_int32( FixedPointToInt( GetPlayer.MakeScope.Var('maa_total_planned_transfers').GetValue ), '(int32)0' ), 'MAAM_PLAN_LEFT', 'MAAM_PLAN_ZERO' ) )]"
+					default_format = "#high"
+				}
+			}
+			button_round = {
+				size = { 26 26 }
+				tooltip = "MAAM_BENCH_SOLDIERS_RIGHT_TT"
+				enabled = "[GetScriptedGui('maam_board_soldiers_right').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui('maam_board_soldiers_right').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				button_forward = { parentanchor = center size = { 18 18 } alwaystransparent = yes }
+			}
+			button_standard = {
+				size = { 70 26 }
+				text = "MAAM_BENCH_FILL_SELECTED"
+				tooltip = "MAAM_BENCH_FILL_SELECTED_TT"
+				onclick = "[GetScriptedGui('maam_board_soldiers_fill_selected').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				enabled = "[GetScriptedGui('maam_board_soldiers_fill_selected').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+			button_standard = {
+				size = { 70 26 }
+				text = "MAAM_BENCH_FILL_PARTNER"
+				tooltip = "MAAM_BENCH_FILL_PARTNER_TT"
+				onclick = "[GetScriptedGui('maam_board_soldiers_fill_partner').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				enabled = "[GetScriptedGui('maam_board_soldiers_fill_partner').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+			expand = {}
+			maam_button_gold = {
+				size = { 92 28 }
+				text = "MAAM_BENCH_SEND"
+				enabled = "[GetScriptedGui('maam_board_send_soldiers').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui('maam_board_send_soldiers').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				tooltip = "MAAM_BENCH_SEND_TT"
+			}
+		}
+
+		# Preview line (fixed height)
+		hbox = {
+			visible = "[And( GetPlayer.MakeScope.Var('maa_manager_selected_target_scope').IsSet, Not( GetScriptedGui('maam_board_blocked').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+			layoutpolicy_horizontal = expanding
+			minimumsize = { 0 18 }
+			spacing = 8
+
+			text_single = {
+				visible = "[Not( EqualTo_int32( FixedPointToInt( GetPlayer.MakeScope.Var('maa_total_planned_transfers').GetValue ), '(int32)0' ) )]"
+				text = "MAAM_BENCH_PREVIEW"
+				using = Font_Size_Small
+			}
+			text_single = {
+				visible = "[EqualTo_int32( FixedPointToInt( GetPlayer.MakeScope.Var('maa_total_planned_transfers').GetValue ), '(int32)0' )]"
+				text = "MAAM_BENCH_STACK_RULE"
+				default_format = "#weak"
+				using = Font_Size_Small
+			}
+			expand = {}
+		}
+
+		# Lower row: retrain | last move | merge (red, far right)
+		hbox = {
+			visible = "[Not( GetScriptedGui('maam_board_blocked').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+			layoutpolicy_horizontal = expanding
+			spacing = 8
+			minimumsize = { 0 36 }
+
+			block "maam_bench_retrain" {
+				maam_bench_retrain_legacy = {}
+			}
+
+			button_standard = {
+				visible = "[GetScriptedGui('maam_board_undo_shown').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				size = { 116 26 }
+				text = "MAAM_BENCH_UNDO"
+				enabled = "[GetScriptedGui('maam_board_undo').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui('maam_board_undo').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				tooltip = "MAAM_BENCH_UNDO_TT"
+			}
+
+			expand = {}
+
+			hbox = {
+				visible = "[GetScriptedGui('maam_board_merge_into_partner_shown').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				spacing = 6
+				margin = { 6 3 }
+				background = { using = Status_Bad }
+
+				button_round = {
+					size = { 30 30 }
+					enabled = "[GetScriptedGui('maam_board_merge_into_partner').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[GetScriptedGui('maam_board_merge_into_partner').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					tooltip = "MAAM_BENCH_MERGE_INTO_TT"
+					button_army_merge = { parentanchor = center size = { 22 22 } alwaystransparent = yes }
+				}
+				text_multi = {
+					max_width = 110
+					autoresize = yes
+					text = "MAAM_BENCH_MERGE_INTO"
+					using = Font_Size_Small
+				}
+			}
+
+			hbox = {
+				visible = "[GetScriptedGui('maam_board_merge_partner_in_shown').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				spacing = 6
+				margin = { 6 3 }
+				background = { using = Status_Bad }
+
+				button_round = {
+					size = { 30 30 }
+					enabled = "[GetScriptedGui('maam_board_merge_partner_in').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[GetScriptedGui('maam_board_merge_partner_in').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					tooltip = "MAAM_BENCH_MERGE_IN_TT"
+					button_army_merge = { parentanchor = center size = { 22 22 } alwaystransparent = yes }
+				}
+				text_multi = {
+					max_width = 110
+					autoresize = yes
+					text = "MAAM_BENCH_MERGE_IN"
+					using = Font_Size_Small
+				}
+			}
+		}
+	}
+
+	# Retrain entry: existing retrain list (title regiments, other rulers).
+	type maam_bench_retrain_legacy = button_standard
+	{
+		size = { 150 28 }
+		text = "MAAM_BENCH_RETRAIN_LEGACY"
+		enabled = "[GetScriptedGui('maam_open_legacy_retrain').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		onclick = "[GetScriptedGui('maam_open_legacy_retrain').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		onclick = "[GetVariableSystem.Set( 'maam_open_tab', 'retrain' )]"
+		onclick = "[GetVariableSystem.Set( 'maa_manager_tab', 'retrain' )]"
+		onclick = "[GetVariableSystem.Set( 'men_at_arms_manager_open', 'yes' )]"
+		tooltip = "MAAM_BENCH_RETRAIN_LEGACY_TT"
+	}
+
+	# Retrain entry for personal regiments (inside the MilitaryItem context).
+	type maam_bench_retrain_personal = widget
+	{
+		size = { 150 28 }
+
+		# Measured retrain: supported ruler.
+		button_standard = {
+			visible = "[GetScriptedGui('maam_rt_ruler_supported').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			size = { 150 28 }
+			text = "MAAM_BENCH_RETRAIN"
+			enabled = "[And( Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ), GetScriptedGui('maam_rt_start').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'real_source', GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.MakeScope ).End ) )]"
+			onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
+			onclick = "[GetScriptedGui('maam_rt_start').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'real_source', GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.MakeScope ).End )]"
+			onclick = "[GetVariableSystem.Set( 'maam_rt_open_picker', 'yes' )]"
+			tooltip = "[SelectLocalization( GetScriptedGui('maam_rt_start').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'real_source', GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.MakeScope ).End ), 'MAAM_BENCH_RETRAIN_TT', 'MAAM_BENCH_RETRAIN_BLOCKED_TT' )]"
+		}
+
+		# Other rulers: existing retrain list.
+		maam_bench_retrain_legacy = {
+			visible = "[Not( GetScriptedGui('maam_rt_ruler_supported').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+		}
+	}
+
+	######################################################
+	# Retrain bench: ledger and receipt (personal board, while a retrain runs).
+	# The native picker closes after each purchase, so everything after a
+	# purchase lives here. Needs the MilitaryItem context (opens the picker).
+	######################################################
+	type maam_rt_bench = vbox
+	{
+		visible = "[GetPlayer.MakeScope.Var('maam_rt_active').IsSet]"
+		layoutpolicy_horizontal = expanding
+		margin = { 8 6 }
+		spacing = 4
+
+		background = { using = Background_Area_Dark }
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+		}
+
+		# Automatic capture once the purchased regiment exists (manual button below).
+		state = {
+			name = maam_rt_auto_capture
+			trigger_when = "[GetScriptedGui('maam_rt_capture').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			on_start = "[GetScriptedGui('maam_rt_capture').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		}
+		# Clear the busy flag whenever a new phase is reached.
+		state = {
+			name = maam_rt_unbusy_armed
+			trigger_when = "[GetPlayer.MakeScope.Var('maam_rt_armed').IsSet]"
+			on_start = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
+		}
+		state = {
+			name = maam_rt_unbusy_captured
+			trigger_when = "[GetPlayer.MakeScope.Var('maam_rt_captured').IsSet]"
+			on_start = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
+		}
+		# Open the picker once after Retrain was clicked (OnClick toggles: guard).
+		state = {
+			name = maam_rt_open_picker
+			trigger_when = "[And( And( GetVariableSystem.Exists( 'maam_rt_open_picker' ), Not( MilitaryItem.IsOpen ) ), GetScriptedGui('maam_rt_phase_quote').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+			on_start = "[GetVariableSystem.Clear( 'maam_rt_open_picker' )]"
+			on_start = "[MilitaryItem.OnClick]"
+		}
+
+		# Header
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 8
+			datacontext = "[GetPlayer.MakeScope.Var('maam_rt_source').Regiment]"
+
+			text_single = {
+				text = "MAAM_RT_TITLE"
+				using = Font_Size_Medium
+				default_format = "#high"
+			}
+			text_single = {
+				text = "MAAM_MINI_LINE"
+				using = Font_Size_Small
+				default_format = "#weak"
+			}
+			expand = {}
+		}
+
+		divider_light = { layoutpolicy_horizontal = expanding }
+
+		# Interrupted (time passed): recover from the receipt, or keep.
+		vbox = {
+			visible = "[GetScriptedGui('maam_rt_interrupted_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			layoutpolicy_horizontal = expanding
+			spacing = 4
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				autoresize = yes
+				max_width = 470
+				text = "MAAM_RT_INTERRUPTED"
+				background = { using = Status_Bad }
+			}
+			hbox = {
+				spacing = 6
+				button_standard = {
+					visible = "[GetScriptedGui('maam_rt_recover').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					size = { 200 28 }
+					text = "MAAM_RT_RECOVER"
+					tooltip = "MAAM_RT_RECOVER_TT"
+					onclick = "[GetScriptedGui('maam_rt_recover').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+				button_standard = {
+					visible = "[GetScriptedGui('maam_rt_abandon').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					size = { 200 28 }
+					text = "MAAM_RT_ABANDON"
+					tooltip = "MAAM_RT_ABANDON_TT"
+					onclick = "[GetScriptedGui('maam_rt_abandon').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+			}
+		}
+
+		# Purchase could not be verified: keep what was bought, end the retrain.
+		vbox = {
+			visible = "[GetScriptedGui('maam_rt_capture_failed_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			layoutpolicy_horizontal = expanding
+			spacing = 4
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				autoresize = yes
+				max_width = 470
+				text = "MAAM_RT_CAPTURE_FAILED"
+				background = { using = Status_Bad }
+			}
+			button_standard = {
+				size = { 240 28 }
+				text = "MAAM_RT_RELEASE"
+				tooltip = "MAAM_RT_RELEASE_TT"
+				onclick = "[GetScriptedGui('maam_rt_release').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+		}
+
+		# Ledger line 1: current type, your price per stack
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			minimumsize = { 0 32 }
+			spacing = 6
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[GetPlayer.MakeScope.Var('maam_rt_source').Regiment]"
+				text_single = { text = "[Regiment.GetNameNoTooltip]" default_format = "#high" }
+				text_single = { text = "MAAM_RT_YOUR_PRICE" default_format = "#weak" using = Font_Size_Small }
+			}
+
+			# Quote phase, nothing bought yet: open the picker.
+			button_standard = {
+				visible = "[GetScriptedGui('maam_rt_phase_quote').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				size = { 200 28 }
+				text = "MAAM_RT_OPEN_PICKER_QUOTE"
+				enabled = "[Not( MilitaryItem.IsOpen )]"
+				onclick = "[MilitaryItem.OnClick]"
+			}
+			# Purchase sent, not captured yet.
+			maam_rt_pending_buttons = {
+				visible = "[And( GetScriptedGui('maam_rt_phase_pending').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), GetPlayer.MakeScope.Var('maam_rt_need_source').IsSet )]"
+			}
+			# Captured test stack: record the price and refund it.
+			maam_button_gold = {
+				visible = "[GetScriptedGui('maam_rt_phase_record').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				size = { 200 28 }
+				text = "MAAM_RT_RECORD"
+				tooltip = "MAAM_RT_RECORD_TT"
+				enabled = "[And( Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ), GetScriptedGui('maam_rt_accept').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+				onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
+				onclick = "[GetScriptedGui('maam_rt_accept').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'real_source', GetPlayer.MakeScope.Var('maam_rt_source').Regiment.MakeScope ).AddScope( 'real_candidate', GetPlayer.MakeScope.Var('maam_rt_candidate').Regiment.MakeScope ).AddScope( 'real_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_rt_candidate').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_rt_source').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
+			}
+			# Recorded.
+			text_single = {
+				visible = "[GetPlayer.MakeScope.Var('maam_rt_source_price').IsSet]"
+				text = "MAAM_RT_PRICE_SOURCE"
+				default_format = "#high"
+			}
+		}
+
+		# Ledger line 2: new type, your price per stack
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			minimumsize = { 0 32 }
+			spacing = 6
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					visible = "[GetScriptedGui('maam_rt_phase_receipt').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					datacontext = "[GetPlayer.MakeScope.Var('maam_rt_candidate').Regiment]"
+					text = "[Regiment.GetNameNoTooltip]"
+					default_format = "#high"
+				}
+				text_single = {
+					visible = "[Not( GetScriptedGui('maam_rt_phase_receipt').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+					text = "MAAM_RT_NEW_TYPE"
+					default_format = "#high"
+				}
+				text_single = { text = "MAAM_RT_YOUR_PRICE" default_format = "#weak" using = Font_Size_Small }
+			}
+
+			text_single = {
+				visible = "[GetPlayer.MakeScope.Var('maam_rt_need_source').IsSet]"
+				text = "MAAM_RT_AFTER_YOUR_PRICE"
+				default_format = "#weak"
+			}
+			button_standard = {
+				visible = "[GetScriptedGui('maam_rt_phase_target').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				size = { 200 28 }
+				text = "MAAM_RT_OPEN_PICKER_TARGET"
+				enabled = "[And( Not( MilitaryItem.IsOpen ), GetPlayer.MakeScope.Var('maam_rt_quote_guard').IsSet )]"
+				onclick = "[MilitaryItem.OnClick]"
+				tooltip = "[SelectLocalization( GetPlayer.MakeScope.Var('maam_rt_quote_guard').IsSet, 'MAAM_RT_OPEN_PICKER_TARGET_TT', 'MAAM_RT_QUOTE_EXPIRED' )]"
+			}
+			maam_rt_pending_buttons = {
+				visible = "[And( GetScriptedGui('maam_rt_phase_pending').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), Not( GetPlayer.MakeScope.Var('maam_rt_need_source').IsSet ) )]"
+			}
+			text_single = {
+				visible = "[GetScriptedGui('maam_rt_phase_receipt').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				text = "MAAM_RT_PRICE_TARGET"
+				default_format = "#high"
+			}
+		}
+
+		# Receipt
+		vbox = {
+			visible = "[GetScriptedGui('maam_rt_phase_receipt').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			layoutpolicy_horizontal = expanding
+			spacing = 3
+
+			divider_light = { layoutpolicy_horizontal = expanding }
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = { text = "MAAM_RT_DIFFERENCE" using = Font_Size_Small }
+				expand = {}
+				text_single = { text = "MAAM_RT_DIFFERENCE_VALUE" default_format = "#high" }
+			}
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = { text = "MAAM_RT_FEE" using = Font_Size_Medium default_format = "#high" }
+				expand = {}
+				text_single = { text = "MAAM_RT_FEE_VALUE" using = Font_Size_Medium default_format = "#high" }
+			}
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = { text = "[SelectLocalization( LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('maam_rt_preview_remaining_value'), '(CFixedPoint)0' ), 'MAAM_RT_GET_BACK', 'MAAM_RT_STILL_TO_PAY' )]" using = Font_Size_Small }
+				expand = {}
+				text_single = { text = "MAAM_RT_REMAINING_VALUE" default_format = "#high" }
+			}
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "MAAM_RT_CARRY_OVER"
+				default_format = "#weak"
+				using = Font_Size_Small
+			}
+		}
+
+		# Actions: cancel on the left, commit on the right (far apart)
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 8
+			margin_top = 4
+
+			button_standard = {
+				visible = "[GetScriptedGui('maam_rt_cancel').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				size = { 170 28 }
+				text = "MAAM_RT_CANCEL"
+				onclick = "[GetScriptedGui('maam_rt_cancel').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+			button_standard = {
+				visible = "[GetScriptedGui('maam_rt_rollback').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				size = { 200 28 }
+				text = "MAAM_RT_CANCEL_REFUND"
+				tooltip = "MAAM_RT_CANCEL_REFUND_TT"
+				onclick = "[GetScriptedGui('maam_rt_rollback').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+
+			expand = {}
+
+			maam_button_gold = {
+				visible = "[GetScriptedGui('maam_rt_phase_receipt').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				size = { 210 30 }
+				text = "[SelectLocalization( LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('maam_rt_preview_remaining_value'), '(CFixedPoint)0' ), 'MAAM_RT_COMMIT_REFUND', 'MAAM_RT_COMMIT_PAY' )]"
+				tooltip = "[SelectLocalization( LessThan_CFixedPoint( GetPlayer.GetGold, GetPlayer.MakeScope.ScriptValue('maam_rt_preview_remaining_value') ), 'MAAM_RT_COMMIT_UNAFFORDABLE_TT', 'MAAM_RT_COMMIT_TT' )]"
+				enabled = "[And( And( Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ), GetScriptedGui('maam_rt_accept').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( LessThan_CFixedPoint( GetPlayer.GetGold, GetPlayer.MakeScope.ScriptValue('maam_rt_preview_remaining_value') ) ) )]"
+				onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
+				onclick = "[GetScriptedGui('maam_rt_accept').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'real_source', GetPlayer.MakeScope.Var('maam_rt_source').Regiment.MakeScope ).AddScope( 'real_candidate', GetPlayer.MakeScope.Var('maam_rt_candidate').Regiment.MakeScope ).AddScope( 'real_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_rt_candidate').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_rt_source').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
+			}
+		}
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			text = "[SelectLocalization( IsGamePaused, 'MAAM_RT_KEEP_PAUSED', 'MAAM_RT_PAUSE_FIRST' )]"
+			using = Font_Size_Small
+		}
+	}
+
+	# While a purchase is in flight: manual capture, or "nothing was bought".
+	type maam_rt_pending_buttons = hbox
+	{
+		spacing = 4
+
+		text_single = {
+			text = "MAAM_RT_WAITING"
+			default_format = "#weak"
+			using = Font_Size_Small
+		}
+		button_standard = {
+			size = { 96 26 }
+			text = "MAAM_RT_CONTINUE"
+			tooltip = "MAAM_RT_CONTINUE_TT"
+			enabled = "[GetScriptedGui('maam_rt_capture').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			onclick = "[GetScriptedGui('maam_rt_capture').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		}
+		button_standard = {
+			visible = "[GetScriptedGui('maam_rt_unpend').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			size = { 110 26 }
+			text = "MAAM_RT_UNPEND"
+			tooltip = "MAAM_RT_UNPEND_TT"
+			onclick = "[GetScriptedGui('maam_rt_unpend').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			onclick = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
+		}
+	}
+
+	# Result of the last retrain (until dismissed).
+	type maam_rt_result = hbox
+	{
+		visible = "[And( GetPlayer.MakeScope.Var('maam_rt_result').IsSet, Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+		layoutpolicy_horizontal = expanding
+		margin = { 8 5 }
+		spacing = 8
+
+		background = { using = Background_Area }
+
+		text_multi = {
+			layoutpolicy_horizontal = expanding
+			autoresize = yes
+			max_width = 450
+			text = "[SelectLocalization( GetScriptedGui('maam_rt_result_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'retrained' ) ).End ), 'MAAM_RT_RESULT_RETRAINED', SelectLocalization( GetScriptedGui('maam_rt_result_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'rolled_back' ) ).End ), 'MAAM_RT_RESULT_ROLLED_BACK', SelectLocalization( GetScriptedGui('maam_rt_result_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'cancelled' ) ).End ), 'MAAM_RT_RESULT_CANCELLED', SelectLocalization( GetScriptedGui('maam_rt_result_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'unaffordable' ) ).End ), 'MAAM_RT_RESULT_UNAFFORDABLE', SelectLocalization( GetScriptedGui('maam_rt_result_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'failed' ) ).End ), 'MAAM_RT_RESULT_FAILED', SelectLocalization( GetScriptedGui('maam_rt_result_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'recovered' ) ).End ), 'MAAM_RT_RESULT_RECOVERED', SelectLocalization( GetScriptedGui('maam_rt_result_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'released' ) ).End ), 'MAAM_RT_RESULT_RELEASED', 'MAAM_RT_RESULT_ABANDONED' ) ) ) ) ) ) )]"
+		}
+		button_close = {
+			size = { 20 20 }
+			onclick = "[GetScriptedGui('maam_rt_dismiss_result').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			onclick = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
+		}
+	}
+
+	# Read-only notice for a loaned title regiment that was clicked.
+	type maam_board_loaned_notice = hbox
+	{
+		visible = "[GetScriptedGui('maam_board_loaned_shown').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		layoutpolicy_horizontal = expanding
+		margin = { 8 5 }
+		spacing = 8
+		datacontext = "[GetPlayer.MakeScope.Var('maam_board_loaned').Regiment]"
+
+		background = { using = Background_Area }
+
+		text_multi = {
+			layoutpolicy_horizontal = expanding
+			autoresize = yes
+			max_width = 450
+			text = "MAAM_BENCH_LOANED"
+		}
+		button_close = {
+			size = { 20 20 }
+			onclick = "[GetScriptedGui('maam_board_dismiss_loaned').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		}
+	}
+}

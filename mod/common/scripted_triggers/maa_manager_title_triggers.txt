@@ -54,14 +54,34 @@ maa_manager_retrain_uses_treasury = {
 }
 
 # A candidate target must be manageable now, not just in a cached list.
-maa_manager_compatible_target = {
+# Everything except the type check (title mode: same owning title).
+maa_manager_compatible_target_base = {
 	maa_manager_is_manageable_regiment = yes
 	NOT = { this = root.var:maa_manager_selected_regiment_scope }
-	maa_manager_matches_source_type = yes
 	trigger_if = {
 		limit = { root = { maa_manager_is_title_mode = yes } }
 		regiment_owning_title = root.var:maa_manager_selected_regiment_scope.regiment_owning_title
 	}
+}
+
+# Same type: the fixed vanilla list, or a GUI ObjectsEqual result recorded for
+# exactly this source/target pair (lets types from other mods pair). The GUI
+# comparison is single-player authority, as in the dynamic retrain prototype.
+maa_manager_same_type_as_source = {
+	OR = {
+		maa_manager_matches_source_type = yes
+		AND = {
+			exists = root.var:maam_gui_same_target
+			this = root.var:maam_gui_same_target
+			exists = root.var:maam_gui_same_source
+			root.var:maam_gui_same_source = root.var:maa_manager_selected_regiment_scope
+		}
+	}
+}
+
+maa_manager_compatible_target = {
+	maa_manager_compatible_target_base = yes
+	maa_manager_same_type_as_source = yes
 }
 
 maa_manager_select_source_valid = {
@@ -75,7 +95,16 @@ maa_manager_select_target_valid = {
 	exists = var:maa_manager_selected_regiment_scope
 	var:maa_manager_selected_regiment_scope = { maa_manager_is_manageable_regiment = yes }
 	exists = scope:target_regiment
-	scope:target_regiment = { maa_manager_compatible_target = yes }
+	scope:target_regiment = {
+		maa_manager_compatible_target_base = yes
+		OR = {
+			maa_manager_same_type_as_source = yes
+			AND = {
+				exists = scope:type_relation
+				scope:type_relation = flag:same
+			}
+		}
+	}
 }
 
 # Live type comparison, independent of saved scopes from previous GUI calls.

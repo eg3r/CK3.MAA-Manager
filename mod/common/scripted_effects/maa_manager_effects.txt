@@ -51,6 +51,14 @@ maa_manager_data_create_effect = {
 			root = { add_to_variable_list = { name = maa_regiment_list target = prev } }
 		}
 	}
+	# Opened from the muster board's Retrain button: preselect that regiment.
+	if = {
+		limit = { exists = var:maam_preselect_regiment }
+		var:maam_preselect_regiment = { save_scope_as = regiment }
+		remove_variable = maam_preselect_regiment
+		maa_manager_select_regiment_effect = yes
+	}
+	remove_variable = maam_preselect_regiment
 }
 
 ######################################################

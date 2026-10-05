@@ -1,5 +1,6 @@
 original_files/**
 documentation/**
+tests/**
 mockups/**
 .vscode/**
 agents.md

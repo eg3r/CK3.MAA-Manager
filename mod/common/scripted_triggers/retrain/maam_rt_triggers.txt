@@ -1,0 +1,258 @@
+﻿######################################################
+# MAA Manager - Dynamic retrain guards (native picker + measured prices)
+#
+# Ported from the 2026-10-05 real-source prototype (see the dynamic retrain
+# handoff). All predicates run with ROOT = the managing character.
+# No MAA keys, cost tables or localization matching are used here.
+#
+# Supported scope (do not widen without new tests): human feudal ruler without
+# treasury, at peace with nothing raised; owned AND controlled, personal,
+# unraised, unstationed source of size 1-64; target with equal soldiers per stack.
+######################################################
+
+# Ruler context in which the measured-price retrain is proven.
+maam_rt_supported_ruler = {
+	is_ai = no
+	has_government = feudal_government
+	has_treasury = no
+	maa_manager_can_modify_regiments = yes
+}
+
+# Regiment scope: a source the transaction may replace.
+maam_rt_source_regiment_ok = {
+	regiment_owner = root
+	regiment_controller = root
+	is_personal_maa_regiment = yes
+	is_raised = no
+	NOT = { exists = regiment_station }
+	maa_size > 0
+	maa_size <= 64
+}
+
+# No transaction state of any kind is present.
+maam_rt_idle = {
+	NOT = { has_variable = maam_rt_active }
+	NOT = { has_variable = maam_rt_pending }
+	NOT = { has_variable = maam_rt_armed }
+	NOT = { exists = var:maam_rt_candidate }
+	NOT = { has_character_modifier = maam_rt_slot_modifier }
+}
+
+# Start a retrain for scope:real_source.
+maam_rt_start_allowed = {
+	maam_rt_supported_ruler = yes
+	maam_rt_idle = yes
+	exists = scope:real_source
+	scope:real_source = { maam_rt_source_regiment_ok = yes }
+}
+
+# The stored source still qualifies.
+maam_rt_source_valid = {
+	exists = var:maam_rt_source
+	var:maam_rt_source = { maam_rt_source_regiment_ok = yes }
+}
+
+# The stored source is exactly as it was when the purchase was snapshotted.
+maam_rt_source_unchanged = {
+	maam_rt_source_valid = yes
+	has_variable = maam_rt_size
+	has_variable = maam_rt_troops
+	has_variable = maam_rt_max
+	var:maam_rt_source = {
+		maa_size = root.var:maam_rt_size
+		maa_current_troops_count = root.var:maam_rt_troops
+		maa_max_troops_count = root.var:maam_rt_max
+	}
+}
+
+# A native purchase may be prepared now (quote phase or target phase).
+maam_rt_can_buy = {
+	maam_rt_supported_ruler = yes
+	has_variable = maam_rt_active
+	has_variable = maam_rt_armed
+	NOT = { has_variable = maam_rt_pending }
+	NOT = { exists = var:maam_rt_candidate }
+	has_character_modifier = maam_rt_slot_modifier
+	maam_rt_source_valid = yes
+	maa_regiments_count = var:maam_rt_initial_count
+	maa_regiments_count < maa_regiments_max_count
+	trigger_if = {
+		limit = { NOT = { has_variable = maam_rt_need_source } }
+		has_variable = maam_rt_quote_guard
+	}
+}
+
+# A native purchase was made and has not been captured yet, and exactly one
+# new regiment now exists (drives the automatic capture).
+maam_rt_capture_ready = {
+	is_ai = no
+	has_variable = maam_rt_active
+	has_variable = maam_rt_click_guard
+	has_variable = maam_rt_pending
+	has_variable = maam_rt_count_before
+	maa_regiments_count = { value = var:maam_rt_count_before add = 1 }
+}
+
+# The captured purchase and every resource are still exactly as verified.
+maam_rt_purchase_intact = {
+	maam_rt_supported_ruler = yes
+	has_variable = maam_rt_active
+	has_variable = maam_rt_click_guard
+	NOT = { has_variable = maam_rt_pending }
+	NOT = { has_variable = maam_rt_armed }
+	maam_rt_source_unchanged = yes
+	exists = var:maam_rt_candidate
+	var:maam_rt_new_count = 1
+	var:maam_rt_valid_count = 1
+	var:maam_rt_gold_paid > 0
+	var:maam_rt_gold_before >= var:maam_rt_gold_paid
+	gold = { value = var:maam_rt_gold_before subtract = var:maam_rt_gold_paid }
+	prestige = var:maam_rt_prestige
+	piety = var:maam_rt_piety
+	maa_regiments_count = { value = var:maam_rt_count_before add = 1 }
+	var:maam_rt_count_before = var:maam_rt_initial_count
+	var:maam_rt_source = {
+		root = { is_target_in_variable_list = { name = maam_rt_before target = prev } }
+	}
+	var:maam_rt_candidate = {
+		regiment_owner = root
+		regiment_controller = root
+		is_personal_maa_regiment = yes
+		is_raised = no
+		NOT = { exists = regiment_station }
+		maa_size >= 1
+		NOT = { this = root.var:maam_rt_source }
+		NOT = { root = { is_target_in_variable_list = { name = maam_rt_before target = prev } } }
+		root = { is_target_in_variable_list = { name = maam_rt_new target = prev } }
+	}
+}
+
+# The candidate has one stack with the source's soldiers per stack.
+maam_rt_candidate_shape_ok = {
+	var:maam_rt_candidate = {
+		maa_size = 1
+		maa_max_troops_count = { value = root.var:maam_rt_max divide = root.var:maam_rt_size }
+	}
+}
+
+# A transaction was interrupted: its click guard expired (time advanced).
+maam_rt_interrupted = {
+	has_variable = maam_rt_active
+	NOT = { has_variable = maam_rt_click_guard }
+	OR = {
+		has_variable = maam_rt_pending
+		has_variable = maam_rt_captured
+	}
+}
+
+# Recovery of an interrupted, captured purchase from its verified receipt.
+# Deliberately narrow: only an unraised size-1 purchase with a recent receipt.
+maam_rt_can_recover_expired = {
+	maam_rt_supported_ruler = yes
+	has_variable = maam_rt_active
+	has_variable = maam_rt_captured
+	has_variable = maam_rt_receipt_guard
+	has_variable = maam_rt_paid_receipt
+	var:maam_rt_paid_receipt > 0
+	NOT = { has_variable = maam_rt_click_guard }
+	NOT = { has_variable = maam_rt_pending }
+	NOT = { has_variable = maam_rt_armed }
+	NOT = { has_variable = maam_rt_settled }
+	NOT = { has_variable = maam_rt_growth_ok }
+	maam_rt_source_valid = yes
+	var:maam_rt_source = {
+		maa_size = root.var:maam_rt_size
+		root = { is_target_in_variable_list = { name = maam_rt_before target = prev } }
+	}
+	exists = var:maam_rt_candidate
+	var:maam_rt_new_count = 1
+	var:maam_rt_valid_count = 1
+	maa_regiments_count = { value = var:maam_rt_initial_count add = 1 }
+	var:maam_rt_candidate = {
+		regiment_owner = root
+		regiment_controller = root
+		is_personal_maa_regiment = yes
+		is_raised = no
+		maa_size = 1
+		NOT = { exists = regiment_station }
+		NOT = { this = root.var:maam_rt_source }
+		NOT = { root = { is_target_in_variable_list = { name = maam_rt_before target = prev } } }
+		root = { is_target_in_variable_list = { name = maam_rt_new target = prev } }
+	}
+}
+
+# Cancel is allowed only before any purchase exists.
+maam_rt_can_cancel = {
+	is_ai = no
+	has_variable = maam_rt_active
+	has_variable = maam_rt_armed
+	NOT = { has_variable = maam_rt_pending }
+	NOT = { exists = var:maam_rt_candidate }
+}
+
+# Capacity and regiment count are back to what they were before the retrain.
+maam_rt_slots_restored = {
+	NOT = { has_character_modifier = maam_rt_slot_modifier }
+	trigger_if = {
+		limit = { has_variable = maam_rt_initial_count has_variable = maam_rt_initial_cap }
+		maa_regiments_count = var:maam_rt_initial_count
+		maa_regiments_max_count = var:maam_rt_initial_cap
+	}
+}
+
+# Rollback: remove only the tracked, captured, unchanged size-1 purchase and
+# refund its recorded debit onto the CURRENT gold. Does not require the rest of
+# the balance or the source to be untouched, so Cancel always works.
+maam_rt_can_rollback = {
+	maam_rt_supported_ruler = yes
+	has_variable = maam_rt_click_guard
+	has_variable = maam_rt_active
+	has_variable = maam_rt_captured
+	NOT = { has_variable = maam_rt_pending }
+	NOT = { has_variable = maam_rt_settled }
+	NOT = { has_variable = maam_rt_growth_ok }
+	has_variable = maam_rt_gold_paid
+	var:maam_rt_gold_paid > 0
+	exists = var:maam_rt_candidate
+	var:maam_rt_candidate = {
+		regiment_owner = root
+		is_personal_maa_regiment = yes
+		is_raised = no
+		root = { is_target_in_variable_list = { name = maam_rt_new target = prev } }
+		NOT = { root = { is_target_in_variable_list = { name = maam_rt_before target = prev } } }
+	}
+}
+
+# A purchase happened but could not be verified (e.g. not paid in gold, or two
+# regiments appeared): the player may end the retrain and keep what was bought.
+maam_rt_can_release = {
+	is_ai = no
+	has_variable = maam_rt_active
+	has_variable = maam_rt_capture_failed
+	NOT = { has_variable = maam_rt_captured }
+	NOT = { has_variable = maam_rt_settled }
+}
+
+# Board actions that would touch regiments are refused while a retrain runs.
+maam_board_actions_allowed = {
+	maa_manager_can_modify_regiments = yes
+	NOT = { has_variable = maam_rt_active }
+}
+
+# The recorded last stack move belongs to the current selected/partner pair.
+maam_board_undo_pair_current = {
+	exists = var:maam_last_from
+	exists = var:maam_last_to
+	exists = var:maa_manager_selected_regiment_scope
+	exists = var:maa_manager_selected_target_scope
+	OR = {
+		AND = {
+			var:maam_last_from = var:maa_manager_selected_regiment_scope
+			var:maam_last_to = var:maa_manager_selected_target_scope
+		}
+		AND = {
+			var:maam_last_from = var:maa_manager_selected_target_scope
+			var:maam_last_to = var:maa_manager_selected_regiment_scope
+		}
+	}
+}

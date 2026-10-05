@@ -163,7 +163,8 @@ types ArmiesView
 
 			datacontext = "[GetPlayer]"
 			onclick = "[PlayerRaiseAllRegiments]"
-			enabled = "[PlayerCanRaiseAnyRallyPoint]"
+			# MAA Manager: no raising while a retrain holds a test regiment.
+			enabled = "[And( PlayerCanRaiseAnyRallyPoint, Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
 			onrightclick = "[PlayerRaiseAllRegimentsAtLocation]"
 			button_ignore = none
 			layoutpolicy_horizontal = expanding
@@ -183,7 +184,7 @@ types ArmiesView
 			datacontext = "[GetPlayer]"
 			onclick = "[PlayerRaiseAllBarterRegiments]"
 			visible = "[Character.HasBarterGoods]"
-			enabled = "[PlayerCanRaiseAnyBarterRallyPoint]"
+			enabled = "[And( PlayerCanRaiseAnyBarterRallyPoint, Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
 			onrightclick = "[PlayerRaiseAllBarterRegimentsAtLocation]"
 			button_ignore = none
 			size = { 40 40 }
@@ -771,10 +772,6 @@ types ArmiesView
 				}
 			}
 
-			title_men_at_arms_manager_button = {
-				# Let the hbox position both controls; match button_standard's height.
-				size = { 36 33 }
-			}
 		}
 
 		scrollbox = {
@@ -2726,6 +2723,20 @@ types ArmiesView
 						align = center
 					}
 
+					# MAA Manager muster board: bench under this title when one of its
+					# regiments is selected, then the title's regiment tiles.
+					vbox = {
+						visible = "[And( GetScriptedGui('maam_board_bench_title').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), ObjectsEqual( GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetOwningTitle, Title.Self ) )]"
+						layoutpolicy_horizontal = expanding
+						margin_bottom = 4
+
+						maam_bench = {}
+					}
+
+					maam_board_loaned_notice = {
+						visible = "[And( GetScriptedGui('maam_board_loaned_shown').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), ObjectsEqual( GetPlayer.MakeScope.Var('maam_board_loaned').Regiment.GetOwningTitle, Title.Self ) )]"
+					}
+
 					fixedgridbox = {
 						layoutpolicy_horizontal = expanding
 						datamodel = "[MilitaryItem.GetOwnedMaa]"
@@ -2735,36 +2746,7 @@ types ArmiesView
 						addrow = 93
 
 						item = {
-							container_maa_item = {
-
-								blockoverride "maa_texture"
-								{
-									texture = "[MenAtArmsType.GetHorizontalImageForCulture( Regiment.GetOwningTitle.GetHolder.GetCulture )]"
-								}
-
-								widget = {
-									###Add Tooltip to show how long this maa will be loaned out.
-									size = { 68 64 }
-									visible = "[Not( ObjectsEqual( Regiment.GetOwningTitle, Regiment.GetControllingTitle ) )]"
-
-									background = {
-										using = Background_Area_Dark
-									}
-
-									text_single = {
-										visible = "[Not( ObjectsEqual( Regiment.GetOwningTitle, Regiment.GetControllingTitle ) )]"
-										parentanchor = top|hcenter
-										text = MV_ADMIN_ARMY_ARMIES_LOANED_LABEL
-										align = center
-									}
-
-									coa_title_tiny = {
-										datacontext = "[Regiment.GetControllingTitle]"
-										parentanchor = bottom|hcenter
-										position = { 0 2 }
-									}
-								}
-							}
+							maam_tile_title = {}
 						}
 					}
 
@@ -2783,6 +2765,7 @@ types ArmiesView
 							text = "ADD_MEN_AT_ARMS_LABEL"
 
 							onclick = "[MilitaryItem.OnClickTitle( Title.Self )]"
+							enabled = "[Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet )]"
 							down = "[MilitaryItem.IsOpen]"
 
 							tooltip = "CREATE_MAA_TOOLTIP"

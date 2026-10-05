@@ -22,7 +22,7 @@ window = {
 	# Same rule as the opener button: only usable at peace with no regiments raised.
 	# If a war starts or troops are raised while open, the window hides (the actions
 	# are also rejected in script - see maa_manager_can_modify_regiments).
-	visible = "[And(VariableSystem.Exists('men_at_arms_manager_open'), And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments)))]"
+	visible = "[And( And(VariableSystem.Exists('men_at_arms_manager_open'), And(Not(GetPlayer.IsAtWar), Not(GetPlayer.HasRaisedRegiments))), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
 
 	state = {
 		name = _show
@@ -32,8 +32,13 @@ window = {
 		on_start = "[GetVariableSystem.Clear( 'maa_manager_selected_regiment_id' )]"
 		on_start = "[GetVariableSystem.Clear( 'maa_manager_selected_regiment_type_name' )]"
 		on_start = "[GetVariableSystem.Clear( 'maa_manager_retrain_target_type' )]"
+		# Opened from the muster board: the preselected regiment's own type must
+		# not be offered as a retrain target.
+		on_start = "[GetVariableSystem.Set( 'maa_manager_selected_regiment_type_name', GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetMAAType.GetNameNoTooltip )]"
 		on_start = "[GetScriptedGui('maa_manager_data_create').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-		on_start = "[VariableSystem.Set('maa_manager_tab', 'troops')]"
+		# Opened from the muster board's Retrain button: start on the Retrain tab.
+		on_start = "[VariableSystem.Set('maa_manager_tab', Select_CString( VariableSystem.Exists('maam_open_tab'), 'retrain', 'troops' ))]"
+		on_start = "[VariableSystem.Clear('maam_open_tab')]"
 	}
 
 	state = {

@@ -1,0 +1,38 @@
+﻿######################################################
+# MAA Manager - Dynamic retrain values
+######################################################
+
+# Minimum fee per stack, applied AFTER the measured (discounted) price
+# difference. Tested values: 10, 25, 50.
+maam_rt_minimum_fee_value = 10
+
+# max(target price - source price, minimum) x source stacks.
+# CK3 script values: "min = X" enforces a lower bound of X.
+maam_rt_fee_value = {
+	value = var:maam_rt_target_price
+	subtract = var:maam_rt_source_price
+	min = var:maam_rt_floor
+	multiply = var:maam_rt_size
+}
+
+# GUI display: what the player still pays (positive) or gets back (negative)
+# after the held target stack, before committing.
+maam_rt_preview_fee_value = {
+	value = var:maam_rt_gold_paid
+	subtract = var:maam_rt_source_price
+	min = var:maam_rt_floor
+	multiply = var:maam_rt_size
+}
+maam_rt_preview_difference_value = {
+	value = var:maam_rt_gold_paid
+	subtract = var:maam_rt_source_price
+	min = var:maam_rt_floor
+}
+maam_rt_preview_remaining_value = {
+	value = maam_rt_preview_fee_value
+	subtract = var:maam_rt_gold_paid
+}
+maam_rt_preview_remaining_abs_value = {
+	value = maam_rt_preview_remaining_value
+	if = { limit = { maam_rt_preview_remaining_value < 0 } multiply = -1 }
+}

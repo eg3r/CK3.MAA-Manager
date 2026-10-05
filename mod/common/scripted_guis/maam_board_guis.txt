@@ -1,0 +1,329 @@
+﻿######################################################
+# MAA Manager - Muster board scripted GUIs
+# Click entry points for the cards and the bench in the Military window.
+######################################################
+
+# Card click: select scope:regiment for the bench.
+maam_board_select = {
+	scope = character
+	is_valid = {
+		maam_board_actions_allowed = yes
+		exists = scope:regiment
+		OR = {
+			scope:regiment = { is_personal_maa_regiment = yes regiment_owner = root }
+			scope:regiment = { maa_manager_title_regiment_owned = yes }
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				maam_board_actions_allowed = yes
+				exists = scope:regiment
+			}
+			maam_board_select_effect = yes
+		}
+	}
+}
+
+# Kin card click: pair scope:target_regiment; GUI passes scope:type_relation.
+maam_board_pair = {
+	scope = character
+	is_valid = {
+		NOT = { has_variable = maam_rt_active }
+		maa_manager_select_target_valid = yes
+	}
+	effect = {
+		if = {
+			limit = { NOT = { has_variable = maam_rt_active } }
+			maam_board_set_partner_effect = yes
+		}
+	}
+}
+
+maam_board_unpair = {
+	scope = character
+	effect = { maam_board_clear_partner_effect = yes }
+}
+
+maam_board_close = {
+	scope = character
+	effect = { maam_board_clear_effect = yes }
+}
+
+maam_board_give = {
+	scope = character
+	is_valid = {
+		maam_board_actions_allowed = yes
+		maa_manager_transfer_selection_valid = yes
+		var:maa_manager_selected_regiment_scope = { maa_size > 1 }
+		var:maa_manager_selected_target_scope = { can_upgrade_maa = yes }
+	}
+	effect = { maam_board_give_effect = yes }
+}
+
+maam_board_take = {
+	scope = character
+	is_valid = {
+		maam_board_actions_allowed = yes
+		maa_manager_transfer_selection_valid = yes
+		var:maa_manager_selected_target_scope = { maa_size > 1 }
+		var:maa_manager_selected_regiment_scope = { can_upgrade_maa = yes }
+	}
+	effect = { maam_board_take_effect = yes }
+}
+
+maam_board_undo = {
+	scope = character
+	is_valid = {
+		maam_board_actions_allowed = yes
+		maa_manager_transfer_selection_valid = yes
+		maam_board_undo_pair_current = yes
+		var:maam_last_to = { maa_size > 1 }
+		var:maam_last_from = { can_upgrade_maa = yes }
+	}
+	effect = { maam_board_undo_effect = yes }
+}
+
+maam_board_merge_into_partner = {
+	scope = character
+	is_valid = {
+		maam_board_actions_allowed = yes
+		maa_manager_transfer_selection_valid = yes
+		var:maa_manager_selected_regiment_scope = { maa_size = 1 }
+		var:maa_manager_selected_target_scope = { can_upgrade_maa = yes }
+	}
+	effect = { maam_board_merge_into_partner_effect = yes }
+}
+
+maam_board_merge_partner_in = {
+	scope = character
+	is_valid = {
+		maam_board_actions_allowed = yes
+		maa_manager_transfer_selection_valid = yes
+		var:maa_manager_selected_target_scope = { maa_size = 1 }
+		var:maa_manager_selected_regiment_scope = { can_upgrade_maa = yes }
+	}
+	effect = { maam_board_merge_partner_in_effect = yes }
+}
+
+maam_board_send_soldiers = {
+	scope = character
+	is_valid = {
+		maam_board_actions_allowed = yes
+		maa_manager_transfer_selection_valid = yes
+		has_variable = maa_total_planned_transfers
+		NOT = { var:maa_total_planned_transfers = 0 }
+	}
+	effect = { maam_board_send_soldiers_effect = yes }
+}
+
+# Display: which merge applies right now.
+maam_board_merge_into_partner_shown = {
+	scope = character
+	is_shown = {
+		exists = var:maa_manager_selected_regiment_scope
+		exists = var:maa_manager_selected_target_scope
+		var:maa_manager_selected_regiment_scope = { maa_size = 1 }
+	}
+}
+maam_board_merge_partner_in_shown = {
+	scope = character
+	is_shown = {
+		exists = var:maa_manager_selected_regiment_scope
+		exists = var:maa_manager_selected_target_scope
+		var:maa_manager_selected_target_scope = { maa_size = 1 }
+		var:maa_manager_selected_regiment_scope = { maa_size > 1 }
+	}
+}
+
+######################################################
+# Card display helpers (scope:regiment = the card's regiment)
+######################################################
+
+# A selection exists on the same board as scope:regiment (personal vs title).
+maam_board_has_selection = {
+	scope = character
+	is_shown = {
+		has_variable = maam_board_selected
+		exists = var:maa_manager_selected_regiment_scope
+		exists = scope:regiment
+		OR = {
+			AND = {
+				scope:regiment = { is_title_maa_regiment = yes }
+				var:maa_manager_selected_regiment_scope = { is_title_maa_regiment = yes }
+			}
+			AND = {
+				scope:regiment = { is_title_maa_regiment = no }
+				var:maa_manager_selected_regiment_scope = { is_title_maa_regiment = no }
+			}
+		}
+	}
+}
+
+maam_board_card_selected = {
+	scope = character
+	is_shown = {
+		has_variable = maam_board_selected
+		exists = var:maa_manager_selected_regiment_scope
+		exists = scope:regiment
+		scope:regiment = var:maa_manager_selected_regiment_scope
+	}
+}
+
+maam_board_card_partner = {
+	scope = character
+	is_shown = {
+		has_variable = maam_board_selected
+		exists = var:maa_manager_selected_target_scope
+		exists = scope:regiment
+		scope:regiment = var:maa_manager_selected_target_scope
+	}
+}
+
+# Could be paired with the selection (type equality is added by the GUI).
+maam_board_card_kin = {
+	scope = character
+	is_shown = {
+		NOT = { has_variable = maam_rt_active }
+		has_variable = maam_board_selected
+		exists = var:maa_manager_selected_regiment_scope
+		maa_manager_can_modify_regiments = yes
+		exists = scope:regiment
+		NOT = { scope:regiment = var:maa_manager_selected_regiment_scope }
+		trigger_if = {
+			limit = { exists = var:maa_manager_selected_target_scope }
+			NOT = { scope:regiment = var:maa_manager_selected_target_scope }
+		}
+		scope:regiment = { maa_manager_compatible_target_base = yes }
+	}
+}
+
+# The last clicked regiment is loaned out (read-only notice).
+maam_board_loaned_shown = {
+	scope = character
+	is_shown = {
+		exists = var:maam_board_loaned
+		NOT = { has_variable = maam_board_selected }
+	}
+}
+
+maam_board_dismiss_loaned = {
+	scope = character
+	effect = { remove_variable = maam_board_loaned }
+}
+
+# Title regiments and unsupported rulers: the existing retrain list.
+maam_open_legacy_retrain = {
+	scope = character
+	is_valid = {
+		maa_manager_can_modify_regiments = yes
+		exists = var:maa_manager_selected_regiment_scope
+		var:maa_manager_selected_regiment_scope = { maa_manager_is_manageable_regiment = yes }
+		NOT = { has_variable = maam_rt_active }
+	}
+	effect = {
+		if = {
+			limit = { exists = var:maa_manager_selected_regiment_scope }
+			set_variable = { name = maam_preselect_regiment value = var:maa_manager_selected_regiment_scope }
+		}
+	}
+}
+
+# Which board shows the bench.
+maam_board_bench_personal = {
+	scope = character
+	is_shown = {
+		has_variable = maam_board_selected
+		exists = var:maa_manager_selected_regiment_scope
+		var:maa_manager_selected_regiment_scope = { is_personal_maa_regiment = yes }
+		NOT = { maa_manager_is_title_mode = yes }
+	}
+}
+maam_board_bench_title = {
+	scope = character
+	is_shown = {
+		has_variable = maam_board_selected
+		exists = var:maa_manager_selected_regiment_scope
+		var:maa_manager_selected_regiment_scope = { is_title_maa_regiment = yes }
+		maa_manager_is_title_mode = yes
+	}
+}
+maam_board_soldiers_left = {
+	scope = character
+	is_valid = { maam_board_actions_allowed = yes maa_manager_transfer_selection_valid = yes }
+	effect = { maam_board_soldier_step_effect = { DIR = -1 } }
+}
+maam_board_soldiers_right = {
+	scope = character
+	is_valid = { maam_board_actions_allowed = yes maa_manager_transfer_selection_valid = yes }
+	effect = { maam_board_soldier_step_effect = { DIR = 1 } }
+}
+maam_board_soldiers_fill_partner = {
+	scope = character
+	is_valid = { maam_board_actions_allowed = yes maa_manager_transfer_selection_valid = yes }
+	effect = { maam_board_soldier_fill_partner_effect = yes }
+}
+maam_board_soldiers_fill_selected = {
+	scope = character
+	is_valid = { maam_board_actions_allowed = yes maa_manager_transfer_selection_valid = yes }
+	effect = { maam_board_soldier_fill_selected_effect = yes }
+}
+
+# Display: "Move the stack back" is offered right after a stack move only.
+maam_board_undo_shown = {
+	scope = character
+	is_shown = { maam_board_undo_pair_current = yes }
+}
+
+# Display: board actions blocked (war or raised armies).
+maam_board_blocked = {
+	scope = character
+	is_shown = { NOT = { maa_manager_can_modify_regiments = yes } }
+}
+
+# Tile click goes to selection (not the partner, nothing while retraining).
+maam_board_card_plain = {
+	scope = character
+	is_shown = {
+		NOT = { has_variable = maam_rt_active }
+		exists = scope:regiment
+		trigger_if = {
+			limit = { has_variable = maam_board_selected exists = var:maa_manager_selected_regiment_scope }
+			NOT = { scope:regiment = var:maa_manager_selected_regiment_scope }
+		}
+		trigger_if = {
+			limit = { exists = var:maa_manager_selected_target_scope }
+			NOT = { scope:regiment = var:maa_manager_selected_target_scope }
+		}
+	}
+}
+
+# A role banner replaces the type name on the tile.
+maam_board_card_has_banner = {
+	scope = character
+	is_shown = {
+		exists = scope:regiment
+		OR = {
+			AND = {
+				has_variable = maam_board_selected
+				exists = var:maa_manager_selected_regiment_scope
+				scope:regiment = var:maa_manager_selected_regiment_scope
+			}
+			AND = {
+				has_variable = maam_board_selected
+				exists = var:maa_manager_selected_target_scope
+				scope:regiment = var:maa_manager_selected_target_scope
+			}
+			AND = {
+				has_variable = maam_rt_active
+				exists = var:maam_rt_source
+				scope:regiment = var:maam_rt_source
+			}
+			AND = {
+				has_variable = maam_rt_active
+				exists = var:maam_rt_candidate
+				scope:regiment = var:maam_rt_candidate
+			}
+		}
+	}
+}
