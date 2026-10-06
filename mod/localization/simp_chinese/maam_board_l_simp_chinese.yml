@@ -233,3 +233,6 @@
  MAAM_RT_COST_CREDIT_PR:0 "@prestige_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_RT_COST_CREDIT_HE:0 "@herd_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_EMPTY:0 ""
+ MAAM_BACK_BLOCKED_TT:0 "#X 无法撤销此次转移#!\n军团已发生变化，原军团已达到规模上限，或此记录来自旧版本。已完成的转移将保留。"
+ MAAM_RT_AMBIGUOUS_TT:0 "#X 无法明确识别此目标#!\n其显示名称必须仅对应招募列表中的一种兵种。请选择其他兵种或取消。"
+ MAAM_RT_ZERO_TARGET_TT:0 "暂不支持重新训练为免费兵种。价格检查时的购买已撤销，未消耗任何资源。"

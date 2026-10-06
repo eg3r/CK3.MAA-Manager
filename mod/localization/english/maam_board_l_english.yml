@@ -233,3 +233,6 @@
  MAAM_RT_COST_CREDIT_PR:0 "@prestige_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_RT_COST_CREDIT_HE:0 "@herd_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_EMPTY:0 ""
+ MAAM_BACK_BLOCKED_TT:0 "#X Cannot undo this placement#!\nThe regiments changed, the original regiment is at its size limit, or this history is from an older version. Completed moves are kept."
+ MAAM_RT_AMBIGUOUS_TT:0 "#X Cannot identify this target safely#!\nIts displayed name must match exactly one type in the recruitment list. Choose another type or cancel."
+ MAAM_RT_ZERO_TARGET_TT:0 "Retraining into a free type is not supported yet. The price check was reversed; nothing was spent."

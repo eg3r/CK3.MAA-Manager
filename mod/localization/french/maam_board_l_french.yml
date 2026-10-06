@@ -233,3 +233,6 @@
  MAAM_RT_COST_CREDIT_PR:0 "@prestige_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_RT_COST_CREDIT_HE:0 "@herd_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_EMPTY:0 ""
+ MAAM_BACK_BLOCKED_TT:0 "#X Impossible d’annuler ce placement#!\nLes régiments ont changé, le régiment d’origine a atteint sa taille maximale ou cet historique provient d’une ancienne version. Les déplacements effectués sont conservés."
+ MAAM_RT_AMBIGUOUS_TT:0 "#X Impossible d’identifier cette cible avec certitude#!\nSon nom affiché doit correspondre à un seul type dans la liste de recrutement. Choisissez un autre type ou annulez."
+ MAAM_RT_ZERO_TARGET_TT:0 "La reconversion vers un type gratuit n’est pas encore prise en charge. L’achat de vérification a été annulé ; rien n’a été dépensé."

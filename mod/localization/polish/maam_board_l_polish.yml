@@ -233,3 +233,6 @@
  MAAM_RT_COST_CREDIT_PR:0 "@prestige_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_RT_COST_CREDIT_HE:0 "@herd_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_EMPTY:0 ""
+ MAAM_BACK_BLOCKED_TT:0 "#X Nie można cofnąć tego przeniesienia#!\nPułki się zmieniły, pierwotny pułk osiągnął maksymalny rozmiar lub historia pochodzi ze starszej wersji. Wykonane przeniesienia zostają zachowane."
+ MAAM_RT_AMBIGUOUS_TT:0 "#X Nie można jednoznacznie rozpoznać tego celu#!\nWyświetlana nazwa musi odpowiadać dokładnie jednemu typowi na liście rekrutacji. Wybierz inny typ lub anuluj."
+ MAAM_RT_ZERO_TARGET_TT:0 "Przeszkolenie na bezpłatny typ nie jest jeszcze obsługiwane. Zakup próbny został cofnięty; nic nie wydano."

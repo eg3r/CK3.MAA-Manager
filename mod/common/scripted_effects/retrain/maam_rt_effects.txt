@@ -60,12 +60,18 @@ maam_rt_clear_prices = {
 	remove_variable = maam_rt_fallback
 	remove_variable = maam_rt_quoted
 	remove_variable = maam_rt_tgt_refused
+	remove_variable = maam_rt_tgt_zero
+	remove_variable = maam_rt_target_unique
 	remove_variable = maam_rt_reopen
 	remove_variable = maam_rt_nothing
 	remove_variable = maam_rt_rel
 }
 
 maam_rt_clear_snapshot = {
+	remove_variable = maam_rt_quote_valid
+	remove_variable = maam_rt_source_size_before
+	remove_variable = maam_rt_source_troops_before
+	remove_variable = maam_rt_source_max_before
 	remove_variable = maam_rt_snap
 	remove_variable = maam_rt_bought
 	remove_variable = maam_rt_gold_before
@@ -183,6 +189,16 @@ maam_rt_cancel_effect = {
 ######################################################
 
 maam_rt_snapshot = {
+	remove_variable = maam_rt_quote_valid
+	remove_variable = maam_rt_source_size_before
+	remove_variable = maam_rt_source_troops_before
+	remove_variable = maam_rt_source_max_before
+	if = {
+		limit = { exists = var:maam_rt_source }
+		set_variable = { name = maam_rt_source_size_before value = var:maam_rt_source.maa_size }
+		set_variable = { name = maam_rt_source_troops_before value = var:maam_rt_source.maa_current_troops_count }
+		set_variable = { name = maam_rt_source_max_before value = var:maam_rt_source.maa_max_troops_count }
+	}
 	clear_variable_list = maam_rt_before
 	every_maa_regiment = { root = { add_to_variable_list = { name = maam_rt_before target = prev } } }
 	set_variable = { name = maam_rt_gold_before value = gold }
@@ -260,6 +276,12 @@ maam_rt_measure = {
 # refunds do). Nothing is refunded when nothing was bought.
 maam_rt_take_back = {
 	maam_rt_measure = yes
+	remove_variable = maam_rt_quote_valid
+	remove_local_variable = maam_rt_quote_shape
+	if = {
+		limit = { maam_rt_quote_purchase_ok = yes }
+		set_local_variable = { name = maam_rt_quote_shape value = yes }
+	}
 	if = {
 		limit = { var:maam_rt_new_n > 0 }
 		set_variable = { name = maam_rt_bought value = yes }
@@ -321,6 +343,10 @@ maam_rt_take_back = {
 				maa_regiments_count = var:maam_rt_initial_count
 			}
 			debug_log = "MAAM RT: TAKE BACK PASS; balances and regiments restored."
+			if = {
+				limit = { has_local_variable = maam_rt_quote_shape }
+				set_variable = { name = maam_rt_quote_valid value = yes }
+			}
 		}
 		else = { debug_log = "MAAM RT: TAKE BACK finished, but a balance, level or the regiment count differs (check)." }
 	}
@@ -385,6 +411,23 @@ maam_rt_boost_now_effect = {
 			NOT = { maam_rt_src_known = yes }
 		}
 		maam_rt_boost = yes
+		# No native purchase has started in this phase. It may be cancelled
+		# safely if the next GUI update can no longer run the price check.
+		set_variable = { name = maam_rt_boost_waiting value = yes }
+	}
+}
+
+# Only compensates a loan made BEFORE the native purchase chain. Never infer
+# a purchase refund from old balances after unpause or reload.
+maam_rt_cancel_waiting_boost_effect = {
+	if = {
+		limit = {
+			has_variable = maam_rt_boost_waiting
+			has_variable = maam_rt_boosted
+			NOT = { has_variable = maam_rt_snap }
+		}
+		maam_rt_unboost = yes
+		maam_rt_cancel_effect = yes
 	}
 }
 
@@ -417,6 +460,7 @@ maam_rt_unboost = {
 		}
 	}
 	remove_variable = maam_rt_boosted
+	remove_variable = maam_rt_boost_waiting
 	remove_variable = maam_rt_boost_money
 	remove_variable = maam_rt_boost_treasury
 	remove_variable = maam_rt_boost_prestige
@@ -438,6 +482,7 @@ maam_rt_pc_begin_src_effect = {
 	if = {
 		limit = { has_variable = maam_rt_active }
 		remove_variable = maam_rt_bought
+		remove_variable = maam_rt_boost_waiting
 		set_variable = { name = maam_rt_rel value = scope:real_relation }
 		# Affordable or not, the current type can be bought for its price check.
 		# The opening check boosts one screen update earlier (the window's
@@ -476,8 +521,7 @@ maam_rt_pc_quote_src_effect = {
 		}
 		else_if = {
 			limit = {
-				var:maam_rt_new_n = 1
-				maam_rt_paid_something = yes
+				has_variable = maam_rt_quote_valid
 			}
 			set_variable = { name = maam_rt_src_price value = { value = var:maam_rt_paid min = 0 } }
 			set_variable = { name = maam_rt_src_barter value = { value = var:maam_rt_paid_barter min = 0 } }
@@ -519,6 +563,11 @@ maam_rt_pc_begin_tgt_effect = {
 	if = {
 		limit = { has_variable = maam_rt_active }
 		maam_rt_snapshot = yes
+		remove_variable = maam_rt_target_unique
+		if = {
+			limit = { exists = scope:name_unique scope:name_unique = flag:yes }
+			set_variable = { name = maam_rt_target_unique value = yes }
+		}
 	}
 }
 
@@ -544,6 +593,7 @@ maam_rt_pc_quote_tgt_effect = {
 		remove_variable = maam_rt_fee_piety
 		remove_variable = maam_rt_fee_herd
 		remove_variable = maam_rt_tgt_refused
+		remove_variable = maam_rt_tgt_zero
 		if = {
 			limit = {
 				OR = {
@@ -555,7 +605,8 @@ maam_rt_pc_quote_tgt_effect = {
 		}
 		else_if = {
 			limit = {
-				var:maam_rt_new_n = 1
+				has_variable = maam_rt_quote_valid
+				has_variable = maam_rt_target_unique
 				maam_rt_paid_something = yes
 			}
 			set_variable = { name = maam_rt_tgt_price value = { value = var:maam_rt_paid min = 0 } }
@@ -567,7 +618,18 @@ maam_rt_pc_quote_tgt_effect = {
 			set_variable = { name = maam_rt_quoted value = yes }
 			debug_log = "MAAM RT: TYPE PRICED; exact fee ready, balance unchanged."
 		}
-		else = { set_variable = { name = maam_rt_tgt_refused value = yes } }
+		else = {
+			set_variable = { name = maam_rt_tgt_refused value = yes }
+			if = {
+				limit = {
+					has_variable = maam_rt_quote_valid
+					NOT = { maam_rt_paid_something = yes }
+				}
+				# No currency can be inferred for the minimum. Keep these targets
+				# unsupported until a free-target fee policy is verified in game.
+				set_variable = { name = maam_rt_tgt_zero value = yes }
+			}
+		}
 		# Create closes the window only when something was bought.
 		if = {
 			limit = { has_variable = maam_rt_bought }
@@ -605,6 +667,14 @@ maam_rt_compute_fee = {
 	}
 	else_if = {
 		limit = {
+			# A known zero-price source has no currency to convert.
+			OR = {
+				var:maam_rt_src_price > 0
+				var:maam_rt_src_barter > 0
+				var:maam_rt_src_prestige > 0
+				var:maam_rt_src_piety > 0
+				var:maam_rt_src_herd > 0
+			}
 			NOT = {
 				OR = {
 					AND = { var:maam_rt_src_price > 0 var:maam_rt_tgt_price > 0 }
@@ -734,7 +804,11 @@ maam_rt_commit_begin_effect = {
 	maam_rt_snapshot = yes
 	remove_variable = maam_rt_committing
 	if = {
-		limit = { maam_rt_can_commit = yes }
+		limit = {
+			maam_rt_can_commit = yes
+			exists = scope:name_unique
+			scope:name_unique = flag:yes
+		}
 		set_variable = { name = maam_rt_committing value = yes }
 	}
 }

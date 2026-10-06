@@ -93,17 +93,54 @@ maam_ob_kin_target = {
 	}
 }
 
-# "Move a stack back" applies: the newest placement of this lift can return.
-maam_ob_back_ok = {
+# A receipt must still describe both regiments exactly. Reinforcement or a
+# native resize invalidates exact undo; zero transferred soldiers is valid.
+maam_ob_history_current = {
+	has_variable = maam_hist_version
+	var:maam_hist_version = 2
 	exists = var:maam_hist_1
+	exists = var:maam_hist_1_src
+	var:maam_hist_1_src = var:maam_ob_src
+	has_variable = maam_hist_1_men
+	has_variable = maam_hist_1_src_size
+	has_variable = maam_hist_1_src_troops
+	has_variable = maam_hist_1_src_max
+	has_variable = maam_hist_1_dst_size
+	has_variable = maam_hist_1_dst_troops
+	has_variable = maam_hist_1_dst_max
+	has_variable = maam_hist_1_src_max_before
+	has_variable = maam_hist_1_dst_max_before
 	maam_ob_src_ok = yes
+	var:maam_ob_src = {
+		regiment_controller = root
+		maa_size = root.var:maam_hist_1_src_size
+		maa_current_troops_count = root.var:maam_hist_1_src_troops
+		maa_max_troops_count = root.var:maam_hist_1_src_max
+	}
 	var:maam_hist_1 = {
 		maam_ob_regiment_ok = yes
+		regiment_controller = root
 		maa_size > 1
 		NOT = { this = root.var:maam_ob_src }
 		maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+		maa_size = root.var:maam_hist_1_dst_size
+		maa_current_troops_count = root.var:maam_hist_1_dst_troops
+		maa_max_troops_count = root.var:maam_hist_1_dst_max
 	}
+}
+
+# "Move a stack back" also needs the native displayed size limit of its
+# receiver (the original source), and GUI type equality for additive types.
+maam_ob_back_ok = {
+	maam_ob_history_current = yes
+	maam_ob_gui_room = yes
+	exists = scope:type_relation
+	scope:type_relation = flag:same
 	var:maam_ob_src = { can_upgrade_maa = yes }
+	var:maam_hist_1_men >= 0
+	var:maam_hist_1_dst_troops >= var:maam_hist_1_men
+	var:maam_hist_1_src_max_before >= { value = var:maam_hist_1_src_troops add = var:maam_hist_1_men }
+	var:maam_hist_1_dst_max_before >= { value = var:maam_hist_1_dst_troops subtract = var:maam_hist_1_men }
 }
 
 # The soldier move has a valid partner (maam_ob_tgt) for its regiment (maam_ob_src).

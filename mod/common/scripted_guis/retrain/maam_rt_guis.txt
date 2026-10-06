@@ -37,6 +37,10 @@ maam_rt_boosted_gui = {
 	scope = character
 	is_shown = { has_variable = maam_rt_boosted }
 }
+maam_rt_cancel_waiting_boost = {
+	scope = character
+	effect = { maam_rt_cancel_waiting_boost_effect = yes }
+}
 maam_rt_pc_quote_src_auto = {
 	scope = character
 	effect = { maam_rt_pc_quote_src_auto_effect = yes }

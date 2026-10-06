@@ -233,3 +233,6 @@
  MAAM_RT_COST_CREDIT_PR:0 "@prestige_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_RT_COST_CREDIT_HE:0 "@herd_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_EMPTY:0 ""
+ MAAM_BACK_BLOCKED_TT:0 "#X Diese Verschiebung kann nicht rückgängig gemacht werden#!\nDie Regimenter haben sich verändert, das ursprüngliche Regiment hat seine maximale Größe erreicht oder der Verlauf stammt aus einer älteren Version. Bereits erfolgte Verschiebungen bleiben bestehen."
+ MAAM_RT_AMBIGUOUS_TT:0 "#X Dieses Ziel kann nicht eindeutig bestimmt werden#!\nSein angezeigter Name muss genau einem Typ in der Rekrutierungsliste entsprechen. Wählt einen anderen Typ oder brecht ab."
+ MAAM_RT_ZERO_TARGET_TT:0 "Die Umschulung zu einem kostenlosen Typ wird noch nicht unterstützt. Der Testkauf wurde rückgängig gemacht; es wurde nichts ausgegeben."

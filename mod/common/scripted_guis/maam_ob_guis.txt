@@ -302,7 +302,8 @@ maam_ob_lane_pour_picked = {
 
 maam_ob_has_back = {
 	scope = character
-	is_shown = { maam_ob_back_ok = yes }
+	# Keep stale history visible as a disabled Back with an explanation.
+	is_shown = { has_variable = maam_hist_n }
 }
 
 # The soldier move has a valid partner.

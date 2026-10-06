@@ -95,6 +95,16 @@ window = {
 			visible = "[GetPlayer.MakeScope.Var('maam_rt_active').IsSet]"
 			size = { 430 72 }
 
+			# Cancel only an interrupted pre-purchase resource loan.
+			widget = {
+				size = { 0 0 }
+				state = {
+					name = maam_rt_interrupted_boost
+					trigger_when = "[And( GetPlayer.MakeScope.Var('maam_rt_boost_waiting').IsSet, Or( Not( IsGamePaused ), Not( GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) ) )]"
+					on_start = "[GetScriptedGui('maam_rt_cancel_waiting_boost').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+			}
+
 			# Armory plumbing: a click that bought nothing.
 			widget = {
 				size = { 1 1 }
@@ -755,6 +765,20 @@ window = {
 								tintcolor = { 0.27 0.28 0.30 1 }
 							}
 
+							hbox = {
+								ignoreinvisible = yes
+								name = "maam_rt_name_matches"
+								size = { 0 0 }
+								alwaystransparent = yes
+								datamodel = "[MenAtArmsTypeView.GetMenAtArmsTypes]"
+								item = {
+									widget = {
+										size = { 0 0 }
+										visible = "[EqualTo_string( MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip, MenAtArmsType.GetNameNoTooltip )]"
+									}
+								}
+							}
+
 							# Art thumbnail
 							widget = {
 								position = { 2 2 }
@@ -808,7 +832,7 @@ window = {
 							# The price check's purchase cleared the selection; select the priced
 							# type again once the board reopened the window (buys nothing).
 							widget = {
-								visible = "[And( GetScriptedGui('maam_rt_quoted_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), And( Not( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip ) ) )]"
+								visible = "[And( And( And( GetScriptedGui('maam_rt_quoted_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), Not( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ) ), EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip ) )]"
 								size = { 1 1 }
 
 								state = {
@@ -830,12 +854,12 @@ window = {
 									}
 								}
 								using = tooltip_ws
-								enabled = "[And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+								enabled = "[And( And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) ), EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
 								onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 								onclick = "[GetVariableSystem.Set( 'maam_rt_reopen_gui', 'yes' )]"
 								onclick = "[GetVariableSystem.Set( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
 								onclick = "[MenAtArmsTypeViewTypeItem.OnClick]"
-								onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 								onclick = "[MenAtArmsTypeView.Create]"
 								onclick = "[GetScriptedGui('maam_rt_pc_quote_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 							}
@@ -875,7 +899,7 @@ window = {
 										}
 									}
 									using = tooltip_ws
-									enabled = "[And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+									enabled = "[And( And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) ), EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_reopen_gui', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
@@ -883,7 +907,7 @@ window = {
 									onclick = "[MenAtArmsTypeView.Create]"
 									onclick = "[GetScriptedGui('maam_rt_pc_quote_src').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									onclick = "[MenAtArmsTypeViewTypeItem.OnClick]"
-									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 									onclick = "[MenAtArmsTypeView.Create]"
 									onclick = "[GetScriptedGui('maam_rt_pc_quote_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 								}
@@ -901,15 +925,23 @@ window = {
 										}
 									}
 									using = tooltip_ws
-									enabled = "[And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+									enabled = "[And( And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) ), EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_reopen_gui', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
 									onclick = "[MenAtArmsTypeViewTypeItem.OnClick]"
-									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 									onclick = "[MenAtArmsTypeView.Create]"
 									onclick = "[GetScriptedGui('maam_rt_pc_quote_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 								}
+							}
+
+							# A display name is not an identity when two native rows share it.
+							button_normal = {
+								visible = "[Not( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
+								size = { 100% 100% }
+								enabled = no
+								tooltip = "MAAM_RT_AMBIGUOUS_TT"
 							}
 
 							# Can't be bought: the price, on top, with the game's own reason.
@@ -958,6 +990,20 @@ window = {
 								tintcolor = { 0.27 0.28 0.30 1 }
 							}
 
+							hbox = {
+								ignoreinvisible = yes
+								name = "maam_rt_name_matches"
+								size = { 0 0 }
+								alwaystransparent = yes
+								datamodel = "[MenAtArmsTypeView.GetMenAtArmsTypes]"
+								item = {
+									widget = {
+										size = { 0 0 }
+										visible = "[EqualTo_string( MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip, MenAtArmsType.GetNameNoTooltip )]"
+									}
+								}
+							}
+
 							# Art thumbnail
 							widget = {
 								position = { 2 2 }
@@ -1011,7 +1057,7 @@ window = {
 							# The price check's purchase cleared the selection; select the priced
 							# type again once the board reopened the window (buys nothing).
 							widget = {
-								visible = "[And( GetScriptedGui('maam_rt_quoted_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), And( Not( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip ) ) )]"
+								visible = "[And( And( And( GetScriptedGui('maam_rt_quoted_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), Not( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ) ), EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip ) )]"
 								size = { 1 1 }
 
 								state = {
@@ -1033,12 +1079,12 @@ window = {
 									}
 								}
 								using = tooltip_ws
-								enabled = "[And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+								enabled = "[And( And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) ), EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
 								onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 								onclick = "[GetVariableSystem.Set( 'maam_rt_reopen_gui', 'yes' )]"
 								onclick = "[GetVariableSystem.Set( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
 								onclick = "[MenAtArmsTypeViewTypeItem.OnClick]"
-								onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 								onclick = "[MenAtArmsTypeView.Create]"
 								onclick = "[GetScriptedGui('maam_rt_pc_quote_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 							}
@@ -1078,7 +1124,7 @@ window = {
 										}
 									}
 									using = tooltip_ws
-									enabled = "[And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+									enabled = "[And( And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) ), EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_reopen_gui', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
@@ -1086,7 +1132,7 @@ window = {
 									onclick = "[MenAtArmsTypeView.Create]"
 									onclick = "[GetScriptedGui('maam_rt_pc_quote_src').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									onclick = "[MenAtArmsTypeViewTypeItem.OnClick]"
-									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 									onclick = "[MenAtArmsTypeView.Create]"
 									onclick = "[GetScriptedGui('maam_rt_pc_quote_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 								}
@@ -1104,15 +1150,23 @@ window = {
 										}
 									}
 									using = tooltip_ws
-									enabled = "[And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+									enabled = "[And( And( MenAtArmsTypeViewTypeItem.CanCreate, And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), GetScriptedGui('maam_rt_can_price_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) ), EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_reopen_gui', 'yes' )]"
 									onclick = "[GetVariableSystem.Set( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
 									onclick = "[MenAtArmsTypeViewTypeItem.OnClick]"
-									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									onclick = "[GetScriptedGui('maam_rt_pc_begin_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 									onclick = "[MenAtArmsTypeView.Create]"
 									onclick = "[GetScriptedGui('maam_rt_pc_quote_tgt').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 								}
+							}
+
+							# A display name is not an identity when two native rows share it.
+							button_normal = {
+								visible = "[Not( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ) )]"
+								size = { 100% 100% }
+								enabled = no
+								tooltip = "MAAM_RT_AMBIGUOUS_TT"
 							}
 
 							# Can't be bought: the price, on top, with the game's own reason.
@@ -1170,7 +1224,7 @@ window = {
 					layoutpolicy_horizontal = expanding
 					autoresize = yes
 					max_width = 410
-					text = "MAAM_RT_TGT_REFUSED"
+					text = "[SelectLocalization( GetPlayer.MakeScope.Var('maam_rt_tgt_zero').IsSet, 'MAAM_RT_ZERO_TARGET_TT', 'MAAM_RT_TGT_REFUSED' )]"
 				}
 
 				# Nothing priced yet.
@@ -1600,16 +1654,30 @@ window = {
 						layoutpolicy_horizontal = expanding
 						size = { 0 38 }
 
+						hbox = {
+							ignoreinvisible = yes
+							name = "maam_rt_name_matches"
+							size = { 0 0 }
+							alwaystransparent = yes
+							datamodel = "[MenAtArmsTypeView.GetMenAtArmsTypes]"
+							item = {
+								widget = {
+									size = { 0 0 }
+									visible = "[GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
+								}
+							}
+						}
+
 						maam_button_gold = {
 							visible = "[And( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected, GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) )]"
 							parentanchor = center
 							size = { 410 36 }
-							tooltip = "MAAM_RT_GO_TT"
-							enabled = "[And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
+							tooltip = "[SelectLocalization( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'MAAM_RT_GO_TT', 'MAAM_RT_AMBIGUOUS_TT' )]"
+							enabled = "[And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
 							onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 							onclick = "[GetVariableSystem.Set( 'maam_rt_commit_gui', 'yes' )]"
 							onclick = "[GetVariableSystem.Clear( 'maam_rt_reopen_gui' )]"
-							onclick = "[GetScriptedGui('maam_rt_commit_begin').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[GetScriptedGui('maam_rt_commit_begin').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 							onclick = "[MenAtArmsTypeView.Create]"
 							onclick = "[GetScriptedGui('maam_rt_commit_finish').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 							onclick = "[MenAtArmsTypeView.Close]"
@@ -1617,7 +1685,7 @@ window = {
 							# "Retrain" on the left, the fee on the right (as vanilla cost
 							# buttons). When short, the left label says "You need ..." alone.
 							text_single = {
-								visible = "[And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
+								visible = "[And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
 								parentanchor = left|vcenter
 								position = { 14 0 }
 								max_width = 382
@@ -1628,7 +1696,7 @@ window = {
 								alwaystransparent = yes
 							}
 							text_single = {
-								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
+								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
 								parentanchor = right|vcenter
 								position = { -14 0 }
 								max_width = 280
@@ -1639,7 +1707,7 @@ window = {
 								alwaystransparent = yes
 							}
 							text_single = {
-								visible = "[Not( And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
+								visible = "[Not( And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
 								parentanchor = left|vcenter
 								position = { 14 0 }
 								max_width = 382
@@ -1650,7 +1718,7 @@ window = {
 								alwaystransparent = yes
 							}
 							text_single = {
-								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) ) )]"
+								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) ) )]"
 								parentanchor = right|vcenter
 								position = { -14 0 }
 								max_width = 280
@@ -1664,7 +1732,7 @@ window = {
 						text_single = {
 							visible = "[Not( And( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected, GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ) )]"
 							parentanchor = center
-							text = "MAAM_RT_RESELECTING"
+							text = "[SelectLocalization( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'MAAM_RT_RESELECTING', 'MAAM_RT_AMBIGUOUS_TT' )]"
 							default_format = "#weak"
 						}
 					}
@@ -1694,7 +1762,7 @@ window = {
 					layoutpolicy_horizontal = expanding
 					autoresize = yes
 					max_width = 410
-					text = "MAAM_RT_TGT_REFUSED"
+					text = "[SelectLocalization( GetPlayer.MakeScope.Var('maam_rt_tgt_zero').IsSet, 'MAAM_RT_ZERO_TARGET_TT', 'MAAM_RT_TGT_REFUSED' )]"
 				}
 
 				# Nothing priced yet.
@@ -2124,16 +2192,30 @@ window = {
 						layoutpolicy_horizontal = expanding
 						size = { 0 38 }
 
+						hbox = {
+							ignoreinvisible = yes
+							name = "maam_rt_name_matches"
+							size = { 0 0 }
+							alwaystransparent = yes
+							datamodel = "[MenAtArmsTypeView.GetMenAtArmsTypes]"
+							item = {
+								widget = {
+									size = { 0 0 }
+									visible = "[GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeViewTypeItem.GetMenAtArmsType.GetNameNoTooltip )]"
+								}
+							}
+						}
+
 						maam_button_gold = {
 							visible = "[And( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected, GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) )]"
 							parentanchor = center
 							size = { 410 36 }
-							tooltip = "MAAM_RT_GO_TT"
-							enabled = "[And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
+							tooltip = "[SelectLocalization( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'MAAM_RT_GO_TT', 'MAAM_RT_AMBIGUOUS_TT' )]"
+							enabled = "[And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
 							onclick = "[GetVariableSystem.Set( 'maam_rt_busy', 'yes' )]"
 							onclick = "[GetVariableSystem.Set( 'maam_rt_commit_gui', 'yes' )]"
 							onclick = "[GetVariableSystem.Clear( 'maam_rt_reopen_gui' )]"
-							onclick = "[GetScriptedGui('maam_rt_commit_begin').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[GetScriptedGui('maam_rt_commit_begin').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'name_unique', MakeScopeFlag( Select_CString( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'yes', 'no' ) ) ).End )]"
 							onclick = "[MenAtArmsTypeView.Create]"
 							onclick = "[GetScriptedGui('maam_rt_commit_finish').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 							onclick = "[MenAtArmsTypeView.Close]"
@@ -2141,7 +2223,7 @@ window = {
 							# "Retrain" on the left, the fee on the right (as vanilla cost
 							# buttons). When short, the left label says "You need ..." alone.
 							text_single = {
-								visible = "[And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
+								visible = "[And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) )]"
 								parentanchor = left|vcenter
 								position = { 14 0 }
 								max_width = 382
@@ -2152,7 +2234,7 @@ window = {
 								alwaystransparent = yes
 							}
 							text_single = {
-								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
+								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
 								parentanchor = right|vcenter
 								position = { -14 0 }
 								max_width = 280
@@ -2163,7 +2245,7 @@ window = {
 								alwaystransparent = yes
 							}
 							text_single = {
-								visible = "[Not( And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
+								visible = "[Not( And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) )]"
 								parentanchor = left|vcenter
 								position = { 14 0 }
 								max_width = 382
@@ -2174,7 +2256,7 @@ window = {
 								alwaystransparent = yes
 							}
 							text_single = {
-								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( And( And( And( And( And( And( IsGamePaused, Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) ) )]"
+								visible = "[And( Not( GetScriptedGui('maam_rt_short_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( And( And( And( And( And( And( And( EqualTo_int32( PdxGuiWidget.AccessParent.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), IsGamePaused ), Not( GetVariableSystem.Exists( 'maam_rt_busy' ) ) ), MenAtArmsTypeView.CanCreate ), MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected ), GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ), GetScriptedGui('maam_rt_can_commit_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ), Not( MenAtArmsTypeView.GetSelectedTitle.IsValid ) ) ) )]"
 								parentanchor = right|vcenter
 								position = { -14 0 }
 								max_width = 280
@@ -2188,7 +2270,7 @@ window = {
 						text_single = {
 							visible = "[Not( And( MenAtArmsTypeView.IsAnyMenAtArmsTypeSelected, GetVariableSystem.HasValue( 'maam_rt_name', MenAtArmsTypeView.GetSelectedMenAtArmsType.GetNameNoTooltip ) ) )]"
 							parentanchor = center
-							text = "MAAM_RT_RESELECTING"
+							text = "[SelectLocalization( EqualTo_int32( PdxGuiWidget.AccessParent.FindChild( 'maam_rt_name_matches' ).CountVisibleChildren, '(int32)1' ), 'MAAM_RT_RESELECTING', 'MAAM_RT_AMBIGUOUS_TT' )]"
 							default_format = "#weak"
 						}
 					}

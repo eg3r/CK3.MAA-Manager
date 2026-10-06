@@ -233,3 +233,6 @@
  MAAM_RT_COST_CREDIT_PR:0 "@prestige_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_RT_COST_CREDIT_HE:0 "@herd_icon! [GetPlayer.MakeScope.Var('maam_rt_src_credit').GetValue|0]"
  MAAM_EMPTY:0 ""
+ MAAM_BACK_BLOCKED_TT:0 "#X No se puede deshacer este traslado#!\nLos regimientos han cambiado, el regimiento original ha alcanzado su tamaño máximo o el historial es de una versión anterior. Los traslados realizados se conservan."
+ MAAM_RT_AMBIGUOUS_TT:0 "#X No se puede identificar este destino con seguridad#!\nSu nombre debe corresponder a un único tipo de la lista de reclutamiento. Elige otro tipo o cancela."
+ MAAM_RT_ZERO_TARGET_TT:0 "Todavía no se admite la reconversión a un tipo gratuito. La compra de comprobación se ha deshecho; no se ha gastado nada."

@@ -59,6 +59,38 @@ maam_rt_paid_something = {
 	}
 }
 
+# A successful source quote can cost zero. Prove creation independently of
+# payment before the temporary regiment is destroyed. Negative deltas or
+# changes to the source are not supported prices.
+maam_rt_quote_purchase_ok = {
+	has_variable = maam_rt_snap
+	maam_rt_source_valid = yes
+	var:maam_rt_source = {
+		maa_size = root.var:maam_rt_source_size_before
+		maa_current_troops_count = root.var:maam_rt_source_troops_before
+		maa_max_troops_count = root.var:maam_rt_source_max_before
+	}
+	var:maam_rt_new_n = 1
+	maa_regiments_count = { value = var:maam_rt_initial_count add = 1 }
+	NOT = { has_variable = maam_rt_nongold }
+	var:maam_rt_paid_gold >= 0
+	var:maam_rt_paid_treasury >= 0
+	var:maam_rt_paid_barter >= 0
+	var:maam_rt_paid_prestige >= 0
+	var:maam_rt_paid_piety >= 0
+	var:maam_rt_paid_herd >= 0
+	any_in_list = {
+		variable = maam_rt_new
+		regiment_owner = root
+		regiment_controller = root
+		is_personal_maa_regiment = yes
+		is_raised = no
+		maa_size = 1
+		maa_max_troops_count > 0
+		NOT = { this = root.var:maam_rt_source }
+	}
+}
+
 # Regiment scope: a source the retrain may replace.
 maam_rt_source_regiment_ok = {
 	regiment_owner = root

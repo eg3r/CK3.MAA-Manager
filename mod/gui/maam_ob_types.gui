@@ -8673,9 +8673,9 @@ types MAAManagerOrderOfBattle
 					maam_btn = {
 						size = { 144 24 }
 						text = "MAAM_BACK"
-						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-						tooltip = "MAAM_BACK_TT"
-						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
+						tooltip = "[SelectLocalization( GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End ), 'MAAM_BACK_TT', 'MAAM_BACK_BLOCKED_TT' )]"
+						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
 					}
 					text_single = {
 						text = "MAAM_S_LIFT_L"
@@ -8708,9 +8708,9 @@ types MAAManagerOrderOfBattle
 					maam_btn = {
 						size = { 144 24 }
 						text = "MAAM_BACK"
-						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-						tooltip = "MAAM_BACK_TT"
-						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
+						tooltip = "[SelectLocalization( GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End ), 'MAAM_BACK_TT', 'MAAM_BACK_BLOCKED_TT' )]"
+						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
 					}
 					}
 					hbox = {
@@ -9621,9 +9621,9 @@ types MAAManagerOrderOfBattle
 					maam_btn = {
 						size = { 144 24 }
 						text = "MAAM_BACK"
-						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-						tooltip = "MAAM_BACK_TT"
-						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
+						tooltip = "[SelectLocalization( GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End ), 'MAAM_BACK_TT', 'MAAM_BACK_BLOCKED_TT' )]"
+						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
 					}
 					text_single = {
 						text = "MAAM_S_LIFT_L"
@@ -9656,9 +9656,9 @@ types MAAManagerOrderOfBattle
 					maam_btn = {
 						size = { 144 24 }
 						text = "MAAM_BACK"
-						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-						tooltip = "MAAM_BACK_TT"
-						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						enabled = "[GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
+						tooltip = "[SelectLocalization( GetScriptedGui('maam_ob_back').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End ), 'MAAM_BACK_TT', 'MAAM_BACK_BLOCKED_TT' )]"
+						onclick = "[GetScriptedGui('maam_ob_back').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'gui_room', MakeScopeFlag( Select_CString( LessThan_int32( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAChunkCount, GetPlayer.MakeScope.Var('maam_ob_src').Regiment.CalcMaxMAAChunkCount ), 'yes', 'no' ) ) ).AddScope( 'type_relation', MakeScopeFlag( Select_CString( ObjectsEqual( GetPlayer.MakeScope.Var('maam_ob_src').Regiment.GetMAAType, GetPlayer.MakeScope.Var('maam_hist_1').Regiment.GetMAAType ), 'same', 'different' ) ) ).End )]"
 					}
 					}
 					hbox = {
