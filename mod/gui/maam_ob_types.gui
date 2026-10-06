@@ -382,7 +382,37 @@ types MAAManagerOrderOfBattle
 				using = tooltip_es
 
 				tooltipwidget = {
-					using = regiment_container_text_tooltip
+					using = maam_regiment_tooltip
+
+					blockoverride "maam_status" {
+						# Same style as the game's station line above it.
+						hbox = {
+							ignoreinvisible = yes
+							visible = "[GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+							layoutpolicy_horizontal = expanding
+							margin = { 15 0 }
+
+							text_multi = {
+								text = "MAAM_TT_RETRAINING"
+								default_format = "#weak"
+								autoresize = yes
+							}
+							expand = {}
+						}
+						hbox = {
+							ignoreinvisible = yes
+							visible = "[And( Not( GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ) ), And( Not( Regiment.IsPersonal ), Not( ObjectsEqual( Regiment.GetOwningTitle, Regiment.GetControllingTitle ) ) ) )]"
+							layoutpolicy_horizontal = expanding
+							margin = { 15 0 }
+
+							text_multi = {
+								text = "MAAM_TT_LOANED"
+								default_format = "#weak"
+								autoresize = yes
+							}
+							expand = {}
+						}
+					}
 
 					blockoverride "extra_info" {
 						divider_light = {
@@ -392,12 +422,6 @@ types MAAManagerOrderOfBattle
 							layoutpolicy_horizontal = expanding
 							visible = "[Regiment.GetOwningTitle.IsValid]"
 							text = "MAAM_LANE_TITLE_TT"
-							margin = { 10 0 }
-						}
-						text_single = {
-							layoutpolicy_horizontal = expanding
-							visible = "[Regiment.GetOriginProvince.IsValid]"
-							text = "MAAM_LANE_STATIONED"
 							margin = { 10 0 }
 						}
 						text_single = {
@@ -5784,45 +5808,46 @@ types MAAManagerOrderOfBattle
 		}
 
 		tooltipwidget = {
-			using = regiment_container_text_tooltip
+			using = maam_regiment_tooltip
 
+			blockoverride "maam_status" {
+				# Same style as the game's station line above it.
+				hbox = {
+					ignoreinvisible = yes
+					visible = "[GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
+					layoutpolicy_horizontal = expanding
+					margin = { 15 0 }
+
+					text_multi = {
+						text = "MAAM_TT_RETRAINING"
+						default_format = "#weak"
+						autoresize = yes
+					}
+					expand = {}
+				}
+				hbox = {
+					ignoreinvisible = yes
+					visible = "[And( Not( GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ) ), And( Not( Regiment.IsPersonal ), Not( ObjectsEqual( Regiment.GetOwningTitle, Regiment.GetControllingTitle ) ) ) )]"
+					layoutpolicy_horizontal = expanding
+					margin = { 15 0 }
+
+					text_multi = {
+						text = "MAAM_TT_LOANED"
+						default_format = "#weak"
+						autoresize = yes
+					}
+					expand = {}
+				}
+			}
+
+			# As the game's tile: a divider and its "Click to select".
 			blockoverride "extra_info" {
 				divider_light = {
 					layoutpolicy_horizontal = expanding
 				}
-				text_multi = {
-					layoutpolicy_horizontal = expanding
-					visible = "[GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End )]"
-					text = "MAAM_BADGE_RETRAINING_TT"
-					margin = { 10 0 }
-				}
-				text_multi = {
-					layoutpolicy_horizontal = expanding
-					visible = "[And( Not( GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ) ), And( Not( Regiment.IsPersonal ), Not( ObjectsEqual( Regiment.GetOwningTitle, Regiment.GetControllingTitle ) ) ) )]"
-					text = "MAAM_BADGE_LOANED_TT"
-					margin = { 10 0 }
-				}
-				text_multi = {
-					layoutpolicy_horizontal = expanding
-					visible = "[And( And( Not( GetScriptedGui('maam_rt_tile_is_source').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'regiment', Regiment.MakeScope ).End ) ), Not( And( Not( Regiment.IsPersonal ), Not( ObjectsEqual( Regiment.GetOwningTitle, Regiment.GetControllingTitle ) ) ) ) ), And( Not( Regiment.IsRaised ), GetPlayer.IsAtWar ) )]"
-					text = "MAAM_BADGE_UNRAISED_TT"
-					margin = { 10 0 }
-				}
-				text_multi = {
-					layoutpolicy_horizontal = expanding
-					visible = "[And( Not( Regiment.GetOriginProvince.IsValid ), GetPlayer.HasDomainProvincesForMAAOrigin )]"
-					text = "MAAM_BADGE_UNSTATIONED_TT"
-					margin = { 10 0 }
-				}
 				text_single = {
 					layoutpolicy_horizontal = expanding
-					visible = "[Regiment.GetOriginProvince.IsValid]"
-					text = "MAAM_LANE_STATIONED"
-					margin = { 10 0 }
-				}
-				text_single = {
-					layoutpolicy_horizontal = expanding
-					text = "[SelectLocalization( GetPlayer.MakeScope.Var('maam_rt_active').IsSet, 'MAAM_LANE_LOCKED_HINT', 'MAAM_TILE_CLICK_HINT' )]"
+					text = "[SelectLocalization( GetPlayer.MakeScope.Var('maam_rt_active').IsSet, 'MAAM_LANE_LOCKED_HINT', 'CLICK_TO_SELECT' )]"
 					margin = { 10 0 }
 				}
 			}
@@ -9909,4 +9934,193 @@ types MAAManagerOrderOfBattle
 		}
 	}
 
+}
+
+######################################################
+# The game's regiment tooltip (copied by the generator from the 1.20.0.3
+# snapshot) with the board's status slot under the station line.
+######################################################
+template maam_regiment_tooltip
+{
+	widget = {
+		alwaystransparent = no
+		using = GeneralTooltipSetup
+		datacontext = "[Regiment.GetMAAType]"
+		datacontext = "[Regiment.GetOwner]"
+
+		widget = {
+			name = "background"
+			using = DefaultTooltipBackground
+			size = { 100% 100% }
+			alwaystransparent = no
+		}
+
+		vbox = {
+			ignoreinvisible = yes
+			set_parent_size_to_minimum = yes
+			margin = { 8 8 }
+			margin_bottom = 16
+			spacing = 4
+
+			vbox = {
+				ignoreinvisible = yes
+				layoutpolicy_horizontal = expanding
+				margin = { 10 4 }
+
+				background = {
+					name = "header"
+					using = Background_Area_Dark
+					margin = { 5 5 }
+				}
+
+				hbox = {
+					ignoreinvisible = yes
+					layoutpolicy_horizontal = expanding
+
+					icon = {
+						size = { 40 40 }
+						texture = "[Regiment.GetMAAType.GetIcon]"
+					}
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						name = "header"
+						align = top|hcenter
+						text = "[Regiment.GetNameNoTooltip]"
+						maximumsize = { 400 -1 }
+
+						using = Font_Type_Flavor
+						using = Font_Size_Big
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+
+					}
+
+					coa_title_small = {
+						datacontext = "[Regiment.GetOwningTitle]"
+						visible = "[Title.IsValid]"
+					}
+				}
+			}
+
+			vbox = {
+				ignoreinvisible = yes
+				layoutpolicy_horizontal = expanding
+				margin = { 15 0 }
+				margin_top = 5
+				spacing = 10
+
+				hbox = {
+					ignoreinvisible = yes
+					layoutpolicy_horizontal = expanding
+
+					text_label_left = {
+						text = "[SelectLocalization(Regiment.IsRaised, 'MAA_RAISED', 'MAA_UNRAISED')]"
+						using = Font_Size_Medium
+						align = right
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+					}
+
+					expand = {}
+				}
+
+				hbox = {
+					ignoreinvisible = yes
+					layoutpolicy_horizontal = expanding
+
+					hbox = {
+						ignoreinvisible = yes
+						icon = {
+							name = "icon_maa"
+							texture = [MenAtArmsType.GetIcon]
+							size = { 30 30 }
+						}
+						text_single = {
+							text = "[Regiment.BuildCurrentRegimentCountString]"
+							default_format = "#high"
+							# using = Font_Size_Medium
+						}
+
+
+					}
+
+					# expand = {}
+					text_single = {
+						raw_text = ",  "
+
+						default_format = "#high"
+						# using = Font_Size_Medium
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+					}
+
+					text_single = {
+						text = "REGIMENT_CURRENT_SIZE"
+
+						default_format = "#high"
+						# using = Font_Size_Medium
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+					}
+
+					expand = {}
+
+				}
+			}
+
+			vbox = {
+				ignoreinvisible = yes
+				datacontext = "[Regiment.GetMAAType]"
+				layoutpolicy_horizontal = growing
+
+				hbox_maa_location = {
+					layoutpolicy_horizontal = expanding
+				}
+
+				# Men-at-Arms Manager: status lines in the station line's style.
+				block "maam_status" {}
+
+				vbox = {
+					ignoreinvisible = yes
+					layoutpolicy_horizontal = expanding
+					visible = "[Regiment.IsRegular]"
+					spacing = 2
+					margin = { 15 5 }
+
+					### INFO TEXT
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "MAA_REINFORCEMENT_COST_ENTRY"
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "MAA_MAINTENANCE"
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+					}
+
+					text_single = {
+						visible = "[IsLandlessAdventurer( GetPlayer )]"
+						layoutpolicy_horizontal = expanding
+						text = "[Regiment.GetProvisionsCostString]"
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+					}
+				}
+
+				divider_light = {
+					layoutpolicy_horizontal = expanding
+				}
+
+				vbox_maa_active_regiment_stats_numbers = {
+					layoutpolicy_horizontal = expanding
+				}
+				hbox_maa_type_text = {
+					layoutpolicy_horizontal = expanding
+				}
+
+				vbox_maa_info = {
+					layoutpolicy_horizontal = expanding
+				}
+			}
+
+			block "extra_info" {}
+		}
+	}
 }
