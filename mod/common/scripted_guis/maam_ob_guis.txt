@@ -1,0 +1,391 @@
+﻿######################################################
+# MAA Manager - Order of battle (Military window board) scripted GUIs
+# scope:regiment = the lane's regiment; scope:target_regiment + scope:type_relation
+# for clicks on another lane (type equality from the GUI's ObjectsEqual).
+######################################################
+
+######################################################
+# Orders
+######################################################
+
+maam_ob_lift = {
+	scope = character
+	is_valid = {
+		exists = scope:regiment
+		OR = {
+			AND = {
+				maam_ob_kind_is = { KIND = lift }
+				exists = var:maam_ob_src
+				var:maam_ob_src = scope:regiment
+			}
+			AND = {
+				maam_ob_can_order = yes
+				NOT = { exists = var:maam_ob_kind }
+				scope:regiment = {
+					maam_ob_regiment_ok = yes
+					maa_size > 1
+				}
+			}
+		}
+	}
+	effect = { maam_ob_lift_effect = yes }
+}
+
+maam_ob_place = {
+	scope = character
+	is_valid = {
+		maam_ob_can_order = yes
+		maam_ob_kind_is = { KIND = lift }
+		maam_ob_kin_target = yes
+		var:maam_ob_src = { maa_size > 1 }
+		scope:target_regiment = { can_upgrade_maa = yes }
+		maam_ob_gui_room = yes
+	}
+	effect = { maam_ob_place_effect = yes }
+}
+
+maam_ob_back = {
+	scope = character
+	is_valid = {
+		maam_ob_can_order = yes
+		OR = {
+			maam_ob_kind_is = { KIND = lift }
+			maam_ob_kind_is = { KIND = ended }
+		}
+		maam_ob_back_ok = yes
+	}
+	effect = { maam_ob_back_effect = yes }
+}
+
+maam_ob_cancel = {
+	scope = character
+	effect = { maam_ob_cancel_effect = yes }
+}
+
+maam_ob_merge_start = {
+	scope = character
+	is_valid = {
+		maam_ob_can_order = yes
+		NOT = { exists = var:maam_ob_kind }
+		exists = scope:regiment
+		scope:regiment = {
+			maam_ob_regiment_ok = yes
+			maa_size = 1
+		}
+	}
+	effect = { maam_ob_merge_start_effect = yes }
+}
+
+maam_ob_merge = {
+	scope = character
+	is_valid = {
+		maam_ob_can_order = yes
+		OR = {
+			maam_ob_kind_is = { KIND = merge }
+			maam_ob_kind_is = { KIND = ended }
+		}
+		maam_ob_kin_target = yes
+		var:maam_ob_src = { maa_size = 1 }
+		scope:target_regiment = { can_upgrade_maa = yes }
+		maam_ob_gui_room = yes
+	}
+	effect = { maam_ob_merge_effect = yes }
+}
+
+maam_ob_pour_start = {
+	scope = character
+	is_valid = {
+		maam_ob_can_order = yes
+		NOT = { exists = var:maam_ob_kind }
+		exists = scope:regiment
+		scope:regiment = { maam_ob_regiment_ok = yes }
+	}
+	effect = { maam_ob_pour_start_effect = yes }
+}
+
+# A row of the same type joins the partner list (GUI type comparison).
+maam_ob_pour_register = {
+	scope = character
+	effect = { maam_ob_pour_register_effect = yes }
+}
+
+maam_ob_pour_next = {
+	scope = character
+	is_valid = { variable_list_size = { name = maam_ob_partners value > 1 } }
+	effect = { maam_ob_pour_cycle_effect = { NEXT = yes } }
+}
+
+maam_ob_pour_prev = {
+	scope = character
+	is_valid = { variable_list_size = { name = maam_ob_partners value > 1 } }
+	effect = { maam_ob_pour_cycle_effect = { NEXT = no } }
+}
+
+# Partner -> the regiment (right arrow) and the regiment -> partner (left arrow).
+maam_ob_pour_take = {
+	scope = character
+	is_valid = {
+		maam_ob_can_order = yes
+		maam_ob_pour_pair_ok = yes
+		maam_ob_can_send = { FROM = var:maam_ob_tgt TO = var:maam_ob_src }
+	}
+	effect = { maam_ob_send_effect = { FROM = var:maam_ob_tgt TO = var:maam_ob_src } }
+}
+
+maam_ob_pour_give = {
+	scope = character
+	is_valid = {
+		maam_ob_can_order = yes
+		maam_ob_pour_pair_ok = yes
+		maam_ob_can_send = { FROM = var:maam_ob_src TO = var:maam_ob_tgt }
+	}
+	effect = { maam_ob_send_effect = { FROM = var:maam_ob_src TO = var:maam_ob_tgt } }
+}
+
+maam_ob_select = {
+	scope = character
+	effect = { maam_ob_select_effect = yes }
+}
+
+maam_ob_deselect = {
+	scope = character
+	effect = { maam_ob_deselect_effect = yes }
+}
+
+maam_ob_pref = {
+	scope = character
+	effect = { maam_ob_pref_effect = yes }
+}
+
+maam_ob_on_open = {
+	scope = character
+	effect = { maam_ob_on_open_effect = yes }
+}
+
+maam_qm_ask = {
+	scope = character
+	effect = {
+		remove_variable = maam_qm_hl
+		maam_qm_refresh_effect = yes
+	}
+}
+
+maam_qm_next = {
+	scope = character
+	effect = {
+		remove_variable = maam_qm_hl
+		maam_qm_next_effect = yes
+	}
+}
+
+maam_qm_show = {
+	scope = character
+	effect = { maam_qm_show_effect = yes }
+}
+
+######################################################
+# Display helpers (is_shown only)
+######################################################
+
+# War or a raised army: every lane is inert.
+maam_ob_blocked = {
+	scope = character
+	is_shown = { NOT = { maam_can_modify_regiments = yes } }
+}
+
+maam_ob_at_war = {
+	scope = character
+	is_shown = { is_at_war = yes }
+}
+
+# scope:want = flag:lift / flag:ended / flag:merge / flag:pour
+maam_ob_kind_gui = {
+	scope = character
+	is_shown = {
+		exists = var:maam_ob_kind
+		exists = scope:want
+		var:maam_ob_kind = scope:want
+		maam_ob_src_ok = yes
+	}
+}
+
+# Any order is open (view switches, folding and settings wait).
+maam_ob_has_order = {
+	scope = character
+	is_shown = {
+		exists = var:maam_ob_kind
+		maam_ob_src_ok = yes
+	}
+}
+
+# No order and nothing blocks: lanes are live.
+maam_ob_idle = {
+	scope = character
+	is_shown = {
+		maam_ob_can_order = yes
+		NOT = {
+			AND = {
+				exists = var:maam_ob_kind
+				maam_ob_src_ok = yes
+			}
+		}
+	}
+}
+
+# The lane's regiment can take part in orders (title loans are read-only).
+maam_ob_lane_ok = {
+	scope = character
+	is_shown = {
+		exists = scope:regiment
+		scope:regiment = { maam_ob_regiment_ok = yes }
+	}
+}
+
+maam_ob_is_src = {
+	scope = character
+	is_shown = {
+		exists = var:maam_ob_kind
+		exists = var:maam_ob_src
+		exists = scope:regiment
+		scope:regiment = var:maam_ob_src
+	}
+}
+
+# Lane can receive a lifted stack (the GUI adds the type equality).
+maam_ob_lane_receive = {
+	scope = character
+	is_shown = {
+		maam_ob_can_order = yes
+		maam_ob_kind_is = { KIND = lift }
+		maam_ob_src_ok = yes
+		var:maam_ob_src = { maa_size > 1 }
+		exists = scope:regiment
+		scope:regiment = {
+			maam_ob_regiment_ok = yes
+			NOT = { this = root.var:maam_ob_src }
+			maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+			can_upgrade_maa = yes
+		}
+	}
+}
+
+# Lane can take the source's last stack (merge or lift ended).
+maam_ob_lane_merge = {
+	scope = character
+	is_shown = {
+		maam_ob_can_order = yes
+		OR = {
+			maam_ob_kind_is = { KIND = merge }
+			maam_ob_kind_is = { KIND = ended }
+		}
+		maam_ob_src_ok = yes
+		var:maam_ob_src = { maa_size = 1 }
+		exists = scope:regiment
+		scope:regiment = {
+			maam_ob_regiment_ok = yes
+			NOT = { this = root.var:maam_ob_src }
+			maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+			can_upgrade_maa = yes
+		}
+	}
+}
+
+# The regiment is the soldier move's partner.
+maam_ob_lane_pour_picked = {
+	scope = character
+	is_shown = {
+		exists = var:maam_ob_tgt
+		exists = scope:regiment
+		scope:regiment = var:maam_ob_tgt
+	}
+}
+
+maam_ob_has_back = {
+	scope = character
+	# Keep stale history visible as a disabled Back with an explanation.
+	is_shown = { has_variable = maam_hist_n }
+}
+
+# The soldier move has a valid partner.
+maam_ob_pour_pair_gui = {
+	scope = character
+	is_shown = { maam_ob_pour_pair_ok = yes }
+}
+
+# The soldier move has more than one possible partner (show the cycle buttons).
+maam_ob_pour_multi_gui = {
+	scope = character
+	is_shown = { variable_list_size = { name = maam_ob_partners value > 1 } }
+}
+
+maam_ob_sel_is = {
+	scope = character
+	is_shown = {
+		exists = var:maam_ob_sel
+		exists = scope:regiment
+		scope:regiment = var:maam_ob_sel
+	}
+}
+
+maam_ob_has_sel = {
+	scope = character
+	is_shown = {
+		exists = var:maam_ob_sel
+		var:maam_ob_sel = {
+			maam_ob_regiment_ok = yes
+			is_personal_maa_regiment = yes
+		}
+	}
+}
+
+# Quartermaster: scope:want = flag:grow / flag:combine (both regiments still valid).
+maam_qm_is = {
+	scope = character
+	is_shown = {
+		exists = var:maam_qm_kind
+		exists = scope:want
+		var:maam_qm_kind = scope:want
+		maam_qm_tip_valid = yes
+	}
+}
+
+# A tip is stored but no longer holds: the strip asks again by itself.
+maam_qm_stale = {
+	scope = character
+	is_shown = {
+		exists = var:maam_qm_kind
+		NOT = { maam_qm_tip_valid = yes }
+	}
+}
+
+# Show me: the lane is one of the highlighted pair.
+maam_qm_hl_is = {
+	scope = character
+	is_shown = {
+		exists = var:maam_qm_hl
+		exists = scope:regiment
+		OR = {
+			AND = {
+				exists = var:maam_qm_a
+				scope:regiment = var:maam_qm_a
+			}
+			AND = {
+				exists = var:maam_qm_b
+				scope:regiment = var:maam_qm_b
+			}
+		}
+	}
+}
+
+# Default view (unset counts as the list).
+maam_pref_is = {
+	scope = character
+	is_shown = {
+		exists = scope:want
+		trigger_if = {
+			limit = { exists = var:maam_pref_view }
+			var:maam_pref_view = scope:want
+		}
+		trigger_else = { scope:want = flag:list }
+	}
+}

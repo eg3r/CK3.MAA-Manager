@@ -1,0 +1,383 @@
+﻿######################################################
+# MAA Manager - Retrain armory: currency pieces for prices and fees.
+# Each piece is one currency (money = gold or treasury, as the purchase took it; barter goods, prestige,
+# piety, herd) and is empty when that amount is 0, so a line shows only what
+# is involved: [GetPlayer.Custom('maam_rt_cost_fee_m')][...fee_ba')]...
+# Pieces end with a space. ROOT = the player.
+######################################################
+
+maam_rt_cost_src_m = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_src_price var:maam_rt_src_price > 0 has_variable = maam_rt_money_treasury }
+		localization_key = MAAM_RT_COST_SRC_T
+	}
+	text = {
+		trigger = { exists = var:maam_rt_src_price var:maam_rt_src_price > 0 }
+		localization_key = MAAM_RT_COST_SRC_G
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_src_ba = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_src_barter var:maam_rt_src_barter > 0 }
+		localization_key = MAAM_RT_COST_SRC_BA
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_src_pr = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_src_prestige var:maam_rt_src_prestige > 0 }
+		localization_key = MAAM_RT_COST_SRC_PR
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_src_pi = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_src_piety var:maam_rt_src_piety > 0 }
+		localization_key = MAAM_RT_COST_SRC_PI
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_src_he = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_src_herd var:maam_rt_src_herd > 0 }
+		localization_key = MAAM_RT_COST_SRC_HE
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_tgt_m = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_tgt_price var:maam_rt_tgt_price > 0 has_variable = maam_rt_money_treasury }
+		localization_key = MAAM_RT_COST_TGT_T
+	}
+	text = {
+		trigger = { exists = var:maam_rt_tgt_price var:maam_rt_tgt_price > 0 }
+		localization_key = MAAM_RT_COST_TGT_G
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_tgt_ba = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_tgt_barter var:maam_rt_tgt_barter > 0 }
+		localization_key = MAAM_RT_COST_TGT_BA
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_tgt_pr = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_tgt_prestige var:maam_rt_tgt_prestige > 0 }
+		localization_key = MAAM_RT_COST_TGT_PR
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_tgt_pi = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_tgt_piety var:maam_rt_tgt_piety > 0 }
+		localization_key = MAAM_RT_COST_TGT_PI
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_tgt_he = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_tgt_herd var:maam_rt_tgt_herd > 0 }
+		localization_key = MAAM_RT_COST_TGT_HE
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_fee_m = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee var:maam_rt_fee > 0 has_variable = maam_rt_money_treasury }
+		localization_key = MAAM_RT_COST_FEE_T
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee var:maam_rt_fee > 0 }
+		localization_key = MAAM_RT_COST_FEE_G
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_fee_ba = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_barter var:maam_rt_fee_barter > 0 }
+		localization_key = MAAM_RT_COST_FEE_BA
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_fee_pr = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_prestige var:maam_rt_fee_prestige > 0 }
+		localization_key = MAAM_RT_COST_FEE_PR
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_fee_pi = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_piety var:maam_rt_fee_piety > 0 }
+		localization_key = MAAM_RT_COST_FEE_PI
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_fee_he = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_herd var:maam_rt_fee_herd > 0 }
+		localization_key = MAAM_RT_COST_FEE_HE
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_res_m = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_result_fee var:maam_rt_result_fee > 0 has_variable = maam_rt_result_money_treasury }
+		localization_key = MAAM_RT_COST_RES_T
+	}
+	text = {
+		trigger = { exists = var:maam_rt_result_fee var:maam_rt_result_fee > 0 }
+		localization_key = MAAM_RT_COST_RES_G
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_res_ba = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_result_fee_barter var:maam_rt_result_fee_barter > 0 }
+		localization_key = MAAM_RT_COST_RES_BA
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_res_pr = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_result_fee_prestige var:maam_rt_result_fee_prestige > 0 }
+		localization_key = MAAM_RT_COST_RES_PR
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_res_pi = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_result_fee_piety var:maam_rt_result_fee_piety > 0 }
+		localization_key = MAAM_RT_COST_RES_PI
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_res_he = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_result_fee_herd var:maam_rt_result_fee_herd > 0 }
+		localization_key = MAAM_RT_COST_RES_HE
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_have_m = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee var:maam_rt_fee > 0 has_variable = maam_rt_money_treasury }
+		localization_key = MAAM_RT_COST_HAVE_T
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee var:maam_rt_fee > 0 }
+		localization_key = MAAM_RT_COST_HAVE_G
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_have_ba = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_barter var:maam_rt_fee_barter > 0 }
+		localization_key = MAAM_RT_COST_HAVE_BA
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_have_pr = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_prestige var:maam_rt_fee_prestige > 0 }
+		localization_key = MAAM_RT_COST_HAVE_PR
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_have_pi = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_piety var:maam_rt_fee_piety > 0 }
+		localization_key = MAAM_RT_COST_HAVE_PI
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_have_he = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_herd var:maam_rt_fee_herd > 0 }
+		localization_key = MAAM_RT_COST_HAVE_HE
+	}
+	text = {
+		localization_key = MAAM_EMPTY
+		fallback = yes
+	}
+}
+
+maam_rt_cost_floor = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:money has_variable = maam_rt_money_treasury }
+		localization_key = MAAM_RT_COST_FLOOR_T
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:money }
+		localization_key = MAAM_RT_COST_FLOOR_G
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:barter }
+		localization_key = MAAM_RT_COST_FLOOR_BA
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:piety }
+		localization_key = MAAM_RT_COST_FLOOR_PI
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:herd }
+		localization_key = MAAM_RT_COST_FLOOR_HE
+	}
+	text = {
+		localization_key = MAAM_RT_COST_FLOOR_PR
+		fallback = yes
+	}
+}
+
+maam_rt_cost_credit = {
+	type = character
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:money has_variable = maam_rt_money_treasury }
+		localization_key = MAAM_RT_COST_CREDIT_T
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:money }
+		localization_key = MAAM_RT_COST_CREDIT_G
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:barter }
+		localization_key = MAAM_RT_COST_CREDIT_BA
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:piety }
+		localization_key = MAAM_RT_COST_CREDIT_PI
+	}
+	text = {
+		trigger = { exists = var:maam_rt_fee_main var:maam_rt_fee_main = flag:herd }
+		localization_key = MAAM_RT_COST_CREDIT_HE
+	}
+	text = {
+		localization_key = MAAM_RT_COST_CREDIT_PR
+		fallback = yes
+	}
+}

@@ -1,0 +1,39 @@
+﻿######################################################
+# MAA Manager - war clears open board orders (lift, merge, soldier move).
+# Chained through on_actions: vanilla already defines effect blocks here.
+# Never touches a retrain (maam_rt_*).
+######################################################
+
+on_war_started = {
+	on_actions = { maam_on_war_started }
+}
+
+on_join_war_as_secondary = {
+	on_actions = { maam_on_join_war }
+}
+
+maam_on_war_started = {
+	effect = {
+		scope:attacker = {
+			if = {
+				limit = { is_ai = no }
+				maam_ob_clear_orders = yes
+			}
+		}
+		scope:defender = {
+			if = {
+				limit = { is_ai = no }
+				maam_ob_clear_orders = yes
+			}
+		}
+	}
+}
+
+maam_on_join_war = {
+	effect = {
+		if = {
+			limit = { is_ai = no }
+			maam_ob_clear_orders = yes
+		}
+	}
+}

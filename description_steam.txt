@@ -1,42 +1,23 @@
-[h1]Men-At-Arms Manager[/h1]
+[h1]Men-at-Arms Manager: Reworked[/h1]
 
-[b]Efficiently manage and reorganize your Men-At-Arms with an intuitive interface.[/b]
+[b]A complete rework of my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3580440930]Men-at-Arms Manager[/url].[/b] Everything now happens right in the Military window (F3) and the game's own recruitment window.
 
-[h2]Overview[/h2]
-The Men-At-Arms Manager adds an interface to your military screen for reorganizing and retraining both personal and title Men-at-Arms. Use the same familiar controls for your own troops and your Provincial or Thematic Armies.
+[h2]Modded Men-at-Arms now work![/h2]
+[b]Mods that add new Men-at-Arms types are fully supported.[/b] Retraining uses the game's own recruitment window and reads your real prices, so every type you can recruit shows up with the correct cost.
 
-[h2]Key Features[/h2]
+[h2]Large armies made easy[/h2]
+[b]Handling dozens of Men-at-Arms regiments is now far easier.[/b] Show them as a compact [b]list[/b], [b]grouped by type[/b] with folding groups, or as [b]tiles[/b] like the base game; your choice is remembered.
+
+[h2]Features[/h2]
 [list]
-[*] [b]Transfer Soldiers[/b] - Move individual soldiers between regiments of the same type
-[*] [b]Transfer Regiments[/b] - Move entire stacks between compatible regiments
-[*] [b]Title Men-at-Arms[/b] - Manage Provincial and Thematic Armies in a separate mode. Transfers stay within the same owning title; personal and title troops never mix
-[*] [b]Retrain Men-at-Arms[/b] - Convert regiments to eligible unit types using the existing retrain pricing, with Treasury payment where applicable
-[*] [b]Culture-Specific Artwork[/b] - Regiment cards use the appropriate cultural illustrations, matching the game
-[*] [b]Military Screen Integration[/b] - Open personal or title management directly from the corresponding military tab (F3)
-[*] [b]Multi-Language Support[/b] - Full localization in English, French, German, Spanish, Polish, Russian, Chinese, and Korean
+[*][b]Move stacks and soldiers[/b] between regiments of the same type, instantly, with undo.
+[*][b]Retrain in three clicks[/b]: size and soldiers carry over, the exact fee is shown first.
+[*][b]Quartermaster tips[/b] for regiments that can grow or be combined.
 [/list]
 
-[h2]How It Works[/h2]
-[olist]
-[*] Open your Military screen (F3)
-[*] For personal troops, click the manager button in [b]Your Armies[/b]. For title troops, use the manager button in [b]Provincial Armies[/b] or [b]Thematic Armies[/b]
-[*] Select source and target regiments
-[*] Transfer soldiers or stacks between compatible regiments, or use the [b]Retrain[/b] tab to choose a new unit type
-[*] Confirm your changes or adjust as needed
-[/olist]
-
-[h2]Requirements[/h2]
+[h2]Good to know[/h2]
 [list]
-[*] Men-At-Arms must be lowered (not raised/deployed)
-[*] Cannot be used during wartime
-[*] Loaned-out title troops can be viewed but cannot be modified
-[*] Title retraining requires an unstationed regiment and native permission to recruit its replacement, including a free regiment slot
+[*]Works at peace with no armies raised; pause the game to retrain.
+[*]Replaces the Military and recruitment windows: mods that change them will conflict.
+[*]CK3 1.20.* · English, French, German, Spanish, Polish, Russian, Chinese, Korean.
 [/list]
-
-[h2]Compatibility[/h2]
-Supports CK3 1.20.*. The mod overrides the military window; other mods that replace the same window may require a compatibility patch.
-
-[h2]Support[/h2]
-Found a bug or have a suggestion? Please report it in the discussions section!
-
-[i]Manage your armies like a true strategist.[/i]

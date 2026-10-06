@@ -1,0 +1,1014 @@
+﻿######################################################
+# MAA Manager - Retrain armory (native recruitment window, measured prices)
+#
+# Player flow: Retrain on a lane -> click a type (its exact fee appears) ->
+# Retrain. Everything else runs inside those clicks (proven 2026-10-06):
+#
+#   type click  [current type unpriced] snapshot -> Create (selection = current
+#               type) -> take back + refund; then select the type -> snapshot ->
+#               Create -> take back + refund. Gold, prestige and piety end where
+#               they started. Create closed the window: the board reopens it.
+#               Prices are read in money (gold, or treasury where the game charges it), barter goods
+#               (Wanua), prestige, piety and herd (nomads upgrade horde in the
+#               same window).
+#   Retrain     snapshot -> Create (the priced type) -> grow to the source's
+#               size, move the soldiers (same fullness), settle to the fee shown, remove the
+#               source last. Any failure before that takes back everything new
+#               since the snapshot and refunds it ("Failed to retrain").
+#
+# Nothing is held between clicks, so Cancel only removes the temporary slot.
+# No window hide ever calls anything here. ROOT = the player.
+######################################################
+
+# Clears the retrain (results survive for the strip).
+maam_rt_reset = {
+	maam_rt_unboost = yes
+	remove_character_modifier = maam_rt_slot_modifier
+	remove_variable = maam_rt_active
+	remove_variable = maam_rt_source
+	remove_variable = maam_rt_initial_count
+	remove_variable = maam_rt_initial_cap
+	remove_variable = maam_rt_floor
+	remove_variable = maam_rt_committing
+	maam_rt_clear_prices = yes
+	maam_rt_clear_snapshot = yes
+}
+
+# Prices belong to one retrain; every start begins clean.
+maam_rt_clear_prices = {
+	remove_variable = maam_rt_src_price
+	remove_variable = maam_rt_src_barter
+	remove_variable = maam_rt_src_prestige
+	remove_variable = maam_rt_src_piety
+	remove_variable = maam_rt_src_herd
+	remove_variable = maam_rt_src_unbuyable
+	remove_variable = maam_rt_tgt_price
+	remove_variable = maam_rt_tgt_barter
+	remove_variable = maam_rt_tgt_prestige
+	remove_variable = maam_rt_tgt_piety
+	remove_variable = maam_rt_tgt_herd
+	remove_variable = maam_rt_fee
+	remove_variable = maam_rt_fee_barter
+	remove_variable = maam_rt_fee_prestige
+	remove_variable = maam_rt_fee_piety
+	remove_variable = maam_rt_fee_herd
+	remove_variable = maam_rt_fee_main
+	remove_variable = maam_rt_money_treasury
+	remove_variable = maam_rt_floor_main
+	remove_variable = maam_rt_src_credit
+	remove_variable = maam_rt_converted
+	remove_variable = maam_rt_fallback
+	remove_variable = maam_rt_quoted
+	remove_variable = maam_rt_tgt_refused
+	remove_variable = maam_rt_tgt_zero
+	remove_variable = maam_rt_target_unique
+	remove_variable = maam_rt_reopen
+	remove_variable = maam_rt_nothing
+	remove_variable = maam_rt_rel
+}
+
+maam_rt_clear_snapshot = {
+	remove_variable = maam_rt_quote_valid
+	remove_variable = maam_rt_source_size_before
+	remove_variable = maam_rt_source_troops_before
+	remove_variable = maam_rt_source_max_before
+	remove_variable = maam_rt_snap
+	remove_variable = maam_rt_bought
+	remove_variable = maam_rt_gold_before
+	remove_variable = maam_rt_treasury_before
+	remove_variable = maam_rt_barter_before
+	remove_variable = maam_rt_prestige_before
+	remove_variable = maam_rt_piety_before
+	remove_variable = maam_rt_herd_before
+	remove_variable = maam_rt_prestige_level_before
+	remove_variable = maam_rt_piety_level_before
+	remove_variable = maam_rt_paid
+	remove_variable = maam_rt_paid_gold
+	remove_variable = maam_rt_paid_treasury
+	remove_variable = maam_rt_paid_barter
+	remove_variable = maam_rt_paid_prestige
+	remove_variable = maam_rt_paid_piety
+	remove_variable = maam_rt_paid_herd
+	remove_variable = maam_rt_new_n
+	remove_variable = maam_rt_nongold
+	remove_variable = maam_rt_candidate
+	clear_variable_list = maam_rt_before
+	clear_variable_list = maam_rt_new
+}
+
+maam_rt_set_result = {
+	remove_variable = maam_rt_result
+	set_variable = { name = maam_rt_result value = flag:$RESULT$ }
+}
+
+maam_rt_clear_result = {
+	remove_variable = maam_rt_result_money_treasury
+	remove_variable = maam_rt_result
+	remove_variable = maam_rt_result_fee
+	remove_variable = maam_rt_result_fee_barter
+	remove_variable = maam_rt_result_fee_prestige
+	remove_variable = maam_rt_result_fee_piety
+	remove_variable = maam_rt_result_fee_herd
+	remove_variable = maam_rt_result_new
+}
+
+# Removes the temporary slot and refreshes the cached cap (works while paused).
+maam_rt_remove_slot = {
+	remove_character_modifier = maam_rt_slot_modifier
+	scriptedtests_recalculate_character_modifier = yes
+}
+
+######################################################
+# Start, armory shown, cancel
+######################################################
+
+# Retrain on a lane (scope:real_source): one temporary slot, prices reset.
+maam_rt_start_effect = {
+	if = {
+		limit = { maam_rt_start_allowed = yes }
+		maam_rt_reset = yes
+		maam_rt_clear_result = yes
+		maam_ob_clear_order = yes
+		set_variable = { name = maam_rt_source value = scope:real_source }
+		set_variable = { name = maam_rt_initial_count value = maa_regiments_count }
+		set_variable = { name = maam_rt_initial_cap value = maa_regiments_max_count }
+		set_variable = { name = maam_rt_floor value = maam_rt_minimum_fee_value }
+		set_variable = { name = maam_rt_active value = yes }
+		add_character_modifier = { modifier = maam_rt_slot_modifier days = 3 }
+		scriptedtests_recalculate_character_modifier = yes
+		if = {
+			limit = { maa_regiments_max_count = { value = var:maam_rt_initial_cap add = 1 } }
+			debug_log = "MAAM RT: STARTED; temporary slot active."
+		}
+		else = { debug_log = "MAAM RT: STARTED, but the cap did not increase (check)." }
+	}
+}
+
+# The armory reopened after a price check (the board's reopen step): renew the
+# slot so it cannot run out while the window stays open, and clear the flag.
+maam_rt_armory_shown_effect = {
+	if = {
+		limit = {
+			has_variable = maam_rt_active
+			has_character_modifier = maam_rt_slot_modifier
+		}
+		remove_character_modifier = maam_rt_slot_modifier
+		add_character_modifier = { modifier = maam_rt_slot_modifier days = 3 }
+		scriptedtests_recalculate_character_modifier = yes
+		if = {
+			limit = {
+				exists = var:maam_rt_initial_cap
+				NOT = { maa_regiments_max_count = { value = var:maam_rt_initial_cap add = 1 } }
+			}
+			debug_log = "MAAM RT: slot renewed, but the cap is not the starting cap + 1 (check)."
+		}
+	}
+	remove_variable = maam_rt_reopen
+}
+
+# Cancel (strip button, armory close button, or the armory closed by Esc).
+# scope:why = flag:cancelled / flag:closed. Only while a retrain is open, so it
+# can never touch the result of a finished retrain. No result line: the player
+# cancelled it themselves, so the strip simply returns to where it was.
+maam_rt_cancel_effect = {
+	if = {
+		limit = { has_variable = maam_rt_active }
+		maam_rt_remove_slot = yes
+		maam_rt_clear_result = yes
+		if = {
+			limit = { exists = scope:why scope:why = flag:closed }
+			debug_log = "MAAM RT: CANCELLED (armory closed); nothing was bought or held."
+		}
+		else = { debug_log = "MAAM RT: CANCELLED; nothing was bought or held." }
+		maam_rt_reset = yes
+	}
+}
+
+######################################################
+# Snapshot and take-back (price checks and a failed commit)
+######################################################
+
+maam_rt_snapshot = {
+	remove_variable = maam_rt_quote_valid
+	remove_variable = maam_rt_source_size_before
+	remove_variable = maam_rt_source_troops_before
+	remove_variable = maam_rt_source_max_before
+	if = {
+		limit = { exists = var:maam_rt_source }
+		set_variable = { name = maam_rt_source_size_before value = var:maam_rt_source.maa_size }
+		set_variable = { name = maam_rt_source_troops_before value = var:maam_rt_source.maa_current_troops_count }
+		set_variable = { name = maam_rt_source_max_before value = var:maam_rt_source.maa_max_troops_count }
+	}
+	clear_variable_list = maam_rt_before
+	every_maa_regiment = { root = { add_to_variable_list = { name = maam_rt_before target = prev } } }
+	set_variable = { name = maam_rt_gold_before value = gold }
+	if = {
+		limit = { has_treasury = yes }
+		set_variable = { name = maam_rt_treasury_before value = treasury }
+	}
+	else = { set_variable = { name = maam_rt_treasury_before value = 0 } }
+	set_variable = { name = maam_rt_barter_before value = barter_goods }
+	set_variable = { name = maam_rt_prestige_before value = prestige }
+	set_variable = { name = maam_rt_piety_before value = piety }
+	if = {
+		limit = { exists = domicile }
+		set_variable = { name = maam_rt_herd_before value = domicile.herd }
+	}
+	else = { set_variable = { name = maam_rt_herd_before value = 0 } }
+	set_variable = { name = maam_rt_prestige_level_before value = prestige_level }
+	set_variable = { name = maam_rt_piety_level_before value = piety_level }
+	set_variable = { name = maam_rt_snap value = yes }
+}
+
+# Lists the regiments that are new since the snapshot and measures the debits.
+maam_rt_measure = {
+	clear_variable_list = maam_rt_new
+	set_variable = { name = maam_rt_new_n value = 0 }
+	every_maa_regiment = {
+		limit = {
+			NOT = { root = { is_target_in_variable_list = { name = maam_rt_before target = prev } } }
+		}
+		root = {
+			add_to_variable_list = { name = maam_rt_new target = prev }
+			change_variable = { name = maam_rt_new_n add = 1 }
+		}
+	}
+	set_variable = { name = maam_rt_paid_gold value = { value = var:maam_rt_gold_before subtract = gold } }
+	if = {
+		limit = { has_treasury = yes }
+		set_variable = { name = maam_rt_paid_treasury value = { value = var:maam_rt_treasury_before subtract = treasury } }
+	}
+	else = { set_variable = { name = maam_rt_paid_treasury value = 0 } }
+	set_variable = { name = maam_rt_paid_barter value = { value = var:maam_rt_barter_before subtract = barter_goods } }
+	set_variable = { name = maam_rt_paid_prestige value = { value = var:maam_rt_prestige_before subtract = prestige } }
+	set_variable = { name = maam_rt_paid_piety value = { value = var:maam_rt_piety_before subtract = piety } }
+	if = {
+		limit = { exists = domicile }
+		set_variable = { name = maam_rt_paid_herd value = { value = var:maam_rt_herd_before subtract = domicile.herd } }
+	}
+	else = { set_variable = { name = maam_rt_paid_herd value = 0 } }
+	# Money is whatever the purchase took: gold, or the treasury where the game
+	# charges it. Personal regiments cost gold even for treasury rulers (the
+	# game moves only state costs, title regiments among them, to the
+	# treasury). maam_rt_money_treasury remembers the currency for the fee, the
+	# settlement and the display; a check that took no money keeps it. Gold and
+	# treasury in one purchase can't be priced (maam_rt_nongold).
+	remove_variable = maam_rt_nongold
+	if = {
+		limit = { NOT = { var:maam_rt_paid_treasury = 0 } }
+		if = {
+			limit = { NOT = { var:maam_rt_paid_gold = 0 } }
+			set_variable = { name = maam_rt_nongold value = yes }
+		}
+		set_variable = { name = maam_rt_money_treasury value = yes }
+		set_variable = { name = maam_rt_paid value = var:maam_rt_paid_treasury }
+	}
+	else_if = {
+		limit = { NOT = { var:maam_rt_paid_gold = 0 } }
+		remove_variable = maam_rt_money_treasury
+		set_variable = { name = maam_rt_paid value = var:maam_rt_paid_gold }
+	}
+	else = { set_variable = { name = maam_rt_paid value = 0 } }
+}
+
+# Removes everything new since the snapshot and refunds the measured gold,
+# prestige and piety (prestige and piety without experience, as vanilla
+# refunds do). Nothing is refunded when nothing was bought.
+maam_rt_take_back = {
+	maam_rt_measure = yes
+	remove_variable = maam_rt_quote_valid
+	remove_local_variable = maam_rt_quote_shape
+	if = {
+		limit = { maam_rt_quote_purchase_ok = yes }
+		set_local_variable = { name = maam_rt_quote_shape value = yes }
+	}
+	if = {
+		limit = { var:maam_rt_new_n > 0 }
+		set_variable = { name = maam_rt_bought value = yes }
+		every_in_list = {
+			variable = maam_rt_new
+			limit = {
+				regiment_owner = root
+				is_personal_maa_regiment = yes
+			}
+			destroy_maa_regiment = yes
+		}
+		if = {
+			limit = { NOT = { var:maam_rt_paid_gold = 0 } }
+			add_gold = var:maam_rt_paid_gold
+		}
+		if = {
+			limit = {
+				has_treasury = yes
+				NOT = { var:maam_rt_paid_treasury = 0 }
+			}
+			add_treasury = var:maam_rt_paid_treasury
+		}
+		if = {
+			limit = { var:maam_rt_paid_barter > 0 }
+			add_barter_goods = var:maam_rt_paid_barter
+		}
+		else_if = {
+			limit = { var:maam_rt_paid_barter < 0 }
+			remove_barter_goods = { value = var:maam_rt_paid_barter multiply = -1 }
+		}
+		if = {
+			limit = { NOT = { var:maam_rt_paid_prestige = 0 } }
+			add_prestige_no_experience = var:maam_rt_paid_prestige
+		}
+		if = {
+			limit = { NOT = { var:maam_rt_paid_piety = 0 } }
+			add_piety_no_experience = var:maam_rt_paid_piety
+		}
+		if = {
+			limit = { NOT = { var:maam_rt_paid_herd = 0 } }
+			domicile ?= { change_herd = root.var:maam_rt_paid_herd }
+		}
+		if = {
+			limit = {
+				gold = var:maam_rt_gold_before
+				trigger_if = {
+					limit = { has_treasury = yes }
+					treasury = var:maam_rt_treasury_before
+				}
+				barter_goods = var:maam_rt_barter_before
+				prestige = var:maam_rt_prestige_before
+				piety = var:maam_rt_piety_before
+				trigger_if = {
+					limit = { exists = domicile }
+					domicile = { herd = root.var:maam_rt_herd_before }
+				}
+				prestige_level = var:maam_rt_prestige_level_before
+				piety_level = var:maam_rt_piety_level_before
+				maa_regiments_count = var:maam_rt_initial_count
+			}
+			debug_log = "MAAM RT: TAKE BACK PASS; balances and regiments restored."
+			if = {
+				limit = { has_local_variable = maam_rt_quote_shape }
+				set_variable = { name = maam_rt_quote_valid value = yes }
+			}
+		}
+		else = { debug_log = "MAAM RT: TAKE BACK finished, but a balance, level or the regiment count differs (check)." }
+	}
+	else_if = {
+		limit = { NOT = { gold = var:maam_rt_gold_before } }
+		debug_log = "MAAM RT: nothing bought, but gold changed; nothing refunded (check)."
+	}
+	clear_variable_list = maam_rt_new
+	remove_variable = maam_rt_snap
+}
+
+######################################################
+# Temporary resources for a price check: the purchase must succeed even when
+# the ruler can't afford the type right now. Only the ruler's own currencies;
+# prestige and piety without experience (no level change). What was really
+# added is recorded (herd is capped) and exactly that is removed again in the
+# same click. maam_rt_reset and every reopen also remove a leftover boost.
+######################################################
+
+maam_rt_boost = {
+	maam_rt_unboost = yes
+	# Gold always (personal regiments cost gold even for treasury rulers), and
+	# the treasury too where there is one (whichever the game charges).
+	set_local_variable = { name = maam_pre value = gold }
+	add_gold = 100000
+	set_variable = { name = maam_rt_boost_money value = { value = gold subtract = local_var:maam_pre } }
+	if = {
+		limit = { has_treasury = yes }
+		set_local_variable = { name = maam_pre value = treasury }
+		add_treasury = 100000
+		set_variable = { name = maam_rt_boost_treasury value = { value = treasury subtract = local_var:maam_pre } }
+	}
+	set_local_variable = { name = maam_pre value = prestige }
+	add_prestige_no_experience = 100000
+	set_variable = { name = maam_rt_boost_prestige value = { value = prestige subtract = local_var:maam_pre } }
+	set_local_variable = { name = maam_pre value = piety }
+	add_piety_no_experience = 100000
+	set_variable = { name = maam_rt_boost_piety value = { value = piety subtract = local_var:maam_pre } }
+	if = {
+		limit = { government_has_flag = government_use_barter_goods }
+		set_local_variable = { name = maam_pre value = barter_goods }
+		add_barter_goods = 100000
+		set_variable = { name = maam_rt_boost_barter value = { value = barter_goods subtract = local_var:maam_pre } }
+	}
+	if = {
+		limit = {
+			exists = domicile
+			government_has_flag = government_has_herd
+		}
+		set_local_variable = { name = maam_pre value = domicile.herd }
+		domicile = { change_herd = 100000 }
+		set_variable = { name = maam_rt_boost_herd value = { value = domicile.herd subtract = local_var:maam_pre } }
+	}
+	set_variable = { name = maam_rt_boosted value = yes }
+}
+
+# Step 1 of the opening price check.
+maam_rt_boost_now_effect = {
+	if = {
+		limit = {
+			has_variable = maam_rt_active
+			NOT = { maam_rt_src_known = yes }
+		}
+		maam_rt_boost = yes
+		# No native purchase has started in this phase. It may be cancelled
+		# safely if the next GUI update can no longer run the price check.
+		set_variable = { name = maam_rt_boost_waiting value = yes }
+	}
+}
+
+# Only compensates a loan made BEFORE the native purchase chain. Never infer
+# a purchase refund from old balances after unpause or reload.
+maam_rt_cancel_waiting_boost_effect = {
+	if = {
+		limit = {
+			has_variable = maam_rt_boost_waiting
+			has_variable = maam_rt_boosted
+			NOT = { has_variable = maam_rt_snap }
+		}
+		maam_rt_unboost = yes
+		maam_rt_cancel_effect = yes
+	}
+}
+
+maam_rt_unboost = {
+	if = {
+		limit = { has_variable = maam_rt_boosted }
+		if = {
+			limit = { exists = var:maam_rt_boost_money var:maam_rt_boost_money > 0 }
+			remove_short_term_gold = var:maam_rt_boost_money
+		}
+		if = {
+			limit = { exists = var:maam_rt_boost_treasury var:maam_rt_boost_treasury > 0 }
+			remove_treasury = var:maam_rt_boost_treasury
+		}
+		if = {
+			limit = { exists = var:maam_rt_boost_prestige var:maam_rt_boost_prestige > 0 }
+			add_prestige = { value = var:maam_rt_boost_prestige multiply = -1 }
+		}
+		if = {
+			limit = { exists = var:maam_rt_boost_piety var:maam_rt_boost_piety > 0 }
+			add_piety = { value = var:maam_rt_boost_piety multiply = -1 }
+		}
+		if = {
+			limit = { exists = var:maam_rt_boost_barter var:maam_rt_boost_barter > 0 }
+			remove_barter_goods = var:maam_rt_boost_barter
+		}
+		if = {
+			limit = { exists = var:maam_rt_boost_herd var:maam_rt_boost_herd > 0 }
+			domicile ?= { change_herd = { value = root.var:maam_rt_boost_herd multiply = -1 } }
+		}
+	}
+	remove_variable = maam_rt_boosted
+	remove_variable = maam_rt_boost_waiting
+	remove_variable = maam_rt_boost_money
+	remove_variable = maam_rt_boost_treasury
+	remove_variable = maam_rt_boost_prestige
+	remove_variable = maam_rt_boost_piety
+	remove_variable = maam_rt_boost_barter
+	remove_variable = maam_rt_boost_herd
+}
+
+######################################################
+# Background price checks (one type click)
+######################################################
+
+# Step 1, only while the current type is unpriced. scope:real_relation is
+# flag:same when the window's selection at the click was the current type
+# (auto-selected when the armory opened).
+maam_rt_pc_begin_src_effect = {
+	# Always snapshot while a retrain is open, so whatever the following Create
+	# buys can be taken back, even in an unexpected state.
+	if = {
+		limit = { has_variable = maam_rt_active }
+		remove_variable = maam_rt_bought
+		remove_variable = maam_rt_boost_waiting
+		set_variable = { name = maam_rt_rel value = scope:real_relation }
+		# Affordable or not, the current type can be bought for its price check.
+		# The opening check boosts one screen update earlier (the window's
+		# can-buy check is from the previous update); otherwise boost here.
+		if = {
+			limit = { NOT = { has_variable = maam_rt_boosted } }
+			maam_rt_boost = yes
+		}
+		maam_rt_snapshot = yes
+		debug_log = "MAAM RT: price check of the current type started."
+	}
+}
+
+maam_rt_pc_quote_src_effect = {
+	if = {
+		limit = { has_variable = maam_rt_snap }
+		maam_rt_take_back = yes
+	}
+	if = {
+		limit = {
+			exists = var:maam_rt_rel
+			NOT = { maam_rt_src_known = yes }
+		}
+		if = {
+			limit = { NOT = { var:maam_rt_rel = flag:same } }
+			# The current type was not selected: whatever was bought was taken back.
+			set_variable = { name = maam_rt_src_unbuyable value = flag:unlisted }
+		}
+		else_if = {
+			limit = { var:maam_rt_new_n = 0 }
+			set_variable = { name = maam_rt_src_unbuyable value = flag:refused }
+		}
+		else_if = {
+			limit = { has_variable = maam_rt_nongold }
+			set_variable = { name = maam_rt_src_unbuyable value = flag:nongold }
+		}
+		else_if = {
+			limit = {
+				has_variable = maam_rt_quote_valid
+			}
+			set_variable = { name = maam_rt_src_price value = { value = var:maam_rt_paid min = 0 } }
+			set_variable = { name = maam_rt_src_barter value = { value = var:maam_rt_paid_barter min = 0 } }
+			set_variable = { name = maam_rt_src_prestige value = { value = var:maam_rt_paid_prestige min = 0 } }
+			set_variable = { name = maam_rt_src_piety value = { value = var:maam_rt_paid_piety min = 0 } }
+			set_variable = { name = maam_rt_src_herd value = { value = var:maam_rt_paid_herd min = 0 } }
+			debug_log = "MAAM RT: CURRENT TYPE PRICED."
+		}
+		else = { set_variable = { name = maam_rt_src_unbuyable value = flag:refused } }
+		remove_variable = maam_rt_rel
+	}
+	maam_rt_unboost = yes
+}
+
+# The current type priced on its own when the armory opens (the only purchase
+# in that step, so it runs with the window open and in its mode: horde mode for
+# nomads). Then the board reopens the window like after any price check.
+maam_rt_pc_quote_src_auto_effect = {
+	maam_rt_pc_quote_src_effect = yes
+	if = {
+		limit = { exists = var:maam_rt_src_unbuyable }
+		debug_log = "MAAM RT: the current type could not be priced at opening (nothing bought, or not selected)."
+	}
+	if = {
+		limit = { has_variable = maam_rt_bought }
+		set_variable = { name = maam_rt_reopen value = yes }
+	}
+	else = { set_variable = { name = maam_rt_nothing value = yes } }
+	remove_variable = maam_rt_bought
+	if = {
+		limit = { has_variable = maam_rt_parity }
+		remove_variable = maam_rt_parity
+	}
+	else = { set_variable = { name = maam_rt_parity value = yes } }
+}
+
+# Step 2: after the clicked type was selected.
+maam_rt_pc_begin_tgt_effect = {
+	if = {
+		limit = { has_variable = maam_rt_active }
+		maam_rt_snapshot = yes
+		remove_variable = maam_rt_target_unique
+		if = {
+			limit = { exists = scope:name_unique scope:name_unique = flag:yes }
+			set_variable = { name = maam_rt_target_unique value = yes }
+		}
+	}
+}
+
+maam_rt_pc_quote_tgt_effect = {
+	if = {
+		limit = { has_variable = maam_rt_snap }
+		maam_rt_take_back = yes
+		# The current type has no row (or was not selected): fallback fee.
+		if = {
+			limit = { NOT = { maam_rt_src_known = yes } }
+			set_variable = { name = maam_rt_src_unbuyable value = flag:unlisted }
+			debug_log = "MAAM RT: a type was priced while the current type was still unpriced (no opening check ran); fallback fee."
+		}
+		remove_variable = maam_rt_quoted
+		remove_variable = maam_rt_tgt_price
+		remove_variable = maam_rt_tgt_barter
+		remove_variable = maam_rt_tgt_prestige
+		remove_variable = maam_rt_tgt_piety
+		remove_variable = maam_rt_tgt_herd
+		remove_variable = maam_rt_fee
+		remove_variable = maam_rt_fee_barter
+		remove_variable = maam_rt_fee_prestige
+		remove_variable = maam_rt_fee_piety
+		remove_variable = maam_rt_fee_herd
+		remove_variable = maam_rt_tgt_refused
+		remove_variable = maam_rt_tgt_zero
+		if = {
+			limit = {
+				OR = {
+					var:maam_rt_new_n = 0
+					has_variable = maam_rt_nongold
+				}
+			}
+			set_variable = { name = maam_rt_tgt_refused value = yes }
+		}
+		else_if = {
+			limit = {
+				has_variable = maam_rt_quote_valid
+				has_variable = maam_rt_target_unique
+				maam_rt_paid_something = yes
+			}
+			set_variable = { name = maam_rt_tgt_price value = { value = var:maam_rt_paid min = 0 } }
+			set_variable = { name = maam_rt_tgt_barter value = { value = var:maam_rt_paid_barter min = 0 } }
+			set_variable = { name = maam_rt_tgt_prestige value = { value = var:maam_rt_paid_prestige min = 0 } }
+			set_variable = { name = maam_rt_tgt_piety value = { value = var:maam_rt_paid_piety min = 0 } }
+			set_variable = { name = maam_rt_tgt_herd value = { value = var:maam_rt_paid_herd min = 0 } }
+			maam_rt_compute_fee = yes
+			set_variable = { name = maam_rt_quoted value = yes }
+			debug_log = "MAAM RT: TYPE PRICED; exact fee ready, balance unchanged."
+		}
+		else = {
+			set_variable = { name = maam_rt_tgt_refused value = yes }
+			if = {
+				limit = {
+					has_variable = maam_rt_quote_valid
+					NOT = { maam_rt_paid_something = yes }
+				}
+				# No currency can be inferred for the minimum. Keep these targets
+				# unsupported until a free-target fee policy is verified in game.
+				set_variable = { name = maam_rt_tgt_zero value = yes }
+			}
+		}
+		# Create closes the window only when something was bought.
+		if = {
+			limit = { has_variable = maam_rt_bought }
+			set_variable = { name = maam_rt_reopen value = yes }
+		}
+		else = { set_variable = { name = maam_rt_nothing value = yes } }
+		remove_variable = maam_rt_bought
+		# Text bound to variables is redrawn when its widget is shown again:
+		# every price line exists twice and this flag swaps them (Test C).
+		if = {
+			limit = { has_variable = maam_rt_parity }
+			remove_variable = maam_rt_parity
+		}
+		else = { set_variable = { name = maam_rt_parity value = yes } }
+	}
+}
+
+# The fee, per currency (money = treasury or gold, barter goods, prestige,
+# piety, herd):
+#   max(new - current, 0) per stack x stacks,
+# in the new type's main currency (money if it costs money, else barter goods,
+# else piety, else prestige, else herd) at least the minimum: 10 gold's worth
+# per stack at the Men-at-Arms rates (maam_rt_floor_main). When the two types
+# share no currency, the current type's whole price is converted at those
+# rates into the main currency and subtracted there (maam_rt_converted,
+# maam_rt_src_credit per stack). Fallback, half the new price per currency
+# (same minimum), only when the current type has no price (flag:unbuyable).
+maam_rt_compute_fee = {
+	remove_variable = maam_rt_fallback
+	remove_variable = maam_rt_converted
+	remove_variable = maam_rt_src_credit
+	if = {
+		limit = { NOT = { exists = var:maam_rt_src_price } }
+		set_variable = { name = maam_rt_fallback value = flag:unbuyable }
+	}
+	else_if = {
+		limit = {
+			# A known zero-price source has no currency to convert.
+			OR = {
+				var:maam_rt_src_price > 0
+				var:maam_rt_src_barter > 0
+				var:maam_rt_src_prestige > 0
+				var:maam_rt_src_piety > 0
+				var:maam_rt_src_herd > 0
+			}
+			NOT = {
+				OR = {
+					AND = { var:maam_rt_src_price > 0 var:maam_rt_tgt_price > 0 }
+					AND = { var:maam_rt_src_barter > 0 var:maam_rt_tgt_barter > 0 }
+					AND = { var:maam_rt_src_prestige > 0 var:maam_rt_tgt_prestige > 0 }
+					AND = { var:maam_rt_src_piety > 0 var:maam_rt_tgt_piety > 0 }
+					AND = { var:maam_rt_src_herd > 0 var:maam_rt_tgt_herd > 0 }
+				}
+			}
+		}
+		set_variable = { name = maam_rt_converted value = yes }
+	}
+	if = {
+		limit = { var:maam_rt_tgt_price > 0 }
+		set_variable = { name = maam_rt_fee_main value = flag:money }
+	}
+	else_if = {
+		limit = { var:maam_rt_tgt_barter > 0 }
+		set_variable = { name = maam_rt_fee_main value = flag:barter }
+	}
+	else_if = {
+		limit = { var:maam_rt_tgt_piety > 0 }
+		set_variable = { name = maam_rt_fee_main value = flag:piety }
+	}
+	else_if = {
+		limit = { var:maam_rt_tgt_prestige > 0 }
+		set_variable = { name = maam_rt_fee_main value = flag:prestige }
+	}
+	else = { set_variable = { name = maam_rt_fee_main value = flag:herd } }
+	# One gold is worth maam_rate of the main currency.
+	if = {
+		limit = { var:maam_rt_fee_main = flag:money }
+		set_local_variable = { name = maam_rate value = maam_rt_rate_money_value }
+	}
+	else_if = {
+		limit = { var:maam_rt_fee_main = flag:barter }
+		set_local_variable = { name = maam_rate value = maam_rt_rate_barter_value }
+	}
+	else_if = {
+		limit = { var:maam_rt_fee_main = flag:piety }
+		set_local_variable = { name = maam_rate value = maam_rt_rate_piety_value }
+	}
+	else_if = {
+		limit = { var:maam_rt_fee_main = flag:prestige }
+		set_local_variable = { name = maam_rate value = maam_rt_rate_prestige_value }
+	}
+	else = { set_local_variable = { name = maam_rate value = maam_rt_rate_herd_value } }
+	set_variable = { name = maam_rt_floor_main value = { value = var:maam_rt_floor multiply = local_var:maam_rate } }
+	if = {
+		limit = { has_variable = maam_rt_converted }
+		set_variable = {
+			name = maam_rt_src_credit
+			value = {
+				value = { value = var:maam_rt_src_price divide = maam_rt_rate_money_value }
+				add = { value = var:maam_rt_src_barter divide = maam_rt_rate_barter_value }
+				add = { value = var:maam_rt_src_prestige divide = maam_rt_rate_prestige_value }
+				add = { value = var:maam_rt_src_piety divide = maam_rt_rate_piety_value }
+				multiply = local_var:maam_rate
+			}
+		}
+	}
+	maam_rt_fee_in = { CUR = money FEE = maam_rt_fee TGT = maam_rt_tgt_price SRC = maam_rt_src_price }
+	maam_rt_fee_in = { CUR = barter FEE = maam_rt_fee_barter TGT = maam_rt_tgt_barter SRC = maam_rt_src_barter }
+	maam_rt_fee_in = { CUR = prestige FEE = maam_rt_fee_prestige TGT = maam_rt_tgt_prestige SRC = maam_rt_src_prestige }
+	maam_rt_fee_in = { CUR = piety FEE = maam_rt_fee_piety TGT = maam_rt_tgt_piety SRC = maam_rt_src_piety }
+	maam_rt_fee_in = { CUR = herd FEE = maam_rt_fee_herd TGT = maam_rt_tgt_herd SRC = maam_rt_src_herd }
+}
+
+# One currency of the fee (see maam_rt_compute_fee).
+maam_rt_fee_in = {
+	if = {
+		limit = { has_variable = maam_rt_fallback }
+		set_local_variable = {
+			name = maam_rt_base
+			value = { value = var:$TGT$ multiply = maam_rt_fallback_factor_value }
+		}
+	}
+	else = {
+		set_local_variable = {
+			name = maam_rt_base
+			value = { value = var:$TGT$ subtract = var:$SRC$ min = 0 }
+		}
+	}
+	if = {
+		limit = { var:maam_rt_fee_main = flag:$CUR$ }
+		# No shared currency: the current type's converted price is the credit.
+		if = {
+			limit = { has_variable = maam_rt_converted }
+			set_local_variable = {
+				name = maam_rt_base
+				value = { value = var:$TGT$ subtract = var:maam_rt_src_credit min = 0 }
+			}
+		}
+		set_local_variable = {
+			name = maam_rt_base
+			value = { value = local_var:maam_rt_base min = var:maam_rt_floor_main }
+		}
+	}
+	set_variable = {
+		name = $FEE$
+		value = {
+			value = local_var:maam_rt_base
+			multiply = var:maam_rt_source.maa_size
+			ceiling = yes
+		}
+	}
+}
+
+# The board reopened the armory.
+maam_rt_reopened_effect = {
+	maam_rt_unboost = yes
+	maam_rt_armory_shown_effect = yes
+}
+
+# Acknowledgements from GUI states.
+maam_rt_nothing_ack_effect = {
+	remove_variable = maam_rt_nothing
+}
+
+######################################################
+# Retrain (one click)
+######################################################
+
+# Before the real purchase. The snapshot is always taken, so whatever the
+# following Create buys can be taken back.
+maam_rt_commit_begin_effect = {
+	maam_rt_snapshot = yes
+	remove_variable = maam_rt_committing
+	if = {
+		limit = {
+			maam_rt_can_commit = yes
+			exists = scope:name_unique
+			scope:name_unique = flag:yes
+		}
+		set_variable = { name = maam_rt_committing value = yes }
+	}
+}
+
+# Failure before the source was removed: take everything back.
+maam_rt_commit_fail = {
+	maam_rt_take_back = yes
+	maam_rt_remove_slot = yes
+	maam_rt_set_result = { RESULT = failed }
+	debug_log = "MAAM RT: RETRAIN FAILED; everything bought in the click was removed and refunded."
+	maam_rt_reset = yes
+}
+
+maam_rt_commit_finish_effect = {
+	if = {
+		limit = { has_variable = maam_rt_snap }
+		maam_rt_measure = yes
+		remove_variable = maam_rt_candidate
+		if = {
+			limit = { var:maam_rt_new_n = 1 }
+			every_in_list = {
+				variable = maam_rt_new
+				root = { set_variable = { name = maam_rt_candidate value = prev } }
+			}
+		}
+		if = {
+			limit = {
+				has_variable = maam_rt_committing
+				maam_rt_source_valid = yes
+				var:maam_rt_new_n = 1
+				exists = var:maam_rt_candidate
+				NOT = { has_variable = maam_rt_nongold }
+				maam_rt_paid_something = yes
+				var:maam_rt_candidate = {
+					regiment_owner = root
+					is_personal_maa_regiment = yes
+					is_raised = no
+					maa_size = 1
+					NOT = { this = root.var:maam_rt_source }
+					maa_max_troops_count > 0
+				}
+			}
+			set_local_variable = { name = maam_rt_size value = var:maam_rt_source.maa_size }
+			set_local_variable = { name = maam_rt_troops value = var:maam_rt_source.maa_current_troops_count }
+			# Soldiers keep the regiment's fullness. With the same soldiers per stack
+			# that is the same count; otherwise it scales by the new type's soldiers
+			# per stack (the candidate is still size 1 here), e.g. 400 of 500 at 100
+			# per stack become 40 of 50 at 10 per stack.
+			if = {
+				limit = {
+					var:maam_rt_source = {
+						NOT = {
+							maa_max_troops_count = {
+								value = root.var:maam_rt_candidate.maa_max_troops_count
+								multiply = local_var:maam_rt_size
+							}
+						}
+					}
+				}
+				set_local_variable = {
+					name = maam_rt_troops
+					value = {
+						value = local_var:maam_rt_troops
+						multiply = var:maam_rt_candidate.maa_max_troops_count
+						divide = {
+							value = var:maam_rt_source.maa_max_troops_count
+							divide = local_var:maam_rt_size
+						}
+						floor = yes
+					}
+				}
+			}
+			set_local_variable = { name = maam_rt_steps value = 0 }
+			set_local_variable = { name = maam_rt_prev value = 0 }
+			var:maam_rt_candidate = {
+				while = {
+					limit = {
+						maa_size < local_var:maam_rt_size
+						maa_size > local_var:maam_rt_prev
+						local_var:maam_rt_steps < 64
+						can_upgrade_maa = yes
+					}
+					set_local_variable = { name = maam_rt_prev value = maa_size }
+					change_local_variable = { name = maam_rt_steps add = 1 }
+					change_maa_regiment_size = { size = 1 reinforce = yes }
+				}
+				change_maa_troops_count = { value = local_var:maam_rt_troops subtract = maa_current_troops_count }
+			}
+			if = {
+				limit = {
+					var:maam_rt_candidate = {
+						maa_size = local_var:maam_rt_size
+						maa_current_troops_count = local_var:maam_rt_troops
+					}
+				}
+				# Settle to exactly the fee shown, in the money the purchase took.
+				if = {
+					limit = { has_variable = maam_rt_money_treasury }
+					if = {
+						limit = { var:maam_rt_paid > var:maam_rt_fee }
+						add_treasury = { value = var:maam_rt_paid subtract = var:maam_rt_fee }
+					}
+					else_if = {
+						limit = { var:maam_rt_paid < var:maam_rt_fee }
+						remove_treasury = { value = var:maam_rt_fee subtract = var:maam_rt_paid }
+					}
+				}
+				else = {
+					if = {
+						limit = { var:maam_rt_paid > var:maam_rt_fee }
+						add_gold = { value = var:maam_rt_paid subtract = var:maam_rt_fee }
+					}
+					else_if = {
+						limit = { var:maam_rt_paid < var:maam_rt_fee }
+						remove_short_term_gold = { value = var:maam_rt_fee subtract = var:maam_rt_paid }
+					}
+				}
+				# Barter goods, prestige and piety the same way (refunds without experience).
+				if = {
+					limit = { var:maam_rt_paid_barter > var:maam_rt_fee_barter }
+					add_barter_goods = { value = var:maam_rt_paid_barter subtract = var:maam_rt_fee_barter }
+				}
+				else_if = {
+					limit = { var:maam_rt_paid_barter < var:maam_rt_fee_barter }
+					remove_barter_goods = { value = var:maam_rt_fee_barter subtract = var:maam_rt_paid_barter }
+				}
+				if = {
+					limit = { var:maam_rt_paid_prestige > var:maam_rt_fee_prestige }
+					add_prestige_no_experience = { value = var:maam_rt_paid_prestige subtract = var:maam_rt_fee_prestige }
+				}
+				else_if = {
+					limit = { var:maam_rt_paid_prestige < var:maam_rt_fee_prestige }
+					add_prestige = { value = var:maam_rt_paid_prestige subtract = var:maam_rt_fee_prestige }
+				}
+				if = {
+					limit = { var:maam_rt_paid_piety > var:maam_rt_fee_piety }
+					add_piety_no_experience = { value = var:maam_rt_paid_piety subtract = var:maam_rt_fee_piety }
+				}
+				else_if = {
+					limit = { var:maam_rt_paid_piety < var:maam_rt_fee_piety }
+					add_piety = { value = var:maam_rt_paid_piety subtract = var:maam_rt_fee_piety }
+				}
+				if = {
+					limit = { NOT = { var:maam_rt_paid_herd = var:maam_rt_fee_herd } }
+					domicile ?= {
+						change_herd = { value = root.var:maam_rt_paid_herd subtract = root.var:maam_rt_fee_herd }
+					}
+				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = maam_rt_money_treasury }
+							treasury = { value = var:maam_rt_treasury_before subtract = var:maam_rt_fee }
+						}
+						trigger_else = { gold = { value = var:maam_rt_gold_before subtract = var:maam_rt_fee } }
+						barter_goods = { value = var:maam_rt_barter_before subtract = var:maam_rt_fee_barter }
+						prestige = { value = var:maam_rt_prestige_before subtract = var:maam_rt_fee_prestige }
+						piety = { value = var:maam_rt_piety_before subtract = var:maam_rt_fee_piety }
+						trigger_if = {
+							limit = { exists = domicile }
+							domicile = { herd = { value = root.var:maam_rt_herd_before subtract = root.var:maam_rt_fee_herd } }
+						}
+					}
+					set_variable = { name = maam_rt_result_new value = var:maam_rt_candidate }
+					set_variable = { name = maam_rt_result_fee value = var:maam_rt_fee }
+					if = {
+						limit = { has_variable = maam_rt_money_treasury }
+						set_variable = { name = maam_rt_result_money_treasury value = yes }
+					}
+					set_variable = { name = maam_rt_result_fee_barter value = var:maam_rt_fee_barter }
+					set_variable = { name = maam_rt_result_fee_prestige value = var:maam_rt_fee_prestige }
+					set_variable = { name = maam_rt_result_fee_piety value = var:maam_rt_fee_piety }
+					set_variable = { name = maam_rt_result_fee_herd value = var:maam_rt_fee_herd }
+					# The only removal of the original regiment.
+					var:maam_rt_source = { destroy_maa_regiment = yes }
+					if = {
+						limit = {
+							NOT = { exists = var:maam_rt_source }
+							exists = var:maam_rt_result_new
+						}
+						debug_log = "MAAM RT: RETRAINED; source replaced for the fee shown."
+					}
+					else = { debug_log = "MAAM RT: RETRAINED, but the post-check failed after the source was removed (check)." }
+					maam_rt_remove_slot = yes
+					maam_rt_set_result = { RESULT = retrained }
+					maam_rt_reset = yes
+				}
+				else = {
+					debug_log = "MAAM RT: settlement did not match the fee; taking back."
+					maam_rt_commit_fail = yes
+				}
+			}
+			else = {
+				debug_log = "MAAM RT: growth did not match the source; taking back."
+				maam_rt_commit_fail = yes
+			}
+		}
+		else = {
+			debug_log = "MAAM RT: purchase not verified (none, several, not gold, or wrong shape); taking back."
+			maam_rt_commit_fail = yes
+		}
+	}
+}

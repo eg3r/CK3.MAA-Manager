@@ -1,0 +1,177 @@
+﻿######################################################
+# MAA Manager - Retrain armory scripted GUIs
+# Click chains live in the recruitment window (window_menatarms_type_view.gui)
+# and on the board. No window hide calls anything here.
+######################################################
+
+# Retrain on a lane (scope:real_source).
+maam_rt_start = {
+	scope = character
+	is_valid = { maam_rt_start_allowed = yes }
+	effect = { maam_rt_start_effect = yes }
+}
+
+# Cancel (scope:why = flag:cancelled / flag:closed).
+maam_rt_cancel = {
+	scope = character
+	is_valid = { has_variable = maam_rt_active }
+	effect = { maam_rt_cancel_effect = yes }
+}
+
+# Price check steps (one type click). No is_valid: each step checks itself.
+maam_rt_pc_begin_src = {
+	scope = character
+	effect = { maam_rt_pc_begin_src_effect = yes }
+}
+maam_rt_pc_quote_src = {
+	scope = character
+	effect = { maam_rt_pc_quote_src_effect = yes }
+}
+# Opening price check, step 1: temporary resources (step 2 buys one screen
+# update later, so the window's can-buy check already sees them).
+maam_rt_boost_now = {
+	scope = character
+	effect = { maam_rt_boost_now_effect = yes }
+}
+maam_rt_boosted_gui = {
+	scope = character
+	is_shown = { has_variable = maam_rt_boosted }
+}
+maam_rt_cancel_waiting_boost = {
+	scope = character
+	effect = { maam_rt_cancel_waiting_boost_effect = yes }
+}
+maam_rt_pc_quote_src_auto = {
+	scope = character
+	effect = { maam_rt_pc_quote_src_auto_effect = yes }
+}
+maam_rt_pc_begin_tgt = {
+	scope = character
+	effect = { maam_rt_pc_begin_tgt_effect = yes }
+}
+maam_rt_pc_quote_tgt = {
+	scope = character
+	effect = { maam_rt_pc_quote_tgt_effect = yes }
+}
+
+maam_rt_reopened = {
+	scope = character
+	effect = { maam_rt_reopened_effect = yes }
+}
+maam_rt_nothing_ack = {
+	scope = character
+	effect = { maam_rt_nothing_ack_effect = yes }
+}
+
+# Retrain (commit) steps.
+# Always runs (no is_valid): its snapshot lets the finish take back whatever
+# the following Create buys, even in an unexpected state.
+maam_rt_commit_begin = {
+	scope = character
+	effect = { maam_rt_commit_begin_effect = yes }
+}
+maam_rt_commit_finish = {
+	scope = character
+	effect = { maam_rt_commit_finish_effect = yes }
+}
+
+maam_rt_dismiss_result = {
+	scope = character
+	effect = { maam_rt_clear_result = yes }
+}
+
+######################################################
+# Display helpers (is_shown only)
+######################################################
+
+maam_rt_ruler_supported = {
+	scope = character
+	is_shown = { maam_rt_supported_ruler = yes }
+}
+
+# A type click may price now (paused is checked by the GUI).
+maam_rt_can_price_gui = {
+	scope = character
+	is_shown = { maam_rt_can_price = yes }
+}
+
+maam_rt_src_known_gui = {
+	scope = character
+	is_shown = {
+		has_variable = maam_rt_active
+		maam_rt_src_known = yes
+	}
+}
+
+# scope:want = flag:unlisted / flag:refused / flag:nongold (gold and treasury
+# taken by one purchase, the one debit the armory can't price)
+maam_rt_src_unbuyable_is = {
+	scope = character
+	is_shown = {
+		exists = var:maam_rt_src_unbuyable
+		exists = scope:want
+		var:maam_rt_src_unbuyable = scope:want
+	}
+}
+
+maam_rt_can_commit_gui = {
+	scope = character
+	is_shown = { maam_rt_can_commit = yes }
+}
+
+maam_rt_quoted_gui = {
+	scope = character
+	is_shown = {
+		has_variable = maam_rt_active
+		has_variable = maam_rt_quoted
+	}
+}
+
+maam_rt_fallback_gui = {
+	scope = character
+	is_shown = { has_variable = maam_rt_fallback }
+}
+
+# No shared currency: the current type's price was converted at the
+# Men-at-Arms rates.
+maam_rt_converted_gui = {
+	scope = character
+	is_shown = { has_variable = maam_rt_converted }
+}
+
+maam_rt_short_gui = {
+	scope = character
+	is_shown = {
+		exists = var:maam_rt_fee
+		NOT = { maam_rt_can_pay_fee = yes }
+	}
+}
+
+
+maam_rt_tile_is_source = {
+	scope = character
+	is_shown = {
+		has_variable = maam_rt_active
+		exists = var:maam_rt_source
+		exists = scope:regiment
+		scope:regiment = var:maam_rt_source
+	}
+}
+
+# The result strip (scope:want flag: retrained / failed).
+maam_rt_result_is = {
+	scope = character
+	is_shown = {
+		exists = var:maam_rt_result
+		exists = scope:want
+		var:maam_rt_result = scope:want
+	}
+}
+
+maam_rt_has_result = {
+	scope = character
+	is_shown = {
+		exists = var:maam_rt_result
+		NOT = { has_variable = maam_rt_active }
+	}
+}

@@ -1,0 +1,794 @@
+﻿######################################################
+# MAA Manager - Order of battle (Military window board) effects
+#
+# Stack moves are immediate. A lift never moves the source's last stack: when
+# only the standard is left the order turns into "ended" and every lane that
+# can take it offers the red Merge here. Every effect re-checks its order, so
+# a fast double click or a stale record can never act twice.
+# ROOT = the player. The GUI passes scope:regiment / scope:target_regiment and
+# scope:type_relation (flag:same from ObjectsEqual).
+######################################################
+
+# Core stack move for personal and title regiments. Expands and verifies the
+# receiver before anything leaves the donor; reverts the receiver if the
+# donor's remaining soldiers would not fit. Destroys the donor only when it had
+# exactly one stack (callers decide whether that is allowed).
+# Sets local variable maam_moved on success.
+maam_stack_core_effect = {
+	remove_local_variable = maam_moved
+	set_local_variable = { name = maam_donor_capacity value = $DONOR$.maa_max_troops_count }
+	set_local_variable = { name = maam_receiver_capacity value = $RECEIVER$.maa_max_troops_count }
+	set_local_variable = { name = maam_donor_size value = $DONOR$.maa_size }
+	set_local_variable = { name = maam_receiver_size value = $RECEIVER$.maa_size }
+	set_local_variable = { name = maam_donor_alive value = $DONOR$.maa_current_troops_count }
+	set_local_variable = {
+		name = maam_donor_chunk
+		value = { value = $DONOR$.maa_max_troops_count divide = $DONOR$.maa_size }
+	}
+	set_local_variable = {
+		name = maam_donor_remaining_capacity
+		value = { value = $DONOR$.maa_max_troops_count subtract = local_var:maam_donor_chunk }
+	}
+	$RECEIVER$ = { change_maa_regiment_size = { size = 1 reinforce = no } }
+	set_local_variable = {
+		name = maam_soldiers
+		value = {
+			value = local_var:maam_donor_alive
+			max = local_var:maam_donor_chunk
+			max = { value = $RECEIVER$.maa_max_troops_count subtract = $RECEIVER$.maa_current_troops_count }
+			min = 0
+		}
+	}
+	# The last stack takes every soldier with it.
+	if = {
+		limit = { local_var:maam_donor_size = 1 }
+		set_local_variable = {
+			name = maam_soldiers
+			value = {
+				value = local_var:maam_donor_alive
+				max = { value = $RECEIVER$.maa_max_troops_count subtract = $RECEIVER$.maa_current_troops_count }
+				min = 0
+			}
+		}
+	}
+	if = {
+		limit = {
+			$RECEIVER$ = { maa_size = { value = local_var:maam_receiver_size add = 1 } }
+			trigger_if = {
+				limit = { local_var:maam_donor_size > 1 }
+				local_var:maam_donor_remaining_capacity >= {
+					value = local_var:maam_donor_alive
+					subtract = local_var:maam_soldiers
+				}
+			}
+			trigger_else = { local_var:maam_soldiers >= local_var:maam_donor_alive }
+		}
+		$DONOR$ = { change_maa_troops_count = { value = local_var:maam_soldiers multiply = -1 } }
+		$RECEIVER$ = { change_maa_troops_count = local_var:maam_soldiers }
+		if = {
+			limit = { local_var:maam_donor_size = 1 }
+			$DONOR$ = { destroy_maa_regiment = yes }
+		}
+		else = { $DONOR$ = { change_maa_regiment_size = { size = -1 reinforce = no } } }
+		set_local_variable = { name = maam_moved value = yes }
+	}
+	else = {
+		# Nothing left the donor; undo only the receiver's added capacity.
+		$RECEIVER$ = {
+			change_maa_regiment_size = {
+				size = { value = local_var:maam_receiver_size subtract = maa_size }
+				reinforce = no
+			}
+		}
+	}
+}
+
+######################################################
+# Order records
+######################################################
+
+# Clears the open order (not the view, the advice or a retrain).
+maam_ob_clear_order = {
+	remove_variable = maam_ob_kind
+	remove_variable = maam_ob_src
+	remove_variable = maam_ob_tgt
+	remove_variable = maam_ob_partner_manual
+	remove_variable = maam_ob_last_n
+	clear_variable_list = maam_ob_partners
+	maam_ob_hist_clear = yes
+}
+
+# Version 2 receipts: recipient plus the exact transferred soldiers and the
+# state after Place. Old saves contain recipient-only history; never guess its
+# missing amounts. The source is also recorded so a receipt cannot change orders.
+maam_ob_hist_clear_entry = {
+	remove_variable = maam_hist_$N$
+	remove_variable = maam_hist_$N$_src
+	remove_variable = maam_hist_$N$_men
+	remove_variable = maam_hist_$N$_src_size
+	remove_variable = maam_hist_$N$_src_troops
+	remove_variable = maam_hist_$N$_src_max
+	remove_variable = maam_hist_$N$_dst_size
+	remove_variable = maam_hist_$N$_dst_troops
+	remove_variable = maam_hist_$N$_dst_max
+	remove_variable = maam_hist_$N$_src_max_before
+	remove_variable = maam_hist_$N$_dst_max_before
+}
+
+maam_ob_hist_copy_entry = {
+	maam_ob_hist_clear_entry = { N = $TO$ }
+	if = {
+		limit = { exists = var:maam_hist_$FROM$ }
+		set_variable = { name = maam_hist_$TO$ value = var:maam_hist_$FROM$ }
+		set_variable = { name = maam_hist_$TO$_src value = var:maam_hist_$FROM$_src }
+		set_variable = { name = maam_hist_$TO$_men value = var:maam_hist_$FROM$_men }
+		set_variable = { name = maam_hist_$TO$_src_size value = var:maam_hist_$FROM$_src_size }
+		set_variable = { name = maam_hist_$TO$_src_troops value = var:maam_hist_$FROM$_src_troops }
+		set_variable = { name = maam_hist_$TO$_src_max value = var:maam_hist_$FROM$_src_max }
+		set_variable = { name = maam_hist_$TO$_dst_size value = var:maam_hist_$FROM$_dst_size }
+		set_variable = { name = maam_hist_$TO$_dst_troops value = var:maam_hist_$FROM$_dst_troops }
+		set_variable = { name = maam_hist_$TO$_dst_max value = var:maam_hist_$FROM$_dst_max }
+		set_variable = { name = maam_hist_$TO$_src_max_before value = var:maam_hist_$FROM$_src_max_before }
+		set_variable = { name = maam_hist_$TO$_dst_max_before value = var:maam_hist_$FROM$_dst_max_before }
+	}
+}
+
+maam_ob_hist_push = {
+	maam_ob_hist_copy_entry = { FROM = 9 TO = 10 }
+	maam_ob_hist_copy_entry = { FROM = 8 TO = 9 }
+	maam_ob_hist_copy_entry = { FROM = 7 TO = 8 }
+	maam_ob_hist_copy_entry = { FROM = 6 TO = 7 }
+	maam_ob_hist_copy_entry = { FROM = 5 TO = 6 }
+	maam_ob_hist_copy_entry = { FROM = 4 TO = 5 }
+	maam_ob_hist_copy_entry = { FROM = 3 TO = 4 }
+	maam_ob_hist_copy_entry = { FROM = 2 TO = 3 }
+	maam_ob_hist_copy_entry = { FROM = 1 TO = 2 }
+	set_variable = { name = maam_hist_1 value = scope:target_regiment }
+	set_variable = { name = maam_hist_1_src value = var:maam_ob_src }
+	set_variable = { name = maam_hist_1_men value = local_var:maam_soldiers }
+	set_variable = { name = maam_hist_1_src_size value = var:maam_ob_src.maa_size }
+	set_variable = { name = maam_hist_1_src_troops value = var:maam_ob_src.maa_current_troops_count }
+	set_variable = { name = maam_hist_1_src_max value = var:maam_ob_src.maa_max_troops_count }
+	set_variable = { name = maam_hist_1_dst_size value = scope:target_regiment.maa_size }
+	set_variable = { name = maam_hist_1_dst_troops value = scope:target_regiment.maa_current_troops_count }
+	set_variable = { name = maam_hist_1_dst_max value = scope:target_regiment.maa_max_troops_count }
+	set_variable = { name = maam_hist_1_src_max_before value = local_var:maam_donor_capacity }
+	set_variable = { name = maam_hist_1_dst_max_before value = local_var:maam_receiver_capacity }
+	set_variable = { name = maam_hist_version value = 2 }
+	if = {
+		limit = { NOT = { has_variable = maam_hist_n } }
+		set_variable = { name = maam_hist_n value = 0 }
+	}
+	change_variable = { name = maam_hist_n add = 1 }
+	if = {
+		limit = { var:maam_hist_n > 10 }
+		set_variable = { name = maam_hist_n value = 10 }
+	}
+}
+
+maam_ob_hist_pop = {
+	maam_ob_hist_copy_entry = { FROM = 2 TO = 1 }
+	maam_ob_hist_copy_entry = { FROM = 3 TO = 2 }
+	maam_ob_hist_copy_entry = { FROM = 4 TO = 3 }
+	maam_ob_hist_copy_entry = { FROM = 5 TO = 4 }
+	maam_ob_hist_copy_entry = { FROM = 6 TO = 5 }
+	maam_ob_hist_copy_entry = { FROM = 7 TO = 6 }
+	maam_ob_hist_copy_entry = { FROM = 8 TO = 7 }
+	maam_ob_hist_copy_entry = { FROM = 9 TO = 8 }
+	maam_ob_hist_copy_entry = { FROM = 10 TO = 9 }
+	maam_ob_hist_clear_entry = { N = 10 }
+	change_variable = { name = maam_hist_n add = -1 }
+	if = {
+		limit = { NOT = { exists = var:maam_hist_1 } }
+		remove_variable = maam_hist_n
+		remove_variable = maam_hist_version
+	}
+}
+
+maam_ob_hist_clear = {
+	maam_ob_hist_clear_entry = { N = 1 }
+	maam_ob_hist_clear_entry = { N = 2 }
+	maam_ob_hist_clear_entry = { N = 3 }
+	maam_ob_hist_clear_entry = { N = 4 }
+	maam_ob_hist_clear_entry = { N = 5 }
+	maam_ob_hist_clear_entry = { N = 6 }
+	maam_ob_hist_clear_entry = { N = 7 }
+	maam_ob_hist_clear_entry = { N = 8 }
+	maam_ob_hist_clear_entry = { N = 9 }
+	maam_ob_hist_clear_entry = { N = 10 }
+	remove_variable = maam_hist_n
+	remove_variable = maam_hist_version
+}
+
+# Run before another placement (not afterwards) and when opening the board.
+# It forgets old/stale receipts without reversing any completed transfers.
+maam_ob_hist_discard_stale = {
+	if = {
+		limit = {
+			has_variable = maam_hist_n
+			NOT = { maam_ob_history_current = yes }
+		}
+		maam_ob_hist_clear = yes
+	}
+}
+
+# Everything a war clears (on_action), plus the tile selection and highlight.
+maam_ob_clear_orders = {
+	maam_ob_clear_order = yes
+	remove_variable = maam_ob_sel
+	remove_variable = maam_qm_hl
+}
+
+# Opens an order of kind KIND on scope:regiment.
+maam_ob_start = {
+	maam_ob_clear_order = yes
+	set_variable = { name = maam_ob_src value = scope:regiment }
+	set_variable = { name = maam_ob_kind value = flag:$KIND$ }
+	remove_variable = maam_qm_hl
+	maam_rt_clear_result = yes
+}
+
+# Military window opened: drop an abandoned merge and stale records.
+maam_ob_on_open_effect = {
+	# Recover only the documented pre-purchase boost phase, including a save
+	# reopened with that phase present. Purchase snapshots are left untouched.
+	maam_rt_cancel_waiting_boost_effect = yes
+	maam_ob_hist_discard_stale = yes
+	if = {
+		limit = {
+			OR = {
+				maam_ob_kind_is = { KIND = merge }
+				AND = {
+					exists = var:maam_ob_kind
+					NOT = { maam_ob_src_ok = yes }
+				}
+			}
+		}
+		maam_ob_clear_order = yes
+	}
+	if = {
+		limit = {
+			exists = var:maam_ob_sel
+			NOT = { var:maam_ob_sel = { maam_ob_regiment_ok = yes } }
+		}
+		remove_variable = maam_ob_sel
+	}
+	# No tip yet, or the stored one went stale while the window was closed.
+	if = {
+		limit = {
+			OR = {
+				NOT = { exists = var:maam_qm_kind }
+				NOT = { maam_qm_tip_valid = yes }
+			}
+		}
+		maam_qm_refresh_effect = yes
+	}
+}
+
+######################################################
+# Stacks: lift, place, move back, put down
+######################################################
+
+# Lift a stack from scope:regiment (clicking the lifted source again puts it down).
+maam_ob_lift_effect = {
+	if = {
+		limit = {
+			maam_ob_kind_is = { KIND = lift }
+			exists = var:maam_ob_src
+			exists = scope:regiment
+			var:maam_ob_src = scope:regiment
+		}
+		maam_ob_clear_order = yes
+	}
+	else_if = {
+		limit = {
+			maam_ob_can_order = yes
+			NOT = { exists = var:maam_ob_kind }
+			exists = scope:regiment
+			scope:regiment = {
+				maam_ob_regiment_ok = yes
+				maa_size > 1
+			}
+		}
+		maam_ob_start = { KIND = lift }
+	}
+}
+
+# Place one stack from the lifted source into scope:target_regiment.
+maam_ob_place_effect = {
+	if = {
+		limit = {
+			maam_ob_can_order = yes
+			maam_ob_kind_is = { KIND = lift }
+			maam_ob_kin_target = yes
+			var:maam_ob_src = { maa_size > 1 }
+			scope:target_regiment = { can_upgrade_maa = yes }
+			maam_ob_gui_room = yes
+		}
+		maam_ob_hist_discard_stale = yes
+		maam_stack_core_effect = {
+			DONOR = root.var:maam_ob_src
+			RECEIVER = scope:target_regiment
+		}
+		if = {
+			limit = { has_local_variable = maam_moved }
+			maam_ob_hist_push = yes
+			if = {
+				limit = { var:maam_ob_src = { maa_size <= 1 } }
+				# Only the standard is left: the merge opens like a stack move.
+				set_variable = { name = maam_ob_kind value = flag:ended }
+			}
+			maam_qm_refresh_effect = yes
+		}
+	}
+}
+
+# Rollback is only called inside the same Back effect after a validated receipt.
+# Restore the post-Place state, never an old snapshot after time has advanced.
+maam_ob_back_rollback = {
+	var:maam_hist_1 = {
+		change_maa_regiment_size = { size = { value = root.var:maam_hist_1_dst_size subtract = maa_size } reinforce = no }
+		change_maa_troops_count = { value = root.var:maam_hist_1_dst_troops subtract = maa_current_troops_count }
+	}
+	var:maam_ob_src = {
+		change_maa_troops_count = { value = root.var:maam_hist_1_src_troops subtract = maa_current_troops_count }
+		change_maa_regiment_size = { size = { value = root.var:maam_hist_1_src_size subtract = maa_size } reinforce = no }
+	}
+	debug_log = "MAAM: Back failed a post-check; restored its starting state and discarded history."
+	maam_ob_hist_clear = yes
+}
+
+# Undo the exact placement. Neither regiment is ever destroyed by Back.
+maam_ob_back_effect = {
+	if = {
+		limit = {
+			maam_ob_can_order = yes
+			OR = {
+				maam_ob_kind_is = { KIND = lift }
+				maam_ob_kind_is = { KIND = ended }
+			}
+			maam_ob_back_ok = yes
+		}
+		var:maam_ob_src = { change_maa_regiment_size = { size = 1 reinforce = no } }
+		if = {
+			limit = {
+				var:maam_ob_src = {
+					maa_size = { value = root.var:maam_hist_1_src_size add = 1 }
+					maa_max_troops_count = root.var:maam_hist_1_src_max_before
+					maa_current_troops_count = root.var:maam_hist_1_src_troops
+				}
+			}
+			var:maam_hist_1 = { change_maa_troops_count = { value = root.var:maam_hist_1_men multiply = -1 } }
+			var:maam_ob_src = { change_maa_troops_count = root.var:maam_hist_1_men }
+			var:maam_hist_1 = { change_maa_regiment_size = { size = -1 reinforce = no } }
+			if = {
+				limit = {
+					var:maam_ob_src = {
+						maa_current_troops_count = { value = root.var:maam_hist_1_src_troops add = root.var:maam_hist_1_men }
+					}
+					var:maam_hist_1 = {
+						maa_size = { value = root.var:maam_hist_1_dst_size subtract = 1 }
+						maa_max_troops_count = root.var:maam_hist_1_dst_max_before
+						maa_current_troops_count = { value = root.var:maam_hist_1_dst_troops subtract = root.var:maam_hist_1_men }
+					}
+				}
+				maam_ob_hist_pop = yes
+				set_variable = { name = maam_ob_kind value = flag:lift }
+				maam_qm_refresh_effect = yes
+			}
+			else = { maam_ob_back_rollback = yes }
+		}
+		else = { maam_ob_back_rollback = yes }
+	}
+}
+
+# Put down / Done / Keep it / Cancel: closes the open order.
+maam_ob_cancel_effect = {
+	maam_ob_clear_order = yes
+}
+
+######################################################
+# Last stack: lower the standard, merge here
+######################################################
+
+# Red control on a lone standard (scope:regiment).
+maam_ob_merge_start_effect = {
+	if = {
+		limit = {
+			maam_ob_can_order = yes
+			NOT = { exists = var:maam_ob_kind }
+			exists = scope:regiment
+			scope:regiment = {
+				maam_ob_regiment_ok = yes
+				maa_size = 1
+			}
+		}
+		maam_ob_start = { KIND = merge }
+	}
+}
+
+# The source's last stack and all its soldiers join scope:target_regiment.
+maam_ob_merge_effect = {
+	if = {
+		limit = {
+			maam_ob_can_order = yes
+			OR = {
+				maam_ob_kind_is = { KIND = merge }
+				maam_ob_kind_is = { KIND = ended }
+			}
+			maam_ob_kin_target = yes
+			var:maam_ob_src = { maa_size = 1 }
+			scope:target_regiment = { can_upgrade_maa = yes }
+			maam_ob_gui_room = yes
+		}
+		maam_stack_core_effect = {
+			DONOR = root.var:maam_ob_src
+			RECEIVER = scope:target_regiment
+		}
+		if = {
+			limit = { has_local_variable = maam_moved }
+			maam_ob_clear_order = yes
+			remove_variable = maam_ob_sel
+			maam_qm_refresh_effect = yes
+		}
+	}
+}
+
+######################################################
+# Soldiers: move between two regiments of the same type (auto pair)
+# maam_ob_src = the regiment whose arrows button was used, maam_ob_tgt = its
+# partner, maam_ob_partners = every regiment it can pair with, best first.
+# Each move: at most one stack, the sender keeps its first stack full, the
+# receiver takes only what fits. Moves happen at once (like stack moves).
+######################################################
+
+maam_ob_pour_start_effect = {
+	if = {
+		limit = {
+			maam_ob_can_order = yes
+			NOT = { exists = var:maam_ob_kind }
+			exists = scope:regiment
+			scope:regiment = { maam_ob_regiment_ok = yes }
+		}
+		maam_ob_start = { KIND = pour }
+		# Vanilla types are found here; the GUI adds any other type's regiments
+		# (maam_ob_pour_register) as their rows notice the open move.
+		every_maa_regiment = {
+			limit = {
+				maam_ob_regiment_ok = yes
+				NOT = { this = root.var:maam_ob_src }
+				maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+				maam_same_type_as = { OTHER = root.var:maam_ob_src }
+			}
+			root = { add_to_variable_list = { name = maam_ob_partners target = prev } }
+		}
+		# Title regiments: the other regiments of the same title.
+		if = {
+			limit = {
+				var:maam_ob_src = {
+					is_title_maa_regiment = yes
+					exists = regiment_owning_title
+				}
+			}
+			var:maam_ob_src = {
+				regiment_owning_title = {
+					every_title_maa_regiment = {
+						limit = {
+							maam_ob_regiment_ok = yes
+							NOT = { this = root.var:maam_ob_src }
+							maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+							maam_same_type_as = { OTHER = root.var:maam_ob_src }
+							NOT = { root = { is_target_in_variable_list = { name = maam_ob_partners target = prev } } }
+						}
+						root = { add_to_variable_list = { name = maam_ob_partners target = prev } }
+					}
+				}
+			}
+		}
+		maam_ob_pour_pick_best = yes
+	}
+}
+
+# A row of the same type (GUI type comparison, scope:type_relation) joins the
+# partner list.
+maam_ob_pour_register_effect = {
+	if = {
+		limit = {
+			maam_ob_kind_is = { KIND = pour }
+			maam_ob_kin_target = yes
+			NOT = { is_target_in_variable_list = { name = maam_ob_partners target = scope:target_regiment } }
+		}
+		add_to_variable_list = { name = maam_ob_partners target = scope:target_regiment }
+		if = {
+			limit = { NOT = { has_variable = maam_ob_partner_manual } }
+			maam_ob_pour_pick_best = yes
+		}
+	}
+}
+
+# Soldiers one move sends from $FROM$ to $TO$ (local_var:maam_n, 0 if none).
+maam_ob_send_amount = {
+	set_local_variable = {
+		name = maam_n
+		value = {
+			value = $FROM$.maa_current_troops_count
+			subtract = { value = $FROM$.maa_max_troops_count divide = $FROM$.maa_size }
+			max = { value = $FROM$.maa_max_troops_count divide = $FROM$.maa_size }
+			max = { value = $TO$.maa_max_troops_count subtract = $TO$.maa_current_troops_count }
+			min = 0
+			floor = yes
+		}
+	}
+}
+
+# Partner = the one that can give the regiment the most soldiers, else the one
+# that can take the most from it, else the first in the list.
+maam_ob_pour_pick_best = {
+	remove_variable = maam_ob_tgt
+	set_local_variable = { name = maam_best value = -1 }
+	every_in_list = {
+		variable = maam_ob_partners
+		limit = {
+			maam_ob_regiment_ok = yes
+			NOT = { this = root.var:maam_ob_src }
+		}
+		save_scope_as = maam_ob_cand
+		root = {
+			maam_ob_send_amount = { FROM = scope:maam_ob_cand TO = var:maam_ob_src }
+			set_local_variable = { name = maam_score value = { value = local_var:maam_n multiply = 1000 } }
+			maam_ob_send_amount = { FROM = var:maam_ob_src TO = scope:maam_ob_cand }
+			change_local_variable = { name = maam_score add = local_var:maam_n }
+			if = {
+				limit = { local_var:maam_score > local_var:maam_best }
+				set_local_variable = { name = maam_best value = local_var:maam_score }
+				set_variable = { name = maam_ob_tgt value = scope:maam_ob_cand }
+			}
+		}
+	}
+}
+
+# Next / previous partner in the list (wraps around); the choice then stays.
+maam_ob_pour_cycle_effect = {
+	if = {
+		limit = {
+			maam_ob_kind_is = { KIND = pour }
+			exists = var:maam_ob_tgt
+			variable_list_size = { name = maam_ob_partners value > 1 }
+		}
+		set_local_variable = { name = maam_found value = 0 }
+		set_local_variable = { name = maam_done value = 0 }
+		every_in_list = {
+			variable = maam_ob_partners
+			# $DIR$ = next: the entry after the current one; prev: the one before.
+			if = {
+				limit = { always = $NEXT$ }
+				if = {
+					limit = {
+						local_var:maam_found = 1
+						local_var:maam_done = 0
+					}
+					root = { set_variable = { name = maam_ob_tgt_new value = prev } }
+					set_local_variable = { name = maam_done value = 1 }
+				}
+				if = {
+					limit = { this = root.var:maam_ob_tgt }
+					set_local_variable = { name = maam_found value = 1 }
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						this = root.var:maam_ob_tgt
+						exists = local_var:maam_prev
+					}
+					root = { set_variable = { name = maam_ob_tgt_new value = local_var:maam_prev } }
+					set_local_variable = { name = maam_done value = 1 }
+				}
+				if = {
+					limit = { local_var:maam_done = 0 }
+					set_local_variable = { name = maam_prev value = this }
+				}
+			}
+			# Wrap: the first entry (next) or the last entry (prev).
+			if = {
+				limit = { NOT = { exists = local_var:maam_first } }
+				set_local_variable = { name = maam_first value = this }
+			}
+			set_local_variable = { name = maam_last value = this }
+		}
+		if = {
+			limit = { NOT = { exists = var:maam_ob_tgt_new } }
+			if = {
+				limit = { always = $NEXT$ }
+				set_variable = { name = maam_ob_tgt_new value = local_var:maam_first }
+			}
+			else = { set_variable = { name = maam_ob_tgt_new value = local_var:maam_last } }
+		}
+		set_variable = { name = maam_ob_tgt value = var:maam_ob_tgt_new }
+		remove_variable = maam_ob_tgt_new
+		set_variable = { name = maam_ob_partner_manual value = yes }
+	}
+}
+
+# One move from $FROM$ to $TO$ (the arrows).
+maam_ob_send_effect = {
+	if = {
+		limit = {
+			maam_ob_can_order = yes
+			maam_ob_pour_pair_ok = yes
+			maam_ob_can_send = { FROM = $FROM$ TO = $TO$ }
+		}
+		maam_ob_send_amount = { FROM = $FROM$ TO = $TO$ }
+		if = {
+			limit = { local_var:maam_n > 0 }
+			$FROM$ = { change_maa_troops_count = { value = local_var:maam_n multiply = -1 } }
+			$TO$ = { change_maa_troops_count = local_var:maam_n }
+			set_variable = { name = maam_ob_last_n value = local_var:maam_n }
+			maam_qm_refresh_effect = yes
+		}
+	}
+}
+
+######################################################
+# Tiles view selection and board settings
+######################################################
+
+# Tile click: select scope:regiment, or clear when it is selected already.
+maam_ob_select_effect = {
+	if = {
+		limit = {
+			exists = var:maam_ob_sel
+			exists = scope:regiment
+			var:maam_ob_sel = scope:regiment
+		}
+		remove_variable = maam_ob_sel
+	}
+	else_if = {
+		limit = {
+			exists = scope:regiment
+			scope:regiment = { maam_ob_regiment_ok = yes }
+		}
+		set_variable = { name = maam_ob_sel value = scope:regiment }
+	}
+}
+
+maam_ob_deselect_effect = {
+	remove_variable = maam_ob_sel
+}
+
+# Default view (scope:want = flag:list / flag:grouped / flag:tiles), saved with the game.
+maam_ob_pref_effect = {
+	if = {
+		limit = { exists = scope:want }
+		set_variable = { name = maam_pref_view value = scope:want }
+	}
+}
+
+######################################################
+# Quartermaster advice (personal regiments)
+# Grow tips first: a regiment with room to grow (can_upgrade_maa checks size
+# room only; its regiment window shows whether it can be bought now).
+# Combine tips only when every slot is used, for the vanilla types.
+# maam_qm_seen holds the regiments already shown since the last Ask again.
+######################################################
+
+maam_qm_clear = {
+	remove_variable = maam_qm_kind
+	remove_variable = maam_qm_a
+	remove_variable = maam_qm_b
+}
+
+maam_qm_find = {
+	maam_qm_clear = yes
+	if = {
+		limit = {
+			any_maa_regiment = {
+				is_personal_maa_regiment = yes
+				regiment_owner = root
+				is_raised = no
+				can_upgrade_maa = yes
+				NOT = { root = { is_target_in_variable_list = { name = maam_qm_seen target = prev } } }
+			}
+		}
+		ordered_maa_regiment = {
+			limit = {
+				is_personal_maa_regiment = yes
+				regiment_owner = root
+				is_raised = no
+				can_upgrade_maa = yes
+				NOT = { root = { is_target_in_variable_list = { name = maam_qm_seen target = prev } } }
+			}
+			order_by = maa_current_troops_count
+			root = {
+				set_variable = { name = maam_qm_kind value = flag:grow }
+				set_variable = { name = maam_qm_a value = prev }
+			}
+		}
+	}
+	else_if = {
+		limit = { maa_regiments_count >= maa_regiments_max_count }
+		every_maa_regiment = {
+			limit = {
+				is_personal_maa_regiment = yes
+				regiment_owner = root
+				is_raised = no
+				NOT = { root = { is_target_in_variable_list = { name = maam_qm_seen target = prev } } }
+			}
+			if = {
+				limit = { root = { NOT = { exists = var:maam_qm_kind } } }
+				save_scope_as = maam_qm_x
+				root = {
+					every_maa_regiment = {
+						limit = {
+							is_personal_maa_regiment = yes
+							regiment_owner = root
+							is_raised = no
+							NOT = { this = scope:maam_qm_x }
+							maam_same_type_as = { OTHER = scope:maam_qm_x }
+							maa_size >= scope:maam_qm_x.maa_size
+						}
+						if = {
+							limit = { root = { NOT = { exists = var:maam_qm_kind } } }
+							# Would the smaller one fit? Test-grow one stack at a time
+							# while there is room, then revert (inside one effect nothing
+							# else sees it). change_maa_regiment_size itself ignores the
+							# maximum size, so only can_upgrade_maa tells where it ends.
+							set_local_variable = { name = maam_qm_old value = maa_size }
+							set_local_variable = { name = maam_qm_room value = 0 }
+							while = {
+								limit = {
+									local_var:maam_qm_room < scope:maam_qm_x.maa_size
+									can_upgrade_maa = yes
+								}
+								change_maa_regiment_size = { size = 1 reinforce = no }
+								change_local_variable = { name = maam_qm_room add = 1 }
+							}
+							if = {
+								limit = { local_var:maam_qm_room >= scope:maam_qm_x.maa_size }
+								root = {
+									set_variable = { name = maam_qm_kind value = flag:combine }
+									set_variable = { name = maam_qm_a value = scope:maam_qm_x }
+									set_variable = { name = maam_qm_b value = prev }
+								}
+							}
+							if = {
+								limit = { local_var:maam_qm_room > 0 }
+								change_maa_regiment_size = {
+									size = { value = local_var:maam_qm_old subtract = maa_size }
+									reinforce = no
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Ask again: start from the first tip.
+maam_qm_refresh_effect = {
+	clear_variable_list = maam_qm_seen
+	maam_qm_find = yes
+}
+
+# Next tip: the current one counts as seen; wrap around when none are left.
+maam_qm_next_effect = {
+	if = {
+		limit = { exists = var:maam_qm_a }
+		add_to_variable_list = { name = maam_qm_seen target = var:maam_qm_a }
+	}
+	maam_qm_find = yes
+	if = {
+		limit = { NOT = { exists = var:maam_qm_kind } }
+		maam_qm_refresh_effect = yes
+	}
+}
+
+# Show me (combine): highlight both lanes until the next order.
+maam_qm_show_effect = {
+	if = {
+		limit = { exists = var:maam_qm_a }
+		set_variable = { name = maam_qm_hl value = var:maam_qm_a }
+	}
+}

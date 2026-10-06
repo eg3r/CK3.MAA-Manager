@@ -1,0 +1,145 @@
+﻿######################################################
+# MAA Manager - Retrain armory guards (native recruitment window + measured prices)
+#
+# Proven in game 2026-10-06 (Tests A, B, C): onclick commands run in order in one
+# tick, a scripted GUI after MenAtArmsTypeView.Create sees the purchase, and a
+# purchase can be taken back and refunded in the same click.
+# Supported: any human ruler who buys Men-at-Arms in the recruitment window
+# (nomads in its horde mode, Upgrade Horde Regiment), paying gold (or treasury where the game charges it),
+# barter goods (Wanua), prestige, piety and herd; at peace with nothing raised; owned and controlled personal unraised source
+# (stationed allowed: the new regiment starts unstationed); any target type
+# (another number of soldiers per stack keeps the regiment's fullness).
+# ROOT = the player.
+######################################################
+
+# Ruler context in which the measured-price retrain is supported.
+maam_rt_supported_ruler = {
+	is_ai = no
+	maam_can_modify_regiments = yes
+}
+
+# The ruler can pay the fee: money (what the price checks took: gold, or the
+# treasury), barter goods, prestige, piety and herd (the yurt's), each in full.
+maam_rt_can_pay_fee = {
+	exists = var:maam_rt_fee
+	trigger_if = {
+		limit = { has_variable = maam_rt_money_treasury }
+		treasury >= var:maam_rt_fee
+	}
+	trigger_else = { gold >= var:maam_rt_fee }
+	trigger_if = {
+		limit = { exists = var:maam_rt_fee_barter }
+		barter_goods >= var:maam_rt_fee_barter
+	}
+	trigger_if = {
+		limit = { exists = var:maam_rt_fee_prestige }
+		prestige >= var:maam_rt_fee_prestige
+	}
+	trigger_if = {
+		limit = { exists = var:maam_rt_fee_piety }
+		piety >= var:maam_rt_fee_piety
+	}
+	trigger_if = {
+		limit = {
+			exists = var:maam_rt_fee_herd
+			var:maam_rt_fee_herd > 0
+		}
+		domicile ?= { herd >= root.var:maam_rt_fee_herd }
+	}
+}
+
+# The last measured purchase cost something (any currency).
+maam_rt_paid_something = {
+	OR = {
+		var:maam_rt_paid > 0
+		var:maam_rt_paid_barter > 0
+		var:maam_rt_paid_prestige > 0
+		var:maam_rt_paid_piety > 0
+		var:maam_rt_paid_herd > 0
+	}
+}
+
+# A successful source quote can cost zero. Prove creation independently of
+# payment before the temporary regiment is destroyed. Negative deltas or
+# changes to the source are not supported prices.
+maam_rt_quote_purchase_ok = {
+	has_variable = maam_rt_snap
+	maam_rt_source_valid = yes
+	var:maam_rt_source = {
+		maa_size = root.var:maam_rt_source_size_before
+		maa_current_troops_count = root.var:maam_rt_source_troops_before
+		maa_max_troops_count = root.var:maam_rt_source_max_before
+	}
+	var:maam_rt_new_n = 1
+	maa_regiments_count = { value = var:maam_rt_initial_count add = 1 }
+	NOT = { has_variable = maam_rt_nongold }
+	var:maam_rt_paid_gold >= 0
+	var:maam_rt_paid_treasury >= 0
+	var:maam_rt_paid_barter >= 0
+	var:maam_rt_paid_prestige >= 0
+	var:maam_rt_paid_piety >= 0
+	var:maam_rt_paid_herd >= 0
+	any_in_list = {
+		variable = maam_rt_new
+		regiment_owner = root
+		regiment_controller = root
+		is_personal_maa_regiment = yes
+		is_raised = no
+		maa_size = 1
+		maa_max_troops_count > 0
+		NOT = { this = root.var:maam_rt_source }
+	}
+}
+
+# Regiment scope: a source the retrain may replace.
+maam_rt_source_regiment_ok = {
+	regiment_owner = root
+	regiment_controller = root
+	is_personal_maa_regiment = yes
+	is_raised = no
+	maa_size > 0
+	maa_size <= 64
+}
+
+# Start a retrain for scope:real_source.
+maam_rt_start_allowed = {
+	maam_rt_supported_ruler = yes
+	NOT = { has_variable = maam_rt_active }
+	NOT = { has_character_modifier = maam_rt_slot_modifier }
+	exists = scope:real_source
+	scope:real_source = { maam_rt_source_regiment_ok = yes }
+}
+
+# The stored source still qualifies.
+maam_rt_source_valid = {
+	exists = var:maam_rt_source
+	var:maam_rt_source = { maam_rt_source_regiment_ok = yes }
+}
+
+# A background price check or the real purchase may run now.
+maam_rt_can_price = {
+	maam_rt_supported_ruler = yes
+	has_variable = maam_rt_active
+	maam_rt_source_valid = yes
+	has_character_modifier = maam_rt_slot_modifier
+	exists = var:maam_rt_initial_count
+	maa_regiments_count = var:maam_rt_initial_count
+	maa_regiments_count < maa_regiments_max_count
+}
+
+# The current type's price is settled for this retrain (measured or unbuyable).
+maam_rt_src_known = {
+	OR = {
+		exists = var:maam_rt_src_price
+		exists = var:maam_rt_src_unbuyable
+	}
+}
+
+# Retrain (commit) may run: a target was priced and the fee is affordable.
+maam_rt_can_commit = {
+	maam_rt_can_price = yes
+	has_variable = maam_rt_quoted
+	exists = var:maam_rt_fee
+	exists = var:maam_rt_tgt_price
+	maam_rt_can_pay_fee = yes
+}

@@ -1,0 +1,6 @@
+﻿# MAA Manager - one temporary regiment slot while a retrain is open.
+# Removed on finish, cancel, rollback, recovery and abandon.
+maam_rt_slot_modifier = {
+	icon = martial_positive
+	men_at_arms_cap = 1
+}
