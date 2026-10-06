@@ -1,15 +1,13 @@
-﻿######################################################
-# Men-At-Arms Manager - Shared GUI Types
-# 
-# This file contains shared GUI type definitions that are
-# used by both the 00_ and zz_ override files to ensure
-# the MAA Manager button works regardless of load order
+######################################################
+# Men-At-Arms Manager - "Your Armies" content with the Order of Battle board
+#
+# The native vbox_your_armies, with the Men-at-Arms area replaced by the board
+# (maam_ob_types.gui). Used by window_military.gui and, through the 00_/zz_
+# overrides, by any other mod's military window.
 ######################################################
 
 types MenAtArmsManagerSharedTypes
 {
-	# Shared vbox_your_armies type with MAA Manager button
-	# Used by both 00_ and zz_ override files
 	type vbox_your_armies_with_maa_manager = vbox
 	{
 		hbox_your_raised_and_unraised_soldiers = {
@@ -38,10 +36,14 @@ types MenAtArmsManagerSharedTypes
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					ignoreinvisible = no
+					spacing = 6
+					# MAA Manager: never wider than the native Men-at-Arms area.
+					maximumsize = { 507 -1 }
 
 					vbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
+						ignoreinvisible = yes
 						expand = {}
 						hbox = {
 							layoutpolicy_horizontal = expanding
@@ -61,23 +63,6 @@ types MenAtArmsManagerSharedTypes
 								using = tooltip_ne
 							}
 						}
-
-						text_single = {
-							max_width = 300
-							visible = "[GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' )]"
-							layoutpolicy_horizontal = expanding
-							text = "ADVENTURER_CAP_HINT"
-							default_format = "#weak"
-						}
-
-						# MAA Manager: a running retrain reserves one regiment slot.
-						text_single = {
-							max_width = 300
-							visible = "[GetPlayer.MakeScope.Var('maam_rt_active').IsSet]"
-							layoutpolicy_horizontal = expanding
-							text = "MAAM_SLOT_RESERVED"
-							default_format = "#weak"
-						}
 					}
 
 					# Original Raise All button
@@ -94,13 +79,26 @@ types MenAtArmsManagerSharedTypes
 						button_ignore = none
 
 						text = "RAISE_ALL_MEN_AT_ARMS"
-						size = {200 36}
+						# MAA Manager: narrower than native (200) to leave room for the view buttons.
+						size = { 140 34 }
 
 						tooltip = "[GetPlayerRaiseAllMenAtArmsTooltip]"
 						using = tooltip_sw
 						clicksound = "event:/SFX/UI/Unit/Army/sfx_ui_raise_army"
 					}
 
+					# MAA Manager: board views (list, grouped, tiles) and settings.
+					maam_ob_view_buttons = {}
+				}
+
+				# MAA Manager: the native adventurer hint, moved to its own row so
+				# the header keeps room for the view buttons.
+				text_single = {
+					visible = "[GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' )]"
+					layoutpolicy_horizontal = expanding
+					max_width = 480
+					text = "ADVENTURER_CAP_HINT"
+					default_format = "#weak"
 				}
 
 				divider_light = {
@@ -108,184 +106,160 @@ types MenAtArmsManagerSharedTypes
 				}
 			}
 
-			# MAA Manager muster board: result, retrain ledger or bench (top),
-			# then the regiment tiles.
-			maam_rt_result = {}
-			maam_rt_bench = {}
-
-			vbox = {
-				name = "maam_bench_personal"
-				visible = "[And( GetScriptedGui('maam_board_bench_personal').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
-				layoutpolicy_horizontal = expanding
-
-				maam_bench = {
-					blockoverride "maam_bench_retrain" {
-						maam_bench_retrain_personal = {}
-					}
-				}
-			}
-
-			# Clears the retrain click debounce once no retrain is running.
-			widget = {
-				size = { 1 1 }
-				state = {
-					name = maam_rt_unbusy_idle
-					trigger_when = "[Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet )]"
-					on_start = "[GetVariableSystem.Clear( 'maam_rt_busy' )]"
-				}
-			}
-
-			hbox = {
-				layoutpolicy_horizontal = expanding
+			# MAA Manager: Order of Battle (strip, lanes in their own scroll area;
+			# list, grouped or tiles view). Replaces the native regiment tiles.
+			maam_ob_board_personal = {
 				name = "tutorial_maa_tiles"
-
-				fixedgridbox = {
-					datacontext = "[MilitaryView.GetMilitaryItem]"
-					datamodel = "[MilitaryItem.GetOwnedMaa]"
-					layoutpolicy_horizontal = expanding
-					flipdirection = yes
-					datamodel_wrap = 3
-					addcolumn = 169
-					addrow = 93
-
-					item = {
-						maam_tile = {}
-					}
-				}
-
-				expand = {}
 			}
 
-			button_standard = {
-				datacontext = "[MilitaryView.GetMilitaryItem]"
-				visible = "[And( GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' ), Character.IsPlayerInteractionShown('refill_maa_interaction') )]"
-				layoutpolicy_horizontal = expanding
-
-				name = "adventurer_refill_shortcut"
-				datacontext = "[GetPlayer]"
-				enabled = "[And( Character.IsPlayerInteractionValid('refill_maa_interaction'), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
-				onclick = "[Character.OpenPlayerInteraction('refill_maa_interaction')]"
-				text = "[Character.GetPlayerInteractionName('refill_maa_interaction')]"
-				tooltip = "[Character.GetPlayerInteractionTooltip('refill_maa_interaction')]"
-				using = tooltip_se
-				clicksound = "event:/SFX/UI/Unit/Army/sfx_ui_raise_army"
-
-				icon = {
-					name = "adventurer_gold_icon"
-					parentanchor = left|vcenter
-					position = { 10 0 }
-					size = { 29 29 }
-					texture = "gfx/interface/icons/icon_gold.dds"
-				}
-
-				icon = {
-					name = "adventurer_provision_icon"
-					parentanchor = left|vcenter
-					position = { 40 0 }
-					size = { 29 29 }
-					framesize = { 60 60 }
-					frame = 0
-					texture = "gfx/interface/icons/icon_camp_supply.dds"
-				}
-			}
-
-			button_standard = {
-				datacontext = "[MilitaryView.GetMilitaryItem]"
-				visible = "[And( IsNomad(GetPlayer), Character.IsPlayerInteractionShown('refill_maa_nomad_interaction') )]"
-				layoutpolicy_horizontal = expanding
-
-				name = "nomad_refill_shortcut"
-				datacontext = "[GetPlayer]"
-				enabled = "[And( Character.IsPlayerInteractionValid('refill_maa_nomad_interaction'), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
-				onclick = "[Character.OpenPlayerInteraction('refill_maa_nomad_interaction')]"
-				text = "[Character.GetPlayerInteractionName('refill_maa_nomad_interaction')]"
-				tooltip = "[Character.GetPlayerInteractionTooltip('refill_maa_nomad_interaction')]"
-				using = tooltip_se
-				clicksound = "event:/SFX/UI/Unit/Army/sfx_ui_raise_army"
-
-				icon = {
-					name = "adventurer_gold_icon"
-					parentanchor = left|vcenter
-					position = { 10 0 }
-					size = { 29 29 }
-					texture = "gfx/interface/icons/icon_gold.dds"
-				}
-
-				icon = {
-					name = "nomad_herd_icon"
-					parentanchor = left|vcenter
-					position = { 40 0 }
-					size = { 29 29 }
-					texture = "gfx/interface/icons/icon_herd.dds"
-				}
-			}
-
-			button_standard = {
-				datacontext = "[MilitaryView.GetMilitaryItem]"
-				visible = "[And( GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' ), Character.IsPlayerInteractionShown('reinforce_soldiers_interaction') )]"
-				layoutpolicy_horizontal = expanding
-
-				name = "adventurer_reinforce_shortcut"
-				datacontext = "[GetPlayer]"
-				enabled = "[And( Character.IsPlayerInteractionValid('reinforce_soldiers_interaction'), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
-				onclick = "[Character.OpenPlayerInteraction('reinforce_soldiers_interaction')]"
-				text = "[Character.GetPlayerInteractionName('reinforce_soldiers_interaction')]"
-				tooltip = "[Character.GetPlayerInteractionTooltip('reinforce_soldiers_interaction')]"
-				using = tooltip_se
-				clicksound = "event:/SFX/UI/Unit/Army/sfx_ui_raise_army"
-
-				icon = {
-					name = "adventurer_icon"
-					parentanchor = left|vcenter
-					position = { 5 -1 }
-					size = { 28 28 }
-					texture = "gfx/interface/icons/combat_effects/owner_in_debt.dds"
-				}
-			}
-
-			button_standard = {
-				name = "add_maa"
-				visible = "[Not( IsNomad( GetPlayer ) )]"
-				layoutpolicy_horizontal = expanding
-
-				text = "ADD_MEN_AT_ARMS_LABEL"
-
-				# A running retrain holds a temporary slot: no ordinary recruitment.
-				enabled = "[Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet )]"
-				onclick = "[MilitaryItem.OnClick]"
-				tooltip = "[SelectLocalization( GetPlayer.MakeScope.Var('maam_rt_active').IsSet, 'MAAM_CREATE_BLOCKED_TT', 'CREATE_MAA_TOOLTIP' )]"
-				down = "[And( MilitaryItem.IsOpen, Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
-
-				button_plus = {
-					name = "can_be_created"
-					visible = "[MilitaryItem.CanCreateAnyMAAType]"
-					parentanchor = left|vcenter
-					position = { 5 0 }
-					alwaystransparent = yes
-				}
-
-				warning_icon = {
-					name = "at_cap"
-					visible = "[Not(MilitaryItem.MaACanBeCreated)]"
-					parentanchor = left|vcenter
-					position = { 5 0 }
-					size = { 28 28 }
-				}
-			}
-
+			# MAA Manager: every Men-at-Arms action in one row; each button shows
+			# when the native one would (adventurer refill / reinforce, nomad refill,
+			# Create or the blocked Create during a retrain, Upgrade Horde Regiment,
+			# Recruit from Subjects).
 			hbox = {
 				layoutpolicy_horizontal = expanding
 				spacing = 5
-				margin = { 0 0 }
+				ignoreinvisible = yes
 
-				button_standard = {
+				maam_action_btn = {
+					datacontext = "[MilitaryView.GetMilitaryItem]"
+					visible = "[And( GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' ), Character.IsPlayerInteractionShown('refill_maa_interaction') )]"
+					layoutpolicy_horizontal = expanding
+
+					name = "adventurer_refill_shortcut"
+					datacontext = "[GetPlayer]"
+					enabled = "[And( Character.IsPlayerInteractionValid('refill_maa_interaction'), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+					onclick = "[Character.OpenPlayerInteraction('refill_maa_interaction')]"
+					text = "[Character.GetPlayerInteractionName('refill_maa_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('refill_maa_interaction')]"
+					using = tooltip_se
+					clicksound = "event:/SFX/UI/Unit/Army/sfx_ui_raise_army"
+
+					icon = {
+						name = "adventurer_gold_icon"
+						parentanchor = left|vcenter
+						position = { 10 0 }
+						size = { 29 29 }
+						texture = "gfx/interface/icons/icon_gold.dds"
+					}
+
+					icon = {
+						name = "adventurer_provision_icon"
+						parentanchor = left|vcenter
+						position = { 40 0 }
+						size = { 29 29 }
+						framesize = { 60 60 }
+						frame = 0
+						texture = "gfx/interface/icons/icon_camp_supply.dds"
+					}
+				}
+
+				maam_action_btn = {
+					datacontext = "[MilitaryView.GetMilitaryItem]"
+					visible = "[And( IsNomad(GetPlayer), Character.IsPlayerInteractionShown('refill_maa_nomad_interaction') )]"
+					layoutpolicy_horizontal = expanding
+
+					name = "nomad_refill_shortcut"
+					datacontext = "[GetPlayer]"
+					enabled = "[And( Character.IsPlayerInteractionValid('refill_maa_nomad_interaction'), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+					onclick = "[Character.OpenPlayerInteraction('refill_maa_nomad_interaction')]"
+					text = "[Character.GetPlayerInteractionName('refill_maa_nomad_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('refill_maa_nomad_interaction')]"
+					using = tooltip_se
+					clicksound = "event:/SFX/UI/Unit/Army/sfx_ui_raise_army"
+
+					icon = {
+						name = "adventurer_gold_icon"
+						parentanchor = left|vcenter
+						position = { 10 0 }
+						size = { 29 29 }
+						texture = "gfx/interface/icons/icon_gold.dds"
+					}
+
+					icon = {
+						name = "nomad_herd_icon"
+						parentanchor = left|vcenter
+						position = { 40 0 }
+						size = { 29 29 }
+						texture = "gfx/interface/icons/icon_herd.dds"
+					}
+				}
+
+				maam_action_btn = {
+					datacontext = "[MilitaryView.GetMilitaryItem]"
+					visible = "[And( GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' ), Character.IsPlayerInteractionShown('reinforce_soldiers_interaction') )]"
+					layoutpolicy_horizontal = expanding
+
+					name = "adventurer_reinforce_shortcut"
+					datacontext = "[GetPlayer]"
+					enabled = "[And( Character.IsPlayerInteractionValid('reinforce_soldiers_interaction'), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+					onclick = "[Character.OpenPlayerInteraction('reinforce_soldiers_interaction')]"
+					text = "[Character.GetPlayerInteractionName('reinforce_soldiers_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('reinforce_soldiers_interaction')]"
+					using = tooltip_se
+					clicksound = "event:/SFX/UI/Unit/Army/sfx_ui_raise_army"
+
+					icon = {
+						name = "adventurer_icon"
+						parentanchor = left|vcenter
+						position = { 5 -1 }
+						size = { 28 28 }
+						texture = "gfx/interface/icons/combat_effects/owner_in_debt.dds"
+					}
+				}
+
+				# A running retrain holds a temporary slot: no ordinary recruitment.
+				maam_action_btn = {
+					visible = "[And( Not( IsNomad( GetPlayer ) ), GetPlayer.MakeScope.Var('maam_rt_active').IsSet )]"
+					layoutpolicy_horizontal = expanding
+					text = "ADD_MEN_AT_ARMS_LABEL"
+					enabled = no
+					tooltip = "MAAM_CREATE_BLOCKED_TT"
+				}
+
+				maam_action_btn = {
+					name = "add_maa"
+					visible = "[And( Not( IsNomad( GetPlayer ) ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
+					layoutpolicy_horizontal = expanding
+
+					text = "ADD_MEN_AT_ARMS_LABEL"
+
+					onclick = "[MilitaryItem.OnClick]"
+					tooltip = "CREATE_MAA_TOOLTIP"
+					down = "[MilitaryItem.IsOpen]"
+
+					button_plus = {
+						name = "can_be_created"
+						visible = "[MilitaryItem.CanCreateAnyMAAType]"
+						parentanchor = left|vcenter
+						position = { 5 0 }
+						alwaystransparent = yes
+					}
+
+					warning_icon = {
+						name = "at_cap"
+						visible = "[Not(MilitaryItem.MaACanBeCreated)]"
+						parentanchor = left|vcenter
+						position = { 5 0 }
+						size = { 28 28 }
+					}
+				}
+
+				# Nomads: the same, for Upgrade Horde Regiment.
+				maam_action_btn = {
+					visible = "[And( IsNomad( GetPlayer ), GetPlayer.MakeScope.Var('maam_rt_active').IsSet )]"
+					layoutpolicy_horizontal = expanding
+					text = "UPGRADE_HORDE_REGIMENT_LABEL"
+					enabled = no
+					tooltip = "MAAM_CREATE_BLOCKED_TT"
+				}
+
+				maam_action_btn = {
 					name = "upgrade_horde_regiment"
-					visible = "[IsNomad( GetPlayer )]"
+					visible = "[And( IsNomad( GetPlayer ), Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet ) )]"
 					layoutpolicy_horizontal = expanding
 
 					text = "UPGRADE_HORDE_REGIMENT_LABEL"
-
-					enabled = "[Not( GetPlayer.MakeScope.Var('maam_rt_active').IsSet )]"
 
 					onclick = "[MilitaryItem.OnClickNomad]"
 					tooltip = "[MilitaryItem.GetUpgradeHordeTooltip]"
@@ -308,7 +282,7 @@ types MenAtArmsManagerSharedTypes
 					}
 				}
 
-				button_standard = {
+				maam_action_btn = {
 					name = "recruit_from_subjects"
 					visible = "[MilitaryItem.ShouldShowRecruitFromSubjectsButton]"
 					layoutpolicy_horizontal = expanding

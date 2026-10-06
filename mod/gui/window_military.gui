@@ -23,6 +23,11 @@ window = {
 		using = Window_Position_MainTab
 
 		on_start = "[GetVariableSystem.Set( 'military_view_mercenaries', 'mercenaries' )]"
+		# MAA Manager: the board's default view (saved with the game), applied
+		# when the window opens; tab switches keep the current view.
+		on_start = "[GetVariableSystem.Set( 'maam_board_view', Select_CString( GetScriptedGui('maam_pref_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'tiles' ) ).End ), 'tiles', Select_CString( GetScriptedGui('maam_pref_is').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'want', MakeScopeFlag( 'grouped' ) ).End ), 'grouped', 'list' ) ) )]"
+		on_start = "[GetVariableSystem.Clear( 'maam_ob_settings' )]"
+		on_start = "[GetScriptedGui('maam_ob_on_open').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 	}
 
 	state = {
@@ -379,6 +384,11 @@ types ArmiesView
 					visible = "[Or(GetVariableSystem.HasValue( 'military_view_armies', 'personal' ), Or(Not(GetVariableSystem.Exists('military_view_armies')), Not(MilitaryView.GetCharacter.GetGovernment.HasMechanic( 'administrative' ))))]"
 
 					layoutpolicy_horizontal = expanding
+					# MAA Manager: fill the tab so the lane list can take the free height.
+					layoutpolicy_vertical = expanding
+					# MAA Manager: never wider than the native content (507 + margins), so
+					# the native rows keep their layout even if a mod element asks for more.
+					maximumsize = { 527 -1 }
 					margin = { 10 0 }
 					spacing = 10
 				}
@@ -729,49 +739,48 @@ types ArmiesView
 
 		using = Animation_Tab_Switch
 
-		hbox = {
-			name = "maa_manager_title_actions"
-			layoutpolicy_horizontal = expanding
+		vbox = {
+			visible = "[Character.GetTopLiege.IsPlayerInteractionShown('celestial_request_military_aid_interaction')]"
+			datacontext = "[GetPlayer]"
 			margin = { 27 8 }
-			spacing = 8
+			layoutpolicy_horizontal = expanding
 
-			vbox = {
+			button_standard = {
+				name = "celestial_request_military_aid"
+				enabled = "[Character.GetTopLiege.IsPlayerInteractionValid('celestial_request_military_aid_interaction')]"
+				onclick = "[Character.GetTopLiege.OpenPlayerInteraction('celestial_request_military_aid_interaction')]"
+				tooltip = "[Character.GetTopLiege.GetPlayerInteractionTooltip('celestial_request_military_aid_interaction')]"
 				layoutpolicy_horizontal = expanding
-				ignoreinvisible = yes
-				vbox = {
-					visible = "[Character.GetTopLiege.IsPlayerInteractionShown('celestial_request_military_aid_interaction')]"
-					datacontext = "[GetPlayer]"
-					layoutpolicy_horizontal = expanding
 
-					button_standard = {
-						name = "celestial_request_military_aid"
-						enabled = "[Character.GetTopLiege.IsPlayerInteractionValid('celestial_request_military_aid_interaction')]"
-						onclick = "[Character.GetTopLiege.OpenPlayerInteraction('celestial_request_military_aid_interaction')]"
-						tooltip = "[Character.GetTopLiege.GetPlayerInteractionTooltip('celestial_request_military_aid_interaction')]"
-						layoutpolicy_horizontal = expanding
-
-						text = "CELESTIAL_REQUEST_MILITARY_AID_NAME"
-						using = tooltip_ws
-					}
-				}
-				vbox = {
-					visible = "[Character.IsPlayerInteractionShown('celestial_send_military_aid_interaction')]"
-					datacontext = "[GetPlayer]"
-					layoutpolicy_horizontal = expanding
-
-					button_standard = {
-						name = "celestial_request_military_aid"
-						enabled = "[Character.IsPlayerInteractionValid('celestial_send_military_aid_interaction')]"
-						onclick = "[Character.OpenPlayerInteraction('celestial_send_military_aid_interaction')]"
-						tooltip = "[Character.GetPlayerInteractionTooltip('celestial_send_military_aid_interaction')]"
-						layoutpolicy_horizontal = expanding
-
-						text = "celestial_send_military_aid_interaction"
-						using = tooltip_ws
-					}
-				}
+				text = "CELESTIAL_REQUEST_MILITARY_AID_NAME"
+				using = tooltip_ws
 			}
+		}
+		vbox = {
+			visible = "[Character.IsPlayerInteractionShown('celestial_send_military_aid_interaction')]"
+			datacontext = "[GetPlayer]"
+			margin = { 27 8 }
+			layoutpolicy_horizontal = expanding
 
+			button_standard = {
+				name = "celestial_request_military_aid"
+				enabled = "[Character.IsPlayerInteractionValid('celestial_send_military_aid_interaction')]"
+				onclick = "[Character.OpenPlayerInteraction('celestial_send_military_aid_interaction')]"
+				tooltip = "[Character.GetPlayerInteractionTooltip('celestial_send_military_aid_interaction')]"
+				layoutpolicy_horizontal = expanding
+
+				text = "celestial_send_military_aid_interaction"
+				using = tooltip_ws
+			}
+		}
+
+		# MAA Manager: command strip for the title regiments' lanes.
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 27 0 }
+			margin_bottom = 4
+
+			maam_ob_strip_title = {}
 		}
 
 		scrollbox = {
@@ -2723,30 +2732,14 @@ types ArmiesView
 						align = center
 					}
 
-					# MAA Manager muster board: bench under this title when one of its
-					# regiments is selected, then the title's regiment tiles.
+					# MAA Manager: this title's regiments as lanes (moves stay within the title).
 					vbox = {
-						visible = "[And( GetScriptedGui('maam_board_bench_title').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), ObjectsEqual( GetPlayer.MakeScope.Var('maa_manager_selected_regiment_scope').Regiment.GetOwningTitle, Title.Self ) )]"
-						layoutpolicy_horizontal = expanding
-						margin_bottom = 4
-
-						maam_bench = {}
-					}
-
-					maam_board_loaned_notice = {
-						visible = "[And( GetScriptedGui('maam_board_loaned_shown').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), ObjectsEqual( GetPlayer.MakeScope.Var('maam_board_loaned').Regiment.GetOwningTitle, Title.Self ) )]"
-					}
-
-					fixedgridbox = {
 						layoutpolicy_horizontal = expanding
 						datamodel = "[MilitaryItem.GetOwnedMaa]"
-						flipdirection = yes
-						datamodel_wrap = 3
-						addcolumn = 169
-						addrow = 93
+						spacing = 2
 
 						item = {
-							maam_tile_title = {}
+							maam_ob_lane = {}
 						}
 					}
 

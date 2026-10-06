@@ -1,114 +1,74 @@
 ﻿######################################################
-# MAA Manager - Dynamic retrain scripted GUIs
-#
-# Every action is an explicit click (or a trigger_when state on a visible
-# widget for capture/quote). Window hiding never executes anything here.
-# Type equality is GUI ObjectsEqual, passed as scope:real_relation together
-# with the exact regiment scopes; the backend revalidates everything else.
+# MAA Manager - Retrain armory scripted GUIs
+# Click chains live in the recruitment window (window_menatarms_type_view.gui)
+# and on the board. No window hide calls anything here.
 ######################################################
 
-# Start for scope:real_source: adds the temporary slot and arms the quote.
+# Retrain on a lane (scope:real_source).
 maam_rt_start = {
 	scope = character
 	is_valid = { maam_rt_start_allowed = yes }
-	effect = {
-		if = {
-			limit = { maam_rt_start_allowed = yes }
-			maam_rt_start_effect = yes
-		}
-	}
+	effect = { maam_rt_start_effect = yes }
 }
 
-# Snapshot right before the native purchase (same click as MenAtArmsTypeView.Create).
-maam_rt_begin = {
-	scope = character
-	is_valid = { maam_rt_can_buy = yes }
-	effect = {
-		if = {
-			limit = {
-				maam_rt_can_buy = yes
-				exists = scope:real_source
-				exists = scope:real_relation
-				scope:real_source = var:maam_rt_source
-			}
-			maam_rt_begin_effect = yes
-		}
-	}
-}
-
-# Capture the purchase (button, and automatic once the new regiment exists).
-maam_rt_capture = {
-	scope = character
-	is_valid = { maam_rt_capture_ready = yes }
-	effect = {
-		if = {
-			limit = { maam_rt_capture_ready = yes }
-			maam_rt_capture_effect = yes
-		}
-	}
-}
-
-# Quote phase: record and refund. Target phase: commit (grow, settle, replace).
-maam_rt_accept = {
-	scope = character
-	is_valid = {
-		maam_rt_purchase_intact = yes
-		has_variable = maam_rt_captured
-	}
-	effect = { maam_rt_accept_effect = yes }
-}
-
-maam_rt_rollback = {
-	scope = character
-	is_valid = { maam_rt_can_rollback = yes }
-	effect = { maam_rt_rollback_effect = yes }
-}
-
-maam_rt_release = {
-	scope = character
-	is_valid = { maam_rt_can_release = yes }
-	effect = { maam_rt_release_effect = yes }
-}
-
-# Display: a purchase exists that could not be verified.
-maam_rt_capture_failed_gui = {
-	scope = character
-	is_shown = { maam_rt_can_release = yes }
-}
-
+# Cancel (scope:why = flag:cancelled / flag:closed).
 maam_rt_cancel = {
 	scope = character
-	is_valid = { maam_rt_can_cancel = yes }
+	is_valid = { has_variable = maam_rt_active }
 	effect = { maam_rt_cancel_effect = yes }
 }
 
-maam_rt_recover = {
+# Price check steps (one type click). No is_valid: each step checks itself.
+maam_rt_pc_begin_src = {
 	scope = character
-	is_valid = { maam_rt_can_recover_expired = yes }
-	effect = { maam_rt_recover_effect = yes }
+	effect = { maam_rt_pc_begin_src_effect = yes }
+}
+maam_rt_pc_quote_src = {
+	scope = character
+	effect = { maam_rt_pc_quote_src_effect = yes }
+}
+# Opening price check, step 1: temporary resources (step 2 buys one screen
+# update later, so the window's can-buy check already sees them).
+maam_rt_boost_now = {
+	scope = character
+	effect = { maam_rt_boost_now_effect = yes }
+}
+maam_rt_boosted_gui = {
+	scope = character
+	is_shown = { has_variable = maam_rt_boosted }
+}
+maam_rt_pc_quote_src_auto = {
+	scope = character
+	effect = { maam_rt_pc_quote_src_auto_effect = yes }
+}
+maam_rt_pc_begin_tgt = {
+	scope = character
+	effect = { maam_rt_pc_begin_tgt_effect = yes }
+}
+maam_rt_pc_quote_tgt = {
+	scope = character
+	effect = { maam_rt_pc_quote_tgt_effect = yes }
 }
 
-maam_rt_abandon = {
+maam_rt_reopened = {
 	scope = character
-	is_valid = {
-		has_variable = maam_rt_active
-		NOT = { has_variable = maam_rt_click_guard }
-		NOT = { maam_rt_can_recover_expired = yes }
-		NOT = { has_variable = maam_rt_settled }
-	}
-	effect = { maam_rt_abandon_effect = yes }
+	effect = { maam_rt_reopened_effect = yes }
+}
+maam_rt_nothing_ack = {
+	scope = character
+	effect = { maam_rt_nothing_ack_effect = yes }
 }
 
-maam_rt_unpend = {
+# Retrain (commit) steps.
+# Always runs (no is_valid): its snapshot lets the finish take back whatever
+# the following Create buys, even in an unexpected state.
+maam_rt_commit_begin = {
 	scope = character
-	is_valid = {
-		has_variable = maam_rt_active
-		has_variable = maam_rt_pending
-		has_variable = maam_rt_count_before
-		maa_regiments_count = var:maam_rt_count_before
-		gold = var:maam_rt_gold_before
-	}
-	effect = { maam_rt_unpend_effect = yes }
+	effect = { maam_rt_commit_begin_effect = yes }
+}
+maam_rt_commit_finish = {
+	scope = character
+	effect = { maam_rt_commit_finish_effect = yes }
 }
 
 maam_rt_dismiss_result = {
@@ -120,65 +80,69 @@ maam_rt_dismiss_result = {
 # Display helpers (is_shown only)
 ######################################################
 
-# Ruler can use the measured retrain at all.
 maam_rt_ruler_supported = {
 	scope = character
 	is_shown = { maam_rt_supported_ruler = yes }
 }
 
-# Phase: choose and buy the test stack of the current type.
-maam_rt_phase_quote = {
+# A type click may price now (paused is checked by the GUI).
+maam_rt_can_price_gui = {
+	scope = character
+	is_shown = { maam_rt_can_price = yes }
+}
+
+maam_rt_src_known_gui = {
 	scope = character
 	is_shown = {
 		has_variable = maam_rt_active
-		has_variable = maam_rt_need_source
-		has_variable = maam_rt_armed
+		maam_rt_src_known = yes
 	}
 }
 
-# Phase: choose and buy the target stack.
-maam_rt_phase_target = {
+# scope:want = flag:unlisted / flag:refused / flag:nongold (gold and treasury
+# taken by one purchase, the one debit the armory can't price)
+maam_rt_src_unbuyable_is = {
+	scope = character
+	is_shown = {
+		exists = var:maam_rt_src_unbuyable
+		exists = scope:want
+		var:maam_rt_src_unbuyable = scope:want
+	}
+}
+
+maam_rt_can_commit_gui = {
+	scope = character
+	is_shown = { maam_rt_can_commit = yes }
+}
+
+maam_rt_quoted_gui = {
 	scope = character
 	is_shown = {
 		has_variable = maam_rt_active
-		NOT = { has_variable = maam_rt_need_source }
-		has_variable = maam_rt_armed
+		has_variable = maam_rt_quoted
 	}
 }
 
-# A native purchase was sent and is not captured yet.
-maam_rt_phase_pending = {
+maam_rt_fallback_gui = {
+	scope = character
+	is_shown = { has_variable = maam_rt_fallback }
+}
+
+# No shared currency: the current type's price was converted at the
+# Men-at-Arms rates.
+maam_rt_converted_gui = {
+	scope = character
+	is_shown = { has_variable = maam_rt_converted }
+}
+
+maam_rt_short_gui = {
 	scope = character
 	is_shown = {
-		has_variable = maam_rt_active
-		has_variable = maam_rt_pending
+		exists = var:maam_rt_fee
+		NOT = { maam_rt_can_pay_fee = yes }
 	}
 }
 
-# Test stack captured: record price and refund.
-maam_rt_phase_record = {
-	scope = character
-	is_shown = {
-		has_variable = maam_rt_active
-		has_variable = maam_rt_captured
-		has_variable = maam_rt_need_source
-	}
-}
-
-# Target stack captured: receipt.
-maam_rt_phase_receipt = {
-	scope = character
-	is_shown = {
-		has_variable = maam_rt_active
-		has_variable = maam_rt_captured
-		NOT = { has_variable = maam_rt_need_source }
-	}
-}
-
-maam_rt_interrupted_gui = {
-	scope = character
-	is_shown = { maam_rt_interrupted = yes }
-}
 
 maam_rt_tile_is_source = {
 	scope = character
@@ -190,22 +154,20 @@ maam_rt_tile_is_source = {
 	}
 }
 
-maam_rt_tile_is_test = {
-	scope = character
-	is_shown = {
-		has_variable = maam_rt_active
-		exists = var:maam_rt_candidate
-		exists = scope:regiment
-		scope:regiment = var:maam_rt_candidate
-	}
-}
-
-# Display: which result to show (scope:want is a flag).
+# The result strip (scope:want flag: retrained / failed).
 maam_rt_result_is = {
 	scope = character
 	is_shown = {
 		exists = var:maam_rt_result
 		exists = scope:want
 		var:maam_rt_result = scope:want
+	}
+}
+
+maam_rt_has_result = {
+	scope = character
+	is_shown = {
+		exists = var:maam_rt_result
+		NOT = { has_variable = maam_rt_active }
 	}
 }

@@ -1,38 +1,41 @@
 ﻿######################################################
-# MAA Manager - Dynamic retrain values
+# MAA Manager - Retrain values
 ######################################################
 
-# Minimum fee per stack, applied AFTER the measured (discounted) price
-# difference. Tested values: 10, 25, 50.
+# Minimum fee per stack, in gold's worth (converted at the rates below into
+# the currency the new type is paid in), applied after the price difference.
 maam_rt_minimum_fee_value = 10
 
-# max(target price - source price, minimum) x source stacks.
-# CK3 script values: "min = X" enforces a lower bound of X.
-maam_rt_fee_value = {
-	value = var:maam_rt_target_price
-	subtract = var:maam_rt_source_price
-	min = var:maam_rt_floor
-	multiply = var:maam_rt_size
+# Men-at-Arms exchange rates: one gold is worth ... (from the game's own
+# Men-at-Arms pricing). Piety: the Warrior Monks are priced both ways
+# (45 gold or 200 piety); this follows mods that change those prices.
+maam_rt_rate_piety_value = {
+	value = warrior_monks_piety_recruitment_cost
+	divide = warrior_monks_gold_recruitment_cost
+}
+# Prestige and treasury: rulers paying Men-at-Arms with them pay the gold
+# price x 2 (MAA_PRESTIGE_BUY_COST_MULT, MAA_TREASURY_BUY_COST_MULT).
+maam_rt_rate_prestige_value = 2
+maam_rt_rate_treasury_value = 2
+# Barter goods: the gold price unchanged.
+maam_rt_rate_barter_value = 1
+# Herd has no rate; 1 only matters where herd is the new type's only currency.
+maam_rt_rate_herd_value = 1
+# The armory's money: gold, or the treasury where the price checks took it.
+maam_rt_rate_money_value = {
+	value = 1
+	if = {
+		limit = { has_variable = maam_rt_money_treasury }
+		value = maam_rt_rate_treasury_value
+	}
 }
 
-# GUI display: what the player still pays (positive) or gets back (negative)
-# after the held target stack, before committing.
-maam_rt_preview_fee_value = {
-	value = var:maam_rt_gold_paid
-	subtract = var:maam_rt_source_price
-	min = var:maam_rt_floor
-	multiply = var:maam_rt_size
-}
-maam_rt_preview_difference_value = {
-	value = var:maam_rt_gold_paid
-	subtract = var:maam_rt_source_price
-	min = var:maam_rt_floor
-}
-maam_rt_preview_remaining_value = {
-	value = maam_rt_preview_fee_value
-	subtract = var:maam_rt_gold_paid
-}
-maam_rt_preview_remaining_abs_value = {
-	value = maam_rt_preview_remaining_value
-	if = { limit = { maam_rt_preview_remaining_value < 0 } multiply = -1 }
+# Fallback when the current type can't be bought: this share of the new
+# type's measured price per stack (the minimum still applies).
+maam_rt_fallback_factor_value = 0.5
+
+# The player's barter goods (Wanua pay Men-at-Arms with them), for the
+# armory's "You have" line.
+maam_rt_barter_have_value = {
+	value = barter_goods
 }

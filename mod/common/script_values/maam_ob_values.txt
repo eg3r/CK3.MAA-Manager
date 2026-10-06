@@ -1,0 +1,9 @@
+﻿######################################################
+# MAA Manager - Order of battle values (ROOT = the player)
+######################################################
+
+# Regiment scope: soldiers in one of its stacks at full strength.
+maam_ob_stack_value = {
+	value = maa_max_troops_count
+	divide = maa_size
+}

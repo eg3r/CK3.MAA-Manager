@@ -1,0 +1,596 @@
+﻿######################################################
+# MAA Manager - Order of battle (Military window board) triggers
+# ROOT = the player. Regiment scopes are passed by the GUI.
+######################################################
+
+# Regiments may only be changed at peace with nothing raised (checked again by
+# every action, not only by the GUI).
+maam_can_modify_regiments = {
+	is_at_war = no
+	has_raised_armies = no
+	NOT = {
+		any_maa_regiment = {
+			is_raised = yes
+		}
+	}
+}
+
+# Regiment scope: a title regiment the player owns through a held title.
+maam_title_regiment_owned = {
+	is_title_maa_regiment = yes
+	exists = regiment_owning_title
+	regiment_owning_title = { holder = root }
+}
+
+# Regiment scope: an owned title regiment that is home, unraised and controlled.
+maam_title_regiment_manageable = {
+	maam_title_regiment_owned = yes
+	is_raised = no
+	exists = regiment_controlling_title
+	regiment_controlling_title = regiment_owning_title
+	regiment_controller = root
+}
+
+# Board orders may run: peace, nothing raised, no retrain open.
+maam_ob_can_order = {
+	maam_can_modify_regiments = yes
+	NOT = { has_variable = maam_rt_active }
+}
+
+# The open order is of kind KIND (lift, ended, merge, pour).
+maam_ob_kind_is = {
+	exists = var:maam_ob_kind
+	var:maam_ob_kind = flag:$KIND$
+}
+
+# Regiment scope: may take part in board orders (independent of title mode).
+maam_ob_regiment_ok = {
+	OR = {
+		AND = {
+			is_personal_maa_regiment = yes
+			regiment_owner = root
+			is_raised = no
+		}
+		maam_title_regiment_manageable = yes
+	}
+}
+
+# Regiment scope: on the same board as $OTHER$ (both personal, or the same title).
+maam_ob_same_board = {
+	trigger_if = {
+		limit = { is_title_maa_regiment = yes }
+		$OTHER$ = { is_title_maa_regiment = yes }
+		regiment_owning_title = $OTHER$.regiment_owning_title
+	}
+	trigger_else = {
+		$OTHER$ = { is_title_maa_regiment = no }
+	}
+}
+
+# The stored order source still exists and may be managed.
+maam_ob_src_ok = {
+	exists = var:maam_ob_src
+	var:maam_ob_src = { maam_ob_regiment_ok = yes }
+}
+
+# scope:target_regiment can take part with the order source. Type equality is
+# the vanilla list or the GUI's ObjectsEqual passed as scope:type_relation
+# (the GUI is the authority in single player), so modded types work too.
+maam_ob_kin_target = {
+	exists = scope:target_regiment
+	maam_ob_src_ok = yes
+	scope:target_regiment = {
+		maam_ob_regiment_ok = yes
+		NOT = { this = root.var:maam_ob_src }
+		maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+		OR = {
+			maam_same_type_as = { OTHER = root.var:maam_ob_src }
+			AND = {
+				exists = scope:type_relation
+				scope:type_relation = flag:same
+			}
+		}
+	}
+}
+
+# "Move a stack back" applies: the newest placement of this lift can return.
+maam_ob_back_ok = {
+	exists = var:maam_hist_1
+	maam_ob_src_ok = yes
+	var:maam_hist_1 = {
+		maam_ob_regiment_ok = yes
+		maa_size > 1
+		NOT = { this = root.var:maam_ob_src }
+		maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+	}
+	var:maam_ob_src = { can_upgrade_maa = yes }
+}
+
+# The soldier move has a valid partner (maam_ob_tgt) for its regiment (maam_ob_src).
+maam_ob_pour_pair_ok = {
+	maam_ob_kind_is = { KIND = pour }
+	maam_ob_src_ok = yes
+	exists = var:maam_ob_tgt
+	var:maam_ob_tgt = {
+		maam_ob_regiment_ok = yes
+		NOT = { this = root.var:maam_ob_src }
+		maam_ob_same_board = { OTHER = root.var:maam_ob_src }
+	}
+}
+
+# Soldiers can move from $FROM$ to $TO$: the sender has more than its first
+# stack, the receiver has room (each move: at most one stack).
+maam_ob_can_send = {
+	$FROM$ = { maa_current_troops_count > maam_ob_stack_value }
+	$TO$ = { maa_current_troops_count < maa_max_troops_count }
+}
+
+# Regiment scope: same type as $OTHER$, for the vanilla types. Used where no
+# GUI comparison exists
+# (Quartermaster advice).
+maam_same_type_as = {
+	OR = {
+		AND = {
+			is_maa_type = abudrar
+			$OTHER$ = { is_maa_type = abudrar }
+		}
+		AND = {
+			is_maa_type = accolade_maa_archers
+			$OTHER$ = { is_maa_type = accolade_maa_archers }
+		}
+		AND = {
+			is_maa_type = accolade_maa_cameliers
+			$OTHER$ = { is_maa_type = accolade_maa_cameliers }
+		}
+		AND = {
+			is_maa_type = accolade_maa_crossbowers
+			$OTHER$ = { is_maa_type = accolade_maa_crossbowers }
+		}
+		AND = {
+			is_maa_type = accolade_maa_elephantiers
+			$OTHER$ = { is_maa_type = accolade_maa_elephantiers }
+		}
+		AND = {
+			is_maa_type = accolade_maa_handgunners
+			$OTHER$ = { is_maa_type = accolade_maa_handgunners }
+		}
+		AND = {
+			is_maa_type = accolade_maa_horse_archers
+			$OTHER$ = { is_maa_type = accolade_maa_horse_archers }
+		}
+		AND = {
+			is_maa_type = accolade_maa_lancers
+			$OTHER$ = { is_maa_type = accolade_maa_lancers }
+		}
+		AND = {
+			is_maa_type = accolade_maa_outriders
+			$OTHER$ = { is_maa_type = accolade_maa_outriders }
+		}
+		AND = {
+			is_maa_type = accolade_maa_pikes
+			$OTHER$ = { is_maa_type = accolade_maa_pikes }
+		}
+		AND = {
+			is_maa_type = accolade_maa_skirmishers
+			$OTHER$ = { is_maa_type = accolade_maa_skirmishers }
+		}
+		AND = {
+			is_maa_type = accolade_maa_vanguards
+			$OTHER$ = { is_maa_type = accolade_maa_vanguards }
+		}
+		AND = {
+			is_maa_type = akritai
+			$OTHER$ = { is_maa_type = akritai }
+		}
+		AND = {
+			is_maa_type = archers_of_the_nile
+			$OTHER$ = { is_maa_type = archers_of_the_nile }
+		}
+		AND = {
+			is_maa_type = armored_footmen
+			$OTHER$ = { is_maa_type = armored_footmen }
+		}
+		AND = {
+			is_maa_type = armored_horsemen
+			$OTHER$ = { is_maa_type = armored_horsemen }
+		}
+		AND = {
+			is_maa_type = asawira
+			$OTHER$ = { is_maa_type = asawira }
+		}
+		AND = {
+			is_maa_type = ayrudzi
+			$OTHER$ = { is_maa_type = ayrudzi }
+		}
+		AND = {
+			is_maa_type = ayyar
+			$OTHER$ = { is_maa_type = ayyar }
+		}
+		AND = {
+			is_maa_type = ballista
+			$OTHER$ = { is_maa_type = ballista }
+		}
+		AND = {
+			is_maa_type = ballista_elephant
+			$OTHER$ = { is_maa_type = ballista_elephant }
+		}
+		AND = {
+			is_maa_type = ballistrai
+			$OTHER$ = { is_maa_type = ballistrai }
+		}
+		AND = {
+			is_maa_type = black_armor_cavalry
+			$OTHER$ = { is_maa_type = black_armor_cavalry }
+		}
+		AND = {
+			is_maa_type = bombard
+			$OTHER$ = { is_maa_type = bombard }
+		}
+		AND = {
+			is_maa_type = bondi
+			$OTHER$ = { is_maa_type = bondi }
+		}
+		AND = {
+			is_maa_type = bowmen
+			$OTHER$ = { is_maa_type = bowmen }
+		}
+		AND = {
+			is_maa_type = burenjia
+			$OTHER$ = { is_maa_type = burenjia }
+		}
+		AND = {
+			is_maa_type = bush_hunter
+			$OTHER$ = { is_maa_type = bush_hunter }
+		}
+		AND = {
+			is_maa_type = caballero
+			$OTHER$ = { is_maa_type = caballero }
+		}
+		AND = {
+			is_maa_type = camel_rider
+			$OTHER$ = { is_maa_type = camel_rider }
+		}
+		AND = {
+			is_maa_type = cannon
+			$OTHER$ = { is_maa_type = cannon }
+		}
+		AND = {
+			is_maa_type = cataphract
+			$OTHER$ = { is_maa_type = cataphract }
+		}
+		AND = {
+			is_maa_type = cataphract_archers
+			$OTHER$ = { is_maa_type = cataphract_archers }
+		}
+		AND = {
+			is_maa_type = chasseur
+			$OTHER$ = { is_maa_type = chasseur }
+		}
+		AND = {
+			is_maa_type = cloud_ladder
+			$OTHER$ = { is_maa_type = cloud_ladder }
+		}
+		AND = {
+			is_maa_type = conrois
+			$OTHER$ = { is_maa_type = conrois }
+		}
+		AND = {
+			is_maa_type = crossbowmen
+			$OTHER$ = { is_maa_type = crossbowmen }
+		}
+		AND = {
+			is_maa_type = druzhina
+			$OTHER$ = { is_maa_type = druzhina }
+		}
+		AND = {
+			is_maa_type = emishi_horse_archers
+			$OTHER$ = { is_maa_type = emishi_horse_archers }
+		}
+		AND = {
+			is_maa_type = fire_lancers
+			$OTHER$ = { is_maa_type = fire_lancers }
+		}
+		AND = {
+			is_maa_type = gakgung_archers
+			$OTHER$ = { is_maa_type = gakgung_archers }
+		}
+		AND = {
+			is_maa_type = garudas
+			$OTHER$ = { is_maa_type = garudas }
+		}
+		AND = {
+			is_maa_type = gendarme
+			$OTHER$ = { is_maa_type = gendarme }
+		}
+		AND = {
+			is_maa_type = goedendag
+			$OTHER$ = { is_maa_type = goedendag }
+		}
+		AND = {
+			is_maa_type = guanch_vaulter
+			$OTHER$ = { is_maa_type = guanch_vaulter }
+		}
+		AND = {
+			is_maa_type = guinea_warrior
+			$OTHER$ = { is_maa_type = guinea_warrior }
+		}
+		AND = {
+			is_maa_type = handgunners
+			$OTHER$ = { is_maa_type = handgunners }
+		}
+		AND = {
+			is_maa_type = handpicked_faithful
+			$OTHER$ = { is_maa_type = handpicked_faithful }
+		}
+		AND = {
+			is_maa_type = heavy_horse_archers
+			$OTHER$ = { is_maa_type = heavy_horse_archers }
+		}
+		AND = {
+			is_maa_type = hobelar
+			$OTHER$ = { is_maa_type = hobelar }
+		}
+		AND = {
+			is_maa_type = horn_warrior
+			$OTHER$ = { is_maa_type = horn_warrior }
+		}
+		AND = {
+			is_maa_type = horse_archers
+			$OTHER$ = { is_maa_type = horse_archers }
+		}
+		AND = {
+			is_maa_type = house_guard
+			$OTHER$ = { is_maa_type = house_guard }
+		}
+		AND = {
+			is_maa_type = huscarl
+			$OTHER$ = { is_maa_type = huscarl }
+		}
+		AND = {
+			is_maa_type = hussar
+			$OTHER$ = { is_maa_type = hussar }
+		}
+		AND = {
+			is_maa_type = japanese_horse_archers
+			$OTHER$ = { is_maa_type = japanese_horse_archers }
+		}
+		AND = {
+			is_maa_type = jomsviking_pirates
+			$OTHER$ = { is_maa_type = jomsviking_pirates }
+		}
+		AND = {
+			is_maa_type = khandayat
+			$OTHER$ = { is_maa_type = khandayat }
+		}
+		AND = {
+			is_maa_type = kheshig
+			$OTHER$ = { is_maa_type = kheshig }
+		}
+		AND = {
+			is_maa_type = landsknecht
+			$OTHER$ = { is_maa_type = landsknecht }
+		}
+		AND = {
+			is_maa_type = light_footmen
+			$OTHER$ = { is_maa_type = light_footmen }
+		}
+		AND = {
+			is_maa_type = light_horsemen
+			$OTHER$ = { is_maa_type = light_horsemen }
+		}
+		AND = {
+			is_maa_type = longbowmen
+			$OTHER$ = { is_maa_type = longbowmen }
+		}
+		AND = {
+			is_maa_type = maa_bandits
+			$OTHER$ = { is_maa_type = maa_bandits }
+		}
+		AND = {
+			is_maa_type = maa_marauders
+			$OTHER$ = { is_maa_type = maa_marauders }
+		}
+		AND = {
+			is_maa_type = maa_poachers
+			$OTHER$ = { is_maa_type = maa_poachers }
+		}
+		AND = {
+			is_maa_type = maa_thieves
+			$OTHER$ = { is_maa_type = maa_thieves }
+		}
+		AND = {
+			is_maa_type = mangonel
+			$OTHER$ = { is_maa_type = mangonel }
+		}
+		AND = {
+			is_maa_type = mangudai
+			$OTHER$ = { is_maa_type = mangudai }
+		}
+		AND = {
+			is_maa_type = maturkan_warriors
+			$OTHER$ = { is_maa_type = maturkan_warriors }
+		}
+		AND = {
+			is_maa_type = metsanvartija
+			$OTHER$ = { is_maa_type = metsanvartija }
+		}
+		AND = {
+			is_maa_type = monaspa
+			$OTHER$ = { is_maa_type = monaspa }
+		}
+		AND = {
+			is_maa_type = mountaineer
+			$OTHER$ = { is_maa_type = mountaineer }
+		}
+		AND = {
+			is_maa_type = mubarizun
+			$OTHER$ = { is_maa_type = mubarizun }
+		}
+		AND = {
+			is_maa_type = mulaththamun
+			$OTHER$ = { is_maa_type = mulaththamun }
+		}
+		AND = {
+			is_maa_type = nomad_lancers
+			$OTHER$ = { is_maa_type = nomad_lancers }
+		}
+		AND = {
+			is_maa_type = onager
+			$OTHER$ = { is_maa_type = onager }
+		}
+		AND = {
+			is_maa_type = order_knights
+			$OTHER$ = { is_maa_type = order_knights }
+		}
+		AND = {
+			is_maa_type = order_serjeants
+			$OTHER$ = { is_maa_type = order_serjeants }
+		}
+		AND = {
+			is_maa_type = paiks
+			$OTHER$ = { is_maa_type = paiks }
+		}
+		AND = {
+			is_maa_type = palace_guards
+			$OTHER$ = { is_maa_type = palace_guards }
+		}
+		AND = {
+			is_maa_type = pesilat_warriors
+			$OTHER$ = { is_maa_type = pesilat_warriors }
+		}
+		AND = {
+			is_maa_type = picchieri
+			$OTHER$ = { is_maa_type = picchieri }
+		}
+		AND = {
+			is_maa_type = pikemen_unit
+			$OTHER$ = { is_maa_type = pikemen_unit }
+		}
+		AND = {
+			is_maa_type = praetorian
+			$OTHER$ = { is_maa_type = praetorian }
+		}
+		AND = {
+			is_maa_type = rocket_carts
+			$OTHER$ = { is_maa_type = rocket_carts }
+		}
+		AND = {
+			is_maa_type = sahel_horsemen
+			$OTHER$ = { is_maa_type = sahel_horsemen }
+		}
+		AND = {
+			is_maa_type = samurai
+			$OTHER$ = { is_maa_type = samurai }
+		}
+		AND = {
+			is_maa_type = sarawit
+			$OTHER$ = { is_maa_type = sarawit }
+		}
+		AND = {
+			is_maa_type = schiltron
+			$OTHER$ = { is_maa_type = schiltron }
+		}
+		AND = {
+			is_maa_type = shenbigong
+			$OTHER$ = { is_maa_type = shenbigong }
+		}
+		AND = {
+			is_maa_type = shomer
+			$OTHER$ = { is_maa_type = shomer }
+		}
+		AND = {
+			is_maa_type = siege_tower
+			$OTHER$ = { is_maa_type = siege_tower }
+		}
+		AND = {
+			is_maa_type = skoutatoi
+			$OTHER$ = { is_maa_type = skoutatoi }
+		}
+		AND = {
+			is_maa_type = steppe_raiders
+			$OTHER$ = { is_maa_type = steppe_raiders }
+		}
+		AND = {
+			is_maa_type = tarkhan
+			$OTHER$ = { is_maa_type = tarkhan }
+		}
+		AND = {
+			is_maa_type = tawashi
+			$OTHER$ = { is_maa_type = tawashi }
+		}
+		AND = {
+			is_maa_type = teulu
+			$OTHER$ = { is_maa_type = teulu }
+		}
+		AND = {
+			is_maa_type = tiefutu
+			$OTHER$ = { is_maa_type = tiefutu }
+		}
+		AND = {
+			is_maa_type = torch_bearers
+			$OTHER$ = { is_maa_type = torch_bearers }
+		}
+		AND = {
+			is_maa_type = trebuchet
+			$OTHER$ = { is_maa_type = trebuchet }
+		}
+		AND = {
+			is_maa_type = varangian_guards
+			$OTHER$ = { is_maa_type = varangian_guards }
+		}
+		AND = {
+			is_maa_type = varangian_veterans
+			$OTHER$ = { is_maa_type = varangian_veterans }
+		}
+		AND = {
+			is_maa_type = vigmen
+			$OTHER$ = { is_maa_type = vigmen }
+		}
+		AND = {
+			is_maa_type = war_elephant
+			$OTHER$ = { is_maa_type = war_elephant }
+		}
+		AND = {
+			is_maa_type = warrior_monks
+			$OTHER$ = { is_maa_type = warrior_monks }
+		}
+		AND = {
+			is_maa_type = zbrojnosh
+			$OTHER$ = { is_maa_type = zbrojnosh }
+		}
+		AND = {
+			is_maa_type = zhanmadao_infantry
+			$OTHER$ = { is_maa_type = zhanmadao_infantry }
+		}
+		AND = {
+			is_maa_type = zupin_warrior
+			$OTHER$ = { is_maa_type = zupin_warrior }
+		}
+	}
+}
+
+# Quartermaster (character scope): the stored tip still holds. Grow: the
+# regiment still has room (it may have been grown in its own window). Combine:
+# both regiments are still there and every slot is still used.
+maam_qm_tip_valid = {
+	exists = var:maam_qm_kind
+	exists = var:maam_qm_a
+	var:maam_qm_a = { maam_ob_regiment_ok = yes }
+	trigger_if = {
+		limit = { var:maam_qm_kind = flag:grow }
+		var:maam_qm_a = { can_upgrade_maa = yes }
+	}
+	trigger_else = {
+		exists = var:maam_qm_b
+		var:maam_qm_b = { maam_ob_regiment_ok = yes }
+		maa_regiments_count >= maa_regiments_max_count
+	}
+}
+
+# A stack move's click passes the size limit the game shows (Regiment.
+# CalcMaxMAAChunkCount, "Size X/Y") as scope:gui_room. can_upgrade_maa alone
+# let title regiments grow past the title limit.
+maam_ob_gui_room = {
+	exists = scope:gui_room
+	scope:gui_room = flag:yes
+}

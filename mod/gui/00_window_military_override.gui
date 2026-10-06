@@ -1,8 +1,9 @@
 ﻿######################################################
-# Men-At-Arms Manager - Early Load Military Window Override
+# Men-At-Arms Manager - Early-load compatibility override
 #
-# This file overrides the military window to add the
-# MAA Manager button. Uses 00_ prefix for early loading.
+# Our window_military.gui shows the Order of Battle board directly. If another
+# mod replaces window_military.gui, its vanilla vbox_your_armies still shows
+# the board through this type override (00_/zz_ cover either load order).
 ######################################################
 
 types MenAtArmsManagerTypes
