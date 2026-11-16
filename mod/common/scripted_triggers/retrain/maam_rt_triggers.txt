@@ -20,23 +20,38 @@ maam_rt_supported_ruler = {
 
 # The ruler can pay the fee: money (what the price checks took: gold, or the
 # treasury), barter goods, prestige, piety and herd (the yurt's), each in full.
+# Only currencies the fee actually uses are checked: every fee variable is set,
+# zeros included, and gold, treasury, prestige and piety can be negative (a
+# -1600 piety ruler failed "piety >= 0" on a gold-only fee).
 maam_rt_can_pay_fee = {
 	exists = var:maam_rt_fee
 	trigger_if = {
-		limit = { has_variable = maam_rt_money_treasury }
-		treasury >= var:maam_rt_fee
+		limit = { var:maam_rt_fee > 0 }
+		trigger_if = {
+			limit = { has_variable = maam_rt_money_treasury }
+			treasury >= var:maam_rt_fee
+		}
+		trigger_else = { gold >= var:maam_rt_fee }
 	}
-	trigger_else = { gold >= var:maam_rt_fee }
 	trigger_if = {
-		limit = { exists = var:maam_rt_fee_barter }
+		limit = {
+			exists = var:maam_rt_fee_barter
+			var:maam_rt_fee_barter > 0
+		}
 		barter_goods >= var:maam_rt_fee_barter
 	}
 	trigger_if = {
-		limit = { exists = var:maam_rt_fee_prestige }
+		limit = {
+			exists = var:maam_rt_fee_prestige
+			var:maam_rt_fee_prestige > 0
+		}
 		prestige >= var:maam_rt_fee_prestige
 	}
 	trigger_if = {
-		limit = { exists = var:maam_rt_fee_piety }
+		limit = {
+			exists = var:maam_rt_fee_piety
+			var:maam_rt_fee_piety > 0
+		}
 		piety >= var:maam_rt_fee_piety
 	}
 	trigger_if = {
