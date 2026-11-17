@@ -19,5 +19,5 @@
 [list]
 [*]Works at peace with no armies raised; pause the game to retrain.
 [*]Replaces the Military and recruitment windows: mods that change them will conflict.
-[*]CK3 1.20.* · English, French, German, Spanish, Polish, Russian, Chinese, Korean.
+[*]CK3 1.21.* · English, French, German, Spanish, Polish, Russian, Chinese, Korean.
 [/list]

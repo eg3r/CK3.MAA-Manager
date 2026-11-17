@@ -308,6 +308,10 @@ maam_same_type_as = {
 			$OTHER$ = { is_maa_type = cloud_ladder }
 		}
 		AND = {
+			is_maa_type = condottieri
+			$OTHER$ = { is_maa_type = condottieri }
+		}
+		AND = {
 			is_maa_type = conrois
 			$OTHER$ = { is_maa_type = conrois }
 		}

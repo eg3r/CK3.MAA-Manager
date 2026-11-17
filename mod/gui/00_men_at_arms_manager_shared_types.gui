@@ -21,6 +21,7 @@ types MenAtArmsManagerSharedTypes
 
 		vbox = {
 			name = "maa_area"
+			visible = "[Or( Not( Character.IsMerchant ), Not(IsDataModelEmpty(MilitaryItem.GetOwnedMaa) ) )]" # Shows for Merchants only if they have somehow gotten their hands on MAA
 			datacontext = "[MilitaryView.GetMilitaryItem]"
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding

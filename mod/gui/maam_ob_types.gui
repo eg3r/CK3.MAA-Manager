@@ -9937,7 +9937,7 @@ types MAAManagerOrderOfBattle
 }
 
 ######################################################
-# The game's regiment tooltip (copied by the generator from the 1.20.0.3
+# The game's regiment tooltip (copied by the generator from the 1.21.0
 # snapshot) with the board's status slot under the station line.
 ######################################################
 template maam_regiment_tooltip
@@ -10088,12 +10088,16 @@ template maam_regiment_tooltip
 						layoutpolicy_horizontal = expanding
 						text = "MAA_REINFORCEMENT_COST_ENTRY"
 						fonttintcolor = "[TooltipInfo.GetTintColor]"
+
+						tooltip = "[Regiment.CalcHighMonthlyCostBreakdown]"
 					}
 
 					text_single = {
 						layoutpolicy_horizontal = expanding
 						text = "MAA_MAINTENANCE"
 						fonttintcolor = "[TooltipInfo.GetTintColor]"
+
+						tooltip = "[Regiment.CalcLowMonthlyCostBreakdown]"
 					}
 
 					text_single = {
